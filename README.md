@@ -4,3 +4,6 @@ the spread of misinformation through social media. This game is
 currently being built as the project of group 41 of the UWA
 CITS3200 unit in semester two 2021, in collaboration with
 Assoc/Prof Ullrich Ecker.
+
+You can read more about the design of this project in
+[docs/DESIGN.md](docs/DESIGN.md).
