@@ -15,7 +15,7 @@ user's followers and credibility when they like, share, dislike, or
 flag each post can be controlled by the researchers. Similarly, the
 sources of each social media post will be randomised, and thei
 followers and credibility rating will also be changed throughout
-the experiment. 
+the experiment.
 
 Every game that is played by users is independent, and therefore users
 interactions with the game will not affect one another. As users play
@@ -78,20 +78,34 @@ mobile devices, and therefore it should follow a responsive design.
 
 
 ### Help / Introduction Screen Mockup
-![Mockup of the help & introduction screen](help-mockup.png)
+This screen is used to introduce the study, and teach users how to
+participate and interact with the game.
+
+<img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/help-mockup.png" height="320" />
 
 ### Prompt Screen Mockup
-![Mockup of the prompt screen](prompt-mockup.png)
+This screen is used to present the researcher's prompt to the users
+participating in the study.
+
+<img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/prompt-mockup.png" height="320" />
 
 ### Game Screen Mockup
-![Mockup of game screen](game-mockup.png)
+This screen is where users are able to actually participate in the
+social media game and view their progress.
+
+<img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/game-mockup.png" height="320" />
 
 ### Admin Dashboard Mockup
+This screen allows researchers to view all studies that have been
+uploaded, along with some information about each of them. It also
+allows them to upload a new study, and go to a page with more
+information about each study.
 
-This should probably also include a link to our GitHub documentation
-and a template Excel document for creating studies.
-
-![Mockup of admin dashboard](admin-dashboard-mockup.png)
+<img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/admin-dashboard-mockup.png" height="320" />
 
 ### Admin Study Mockup
-![Mockup of admin study page](admin-study-mockup.png)
+This screen presents the information about the selected study, and
+allows researchers to download all results from the participants in
+the study.
+
+<img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/admin-study-mockup.png" height="320" />
