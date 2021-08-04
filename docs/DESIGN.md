@@ -37,7 +37,9 @@ way to grant new researchers access. The admin page will display a
 list of all studies that have been uploaded to the system. The
 researchers will then be able to open any study, which will take
 them to a separate page where they can download the results
-from participants in the study.
+from participants in the study. These results will be formatted
+as a ZIP archive containing a folder with a CSV file for every
+participant.
 
 The admin page will also provide functionality for researchers to
 upload new studies, and update existing studies. This will be
@@ -61,6 +63,12 @@ information:
     flagging the post.
   - Changes to credibility for liking, disliking, sharing, or
     flagging the post.
+- Whether an exact order of sources and posts should be used.
+- The exact order of source/post pairs to display to the user.
+  These could either reference the sources and posts that were
+  included previously via some ID (e.g. row number), or else it
+  could include all of their properties directly
+  (e.g. source name, post headline, post image, etc...).
 
 
 # UI Design
@@ -77,3 +85,9 @@ mobile devices, and therefore it should follow a responsive design.
 
 ### Game Screen Mockup
 ![Mockup of game screen](game-mockup.png)
+
+### Admin Dashboard Mockup
+![Mockup of admin dashboard](admin-dashboard-mockup.png)
+
+### Admin Study Mockup
+![Mockup of admin study page](admin-study-mockup.png)
