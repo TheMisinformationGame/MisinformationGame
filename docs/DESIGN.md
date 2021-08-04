@@ -87,6 +87,10 @@ mobile devices, and therefore it should follow a responsive design.
 ![Mockup of game screen](game-mockup.png)
 
 ### Admin Dashboard Mockup
+
+This should probably also include a link to our GitHub documentation
+and a template Excel document for creating studies.
+
 ![Mockup of admin dashboard](admin-dashboard-mockup.png)
 
 ### Admin Study Mockup
