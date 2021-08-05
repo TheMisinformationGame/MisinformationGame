@@ -1,3 +1,13 @@
+# Remaining Unknowns
+
+1) Will we need to ask users for their age, gender, or any
+   other information?
+2) Should we keep track of the posts that users have already
+   seen to avoid showing them any posts twice?
+3) Do we need to show users any disclaimers or legal notices
+   related to using their data for research?
+
+
 # Overview
 
 The Misinformation Game will be built as a web app so that it can be
@@ -171,7 +181,8 @@ progress when they reload the tab.
 
 
 ### Reading Excel Spreadsheets
-The JavaScript library [ExcelJS](https://www.npmjs.com/package/exceljs)
+The JavaScript library
+[ExcelJS](https://www.npmjs.com/package/exceljs)
 can be used to read Excel spreadsheets from within the client's
 browser. I believe this will be a good approach for us to read
 the study spreadsheets, as it will allow us to perform validation
@@ -183,3 +194,11 @@ Additionally, it appears as though that library will support
 reading images from within cells. Therefore, we can also embed
 the avatar and post images directly into the spreadsheet which
 I think will be easier to use.
+
+
+### Testing
+We will need to write tests for our web app as part of this
+project. I think a good option for this will be to write
+integration tests. The [Selenium](https://www.selenium.dev/)
+library works well for automating these types of website
+tests. It would also be good to write some unit tests.
