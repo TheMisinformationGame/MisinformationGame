@@ -109,3 +109,77 @@ allows researchers to download all results from the participants in
 the study.
 
 <img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/admin-study-mockup.png" height="320" />
+
+
+# Technical Considerations
+
+This section outlines ideas and considerations for the
+implementation of the web app, and is subject to change
+during development.
+
+
+### Firebase
+The current plan is to use Firebase for the backend of our
+web app. This means that we will need to setup a firebase
+application, and sort out some way to get it hosted. To
+begin with we will definitely fall into the free tier of
+Firebase, but in the future a paid plan may be required.
+
+
+### Study URLs
+Each study should have their own URL that the researchers can
+share with participants for them to access. To achieve this,
+each study should be given a unique ID, and then the URLs can
+just include this ID.
+
+e.g. _game.firebaseapp.com/study?id=abcde123_ or
+_game.firebaseapp.com/study/abcde123_
+
+
+### Data Storage
+
+**Storing the studies:**
+
+To begin with, I think we will be able to get away with just
+uploading the whole study as a single object in the database.
+This way the client can just load the whole study at once
+and then never worry about loading data from the database
+again for the duration of the game.
+
+This is simple, however if the studies get large this may
+become too slow. In that case, we may have to split the
+sources and posts in the studies into their own
+sub-collections in Firestore, and then only load them as
+they are needed.
+
+
+**Storing the participant results:**
+
+I think it will be simplest if we construct the CSV for
+user's results on the client-side as they play the game.
+This CSV file could then be uploaded to the database every
+few posts that the user interacts with, replacing the
+previous CSV for their current session. This means that
+we will still save user's progress even if they randomly
+close their tab.
+
+It would also be really nice if we didn't lose participant's
+progress when they reloaded the game. This could be achieved
+by storing some ID for the sessions in the URL or session
+storage in the browser, and then downloading their current
+progress when they reload the tab.
+
+
+### Reading Excel Spreadsheets
+The JavaScript library [ExcelJS](https://www.npmjs.com/package/exceljs)
+can be used to read Excel spreadsheets from within the client's
+browser. I believe this will be a good approach for us to read
+the study spreadsheets, as it will allow us to perform validation
+of the spreadsheets before uploading them to Firebase. After
+parsing, the information for the study can then be uploaded
+to the database.
+
+Additionally, it appears as though that library will support
+reading images from within cells. Therefore, we can also embed
+the avatar and post images directly into the spreadsheet which
+I think will be easier to use.
