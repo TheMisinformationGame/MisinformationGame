@@ -6,6 +6,11 @@
    seen to avoid showing them any posts twice?
 3) Do we need to show users any disclaimers or legal notices
    related to using their data for research?
+4) We currently have two methods of source selection. Completely
+   random, or defined beforehand. Is this enough flexibility, or
+   will more options be required? We could add an option to give
+   each source a weight so that some sources are selected more
+   than others.
 
 
 # Overview
