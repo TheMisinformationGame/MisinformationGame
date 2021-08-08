@@ -1,12 +1,8 @@
 # Remaining Unknowns
 
-1) Will we need to ask users for their age, gender, or any
-   other information?
-2) Should we keep track of the posts that users have already
-   seen to avoid showing them any posts twice?
-3) Do we need to show users any disclaimers or legal notices
+1) Do we need to show users any disclaimers or legal notices
    related to using their data for research?
-4) We currently have two methods of source selection. Completely
+2) We currently have two methods of source selection. Completely
    random, or defined beforehand. Is this enough flexibility, or
    will more options be required? We could add an option to give
    each source a weight so that some sources are selected more
@@ -28,9 +24,11 @@ credibility, whereas sharing false posts may grow the users
 followers very quickly, but reduce their credibility. The changes to
 user's followers and credibility when they like, share, dislike, or
 flag each post can be controlled by the researchers. Similarly, the
-sources of each social media post will be randomised, and thei
+sources of each social media post will be randomised, and their
 followers and credibility rating will also be changed throughout
-the experiment.
+the experiment. The posts that users have already seen will be
+tracked throughout the experiment so that users are not shown
+the same posts more than once.
 
 Every game that is played by users is independent, and therefore users
 interactions with the game will not affect one another. As users play
@@ -92,6 +90,13 @@ The web app must be designed to be accessible from both desktop and
 mobile devices, and therefore it should follow a responsive design.
 
 
+### Optional User Identification Screen Mockup
+This screen allows users to identify themselves by entering an
+identification number that will be saved in their results CSV.
+This page can be enabled or disabled for each study.
+
+<img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/user-identification-mockup.png" height="320" />
+
 ### Help / Introduction Screen Mockup
 This screen is used to introduce the study, and teach users how to
 participate and interact with the game.
@@ -132,6 +137,17 @@ This section outlines ideas and considerations for the
 implementation of the web app, and is subject to change
 during development.
 
+### Languages and Frameworks
+We will use the languages most standard for building websites
+today. This includes JavaScript, HTML, and CSS. Due to the
+simplicity of the web app, we will not include any large
+UI frameworks to begin with. This is because we do not have
+any team members with experience with any of these frameworks
+(e.g. react). Therefore, we do not know if their inclusion
+will be worth the time we would all have to spend learning
+them. Instead, we will begin the project using vanilla
+JavaScript, and only adopt a framework later if we find
+that one would give us a lot of benefit.
 
 ### Firebase
 The current plan is to use Firebase for the backend of our
@@ -139,7 +155,6 @@ web app. This means that we will need to setup a firebase
 application, and sort out some way to get it hosted. To
 begin with we will definitely fall into the free tier of
 Firebase, but in the future a paid plan may be required.
-
 
 ### Study URLs
 Each study should have their own URL that the researchers can
@@ -149,7 +164,6 @@ just include this ID.
 
 e.g. _game.firebaseapp.com/study?id=abcde123_ or
 _game.firebaseapp.com/study/abcde123_
-
 
 ### Data Storage
 
@@ -184,7 +198,6 @@ by storing some ID for the sessions in the URL or session
 storage in the browser, and then downloading their current
 progress when they reload the tab.
 
-
 ### Reading Excel Spreadsheets
 The JavaScript library
 [ExcelJS](https://www.npmjs.com/package/exceljs)
@@ -199,7 +212,6 @@ Additionally, it appears as though that library will support
 reading images from within cells. Therefore, we can also embed
 the avatar and post images directly into the spreadsheet which
 I think will be easier to use.
-
 
 ### Testing
 We will need to write tests for our web app as part of this
