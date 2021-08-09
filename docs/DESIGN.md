@@ -189,12 +189,16 @@ them. Instead, we will begin the project using vanilla
 JavaScript, and only adopt a framework later if we find
 that one would give us a lot of benefit.
 
+-----
+
 ### Firebase
 The current plan is to use Firebase for the backend of our
 web app. This means that we will need to setup a firebase
 application, and sort out some way to get it hosted. To
 begin with we will definitely fall into the free tier of
 Firebase, but in the future a paid plan may be required.
+
+-----
 
 ### Study URLs
 Each study should have their own URL that the researchers can
@@ -204,6 +208,8 @@ just include this ID.
 
 e.g. _game.firebaseapp.com/study?id=abcde123_ or
 _game.firebaseapp.com/study/abcde123_
+
+-----
 
 ### Data Storage
 
@@ -238,6 +244,8 @@ by storing some ID for the sessions in the URL or session
 storage in the browser, and then downloading their current
 progress when they reload the tab.
 
+-----
+
 ### Reading Excel Spreadsheets
 The JavaScript library
 [ExcelJS](https://www.npmjs.com/package/exceljs)
@@ -252,6 +260,8 @@ Additionally, it appears as though that library will support
 reading images from within cells. Therefore, we can also embed
 the avatar and post images directly into the spreadsheet which
 I think will be easier to use.
+
+-----
 
 ### Testing
 We will need to write tests for our web app as part of this
