@@ -1,15 +1,4 @@
-# Remaining Unknowns
-
-1) Do we need to show users any disclaimers or legal notices
-   related to using their data for research?
-2) We currently have two methods of source selection. Completely
-   random, or defined beforehand. Is this enough flexibility, or
-   will more options be required? We could add an option to give
-   each source a weight so that some sources are selected more
-   than others.
-
-
-# Overview
+# 🎮 Gameplay
 
 The Misinformation Game will be built as a web app so that it can be
 accessed from desktop and mobile devices. Users will access a game URL
@@ -30,6 +19,8 @@ the experiment. The posts that users have already seen will be
 tracked throughout the experiment so that users are not shown
 the same posts more than once.
 
+# 📊 Results
+
 Every game that is played by users is independent, and therefore users
 interactions with the game will not affect one another. As users play
 the game, their progress will be saved so that it can be later
@@ -43,6 +34,8 @@ shown:
 - The current followers and credibility rating of the user before
   they interacted with the post.
 
+# 📋 Admin Interface
+
 The researchers will access these CSV files through an admin
 interface. There will need to be a method of authenticating
 researchers to restrict access to the admin page, and another
@@ -54,6 +47,8 @@ from participants in the study. These results will be formatted
 as a ZIP archive containing a folder with a CSV file for every
 participant.
 
+# ✏️ Editing and Creating Studies
+
 The admin page will also provide functionality for researchers to
 upload new studies, and update existing studies. This will be
 achieved through an Excel template that researchers can edit with
@@ -64,27 +59,62 @@ information:
 - A description for the study.
 - The prompt that the user will be shown before they start the game.
 - The sources to be included in the game, including:
+  - Unique source ID.
   - Name.
   - Avatar Image.
-  - Ratio of true and false posts.
+  - Ratio of true:false posts.
   - Initial followers mean and std. deviation.
   - Initial credibility rating mean and std. deviation.
+  - Maximum number of posts to display using this source.
 - The posts to be included in the game, including:
+  - Unique post ID.
   - Headline.
-  - Content image or text.
+  - Content image _or_ text.
   - Changes to followers for liking, disliking, sharing, or
     flagging the post.
   - Changes to credibility for liking, disliking, sharing, or
     flagging the post.
+  - Three optional comments, including their:
+    - Source ID.
+    - Comment text.
+    - Number of likes.
 - Whether an exact order of sources and posts should be used.
-- The exact order of source/post pairs to display to the user.
-  These could either reference the sources and posts that were
-  included previously via some ID (e.g. row number), or else it
-  could include all of their properties directly
-  (e.g. source name, post headline, post image, etc...).
+- The exact order of source/post pairs to display to the user,
+  defined by a list of pairs of source and post IDs.
 
 
-# UI Design
+# 🧮 Post and Source Sampling Mechanics
+The application will be designed to allow a lot of flexibility in
+setting up the sampling of source/post pairs.
+
+Sources may be given a pre-defined maximum number of posts to
+be paired with. Once a source has been displayed this many times,
+it will not be sampled to be displayed again. These maximums
+will also be used to determine the weight of each source for
+selection, so that sources with a high max number of posts
+will be selected more often.
+
+### Method 1: Pre-defined source/post pairs.
+The most simple of the sampling method is pre-defined pairs.
+This sampling method will read from a list of source/post pairs
+in order, with no randomness.
+
+### Method 2: Random source/post selection.
+Random source/post selection will first randomly select
+a source, and then the post. After the source is selected,
+the source's true:false ratio will be used to randomly select
+a post to pair the source with.
+
+If a source is not given a true:false ratio, then its credibility
+rating should be used instead.
+
+### Method 3: Overall true:false ratio source/post selection.
+This method will select both its source and post randomly,
+with posts selected to match an overall true:false ratio of
+posts shown to the user.
+
+
+# 🎨 UI Design
 
 The web app must be designed to be accessible from both desktop and
 mobile devices, and therefore it should follow a responsive design.
@@ -131,7 +161,7 @@ the study.
 <img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/admin-study-mockup.png" height="320" />
 
 
-# Technical Considerations
+# 🖥️ Technical Considerations
 
 This section outlines ideas and considerations for the
 implementation of the web app, and is subject to change
