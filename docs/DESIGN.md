@@ -1,3 +1,13 @@
+# Table of contents
+
+- [🎮 Gameplay](#-gameplay)
+- [📊 Results](#-results)
+- [📋 Admin Interface](#-admin-interface)
+- [✏️ Editing and Creating Studies](#-editing-and-creating-studies)
+- [🧮 Post and Source Sampling Mechanics](#-post-and-source-sampling-mechanics)
+- [🎨 UI Design](#-ui-design)
+- [🖥️ Technical Considerations](#-technical-considerations)
+
 # 🎮 Gameplay
 
 The Misinformation Game will be built as a web app so that it can be
