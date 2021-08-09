@@ -68,6 +68,10 @@ information:
 - A name for the study.
 - A description for the study.
 - The prompt that the user will be shown before they start the game.
+- An overall true:false post ratio to use for post selection instead
+  of source-specific ratios.
+- The linear bias and slope to relate source's credibility rating to
+  a true:false post ratio when one is not supplied.
 - The sources to be included in the game, including:
   - Unique source ID.
   - Name.
@@ -109,16 +113,19 @@ The most simple of the sampling method is pre-defined pairs.
 This sampling method will read from a list of source/post pairs
 in order, with no randomness.
 
-### Method 2: Random source/post selection.
-Random source/post selection will first randomly select
-a source, and then the post. After the source is selected,
-the source's true:false ratio will be used to randomly select
-a post to pair the source with.
+### Method 2: Random source/post selection based on source ratios.
+First, a random source will be selected. The true:false ratio of
+this source will then be used to randomly select a post to pair
+the source with.
 
-If a source is not given a true:false ratio, then its credibility
-rating should be used instead.
+### Method 3: Random source/post selection based on credibility.
+First, a random source will be selected. The true:false ratio to
+use to select the post will then be calculated using the linear
+relationship defined in the spreadsheet. This true:false ratio
+will then be used to randomly select a post to pair the source
+with.
 
-### Method 3: Overall true:false ratio source/post selection.
+### Method 4: Overall true:false ratio source/post selection.
 This method will select both its source and post randomly,
 with posts selected to match an overall true:false ratio of
 posts shown to the user.
