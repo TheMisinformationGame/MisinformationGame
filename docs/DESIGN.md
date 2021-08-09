@@ -3,10 +3,10 @@
 - [🎮 Gameplay](#-gameplay)
 - [📊 Results](#-results)
 - [📋 Admin Interface](#-admin-interface)
-- [✏️ Editing and Creating Studies](#-editing-and-creating-studies)
+- [✏️ Editing and Creating Studies](#%EF%B8%8F-editing-and-creating-studies)
 - [🧮 Post and Source Sampling Mechanics](#-post-and-source-sampling-mechanics)
 - [🎨 UI Design](#-ui-design)
-- [🖥️ Technical Considerations](#-technical-considerations)
+- [🖥️ Technical Considerations](#%EF%B8%8F-technical-considerations)
 
 # 🎮 Gameplay
 
