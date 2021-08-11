@@ -84,6 +84,7 @@ information:
   - Unique post ID.
   - Headline.
   - Content image _or_ text.
+  - Whether the post is true or false.
   - Changes to followers for liking, disliking, sharing, or
     flagging the post.
   - Changes to credibility for liking, disliking, sharing, or
@@ -170,7 +171,7 @@ information about each study.
 
 <img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/admin-dashboard-mockup.png" height="320" />
 
-### Admin Study Mockup
+### Admin Study Screen Mockup
 This screen presents the information about the selected study, and
 allows researchers to download all results from the participants in
 the study.
