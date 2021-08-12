@@ -7,3 +7,10 @@ Assoc/Prof Ullrich Ecker.
 
 You can read more about the design of this project in
 [docs/DESIGN.md](docs/DESIGN.md).
+
+# System Architecture
+
+The following diagram gives an overview of our system architecture
+by displaying the data flows through the application.
+
+![Data Flows](docs/data-flows.png)
