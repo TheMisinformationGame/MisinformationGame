@@ -2,6 +2,7 @@
 
 - [🎮 Gameplay](#-gameplay)
 - [📊 Results](#-results)
+- [🧑 Participant Identification](#-participant-identification)
 - [📋 Admin Interface](#-admin-interface)
 - [✏️ Editing and Creating Studies](#%EF%B8%8F-editing-and-creating-studies)
 - [🧮 Post and Source Sampling Mechanics](#-post-and-source-sampling-mechanics)
@@ -43,6 +44,22 @@ shown:
 - The current followers and credibility rating of the source.
 - The current followers and credibility rating of the user before
   they interacted with the post.
+
+# 🧑 Participant Identification
+
+Researchers will be able to optionally enable a screen where
+participants can enter an ID to identify themselves. This ID
+will have no internal validation to check that it is valid,
+and no authentication will be done to ensure the participant
+entered their own ID. Therefore, participants could enter
+an incorrect ID, and it will still be passed through to the
+results. However, the hope is that participants will enter
+their correct ID, so that later researchers can match their
+results to them. To help with this, a mechanism will be
+added so that the participant's IDs can be included in the
+URL that they are sent to open. This will help to avoid
+error by identifying users without them needing to enter
+their ID manually.
 
 # 📋 Admin Interface
 
