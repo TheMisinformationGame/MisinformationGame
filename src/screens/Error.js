@@ -4,25 +4,17 @@ import logo from "../logo.svg";
 // instead of plain CSS where possible.
 import "../App.css"
 
-function Game() {
+function Error() {
     return (
         <div className="App">
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
                 <p>
-                    Edit <code>src/screens/Game.js</code> and save to reload.
+                    You have stumbled across a missing page...
                 </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
             </header>
         </div>
     );
 }
 
-export default Game;
+export default Error;

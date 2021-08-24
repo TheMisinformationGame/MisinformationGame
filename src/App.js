@@ -5,25 +5,32 @@
 
 import logo from './logo.svg';
 import './App.css';
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+
+import Home from "./screens/Home"
+import AdminHome from "./screens/AdminHome"
+import AdminStudy from "./screens/AdminStudy"
+import Game from "./screens/Game"
+import GameIdentification from "./screens/GameIdentification"
+import GameIntroduction from "./screens/GameIntroduction"
+import GamePrompt from "./screens/GamePrompt"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+        <div>
+            <Switch>
+                <Route path="/" component={Home} />
+                <Route path="/admin" component={AdminHome} />
+                <Route path="/admin_study" component={AdminStudy} />
+                <Route path="/game" component={Game} />
+                <Route path="/game_id" component={GameIdentification} />
+                <Route path="/game_intro" component={GameIntroduction} />
+                <Route path="/game_prompt" component={GamePrompt} />
+                <Route component={Error} />
+            </Switch>
+        </div>
+    </BrowserRouter>
   );
 }
 

@@ -1,8 +1,3 @@
-/*
- * This file has nothing to do with the misinformation game,
- * but I've left it in here as an example. -Paddy L.
- */
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
