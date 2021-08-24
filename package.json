@@ -47,5 +47,8 @@
     "firebase-tools": "^9.16.5",
     "postcss": "^7.0.36",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
   }
 }
