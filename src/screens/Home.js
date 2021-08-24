@@ -1,3 +1,4 @@
+import React from "react";
 import logo from "../logo.svg";
 import { NavLink } from 'react-router-dom';
 
@@ -5,13 +6,15 @@ import { NavLink } from 'react-router-dom';
 // instead of plain CSS where possible.
 import "../App.css"
 
-function Link(props) {
-    return (
-        <NavLink className={`${props.className} px-4 py-2 m-0.5 hover:bg-blue-400 rounded font-sans text-white text-lg`}
-                 to={props.to}>
-            {props.name}
-        </NavLink>
-    );
+class Link extends React.Component {
+    render() {
+        return (
+            <NavLink className={`px-4 py-2 m-0.5 hover:bg-blue-400 rounded font-sans text-white text-lg ${this.props.className}`}
+                     to={this.props.to}>
+                {this.props.name}
+            </NavLink>
+        );
+    }
 }
 
 function Home() {

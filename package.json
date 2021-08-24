@@ -20,6 +20,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
+    "deploy": "craco build && firebase deploy",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^9.8.6",
+    "firebase-tools": "^9.16.5",
     "postcss": "^7.0.36",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
   }
