@@ -19,8 +19,8 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "INLINE_RUNTIME_CHUNK=false craco build",
-    "deploy": "craco build && firebase deploy",
+    "build": "CI=false INLINE_RUNTIME_CHUNK=false craco build",
+    "deploy": "CI=false craco build && firebase deploy",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
