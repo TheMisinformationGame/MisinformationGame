@@ -10,6 +10,7 @@ import Game from "./screens/Game";
 import GameIdentification from "./screens/GameIdentification";
 import GameIntroduction from "./screens/GameIntroduction";
 import GamePrompt from "./screens/GamePrompt";
+import ErrorScreen from "./screens/Error"
 
 ReactDOM.render(
   <React.StrictMode>
@@ -22,7 +23,7 @@ ReactDOM.render(
               <Route path="/game_id" component={GameIdentification} />
               <Route path="/game_intro" component={GameIntroduction} />
               <Route path="/game_prompt" component={GamePrompt} />
-              <Route component={Error} />
+              <Route component={ErrorScreen} />
           </Switch>
       </BrowserRouter>
   </React.StrictMode>,
