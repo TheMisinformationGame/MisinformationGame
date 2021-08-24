@@ -1,7 +1,6 @@
 /.idea
 .DS_Store
 Booked_Hours_PaddyLamont.xls
-package-lock.json
 
 # dependencies
 /node_modules
@@ -33,7 +32,6 @@ yarn-error.log*
 lerna-debug.log
 *~
 service-account-credentials.json
-**/package-lock.json
 **/ui-debug.log
 **/database-debug.log
 **/firebase-debug.log
