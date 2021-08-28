@@ -32,15 +32,6 @@ class TruncatedNormalDistribution {
         this.min = min;
         this.max = max;
     }
-
-    toJSON() {
-        return {
-            mean: this.mean,
-            stdDeviation: this.stdDeviation,
-            min: this.min,
-            max: this.max
-        };
-    }
 }
 
 class Avatar {
@@ -61,11 +52,6 @@ class Avatar {
             new Blob([this.buffer.buffer], { type: this.type })
         );
         return image;
-    }
-
-    toJSON() {
-        // TODO : Should we store the image buffer as base 64 text?
-        throw new Error("Cannot convert Avatar to JSON");
     }
 
     static fromExcelImage(excelImage) {
@@ -95,17 +81,6 @@ class Source {
         this.maxPosts = maxPosts;
         this.followers = followers;
         this.credibility = credibility;
-    }
-
-    toJSON() {
-        return {
-            id: this.id,
-            name: this.name,
-            avatar: this.avatar.toJSON(),
-            maxPosts: this.maxPosts,
-            followers: this.followers.toJSON(),
-            credibility: this.credibility.toJSON()
-        };
     }
 }
 
