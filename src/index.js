@@ -11,6 +11,7 @@ import GameIdentification from "./screens/GameIdentification";
 import GameIntroduction from "./screens/GameIntroduction";
 import GamePrompt from "./screens/GamePrompt";
 import ErrorScreen from "./screens/Error"
+import StudyUpload from "./components/StudyUpload";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,6 +20,7 @@ ReactDOM.render(
               <Route exact path="/" component={Home} />
               <Route path="/admin" component={AdminHome} />
               <Route path="/admin_study" component={AdminStudy} />
+              <Route path="/study_upload" component={StudyUpload} />
               <Route path="/game" component={Game} />
               <Route path="/game_id" component={GameIdentification} />
               <Route path="/game_intro" component={GameIntroduction} />
