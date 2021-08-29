@@ -39,6 +39,6 @@ export function doNonNullCheck(value) {
 export function doTypeCheck(value, expectedType) {
     doNonNullCheck(value);
     if (!isOfType(value, expectedType)) {
-        throw Error("Expected " + value + " to match type " + expectedType);
+        throw Error("Expected " + JSON.stringify(value) + " to match type " + expectedType);
     }
 }

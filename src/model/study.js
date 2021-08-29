@@ -1,42 +1,11 @@
 import {doTypeCheck} from "../utils/types";
-import {randNormal} from "../utils/normalDistribution";
+import {SourcePostSelectionMethod} from "./selectionMethod";
+import {TruncatedNormalDistribution} from "./math";
 
 
 /**
- * Represents a gaussian distribution that is truncated
- * so that no values are generated outside of the range
- * [min, max].
+ * Represents an image such as a post or an avatar.
  */
-export class TruncatedNormalDistribution {
-    mean; // Number
-    stdDeviation; // Number
-    min; // Number
-    max; // Number
-
-    constructor(mean, stdDeviation, min, max) {
-        doTypeCheck(mean, "number");
-        doTypeCheck(stdDeviation, "number");
-        doTypeCheck(min, "number");
-        doTypeCheck(max, "number");
-
-        this.mean = mean;
-        this.stdDeviation = stdDeviation;
-        this.min = min;
-        this.max = max;
-    }
-
-    /**
-     * Randomly samples this distribution.
-     */
-    sample() {
-        let value;
-        do {
-            value = this.mean + randNormal() * this.stdDeviation;
-        } while (value < this.min || value > this.max);
-        return value;
-    }
-}
-
 export class StudyImage {
     buffer; // Uint8Array
     type; // String
@@ -62,6 +31,9 @@ export class StudyImage {
     }
 }
 
+/**
+ * A source that can be used for posts or comments.
+ */
 export class Source {
     id; // String
     name; // String
@@ -69,14 +41,18 @@ export class Source {
     maxPosts; // Number
     followers; // TruncatedNormalDistribution
     credibility; // TruncatedNormalDistribution
+    truePostPercentage; // null or Number
 
-    constructor(id, name, avatar, maxPosts, followers, credibility) {
+    constructor(id, name, avatar, maxPosts, followers, credibility, truePostPercentage) {
         doTypeCheck(id, "string");
         doTypeCheck(name, "string");
         doTypeCheck(avatar, StudyImage);
         doTypeCheck(maxPosts, "number");
         doTypeCheck(followers, TruncatedNormalDistribution);
         doTypeCheck(credibility, TruncatedNormalDistribution);
+        if (truePostPercentage !== null) {
+            doTypeCheck(truePostPercentage, "number");
+        }
 
         this.id = id;
         this.name = name;
@@ -84,9 +60,84 @@ export class Source {
         this.maxPosts = maxPosts;
         this.followers = followers;
         this.credibility = credibility;
+        this.truePostPercentage = truePostPercentage;
     }
 }
 
+/**
+ * A comment that a source made on a post.
+ */
+export class PostComment {
+    sourceID; // String
+    message; // String
+    likes; // Number
+
+    constructor(sourceID, message, likes) {
+        doTypeCheck(sourceID, "string");
+        doTypeCheck(message, "string");
+        doTypeCheck(likes, "number");
+
+        this.sourceID = sourceID;
+        this.message = message;
+        this.likes = likes;
+    }
+}
+
+/**
+ * Holds a number for every possible reaction to a post.
+ */
+export class ReactionValues {
+    like; // Number
+    dislike; // Number
+    share; // Number
+    flag; // Number
+
+    constructor(like, dislike, share, flag) {
+        doTypeCheck(like, "number");
+        doTypeCheck(dislike, "number");
+        doTypeCheck(share, "number");
+        doTypeCheck(flag, "number");
+
+        this.like = like;
+        this.dislike = dislike;
+        this.share = share;
+        this.flag = flag;
+    }
+}
+
+/**
+ * Holds the contents of a post.
+ */
+export class Post {
+    id; // String
+    headline; // String
+    content; // StudyImage or String
+    isTrue; // Boolean
+    changesToFollowers; // ReactionValues
+    changesToCredibility; // ReactionValues
+    comments; // PostComment[]
+
+    constructor(id, headline, content, isTrue, changesToFollowers, changesToCredibility, comments) {
+        doTypeCheck(id, "string");
+        doTypeCheck(headline, "string");
+        doTypeCheck(content, [StudyImage, "string"]);
+        doTypeCheck(isTrue, "boolean");
+        doTypeCheck(changesToFollowers, ReactionValues);
+        doTypeCheck(changesToCredibility, ReactionValues);
+        doTypeCheck(comments, Array);
+
+        this.id = id;
+        this.headline = headline;
+        this.content = content;
+        this.isTrue = isTrue;
+        this.changesToFollowers = changesToFollowers;
+        this.changesToCredibility = changesToCredibility;
+    }
+}
+
+/**
+ * Holds the entire specification of a study.
+ */
 export class Study {
     name; // String
     description; // String
@@ -96,10 +147,15 @@ export class Study {
     debrief; // String
     genCompletionCode; // Boolean
     maxCompletionCode; // Number
+    sourcePostSelectionMethod; // SourcePostSelectionMethod
     sources; // Source[]
+    posts; // Post[]
 
-    constructor(name, description, introduction, prompt, length, debrief,
-                genCompletionCode, maxCompletionCode) {
+    constructor(name, description, introduction,
+                prompt, length, debrief,
+                genCompletionCode, maxCompletionCode,
+                sourcePostSelectionMethod,
+                sources, posts) {
 
         doTypeCheck(name, "string");
         doTypeCheck(description, "string");
@@ -109,6 +165,9 @@ export class Study {
         doTypeCheck(debrief, "string");
         doTypeCheck(genCompletionCode, "boolean");
         doTypeCheck(maxCompletionCode, "number");
+        doTypeCheck(sourcePostSelectionMethod, SourcePostSelectionMethod);
+        doTypeCheck(sources, Array);
+        doTypeCheck(posts, Array);
 
         this.name = name;
         this.description = description;
@@ -118,11 +177,8 @@ export class Study {
         this.debrief = debrief;
         this.genCompletionCode = genCompletionCode;
         this.maxCompletionCode = maxCompletionCode;
-        this.sources = [];
-    }
-
-    addSource(source) {
-        doTypeCheck(source, Source);
-        this.sources.push(source);
+        this.sourcePostSelectionMethod = sourcePostSelectionMethod;
+        this.sources = sources;
+        this.posts = posts;
     }
 }

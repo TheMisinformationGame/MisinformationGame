@@ -44,6 +44,8 @@ export class ExcelType {
                 return "a number";
             case Excel.ValueType.Boolean:
                 return "a boolean";
+            case Excel.ValueType.Null:
+                return "nothing";
             default:
                 return "an unknown type (" + exceljsType + ")";
         }
@@ -106,10 +108,29 @@ class ExcelImageType extends ExcelType {
     }
 }
 
+class ExcelTextOrImageType extends ExcelType {
+    imageType = new ExcelImageType();
+    textType = new ExcelStringType();
+
+    constructor() {
+        super(Excel.ValueType.Null, "text or an image");
+    }
+
+    readCellValue(cell) {
+        const image = this.imageType.readCellValue(cell);
+        if (image !== undefined)
+            return image;
+
+        return this.textType.readCellValue(cell);
+    }
+}
+
 export const ExcelString = new ExcelStringType();
 export const ExcelNumber = new ExcelType(Excel.ValueType.Number, "a number");
+export const ExcelPercentage = new ExcelType(Excel.ValueType.Number, "a percentage");
 export const ExcelBoolean = new ExcelBooleanType();
 export const ExcelImage = new ExcelImageType();
+export const ExcelTextOrImage = new ExcelTextOrImageType();
 
 
 export class WorkbookLoc {
@@ -160,21 +181,52 @@ export class WorkbookColumn {
 }
 
 
-export class CellTypeError extends Error {}
-
-export function isCellBlank(workbook, loc) {
-    const cell = workbook.getWorksheet(loc.worksheet).getCell(loc.cell);
+function isCellAtAddressBlank(workbook, worksheet, address) {
+    const cell = workbook.getWorksheet(worksheet).getCell(address);
     // This also returns true for cells that contain images, but oh well...
-    return cell.type === Excel.ValueType.Null;
+    return cell.type === Excel.ValueType.Null || cell.type === Excel.ValueType.Merge;
 }
 
+
+/**
+ * An error that is thrown when the value in a cell does
+ * not match the type of value that is expected.
+ */
+export class CellTypeError extends Error {}
+
+/**
+ * Returns whether the cell at the given WorkbookLoc is blank.
+ */
+export function isCellBlank(workbook, loc) {
+    return isCellAtAddressBlank(workbook, loc.worksheet, loc.address);
+}
+
+/**
+ * Returns whether all the cells in the given range of cells is blank.
+ * The range is specified as the intersection of the given rows and columns.
+ */
+export function areCellsBlank(workbook, worksheet, columns, rows) {
+    for (let colIndex = 0; colIndex < columns.length; ++colIndex) {
+        for (let rowIndex = 0; rowIndex < rows.length; ++rowIndex) {
+            const address = columns[colIndex] + rows[rowIndex];
+            if (!isCellAtAddressBlank(workbook, worksheet, address))
+                return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * Reads the value of the cell at the given location.
+ * If the value is missing or not of the expected type,
+ * then an error will be thrown.
+ */
 export function readCell(workbook, loc) {
+    doTypeCheck(loc, WorkbookLoc);
+
     const cell = workbook.getWorksheet(loc.worksheet).getCell(loc.cell);
     const value = loc.type.readCellValue(cell);
     if (value === undefined) {
-        console.log(cell.type);
-        console.log(cell.value);
-        console.log(cell);
         throw new CellTypeError(
             "Expected " + loc.address + " (" + loc.name + ") to contain " + loc.type.name +
             ", but instead it contained " + ExcelType.getExcelJSTypeName(cell.type)
