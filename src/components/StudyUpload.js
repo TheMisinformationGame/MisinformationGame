@@ -1,22 +1,17 @@
 import "../index.css"
 import {Component} from "react";
-import {readStudyWorkbook} from "../utils/study";
+import {readStudyWorkbook} from "../model/studyWorkbookReader";
 
 const Excel = require('exceljs');
 
 
 class StudyUploadField extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     onChange(event) {
         let input = event.target;
         let file = input.files[0];
 
         if(file) {
             let reader = new FileReader();
-
             reader.onload = (event) => {
                 new Excel.Workbook().xlsx
                     .load(event.target.result)
@@ -25,7 +20,6 @@ class StudyUploadField extends Component {
                         console.log(window.lastStudy);
                     });
             };
-
             reader.readAsArrayBuffer(file);
         }
     }

@@ -1,128 +1,13 @@
-import {doTypeCheck} from "./types";
+import {Source, Study, StudyImage, TruncatedNormalDistribution} from "./study"
 import {
-    readCell,
-    WorkbookLoc,
-    ExcelString,
-    ExcelNumber,
     ExcelBoolean,
-    WorkbookColumn,
     ExcelImage,
-    isCellBlank
-} from "./excel";
-
-
-/**
- * This file contains the specification for a
- * study in a JSON formatted object.
- */
-class TruncatedNormalDistribution {
-    mean; // Number
-    stdDeviation; // Number
-    min; // Number
-    max; // Number
-
-    constructor(mean, stdDeviation, min, max) {
-        doTypeCheck(mean, "number");
-        doTypeCheck(stdDeviation, "number");
-        doTypeCheck(min, "number");
-        doTypeCheck(max, "number");
-
-        this.mean = mean;
-        this.stdDeviation = stdDeviation;
-        this.min = min;
-        this.max = max;
-    }
-}
-
-class Avatar {
-    buffer; // Uint8Array
-    type; // String
-
-    constructor(buffer, type) {
-        doTypeCheck(buffer, Uint8Array);
-        doTypeCheck(type, "string");
-
-        this.buffer = buffer;
-        this.type = type;
-    }
-
-    createImage() {
-        const image = new Image();
-        image.src = URL.createObjectURL(
-            new Blob([this.buffer.buffer], { type: this.type })
-        );
-        return image;
-    }
-
-    static fromExcelImage(excelImage) {
-        return new Avatar(excelImage.buffer, "image/" + excelImage.extension);
-    }
-}
-
-class Source {
-    id; // String
-    name; // String
-    avatar; // Avatar
-    maxPosts; // Number
-    followers; // TruncatedNormalDistribution
-    credibility; // TruncatedNormalDistribution
-
-    constructor(id, name, avatar, maxPosts, followers, credibility) {
-        doTypeCheck(id, "string");
-        doTypeCheck(name, "string");
-        doTypeCheck(avatar, Avatar);
-        doTypeCheck(maxPosts, "number");
-        doTypeCheck(followers, TruncatedNormalDistribution);
-        doTypeCheck(credibility, TruncatedNormalDistribution);
-
-        this.id = id;
-        this.name = name;
-        this.avatar = avatar;
-        this.maxPosts = maxPosts;
-        this.followers = followers;
-        this.credibility = credibility;
-    }
-}
-
-class Study {
-    name; // String
-    description; // String
-    introduction; // String
-    prompt; // String
-    length; // Number
-    debrief; // String
-    genCompletionCode; // Boolean
-    maxCompletionCode; // Number
-    sources; // Source[]
-
-    constructor(name, description, introduction, prompt, length, debrief,
-                genCompletionCode, maxCompletionCode) {
-
-        doTypeCheck(name, "string");
-        doTypeCheck(description, "string");
-        doTypeCheck(introduction, "string");
-        doTypeCheck(prompt, "string");
-        doTypeCheck(length, "number");
-        doTypeCheck(debrief, "string");
-        doTypeCheck(genCompletionCode, "boolean");
-        doTypeCheck(maxCompletionCode, "number");
-
-        this.name = name;
-        this.description = description;
-        this.introduction = introduction;
-        this.prompt = prompt;
-        this.length = length;
-        this.debrief = debrief;
-        this.genCompletionCode = genCompletionCode;
-        this.maxCompletionCode = maxCompletionCode;
-        this.sources = [];
-    }
-
-    addSource(source) {
-        doTypeCheck(source, Source);
-        this.sources.push(source);
-    }
-}
+    ExcelNumber,
+    ExcelString, isCellBlank,
+    readCell,
+    WorkbookColumn,
+    WorkbookLoc
+} from "../utils/excel";
 
 
 const versionCell = new WorkbookLoc("Version", "About", "M2", ExcelNumber);
@@ -196,7 +81,7 @@ function readStudyWorkbookV1(workbook) {
         study.addSource(new Source(
             readCell(workbook, Version1.source.id.row(row)) ,
             readCell(workbook, Version1.source.name.row(row)),
-            Avatar.fromExcelImage(readCell(workbook, Version1.source.avatar.row(row))),
+            StudyImage.fromExcelImage(readCell(workbook, Version1.source.avatar.row(row))),
             readCell(workbook, Version1.source.maxPosts.row(row)),
             followers, credibility
         ));
@@ -210,6 +95,6 @@ export function readStudyWorkbook(workbook) {
     if (version === 1) {
         return readStudyWorkbookV1(workbook);
     } else {
-        throw new Error("Unknown version ")
+        throw new Error("Unknown version " + version);
     }
 }
