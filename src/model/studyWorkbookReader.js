@@ -19,7 +19,7 @@ import {LinearFunction, TruncatedNormalDistribution} from "./math";
 
 
 const versionCell = new WorkbookLoc("Version", "About", "M2", ExcelNumber);
-const Version1 = {
+const V1 = {
     name: new WorkbookLoc("Name", "General", "D4", ExcelString),
     description: new WorkbookLoc("Description", "General", "D5", ExcelString),
     introduction: new WorkbookLoc("Introduction", "General", "D6", ExcelString),
@@ -98,27 +98,52 @@ const Version1 = {
             message: new WorkbookColumn("Comment Message", "Posts", "P", ExcelString),
             likes: new WorkbookColumn("Comment Likes", "Posts", "Q", ExcelNumber)
         }
+    },
+
+    predefinedOrder: {
+        worksheet: "Pre-Defined Source & Post Order",
+        firstRow: 9,
+        lastRow: 999,
+        valueColumns: "CD",
+        sourceID: new WorkbookColumn("Source ID", "Pre-Defined Source & Post Order", "C", ExcelString),
+        postID: new WorkbookColumn("Post ID", "Pre-Defined Source & Post Order", "D", ExcelString)
     }
 }
 
+function readV1PredefinedSourcePostOrder(workbook) {
+    const order = [];
+    for (let row = V1.predefinedOrder.firstRow; row <= V1.predefinedOrder.lastRow; ++row) {
+        // Skip blank rows.
+        if (areCellsBlank(workbook, V1.predefinedOrder.worksheet, V1.predefinedOrder.valueColumns, [row]))
+            continue;
+
+        order.push([
+            readCell(workbook, V1.predefinedOrder.sourceID.row(row)),
+            readCell(workbook, V1.predefinedOrder.postID.row(row))
+        ]);
+    }
+    return order;
+}
+
 function readV1SourcePostSelectionMethod(workbook) {
-    const method = readCell(workbook, Version1.sourcePostSelection.method);
+    const method = readCell(workbook, V1.sourcePostSelection.method);
     if (method === "Overall-Ratio") {
         return new OverallRatioSelectionMethod(
-            readCell(workbook, Version1.sourcePostSelection.overallRatio.truePostPercentage)
+            readCell(workbook, V1.sourcePostSelection.overallRatio.truePostPercentage)
         );
     } else if (method === "Source-Ratios") {
         return new SourceRatioSelectionMethod();
     } else if (method === "Credibility") {
         return new CredibilitySelectionMethod(
             new LinearFunction(
-                readCell(workbook, Version1.sourcePostSelection.credibility.slope),
-                readCell(workbook, Version1.sourcePostSelection.credibility.intercept)
+                readCell(workbook, V1.sourcePostSelection.credibility.slope),
+                readCell(workbook, V1.sourcePostSelection.credibility.intercept)
             )
         );
     } else if (method === "Pre-Defined") {
-        // TODO : Read the pre-defined source & post order.
-        return new PredefinedSelectionMethod();
+        return new PredefinedSelectionMethod(
+            readV1PredefinedSourcePostOrder(workbook)
+        );
     } else {
         throw new Error("Unknown Source & Post Selection Method " + method);
     }
@@ -126,13 +151,13 @@ function readV1SourcePostSelectionMethod(workbook) {
 
 function readV1Sources(workbook) {
     const sources = [];
-    for (let row = Version1.source.firstRow; row <= Version1.source.lastRow; ++row) {
+    for (let row = V1.source.firstRow; row <= V1.source.lastRow; ++row) {
         // Skip blank rows.
-        if (areCellsBlank(workbook, Version1.source.worksheet, Version1.source.valueColumns, [row]))
+        if (areCellsBlank(workbook, V1.source.worksheet, V1.source.valueColumns, [row]))
             continue;
 
-        const followersMean = readCell(workbook, Version1.source.followersMean.row(row));
-        const followersStdDev = readCell(workbook, Version1.source.followersStdDev.row(row));
+        const followersMean = readCell(workbook, V1.source.followersMean.row(row));
+        const followersStdDev = readCell(workbook, V1.source.followersStdDev.row(row));
 
         // Followers can fall anywhere within 1 standard deviation of the mean.
         const followers = new TruncatedNormalDistribution(
@@ -142,18 +167,18 @@ function readV1Sources(workbook) {
         );
         // Credibility can fall anywhere between 0 and 100.
         const credibility = new TruncatedNormalDistribution(
-            readCell(workbook, Version1.source.credibilityMean.row(row)),
-            readCell(workbook, Version1.source.credibilityStdDev.row(row)),
+            readCell(workbook, V1.source.credibilityMean.row(row)),
+            readCell(workbook, V1.source.credibilityStdDev.row(row)),
             0, 100
         );
 
         sources.push(new Source(
-            readCell(workbook, Version1.source.id.row(row)) ,
-            readCell(workbook, Version1.source.name.row(row)),
-            StudyImage.fromExcelImage(readCell(workbook, Version1.source.avatar.row(row))),
-            readCell(workbook, Version1.source.maxPosts.row(row)),
+            readCell(workbook, V1.source.id.row(row)) ,
+            readCell(workbook, V1.source.name.row(row)),
+            StudyImage.fromExcelImage(readCell(workbook, V1.source.avatar.row(row))),
+            readCell(workbook, V1.source.maxPosts.row(row)),
             followers, credibility,
-            readCell(workbook, Version1.source.truePostPercentage.row(row))
+            readCell(workbook, V1.source.truePostPercentage.row(row))
         ));
     }
     return sources;
@@ -170,15 +195,15 @@ function readV1ReactionValues(workbook, locations, row) {
 
 function readV1Comments(workbook, firstRow) {
     const comments = [];
-    for (let row = firstRow; row < firstRow + Version1.post.rowStride; ++row) {
+    for (let row = firstRow; row < firstRow + V1.post.rowStride; ++row) {
         // Skip blank rows.
-        if (areCellsBlank(workbook, Version1.post.worksheet, Version1.post.comment.valueColumns, [row]))
+        if (areCellsBlank(workbook, V1.post.worksheet, V1.post.comment.valueColumns, [row]))
             continue;
 
         comments.push(new PostComment(
-            readCell(workbook, Version1.post.comment.sourceID.row(row)),
-            readCell(workbook, Version1.post.comment.message.row(row)),
-            readCell(workbook, Version1.post.comment.likes.row(row))
+            readCell(workbook, V1.post.comment.sourceID.row(row)),
+            readCell(workbook, V1.post.comment.message.row(row)),
+            readCell(workbook, V1.post.comment.likes.row(row))
         ));
     }
     return comments;
@@ -194,25 +219,25 @@ function range(fromInclusive, toExclusive) {
 
 function readV1Posts(workbook) {
     const posts = [];
-    for (let row = Version1.post.firstRow; row <= Version1.post.lastRow; row += Version1.post.rowStride) {
+    for (let row = V1.post.firstRow; row <= V1.post.lastRow; row += V1.post.rowStride) {
         // Skip blank rows.
-        const rows = range(row, row + Version1.post.rowStride);
-        if (areCellsBlank(workbook, Version1.post.worksheet, Version1.post.valueColumns, rows))
+        const rows = range(row, row + V1.post.rowStride);
+        if (areCellsBlank(workbook, V1.post.worksheet, V1.post.valueColumns, rows))
             continue;
 
         // If the content is an image, we have to convert it to our format.
-        let content = readCell(workbook, Version1.post.content.row(row));
+        let content = readCell(workbook, V1.post.content.row(row));
         if (typeof content !== "string") {
             content = StudyImage.fromExcelImage(content);
         }
 
         posts.push(new Post(
-            readCell(workbook, Version1.post.id.row(row)),
-            readCell(workbook, Version1.post.headline.row(row)),
+            readCell(workbook, V1.post.id.row(row)),
+            readCell(workbook, V1.post.headline.row(row)),
             content,
-            readCell(workbook, Version1.post.isTrue.row(row)),
-            readV1ReactionValues(workbook, Version1.post.changesToFollowers, row),
-            readV1ReactionValues(workbook, Version1.post.changesToCredibility, row),
+            readCell(workbook, V1.post.isTrue.row(row)),
+            readV1ReactionValues(workbook, V1.post.changesToFollowers, row),
+            readV1ReactionValues(workbook, V1.post.changesToCredibility, row),
             readV1Comments(workbook, row)
         ));
     }
@@ -221,14 +246,14 @@ function readV1Posts(workbook) {
 
 function readV1Study(workbook) {
     return new Study(
-        readCell(workbook, Version1.name),
-        readCell(workbook, Version1.description),
-        readCell(workbook, Version1.introduction),
-        readCell(workbook, Version1.prompt),
-        readCell(workbook, Version1.length),
-        readCell(workbook, Version1.debrief),
-        readCell(workbook, Version1.genCompletionCode),
-        readCell(workbook, Version1.maxCompletionCode),
+        readCell(workbook, V1.name),
+        readCell(workbook, V1.description),
+        readCell(workbook, V1.introduction),
+        readCell(workbook, V1.prompt),
+        readCell(workbook, V1.length),
+        readCell(workbook, V1.debrief),
+        readCell(workbook, V1.genCompletionCode),
+        readCell(workbook, V1.maxCompletionCode),
         readV1SourcePostSelectionMethod(workbook),
         readV1Sources(workbook),
         readV1Posts(workbook)

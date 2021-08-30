@@ -60,7 +60,11 @@ export class CredibilitySelectionMethod extends SourcePostSelectionMethod {
  * and posts is pre-defined and repeated the same for every participant.
  */
 export class PredefinedSelectionMethod extends SourcePostSelectionMethod {
-    constructor() {
+    order; // [Source ID, Post ID][]
+
+    constructor(order) {
         super("Pre-Defined");
+        doTypeCheck(order, Array);
+        this.order = order;
     }
 }
