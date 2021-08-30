@@ -1,0 +1,1 @@
+//function wil get the posts from firestore and make them ready for DOM manipulations 
