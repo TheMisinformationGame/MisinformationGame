@@ -1,4 +1,5 @@
 import {doNonNullCheck, doTypeCheck} from "./types";
+import {convertRichTextToHTML} from "./richText";
 
 const Excel = require("exceljs");
 
@@ -38,14 +39,28 @@ export class ExcelType {
         doNonNullCheck(exceljsType);
 
         switch (exceljsType) {
-            case Excel.ValueType.String:
-                return "a string";
-            case Excel.ValueType.Number:
-                return "a number";
-            case Excel.ValueType.Boolean:
-                return "a boolean";
             case Excel.ValueType.Null:
                 return "nothing";
+            case Excel.ValueType.Merge:
+                return "a merged cell";
+            case Excel.ValueType.Number:
+                return "a number";
+            case Excel.ValueType.String:
+                return "a string";
+            case Excel.ValueType.Date:
+                return "a date";
+            case Excel.ValueType.Hyperlink:
+                return "a hyperlink"
+            case Excel.ValueType.Formula:
+                return "a formula";
+            case Excel.ValueType.SharedString:
+                return "a shared string";
+            case Excel.ValueType.RichText:
+                return "formatted text"
+            case Excel.ValueType.Boolean:
+                return "a boolean";
+            case Excel.ValueType.Error:
+                return "an error";
             default:
                 return "an unknown type (" + exceljsType + ")";
         }
@@ -58,6 +73,8 @@ class ExcelStringType extends ExcelType {
     }
 
     coerceType(value, type) {
+        if (type === Excel.ValueType.RichText)
+            return convertRichTextToHTML(value);
         if (type === Excel.ValueType.Boolean || type === Excel.ValueType.Number || type === Excel.ValueType.Date)
             return String(value);
         return undefined;
@@ -229,7 +246,8 @@ export function readCell(workbook, loc) {
     if (value === undefined) {
         throw new CellTypeError(
             "Expected " + loc.address + " (" + loc.name + ") to contain " + loc.type.name +
-            ", but instead it contained " + ExcelType.getExcelJSTypeName(cell.type)
+            ", but instead it contained " + ExcelType.getExcelJSTypeName(cell.type) +
+            ": " + JSON.stringify(cell.value)
         );
     }
     return value;
