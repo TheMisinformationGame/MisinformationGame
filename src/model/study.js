@@ -109,7 +109,7 @@ export class ReactionValues {
  * Holds the contents of a post.
  */
 export class Post {
-    id; // String
+    id; // String -> [DL] Consider switching to number type
     headline; // String
     content; // StudyImage or String
     isTrue; // Boolean
@@ -118,7 +118,7 @@ export class Post {
     comments; // PostComment[]
 
     constructor(id, headline, content, isTrue, changesToFollowers, changesToCredibility, comments) {
-        doTypeCheck(id, "string");
+        doTypeCheck(id, "number");
         doTypeCheck(headline, "string");
         doTypeCheck(content, [StudyImage, "string"]);
         doTypeCheck(isTrue, "boolean");
