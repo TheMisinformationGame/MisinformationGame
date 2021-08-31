@@ -1,7 +1,10 @@
 import "../index.css"
 import {Component} from "react";
 import {readStudyWorkbook} from "../model/studyWorkbookReader";
-import {CircularProgress} from "@material-ui/core";
+import ErrorLabel from "./ErrorLabel";
+import WarningLabel from "./WarningLabel";
+import ProgressLabel from "./ProgressLabel";
+import SuccessLabel from "./SuccessLabel";
 
 const Excel = require('exceljs');
 
@@ -21,7 +24,13 @@ class UploadIcon extends Component {
 class StudyUploadForm extends Component {
     constructor(props) {
         super(props);
-        this.state = { url: '' };
+        this.state = {
+            url: '',
+            urlError: "Error",
+            urlWarning: "Warning",
+            fileError: "Error 2",
+            fileWarning: "Warning 2"
+        };
     }
 
     readXLSX(buffer) {
@@ -43,6 +52,10 @@ class StudyUploadForm extends Component {
             };
             reader.readAsArrayBuffer(file);
         }
+    }
+
+    reportFileUploadError(error) {
+
     }
 
     doURLUpload(url) {
@@ -85,7 +98,11 @@ class StudyUploadForm extends Component {
     }
 
     onURLChange(event) {
-        this.setState({ url: event.target.value })
+        this.setState({
+            url: event.target.value,
+            urlError: null,
+            fileError: null
+        })
     }
 
     render() {
@@ -107,9 +124,10 @@ class StudyUploadForm extends Component {
                             hover:bg-blue-500 hover:text-white"
                         value="Fetch" />
                 </div>
-                {/*<div className="m-2">*/}
-                {/*    <CircularProgress />*/}
-                {/*</div>*/}
+                <ProgressLabel className="mt-2" />
+                { this.state.urlError && <ErrorLabel value={this.state.urlError} className="mt-2" /> }
+                { this.state.urlWarning && <WarningLabel value={this.state.urlWarning} className="mt-2" /> }
+                <SuccessLabel className="mt-2" />
 
                 <span className="flex mb-2 mt-6">
                     Or, upload your study configuration spreadsheet as an XLSX file:
@@ -126,6 +144,8 @@ class StudyUploadForm extends Component {
                                onChange={evt => this.doFileUpload(evt.target)} />
                     </label>
                 </div>
+                { this.state.fileError && <ErrorLabel value={this.state.fileError} className="mt-2" /> }
+                { this.state.fileWarning && <WarningLabel value={this.state.fileWarning} className="mt-2" /> }
             </form>
         );
     }
