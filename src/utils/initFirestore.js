@@ -1,7 +1,8 @@
 //Script will initiate the firestore database 
-import firebase from './firebase.js'
-import 'firebase/datastore'
+import firebase from './firebase.js';
+import 'firebase/firestore'
 
 const db = firebase.firestore();
 
-export { db }
+
+export default db 
