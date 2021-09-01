@@ -18,7 +18,7 @@ class UploadIcon extends Component {
     }
 }
 
-class StudyUploadForm extends Component {
+export class StudyUploadForm extends Component {
     constructor(props) {
         super(props);
         this.state = StudyUploadForm.createStateWithDefaults({});
@@ -47,8 +47,6 @@ class StudyUploadForm extends Component {
         new Excel.Workbook().xlsx
             .load(buffer)
             .then((workbook) => {
-                window.lastWorkbook = workbook;
-
                 updateStatusFn(Status.progress("Reading spreadsheet..."));
                 let study = null;
                 try {
@@ -60,9 +58,10 @@ class StudyUploadForm extends Component {
                     ]));
                     return;
                 }
-                window.lastStudy = study;
-                console.log(study);
                 updateStatusFn(Status.success("Success"));
+                if (this.props.onStudyLoad) {
+                    this.props.onStudyLoad(study);
+                }
             })
             .catch((error) => {
                 updateStatusFn(Status.error([
@@ -199,7 +198,10 @@ export default class StudyUpload extends Component {
                             m-8 p-8 shadow rounded-md bg-white divide-y">
                         <h2 className="py-2 text-4xl">Upload Study</h2>
                         <div className="pt-6">
-                            <StudyUploadForm />
+                            <StudyUploadForm onStudyLoad={(study) => {
+                                console.log(study);
+                                window.lastStudy = study;
+                            }} />
                         </div>
                     </div>
                 </div>
