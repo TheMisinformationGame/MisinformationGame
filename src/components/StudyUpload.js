@@ -1,10 +1,7 @@
 import "../index.css"
 import {Component} from "react";
 import {readStudyWorkbook} from "../model/studyWorkbookReader";
-import ErrorLabel from "./ErrorLabel";
-import WarningLabel from "./WarningLabel";
-import ProgressLabel from "./ProgressLabel";
-import SuccessLabel from "./SuccessLabel";
+import StatusLabel, {Status} from "./StatusLabel";
 
 const Excel = require('exceljs');
 
@@ -24,38 +21,76 @@ class UploadIcon extends Component {
 class StudyUploadForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            url: '',
-            urlError: "Error",
-            urlWarning: "Warning",
-            fileError: "Error 2",
-            fileWarning: "Warning 2"
+        this.state = StudyUploadForm.createStateWithDefaults({});
+    }
+
+    static createStateWithDefaults(incompleteState) {
+        return {
+            ...{ // Defaults
+                url: null,
+                urlStatus: null,
+                fileStatus: null
+            },
+            ...incompleteState
         };
     }
 
-    readXLSX(buffer) {
+    updateState(incompleteState) {
+        this.setState(StudyUploadForm.createStateWithDefaults(incompleteState));
+    }
+
+    onURLChange(event) {
+        this.updateState({ url: event.target.value });
+    }
+
+    readXLSX(buffer, updateStatusFn) {
         new Excel.Workbook().xlsx
             .load(buffer)
             .then((workbook) => {
                 window.lastWorkbook = workbook;
-                window.lastStudy = readStudyWorkbook(workbook);
-                console.log(window.lastStudy);
+
+                updateStatusFn(Status.progress("Reading spreadsheet..."));
+                let study = null;
+                try {
+                    study = readStudyWorkbook(workbook);
+                } catch (error) {
+                    updateStatusFn(Status.error([
+                        <strong>Error reading spreadsheet:</strong>,
+                        error.message
+                    ]));
+                    return;
+                }
+                window.lastStudy = study;
+                console.log(study);
+                updateStatusFn(Status.success("Success"));
+            })
+            .catch((error) => {
+                updateStatusFn(Status.error([
+                    <strong>Error parsing spreadsheet:</strong>,
+                    error
+                ]));
             });
     }
 
     doFileUpload(input) {
-        let file = input.files[0];
-        if(file) {
-            let reader = new FileReader();
-            reader.onload = (event) => {
-                this.readXLSX(event.target.result);
-            };
-            reader.readAsArrayBuffer(file);
+        const file = input.files[0];
+        if (!file)
+            return;
+
+        this.updateState({ fileStatus: Status.progress("Reading file...") });
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            this.readXLSX(event.target.result, (status) => this.updateState({ fileStatus: status }));
+        };
+        reader.onerror = (event) => {
+            this.updateState({
+                fileStatus: Status.error([
+                    <strong>Error reading file:</strong>,
+                    reader.error
+                ])
+            });
         }
-    }
-
-    reportFileUploadError(error) {
-
+        reader.readAsArrayBuffer(file);
     }
 
     doURLUpload(url) {
@@ -65,7 +100,8 @@ class StudyUploadForm extends Component {
             if (matches.length > 0) {
                 id = matches[0][1];
             } else {
-                throw new Error("Could not find document ID in URL");
+                this.updateState({ urlStatus: Status.error("Could not find document ID in URL")});
+                return;
             }
         } else {
             id = url;
@@ -73,41 +109,43 @@ class StudyUploadForm extends Component {
 
         const xlsxURL = "https://docs.google.com/spreadsheets/export?id=" + id + "&exportFormat=xlsx";
         console.log("Downloading " + xlsxURL + "...");
+        this.updateState({ urlStatus: Status.progress("Downloading spreadsheet...")});
 
         const request = new XMLHttpRequest();
         request.open("GET", xlsxURL, true);
         request.responseType = "arraybuffer";
-        request.onload = (event) => {
+        request.onreadystatechange = (event) => {
+            if (request.readyState < 4)
+                return;
+
             if (request.status === 200) {
-                this.readXLSX(request.response);
+                this.updateState({ urlStatus: Status.progress("Parsing spreadsheet...")});
+                this.readXLSX(request.response, (status) => this.updateState({ urlStatus: status }));
             } else {
-                console.log("Error reading " + xlsxURL + ": " + request.status)
+                this.updateState({
+                    urlStatus: Status.error([
+                        <strong>Unable to download spreadsheet{request.statusText && ": "}</strong>,
+                        request.statusText + " (Status " + request.status + ")"
+                    ])
+                });
             }
         };
         request.send();
     }
 
-    handleSubmit(event) {
+    handleURLSubmit(event) {
         event.preventDefault();
-        if (this.state.file) {
+        if (this.state.url) {
             this.doURLUpload(this.state.url);
         } else {
-            console.log("No inputs");
+            this.updateState({ urlStatus: Status.error("Please enter your Google Sheets URL or ID")});
         }
         return false;
     }
 
-    onURLChange(event) {
-        this.setState({
-            url: event.target.value,
-            urlError: null,
-            fileError: null
-        })
-    }
-
     render() {
         return (
-            <form className="flex flex-col items-start" onSubmit={evt => this.handleSubmit(evt)}>
+            <form className="flex flex-col items-start" onSubmit={evt => this.handleURLSubmit(evt)}>
                 <span className="flex my-2">
                     Enter your Google Sheets spreadsheet URL or ID:
                 </span>
@@ -124,10 +162,7 @@ class StudyUploadForm extends Component {
                             hover:bg-blue-500 hover:text-white"
                         value="Fetch" />
                 </div>
-                <ProgressLabel className="mt-2" />
-                { this.state.urlError && <ErrorLabel value={this.state.urlError} className="mt-2" /> }
-                { this.state.urlWarning && <WarningLabel value={this.state.urlWarning} className="mt-2" /> }
-                <SuccessLabel className="mt-2" />
+                <StatusLabel status={this.state.urlStatus} className="my-2" />
 
                 <span className="flex mb-2 mt-6">
                     Or, upload your study configuration spreadsheet as an XLSX file:
@@ -144,8 +179,7 @@ class StudyUploadForm extends Component {
                                onChange={evt => this.doFileUpload(evt.target)} />
                     </label>
                 </div>
-                { this.state.fileError && <ErrorLabel value={this.state.fileError} className="mt-2" /> }
-                { this.state.fileWarning && <WarningLabel value={this.state.fileWarning} className="mt-2" /> }
+                <StatusLabel status={this.state.fileStatus} className="my-2" />
             </form>
         );
     }
@@ -156,10 +190,10 @@ export default class StudyUpload extends Component {
         return (
             <div>
                 {/* Gray-out content beneath study upload UI. */}
-                <div className="absolute left-0 top-0 w-full h-full z-40 bg-black opacity-20" />
+                <div className="fixed left-0 top-0 w-full h-full z-40 bg-black opacity-20" />
 
                 {/* Place study upload form above grayed-out background. */}
-                <div className="absolute left-0 top-0 w-full h-full z-50
+                <div className="fixed left-0 top-0 w-full h-full z-50
                         flex flex-col content-center">
                     <div className="flex-initial flex flex-col
                             m-8 p-8 shadow rounded-md bg-white divide-y">

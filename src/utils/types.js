@@ -24,9 +24,10 @@ export function isOfType(value, expectedType) {
  * Throws an error if {@param value} is null or undefined.
  */
 export function doNonNullCheck(value) {
-    if (value === null || value === undefined) {
+    if (value === null)
         throw Error("Expected value to be non-null")
-    }
+    if (value === undefined)
+        throw Error("Expected value to not be undefined")
 }
 
 /**
@@ -41,4 +42,18 @@ export function doTypeCheck(value, expectedType) {
     if (!isOfType(value, expectedType)) {
         throw Error("Expected " + JSON.stringify(value) + " to match type " + expectedType);
     }
+}
+
+/**
+ * Throws an error if {@param value} if its not null, and not of a type matching
+ * {@param expectedType}.
+ *
+ * If {@param expectedType} is not an Array, then it will check that {@param value}
+ * is an instance of that type. If {@param expectedType} is an Array, then it will
+ * check if {@param value} is an instance of any of the given types.
+ */
+export function doNullableTypeCheck(value, expectedType) {
+    if (value === null)
+        return;
+    doTypeCheck(value, expectedType);
 }
