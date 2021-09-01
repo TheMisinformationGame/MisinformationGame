@@ -7,6 +7,12 @@ db.settings({ timestampsInSnapshots: true });
 //====================================================================================
 
 
+
+//===========================================================================
+//01/09/2021[DL] This code can be editted when we have more defined structure
+//===========================================================================
+
+
 //testing function to make sure that the correct data from the firestore is getting retrieved
 function logDocs(doc){
     //example as a proof of concept
@@ -16,7 +22,8 @@ function logDocs(doc){
 
     console.log(typeof(ID))
     
-    var docObject = new Post(ID, Headline, "ok", isTrue, 1, 1, []);
+    //need to construct the class object with data
+    //var docObject = new Post(ID, Headline, "ok", isTrue, 1, 1, []);
 };
 
 
