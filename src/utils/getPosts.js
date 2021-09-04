@@ -1,16 +1,13 @@
-//file wil get the posts objects from firestore and make them ready for DOM manipulations 
-//======= BOILERPLATE CODE ===========================================================
-import firebase from './firebase'
-import db from './initFirestore'
-import { Post } from '../model/study'
-db.settings({ timestampsInSnapshots: true }); 
-//====================================================================================
 
-
-
-//===========================================================================
+//======== NOTES =====================================================================
 //01/09/2021[DL] This code can be editted when we have more defined structure
-//===========================================================================
+//====================================================================================
+//file wil get the posts objects from firestore and make them ready for DOM manipulations 
+
+
+
+
+
 
 
 //testing function to make sure that the correct data from the firestore is getting retrieved

@@ -35,15 +35,3 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-// this is just to test the code
-//getPosts(db);
-
-//postReact("ke5b91MHKZtv7VZ1LMbK", 1, "Like")
-
-var object = {"employees":[
-    {"firstName":"John", "lastName":"Doe"},
-    {"firstName":"Anna", "lastName":"Smith"},
-    {"firstName":"Peter", "lastName":"Jones"}
-  ]};
-
-testPostFullObject(object);
