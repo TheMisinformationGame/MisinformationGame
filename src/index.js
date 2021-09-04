@@ -12,6 +12,9 @@ import GameIntroduction from "./screens/GameIntroduction";
 import GamePrompt from "./screens/GamePrompt";
 import ErrorScreen from "./screens/Error"
 import StudyUpload from "./components/StudyUpload";
+import db from './utils/initFirestore';
+import getPosts from './utils/getPosts';
+import { postReact } from './utils/sendReact';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -31,3 +34,8 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+// this is just to test the code
+//getPosts(db);
+
+postReact("ke5b91MHKZtv7VZ1LMbK", 1, "Like")
