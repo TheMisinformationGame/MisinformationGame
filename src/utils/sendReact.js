@@ -14,4 +14,11 @@ export function postReact(participantID, postID, reactType){
         postID: postID, 
         reactionType: reactType
     })
+};
+
+export function testPostFullObject(object){
+    let userCol = db.collection("Participants");
+    let participantDoc = userCol.doc("ke5b91MHKZtv7VZ1LMbK");
+
+    const res = participantDoc.update({'results': object});
 }
