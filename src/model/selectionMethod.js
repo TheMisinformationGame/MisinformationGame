@@ -6,11 +6,30 @@ import {LinearFunction} from "./math";
  * Represents a method of selecting source and post pairs.
  */
 export class SourcePostSelectionMethod {
-    name; // String
+    type; // String
 
-    constructor(name) {
-        doTypeCheck(name, "string");
-        this.name = name;
+    constructor(type) {
+        doTypeCheck(type, "string");
+        this.type = type;
+    }
+
+    toJSON() {
+        return {
+            "type": this.type
+        };
+    }
+
+    static fromJSON(json) {
+        const type = json["type"];
+        if (type === "Overall-Ratio")
+            return OverallRatioSelectionMethod.fromJSON(json);
+        if (type === "Source-Ratios")
+            return SourceRatioSelectionMethod.fromJSON(json);
+        if (type === "Credibility")
+            return CredibilitySelectionMethod.fromJSON(json);
+        if (type === "Pre-Defined")
+            return PredefinedSelectionMethod.fromJSON(json);
+        throw new Error("Unknown SourcePostSelectionMethod type: " + type);
     }
 }
 
@@ -27,6 +46,19 @@ export class OverallRatioSelectionMethod extends SourcePostSelectionMethod {
         doTypeCheck(truePostPercentage, "number");
         this.truePostPercentage = truePostPercentage;
     }
+
+    toJSON() {
+        return {
+            ...super.toJSON(),
+            "truePostPercentage": this.truePostPercentage
+        };
+    }
+
+    static fromJSON(json) {
+        return new OverallRatioSelectionMethod(
+            json["truePostPercentage"]
+        );
+    }
 }
 
 /**
@@ -37,6 +69,14 @@ export class OverallRatioSelectionMethod extends SourcePostSelectionMethod {
 export class SourceRatioSelectionMethod extends SourcePostSelectionMethod {
     constructor() {
         super("Source-Ratios");
+    }
+
+    toJSON() {
+        return super.toJSON();
+    }
+
+    static fromJSON(json) {
+        return new SourceRatioSelectionMethod();
     }
 }
 
@@ -53,6 +93,19 @@ export class CredibilitySelectionMethod extends SourcePostSelectionMethod {
         doTypeCheck(linearRelationship, LinearFunction);
         this.linearRelationship = linearRelationship;
     }
+
+    toJSON() {
+        return {
+            ...super.toJSON(),
+            "linearRelationship": this.linearRelationship.toJSON()
+        };
+    }
+
+    static fromJSON(json) {
+        return new CredibilitySelectionMethod(
+            LinearFunction.fromJSON(json["linearRelationship"])
+        );
+    }
 }
 
 /**
@@ -66,5 +119,18 @@ export class PredefinedSelectionMethod extends SourcePostSelectionMethod {
         super("Pre-Defined");
         doTypeCheck(order, Array);
         this.order = order;
+    }
+
+    toJSON() {
+        return {
+            ...super.toJSON(),
+            "order": this.order
+        };
+    }
+
+    static fromJSON(json) {
+        return new PredefinedSelectionMethod(
+            json["order"]
+        );
     }
 }

@@ -252,3 +252,16 @@ export function readCell(workbook, loc) {
     }
     return value;
 }
+
+/**
+ * Reads the value of the cell at the given location {@param loc}
+ * in {@param workbook}. If the cell is blank, this will return
+ * {@param defaultValue} instead. If the value is not of the
+ * expected type, then an error will be thrown.
+ */
+export function readCellWithDefault(workbook, loc, defaultValue) {
+    if (isCellBlank(workbook, loc))
+        return defaultValue;
+
+    return readCell(workbook, loc);
+}

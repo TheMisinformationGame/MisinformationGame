@@ -48,20 +48,20 @@ export class StudyUploadForm extends Component {
             .load(buffer)
             .then((workbook) => {
                 updateStatusFn(Status.progress("Reading spreadsheet..."));
-                let study = null;
-                try {
-                    study = readStudyWorkbook(workbook);
-                } catch (error) {
-                    updateStatusFn(Status.error([
-                        <strong>Error reading spreadsheet:</strong>,
-                        error.message
-                    ]));
-                    return;
-                }
-                updateStatusFn(Status.success("Success"));
-                if (this.props.onStudyLoad) {
-                    this.props.onStudyLoad(study);
-                }
+                readStudyWorkbook(workbook)
+                    .then((study) => {
+                        updateStatusFn(Status.success("Success"));
+                        if (this.props.onStudyLoad) {
+                            this.props.onStudyLoad(study);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        updateStatusFn(Status.error([
+                            <strong>Error reading spreadsheet:</strong>,
+                            error.message
+                        ]));
+                    });
             })
             .catch((error) => {
                 updateStatusFn(Status.error([

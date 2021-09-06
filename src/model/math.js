@@ -1,5 +1,5 @@
 import {doTypeCheck} from "../utils/types";
-import {randNormal} from "../utils/normalDistribution";
+import {randNormal} from "../utils/random";
 
 
 /**
@@ -19,6 +19,19 @@ export class LinearFunction {
 
     get(x) {
         return x * this.slope + this.intercept;
+    }
+
+    toJSON() {
+        return {
+            "slope": this.slope,
+            "intercept": this.intercept
+        };
+    }
+
+    static fromJSON(json) {
+        return new LinearFunction(
+            json["slope"], json["intercept"]
+        );
     }
 }
 
@@ -49,10 +62,29 @@ export class TruncatedNormalDistribution {
      * Randomly samples this distribution.
      */
     sample() {
+        if (this.stdDeviation <= 0)
+            return this.mean;
+
         let value;
         do {
             value = this.mean + randNormal() * this.stdDeviation;
         } while (value < this.min || value > this.max);
         return value;
+    }
+
+    toJSON() {
+        return {
+            "mean": this.mean,
+            "stdDeviation": this.stdDeviation,
+            "min": this.min,
+            "max": this.max
+        };
+    }
+
+    static fromJSON(json) {
+        return new TruncatedNormalDistribution(
+            json["mean"], json["stdDeviation"],
+            json["min"], json["max"]
+        );
     }
 }

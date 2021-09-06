@@ -1,43 +1,9 @@
 import {doTypeCheck} from "../utils/types";
 import {SourcePostSelectionMethod} from "./selectionMethod";
 import {TruncatedNormalDistribution} from "./math";
+import {StudyImage} from "./images";
+import {randDigits} from "../utils/random";
 
-
-/**
- * Represents an image such as a post or an avatar.
- */
-export class StudyImage {
-    buffer; // Uint8Array
-    type; // String
-
-    constructor(buffer, type) {
-        doTypeCheck(buffer, Uint8Array);
-        doTypeCheck(type, "string");
-
-        this.buffer = buffer;
-        this.type = type;
-    }
-
-    createImage() {
-        const image = new Image();
-        image.src = URL.createObjectURL(
-            new Blob([this.buffer.buffer], { type: this.type })
-        );
-        return image;
-    }
-
-    static fromExcelImage(excelImage) {
-        return new StudyImage(excelImage.buffer, "image/" + excelImage.extension);
-    }
-
-    toJSON() {
-        throw new Error(
-            "I don't know the best way to store this in JSON... base64 maybe? " +
-            "Although, that said, storing them in Firebase Storage may be the " +
-            "the best solution (it would just be more complicated...)"
-        );
-    }
-}
 
 /**
  * A source that is missing some information, but at least
@@ -86,6 +52,15 @@ export class BaseSource {
             "truePostPercentage": this.truePostPercentage
         };
     }
+
+    static fromJSON(json) {
+        return new BaseSource(
+            json["id"], json["name"], json["maxPosts"],
+            TruncatedNormalDistribution.fromJSON(json["followers"]),
+            TruncatedNormalDistribution.fromJSON(json["credibility"]),
+            json["truePostPercentage"]
+        );
+    }
 }
 
 /**
@@ -118,6 +93,16 @@ export class Source extends BaseSource {
             "avatar": this.avatar.toJSON()
         };
     }
+
+    static fromJSON(json) {
+        const baseSource = BaseSource.fromJSON(json);
+        return new Source(
+            baseSource.id, baseSource.name,
+            StudyImage.fromJSON(json["avatar"]),
+            baseSource.maxPosts, baseSource.followers,
+            baseSource.credibility, baseSource.truePostPercentage
+        );
+    }
 }
 
 /**
@@ -132,7 +117,6 @@ export class PostComment {
         doTypeCheck(sourceID, "string");
         doTypeCheck(message, "string");
         doTypeCheck(likes, "number");
-
         this.sourceID = sourceID;
         this.message = message;
         this.likes = likes;
@@ -144,6 +128,12 @@ export class PostComment {
             "message": this.message,
             "likes": this.likes
         };
+    }
+
+    static fromJSON(json) {
+        return new PostComment(
+            json["sourceID"], json["message"], json["likes"]
+        );
     }
 }
 
@@ -176,6 +166,13 @@ export class ReactionValues {
             "flag": this.flag
         };
     }
+
+    static fromJSON(json) {
+        return new ReactionValues(
+            json["like"], json["dislike"],
+            json["share"], json["flag"]
+        );
+    }
 }
 
 /**
@@ -191,7 +188,7 @@ export class BasePost {
     comments; // PostComment[]
 
     constructor(id, headline, isTrue, changesToFollowers, changesToCredibility, comments) {
-        doTypeCheck(id, "number");
+        doTypeCheck(id, "string");
         doTypeCheck(headline, "string");
         doTypeCheck(isTrue, "boolean");
         doTypeCheck(changesToFollowers, ReactionValues);
@@ -213,19 +210,40 @@ export class BasePost {
         return false;
     }
 
-    toJSON() {
+    static commentsToJSON(comments) {
         const commentsJSON = [];
-        for (let index = 0; index < this.comments.length; ++index) {
-            commentsJSON.push(this.comments[index].toJSON())
+        for (let index = 0; index < comments.length; ++index) {
+            commentsJSON.push(comments[index].toJSON())
         }
+        return commentsJSON;
+    }
+
+    static commentsFromJSON(json) {
+        const comments = [];
+        for (let index = 0; index < json.length; ++index) {
+            comments.push(PostComment.fromJSON(json[index]));
+        }
+        return comments;
+    }
+
+    toJSON() {
         return {
             "id": this.id,
             "headline": this.headline,
             "isTrue": this.isTrue,
             "changesToFollowers": this.changesToFollowers.toJSON(),
             "changesToCredibility": this.changesToCredibility.toJSON(),
-            "comments": commentsJSON
+            "comments": BasePost.commentsToJSON(this.comments)
         };
+    }
+
+    static fromJSON(json) {
+        return new BasePost(
+            json["id"], json["headline"], json["isTrue"],
+            ReactionValues.fromJSON(json["changesToFollowers"]),
+            ReactionValues.fromJSON(json["changesToCredibility"]),
+            BasePost.commentsFromJSON(json["comments"])
+        );
     }
 }
 
@@ -249,11 +267,33 @@ export class Post extends BasePost {
         return true;
     }
 
+    static contentToJSON(content) {
+        if (typeof content === "string")
+            return content;
+        return content.toJSON();
+    }
+
+    static contentFromJSON(json) {
+        if (typeof json === "string")
+            return json;
+        return StudyImage.fromJSON(json);
+    }
+
     toJSON() {
         return {
             ...super.toJSON(),
-            "content": this.content.toJSON()
+            "content": Post.contentToJSON(this.content)
         };
+    }
+
+    static fromJSON(json) {
+        const basePost = BasePost.fromJSON(json);
+        return new Post(
+            basePost.id, basePost.headline,
+            Post.contentFromJSON(json["content"]),
+            basePost.isTrue, basePost.changesToFollowers,
+            basePost.changesToCredibility, basePost.comments
+        );
     }
 }
 
@@ -268,16 +308,17 @@ export class Study {
     length; // Number
     debrief; // String
     genCompletionCode; // Boolean
-    maxCompletionCode; // Number
+    completionCodeDigits; // Number
     sourcePostSelectionMethod; // SourcePostSelectionMethod
     sources; // Source[]
     posts; // Post[]
 
-    constructor(name, description, introduction,
-                prompt, length, debrief,
-                genCompletionCode, maxCompletionCode,
-                sourcePostSelectionMethod,
-                sources, posts) {
+    constructor(
+            name, description, introduction,
+            prompt, length, debrief,
+            genCompletionCode, completionCodeDigits,
+            sourcePostSelectionMethod,
+            sources, posts) {
 
         doTypeCheck(name, "string");
         doTypeCheck(description, "string");
@@ -286,7 +327,7 @@ export class Study {
         doTypeCheck(length, "number");
         doTypeCheck(debrief, "string");
         doTypeCheck(genCompletionCode, "boolean");
-        doTypeCheck(maxCompletionCode, "number");
+        doTypeCheck(completionCodeDigits, "number");
         doTypeCheck(sourcePostSelectionMethod, SourcePostSelectionMethod);
         doTypeCheck(sources, Array);
         doTypeCheck(posts, Array);
@@ -298,10 +339,17 @@ export class Study {
         this.length = length;
         this.debrief = debrief;
         this.genCompletionCode = genCompletionCode;
-        this.maxCompletionCode = maxCompletionCode;
+        this.completionCodeDigits = completionCodeDigits;
         this.sourcePostSelectionMethod = sourcePostSelectionMethod;
         this.sources = sources;
         this.posts = posts;
+    }
+
+    /**
+     * Generates a random completion code string for this study.
+     */
+    generateRandomCompletionCode() {
+        return randDigits(this.completionCodeDigits);
     }
 
     /**
@@ -330,21 +378,45 @@ export class Study {
         return base;
     }
 
+    static sourcesToJSON(sources) {
+        const sourcesJSON = [];
+        for (let index = 0; index < sources.length; ++index) {
+            doTypeCheck(sources[index], BaseSource);
+            sourcesJSON.push(sources[index].toJSON());
+        }
+        return sourcesJSON;
+    }
+
+    static sourcesFromJSON(json) {
+        const sources = [];
+        for (let index = 0; index < json.length; ++index) {
+            sources.push(BaseSource.fromJSON(json));
+        }
+        return sources;
+    }
+
+    static postsToJSON(posts) {
+        const postsJSON = [];
+        for (let index = 0; index < posts.length; ++index) {
+            doTypeCheck(posts[index], BasePost);
+            postsJSON.push(posts[index].toJSON());
+        }
+        return postsJSON;
+    }
+
+    static postsFromJSON(json) {
+        const posts = [];
+        for (let index = 0; index < json.length; ++index) {
+            posts.push(BasePost.fromJSON(json));
+        }
+        return posts;
+    }
+
     /**
      * This does _not_ include the full source and post
      * information, just the base information.
      */
     toJSON() {
-        const sources = this.getBaseSources();
-        const sourceJSONs = [];
-        for (let index = 0; index < sources.length; ++index) {
-            sourceJSONs.push(sources[index].toJSON());
-        }
-        const posts = this.getBasePosts();
-        const postJSONs = [];
-        for (let index = 0; index < posts.length; ++index) {
-            postJSONs.push(posts[index].toJSON());
-        }
         return {
             "name": this.name,
             "description": this.description,
@@ -355,8 +427,21 @@ export class Study {
             "genCompletionCode": this.genCompletionCode,
             "maxCompletionCode": this.maxCompletionCode,
             "sourcePostSelectionMethod": this.sourcePostSelectionMethod.toJSON(),
-            "sources": sourceJSONs,
-            "posts": postJSONs
+            "sources": Study.sourcesToJSON(this.getBaseSources()),
+            "posts": Study.postsToJSON(this.getBasePosts())
         }
+    }
+
+    static fromJSON(json) {
+        return new Study(
+            json["name"], json["description"],
+            json["introduction"], json["prompt"],
+            json["length"], json["debrief"],
+            json["genCompletionCode"],
+            json["maxCompletionCode"],
+            SourcePostSelectionMethod.fromJSON(json["sourcePostSelectionMethod"]),
+            Study.sourcesFromJSON(json["sources"]),
+            Study.postsFromJSON(json["posts"])
+        );
     }
 }

@@ -1,11 +1,11 @@
-import {Post, PostComment, ReactionValues, Source, Study, StudyImage} from "./study"
+import {Post, PostComment, ReactionValues, Source, Study} from "./study"
 import {
     areCellsBlank,
     ExcelBoolean,
     ExcelImage,
     ExcelNumber, ExcelPercentage,
     ExcelString, ExcelTextOrImage,
-    readCell,
+    readCell, readCellWithDefault,
     WorkbookColumn,
     WorkbookLoc
 } from "../utils/excel";
@@ -16,6 +16,7 @@ import {
     SourceRatioSelectionMethod
 } from "./selectionMethod";
 import {LinearFunction, TruncatedNormalDistribution} from "./math";
+import {FIRESTORE_IMAGE_LIMIT, StudyImage} from "./images";
 
 
 const versionCell = new WorkbookLoc("Version", "About", "M2", ExcelNumber);
@@ -27,7 +28,7 @@ const V1 = {
     length: new WorkbookLoc("Length", "General", "D8", ExcelNumber),
     debrief: new WorkbookLoc("Debrief", "General", "D9", ExcelString),
     genCompletionCode: new WorkbookLoc("Generate Completion Code", "General", "D10", ExcelBoolean),
-    maxCompletionCode: new WorkbookLoc("Maximum Completion Code", "General", "D11", ExcelNumber),
+    completionCodeDigits: new WorkbookLoc("Completion Code Digits", "General", "D11", ExcelNumber),
 
     sourcePostSelection: {
         worksheet: "Source & Post Selection",
@@ -55,8 +56,8 @@ const V1 = {
     },
 
     source: {
-        firstRow: 16,
-        lastRow: 999,
+        firstRow: 19,
+        lastRow: 1002,
         worksheet: "Sources",
         valueColumns: "DEFGHIJ",
         id: new WorkbookColumn("ID", "Sources", "C", ExcelString),
@@ -67,7 +68,14 @@ const V1 = {
         followersStdDev: new WorkbookColumn("Followers Std. Deviation", "Sources", "H", ExcelNumber),
         credibilityMean: new WorkbookColumn("Credibility Mean", "Sources", "I", ExcelNumber),
         credibilityStdDev: new WorkbookColumn("Credibility Std. Deviation", "Sources", "J", ExcelNumber),
-        truePostPercentage: new WorkbookColumn("True Post Percentage", "Sources", "K", ExcelPercentage)
+        truePostPercentage: new WorkbookColumn("True Post Percentage", "Sources", "K", ExcelPercentage),
+        defaults: {
+            maxPosts: new WorkbookLoc("Max Posts", "Sources", "F16", ExcelNumber),
+            followersMean: new WorkbookLoc("Followers Mean", "Sources", "G16", ExcelNumber),
+            followersStdDev: new WorkbookLoc("Followers Std. Deviation", "Sources", "H16", ExcelNumber),
+            credibilityMean: new WorkbookLoc("Credibility Mean", "Sources", "I16", ExcelNumber),
+            credibilityStdDev: new WorkbookLoc("Credibility Std. Deviation", "Sources", "J16", ExcelNumber)
+        }
     },
 
     post: {
@@ -97,6 +105,20 @@ const V1 = {
             sourceID: new WorkbookColumn("Comment Source ID", "Posts", "O", ExcelString),
             message: new WorkbookColumn("Comment Message", "Posts", "P", ExcelString),
             likes: new WorkbookColumn("Comment Likes", "Posts", "Q", ExcelNumber)
+        },
+        defaults: {
+            changesToFollowers: {
+                like: new WorkbookLoc("Changes to Followers for Likes", "Posts", "G11", ExcelNumber),
+                dislike: new WorkbookLoc("Changes to Followers for Dislikes", "Posts", "H11", ExcelNumber),
+                share: new WorkbookLoc("Changes to Followers for Shares", "Posts", "I11", ExcelNumber),
+                flag: new WorkbookLoc("Changes to Followers for Flags", "Posts", "J11", ExcelNumber)
+            },
+            changesToCredibility: {
+                like: new WorkbookLoc("Changes to Credibility for Likes", "Posts", "K11", ExcelNumber),
+                dislike: new WorkbookLoc("Changes to Credibility for Dislikes", "Posts", "L11", ExcelNumber),
+                share: new WorkbookLoc("Changes to Credibility for Shares", "Posts", "M11", ExcelNumber),
+                flag: new WorkbookLoc("Changes to Credibility for Flags", "Posts", "N11", ExcelNumber)
+            }
         }
     },
 
@@ -149,47 +171,81 @@ function readV1SourcePostSelectionMethod(workbook) {
     }
 }
 
+function readV1FollowersDistribution(workbook, row, defaults) {
+    const followersMean = readCellWithDefault(
+        workbook, V1.source.followersMean.row(row), defaults.followersMean);
+    const followersStdDev = readCellWithDefault(
+        workbook, V1.source.followersStdDev.row(row), defaults.followersStdDev);
+
+    // Followers can fall anywhere within 5 standard deviations of the mean.
+    // This helps us to avoid extreme values.
+    return new TruncatedNormalDistribution(
+        followersMean, followersStdDev,
+        Math.max(0, followersMean - 5 * followersStdDev),
+        followersMean + 5 * followersStdDev
+    );
+}
+
+function readV1CredibilityDistribution(workbook, row, defaults) {
+    const credibilityMean = readCellWithDefault(
+        workbook, V1.source.credibilityMean.row(row), defaults.credibilityMean);
+    const credibilityStdDev = readCellWithDefault(
+        workbook, V1.source.credibilityStdDev.row(row), defaults.credibilityStdDev);
+
+    // Credibility can fall anywhere from 0 to 100.
+    return new TruncatedNormalDistribution(credibilityMean, credibilityStdDev, 0, 100);
+}
+
+/**
+ * Returns a Promise to a list of sources read from the workbook.
+ */
 function readV1Sources(workbook) {
     const sources = [];
+    const defaults = {
+        maxPosts: readCell(workbook, V1.source.defaults.maxPosts),
+        followersMean: readCell(workbook, V1.source.defaults.followersMean),
+        followersStdDev: readCell(workbook, V1.source.defaults.followersStdDev),
+        credibilityMean: readCell(workbook, V1.source.defaults.credibilityMean),
+        credibilityStdDev: readCell(workbook, V1.source.defaults.credibilityStdDev)
+    };
     for (let row = V1.source.firstRow; row <= V1.source.lastRow; ++row) {
         // Skip blank rows.
         if (areCellsBlank(workbook, V1.source.worksheet, V1.source.valueColumns, [row]))
             continue;
 
-        const followersMean = readCell(workbook, V1.source.followersMean.row(row));
-        const followersStdDev = readCell(workbook, V1.source.followersStdDev.row(row));
+        const sourceID = readCell(workbook, V1.source.id.row(row));
+        const followers = readV1FollowersDistribution(workbook, row, defaults);
+        const credibility = readV1CredibilityDistribution(workbook, row, defaults);
 
-        // Followers can fall anywhere within 1 standard deviation of the mean.
-        const followers = new TruncatedNormalDistribution(
-            followersMean, followersStdDev,
-            Math.max(0, followersMean - followersStdDev),
-            followersMean + followersStdDev
-        );
-        // Credibility can fall anywhere between 0 and 100.
-        const credibility = new TruncatedNormalDistribution(
-            readCell(workbook, V1.source.credibilityMean.row(row)),
-            readCell(workbook, V1.source.credibilityStdDev.row(row)),
-            0, 100
-        );
+        // Read and convert the avatar image to our own format.
+        const avatarPromise = StudyImage.fromExcelImage(readCell(workbook, V1.source.avatar.row(row)));
 
-        sources.push(new Source(
-            readCell(workbook, V1.source.id.row(row)) ,
-            readCell(workbook, V1.source.name.row(row)),
-            StudyImage.fromExcelImage(readCell(workbook, V1.source.avatar.row(row))),
-            readCell(workbook, V1.source.maxPosts.row(row)),
-            followers, credibility,
-            readCell(workbook, V1.source.truePostPercentage.row(row))
-        ));
+        sources.push(
+            avatarPromise.then((avatar) => {
+                return new Source(
+                    sourceID,
+                    readCell(workbook, V1.source.name.row(row)),
+                    avatar,
+                    readCellWithDefault(workbook, V1.source.maxPosts.row(row), defaults.maxPosts),
+                    followers, credibility,
+                    readCell(workbook, V1.source.truePostPercentage.row(row))
+                );
+            })
+        );
     }
-    return sources;
+    return Promise.all(sources);
 }
 
-function readV1ReactionValues(workbook, locations, row) {
+function readV1ReactionValues(workbook, locations, row, defaultLocs) {
+    const defaultLike = readCell(workbook, defaultLocs.like);
+    const defaultDislike = readCell(workbook, defaultLocs.like);
+    const defaultShare = readCell(workbook, defaultLocs.like);
+    const defaultFlag = readCell(workbook, defaultLocs.like);
     return new ReactionValues(
-        readCell(workbook, locations.like.row(row)),
-        readCell(workbook, locations.dislike.row(row)),
-        readCell(workbook, locations.share.row(row)),
-        readCell(workbook, locations.flag.row(row))
+        readCellWithDefault(workbook, locations.like.row(row), defaultLike),
+        readCellWithDefault(workbook, locations.dislike.row(row), defaultDislike),
+        readCellWithDefault(workbook, locations.share.row(row), defaultShare),
+        readCellWithDefault(workbook, locations.flag.row(row), defaultFlag)
     );
 }
 
@@ -217,6 +273,9 @@ function range(fromInclusive, toExclusive) {
     return arr;
 }
 
+/**
+ * Returns a Promise to a list of posts read from the workbook.
+ */
 function readV1Posts(workbook) {
     const posts = [];
     for (let row = V1.post.firstRow; row <= V1.post.lastRow; row += V1.post.rowStride) {
@@ -225,47 +284,75 @@ function readV1Posts(workbook) {
         if (areCellsBlank(workbook, V1.post.worksheet, V1.post.valueColumns, rows))
             continue;
 
+        const postID = readCell(workbook, V1.post.id.row(row));
+
         // If the content is an image, we have to convert it to our format.
-        let content = readCell(workbook, V1.post.content.row(row));
+        const contentExcelValue = readCell(workbook, V1.post.content.row(row));
+        let contentPromise;
         if (typeof content !== "string") {
-            content = StudyImage.fromExcelImage(content);
+            contentPromise = StudyImage.fromExcelImage(contentExcelValue);
+        } else {
+            contentPromise = Promise.resolve(contentExcelValue);
         }
 
-        posts.push(new Post(
-            readCell(workbook, V1.post.id.row(row)),
-            readCell(workbook, V1.post.headline.row(row)),
-            content,
-            readCell(workbook, V1.post.isTrue.row(row)),
-            readV1ReactionValues(workbook, V1.post.changesToFollowers, row),
-            readV1ReactionValues(workbook, V1.post.changesToCredibility, row),
-            readV1Comments(workbook, row)
-        ));
+        posts.push(
+            contentPromise.then((content) => {
+                return new Post(
+                    postID,
+                    readCell(workbook, V1.post.headline.row(row)),
+                    content,
+                    readCell(workbook, V1.post.isTrue.row(row)),
+                    readV1ReactionValues(
+                        workbook, V1.post.changesToFollowers, row, V1.post.defaults.changesToFollowers),
+                    readV1ReactionValues(
+                        workbook, V1.post.changesToCredibility, row, V1.post.defaults.changesToCredibility),
+                    readV1Comments(workbook, row)
+                )
+            })
+        );
     }
-    return posts;
+    return Promise.all(posts);
 }
 
+/**
+ * Returns a Promise of a version 1 Study object for the study
+ * configured in the spreadsheet {@param workbook}.
+ */
 function readV1Study(workbook) {
-    return new Study(
-        readCell(workbook, V1.name),
-        readCell(workbook, V1.description),
-        readCell(workbook, V1.introduction),
-        readCell(workbook, V1.prompt),
-        readCell(workbook, V1.length),
-        readCell(workbook, V1.debrief),
-        readCell(workbook, V1.genCompletionCode),
-        readCell(workbook, V1.maxCompletionCode),
-        readV1SourcePostSelectionMethod(workbook),
-        readV1Sources(workbook),
-        readV1Posts(workbook)
-    );
+    const sourcesPromise = readV1Sources(workbook);
+    const postsPromise = readV1Posts(workbook);
+    return Promise.all([sourcesPromise, postsPromise]).then((sourcesAndPosts) => {
+        const sources = sourcesAndPosts[0];
+        const posts = sourcesAndPosts[1];
+        return new Study(
+            readCell(workbook, V1.name),
+            readCell(workbook, V1.description),
+            readCell(workbook, V1.introduction),
+            readCell(workbook, V1.prompt),
+            readCell(workbook, V1.length),
+            readCell(workbook, V1.debrief),
+            readCell(workbook, V1.genCompletionCode),
+            readCell(workbook, V1.completionCodeDigits),
+            readV1SourcePostSelectionMethod(workbook),
+            sources, posts
+        );
+    });
 }
 
+/**
+ * Returns a Promise of a Study object for the study
+ * configured in the spreadsheet {@param workbook}.
+ */
 export function readStudyWorkbook(workbook) {
-    const version = readCell(workbook, versionCell);
+    try {
+        const version = readCell(workbook, versionCell);
 
-    if (version === 1) {
-        return readV1Study(workbook);
-    } else {
-        throw new Error("Unknown study version " + version);
+        if (version === 1) {
+            return readV1Study(workbook);
+        } else {
+            return Promise.reject(new Error("Unknown study version " + version));
+        }
+    } catch (error) {
+        return Promise.reject(error);
     }
 }
