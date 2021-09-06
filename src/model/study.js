@@ -3,6 +3,7 @@ import {SourcePostSelectionMethod} from "./selectionMethod";
 import {TruncatedNormalDistribution} from "./math";
 import {StudyImage} from "./images";
 import {randDigits} from "../utils/random";
+import {odiff} from "../utils/odiff";
 
 
 /**
@@ -47,6 +48,7 @@ export class BaseSource {
         return {
             "id": this.id,
             "name": this.name,
+            "maxPosts": this.maxPosts,
             "followers": this.followers.toJSON(),
             "credibility": this.credibility.toJSON(),
             "truePostPercentage": this.truePostPercentage
@@ -260,7 +262,12 @@ export class Post extends BasePost {
     }
 
     toBasePost() {
-        return new BasePost(this.id, this.headline, this.isTrue);
+        return new BasePost(
+            this.id, this.headline, this.isTrue,
+            this.changesToFollowers,
+            this.changesToCredibility,
+            this.comments
+        );
     }
 
     isFullPost() {
@@ -346,6 +353,36 @@ export class Study {
     }
 
     /**
+     * Once a full source is loaded, this method can be
+     * used to replace the old BaseSource.
+     */
+    replaceSource(source) {
+        for (let index = 0; index < this.sources.length; ++index) {
+            const existing = this.sources[index];
+            if (existing.id === source.id) {
+                this.sources[index] = source;
+                return;
+            }
+        }
+        throw new Error("Could not find source with ID " + source.id);
+    }
+
+    /**
+     * Once a full post is loaded, this method can be
+     * used to replace the old BasePost.
+     */
+    replacePost(post) {
+        for (let index = 0; index < this.posts.length; ++index) {
+            const existing = this.posts[index];
+            if (existing.id === post.id) {
+                this.posts[index] = post;
+                return;
+            }
+        }
+        throw new Error("Could not find post with ID " + post.id);
+    }
+
+    /**
      * Generates a random completion code string for this study.
      */
     generateRandomCompletionCode() {
@@ -390,7 +427,7 @@ export class Study {
     static sourcesFromJSON(json) {
         const sources = [];
         for (let index = 0; index < json.length; ++index) {
-            sources.push(BaseSource.fromJSON(json));
+            sources.push(BaseSource.fromJSON(json[index]));
         }
         return sources;
     }
@@ -407,7 +444,7 @@ export class Study {
     static postsFromJSON(json) {
         const posts = [];
         for (let index = 0; index < json.length; ++index) {
-            posts.push(BasePost.fromJSON(json));
+            posts.push(BasePost.fromJSON(json[index]));
         }
         return posts;
     }
@@ -425,7 +462,7 @@ export class Study {
             "length": this.length,
             "debrief": this.debrief,
             "genCompletionCode": this.genCompletionCode,
-            "maxCompletionCode": this.maxCompletionCode,
+            "completionCodeDigits": this.completionCodeDigits,
             "sourcePostSelectionMethod": this.sourcePostSelectionMethod.toJSON(),
             "sources": Study.sourcesToJSON(this.getBaseSources()),
             "posts": Study.postsToJSON(this.getBasePosts())
@@ -438,10 +475,42 @@ export class Study {
             json["introduction"], json["prompt"],
             json["length"], json["debrief"],
             json["genCompletionCode"],
-            json["maxCompletionCode"],
+            json["completionCodeDigits"],
             SourcePostSelectionMethod.fromJSON(json["sourcePostSelectionMethod"]),
             Study.sourcesFromJSON(json["sources"]),
             Study.postsFromJSON(json["posts"])
         );
     }
+}
+
+/**
+ * Converts {@param study} to JSON and back, and
+ * returns an array with all of the changes between
+ * the original study and the reconstructed one.
+ * This should return an empty array if everything
+ * is working correctly.
+ */
+export function getChangesToAndFromJSON(study) {
+    // Convert the study to JSON.
+    const json = study.toJSON();
+    const sourcesJSON = [];
+    const postsJSON = [];
+    for (let index = 0; index < study.sources.length; ++index) {
+        sourcesJSON.push(study.sources[index].toJSON());
+    }
+    for (let index = 0; index < study.posts.length; ++index) {
+        postsJSON.push(study.posts[index].toJSON());
+    }
+
+    // Reconstruct the study from the JSON.
+    const reconstructedStudy = Study.fromJSON(json);
+    for (let index = 0; index < sourcesJSON.length; ++index) {
+        reconstructedStudy.replaceSource(Source.fromJSON(sourcesJSON[index]));
+    }
+    for (let index = 0; index < postsJSON.length; ++index) {
+        reconstructedStudy.replacePost(Post.fromJSON(postsJSON[index]));
+    }
+
+    // Return the deep differences between them.
+    return odiff(study, reconstructedStudy);
 }

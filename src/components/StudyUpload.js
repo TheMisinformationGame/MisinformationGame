@@ -2,6 +2,8 @@ import "../index.css"
 import {Component} from "react";
 import {readStudyWorkbook} from "../model/studyWorkbookReader";
 import StatusLabel, {Status} from "./StatusLabel";
+import {getChangesToAndFromJSON, Post, Source, Study} from "../model/study";
+import {odiff} from "../utils/odiff";
 
 const Excel = require('exceljs');
 
@@ -50,6 +52,20 @@ export class StudyUploadForm extends Component {
                 updateStatusFn(Status.progress("Reading spreadsheet..."));
                 readStudyWorkbook(workbook)
                     .then((study) => {
+                        // If we're on localhost, then do more checks.
+                        const host = window.location.hostname;
+                        if (host === "localhost" || host === "127.0.0.1") {
+                            const changes = getChangesToAndFromJSON(study);
+                            if (changes.length !== 0) {
+                                updateStatusFn(Status.error(
+                                    "Original study and study reconstructed " +
+                                    "from JSON are different!"
+                                ));
+                                console.error(changes);
+                            }
+                        }
+
+                        // Success!
                         updateStatusFn(Status.success("Success"));
                         if (this.props.onStudyLoad) {
                             this.props.onStudyLoad(study);

@@ -124,6 +124,6 @@ export class StudyImage {
     }
 
     static fromJSON(json) {
-        return new StudyImage(json["type"], base64ToBytes(json["buffer"]))
+        return new StudyImage(base64ToBytes(json["buffer"]), json["type"]);
     }
 }
