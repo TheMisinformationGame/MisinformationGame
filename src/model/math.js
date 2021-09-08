@@ -63,10 +63,18 @@ export class TruncatedNormalDistribution {
      */
     sample() {
         if (this.stdDeviation <= 0)
-            return this.mean;
+            return Math.max(this.min, Math.min(this.mean, this.max));
 
         let value;
+        let iterations = 0;
         do {
+            if (iterations++ >= 100) {
+                throw new Error(
+                    "Unable to sample value for TruncatedNormalDistribution " +
+                    JSON.stringify(this.toJSON())
+                );
+            }
+
             value = this.mean + randNormal() * this.stdDeviation;
         } while (value < this.min || value > this.max);
         return value;

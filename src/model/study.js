@@ -143,17 +143,16 @@ export class PostComment {
  * Holds a number for every possible reaction to a post.
  */
 export class ReactionValues {
-    like; // Number
-    dislike; // Number
-    share; // Number
-    flag; // Number
+    like; // TruncatedNormalDistribution
+    dislike; // TruncatedNormalDistribution
+    share; // TruncatedNormalDistribution
+    flag; // TruncatedNormalDistribution
 
     constructor(like, dislike, share, flag) {
-        doTypeCheck(like, "number");
-        doTypeCheck(dislike, "number");
-        doTypeCheck(share, "number");
-        doTypeCheck(flag, "number");
-
+        doTypeCheck(like, TruncatedNormalDistribution);
+        doTypeCheck(dislike, TruncatedNormalDistribution);
+        doTypeCheck(share, TruncatedNormalDistribution);
+        doTypeCheck(flag, TruncatedNormalDistribution);
         this.like = like;
         this.dislike = dislike;
         this.share = share;
@@ -162,17 +161,19 @@ export class ReactionValues {
 
     toJSON() {
         return {
-            "like": this.like,
-            "dislike": this.dislike,
-            "share": this.share,
-            "flag": this.flag
+            "like": this.like.toJSON(),
+            "dislike": this.dislike.toJSON(),
+            "share": this.share.toJSON(),
+            "flag": this.flag.toJSON()
         };
     }
 
     static fromJSON(json) {
         return new ReactionValues(
-            json["like"], json["dislike"],
-            json["share"], json["flag"]
+            TruncatedNormalDistribution.fromJSON(json["like"]),
+            TruncatedNormalDistribution.fromJSON(json["dislike"]),
+            TruncatedNormalDistribution.fromJSON(json["share"]),
+            TruncatedNormalDistribution.fromJSON(json["flag"])
         );
     }
 }

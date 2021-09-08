@@ -142,8 +142,38 @@ class ExcelTextOrImageType extends ExcelType {
     }
 }
 
+/**
+ * An limit that can be one of:
+ * - An integer that is greater than or equal to zero.
+ * - The string "Unlimited" to represent no limit.
+ *
+ * Evaluates to an integer with the special value -1
+ * representing unlimited limits.
+ */
+class ExcelLimitType extends ExcelType {
+    numberType = new ExcelType(Excel.ValueType.Number, "a number");
+    textType = new ExcelStringType();
+
+    constructor() {
+        super(Excel.ValueType.Number, "a non-negative integer limit, or 'Unlimited'");
+    }
+
+    readCellValue(cell) {
+        const number = this.numberType.readCellValue(cell);
+        if (number !== undefined && Number.isInteger(number) && number >= 0)
+            return number;
+
+        const text = this.textType.readCellValue(cell);
+        if (text.toUpperCase() === "UNLIMITED")
+            return -1;
+
+        return undefined;
+    }
+}
+
 export const ExcelString = new ExcelStringType();
 export const ExcelNumber = new ExcelType(Excel.ValueType.Number, "a number");
+export const ExcelLimit = new ExcelLimitType();
 export const ExcelPercentage = new ExcelType(Excel.ValueType.Number, "a percentage");
 export const ExcelBoolean = new ExcelBooleanType();
 export const ExcelImage = new ExcelImageType();
@@ -239,6 +269,7 @@ export function areCellsBlank(workbook, worksheet, columns, rows) {
  * then an error will be thrown.
  */
 export function readCell(workbook, loc) {
+    doNonNullCheck(workbook);
     doTypeCheck(loc, WorkbookLoc);
 
     const cell = workbook.getWorksheet(loc.worksheet).getCell(loc.cell);

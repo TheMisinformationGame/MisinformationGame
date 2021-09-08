@@ -2,9 +2,9 @@ import {Post, PostComment, ReactionValues, Source, Study} from "./study"
 import {
     areCellsBlank,
     ExcelBoolean,
-    ExcelImage,
+    ExcelImage, ExcelLimit,
     ExcelNumber, ExcelPercentage,
-    ExcelString, ExcelTextOrImage,
+    ExcelString, ExcelTextOrImage, isCellBlank,
     readCell, readCellWithDefault,
     WorkbookColumn,
     WorkbookLoc
@@ -16,10 +16,43 @@ import {
     SourceRatioSelectionMethod
 } from "./selectionMethod";
 import {LinearFunction, TruncatedNormalDistribution} from "./math";
-import {FIRESTORE_IMAGE_LIMIT, StudyImage} from "./images";
+import {StudyImage} from "./images";
+import {doNonNullCheck, doTypeCheck} from "../utils/types";
 
 
 const versionCell = new WorkbookLoc("Version", "About", "M2", ExcelNumber);
+
+function generateV1ChangeDistDefaultsSpec(isTrue, firstRow, col, quantity, reactionPlural) {
+    const truthSuffix = " (" + (isTrue ? "True" : "False") + " Posts)";
+    return {
+        mean: new WorkbookLoc(
+            "Default " + quantity + " Change Mean from " + reactionPlural + truthSuffix,
+            "Posts", col + firstRow, ExcelNumber
+        ),
+        stdDev: new WorkbookLoc(
+            "Default " + quantity + " Change Std. Deviation from " + reactionPlural + truthSuffix,
+            "Posts", col + (firstRow + 1), ExcelNumber
+        ),
+    };
+}
+function generateV1ChangesAfterPostDefaultsSpec(isTrue, firstRow, firstCol, quantity) {
+    const likeCol = firstCol;
+    const dislikeCol = String.fromCharCode(firstCol.charCodeAt(0) + 1);
+    const shareCol = String.fromCharCode(firstCol.charCodeAt(0) + 2);
+    const flagCol = String.fromCharCode(firstCol.charCodeAt(0) + 3);
+    return {
+        like: generateV1ChangeDistDefaultsSpec(isTrue, firstRow, likeCol, quantity, "Likes"),
+        dislike: generateV1ChangeDistDefaultsSpec(isTrue, firstRow, dislikeCol, quantity, "Dislikes"),
+        share: generateV1ChangeDistDefaultsSpec(isTrue, firstRow, shareCol, quantity, "Shares"),
+        flag: generateV1ChangeDistDefaultsSpec(isTrue, firstRow, flagCol, quantity, "Flags")
+    };
+}
+function generateV1PostDefaultsSpec(isTrue, firstRow) {
+    return {
+        changesToFollowers: generateV1ChangesAfterPostDefaultsSpec(isTrue, firstRow, "C", "Followers"),
+        changesToCredibility: generateV1ChangesAfterPostDefaultsSpec(isTrue, firstRow, "G", "Credibility")
+    };
+}
 const V1 = {
     name: new WorkbookLoc("Name", "General", "D4", ExcelString),
     description: new WorkbookLoc("Description", "General", "D5", ExcelString),
@@ -63,24 +96,30 @@ const V1 = {
         id: new WorkbookColumn("ID", "Sources", "C", ExcelString),
         name: new WorkbookColumn("Name", "Sources", "D", ExcelString),
         avatar: new WorkbookColumn("Avatar", "Sources", "E", ExcelImage),
-        maxPosts: new WorkbookColumn("Max Posts", "Sources", "F", ExcelNumber),
-        followersMean: new WorkbookColumn("Followers Mean", "Sources", "G", ExcelNumber),
-        followersStdDev: new WorkbookColumn("Followers Std. Deviation", "Sources", "H", ExcelNumber),
-        credibilityMean: new WorkbookColumn("Credibility Mean", "Sources", "I", ExcelNumber),
-        credibilityStdDev: new WorkbookColumn("Credibility Std. Deviation", "Sources", "J", ExcelNumber),
-        truePostPercentage: new WorkbookColumn("True Post Percentage", "Sources", "K", ExcelPercentage),
+        maxPosts: new WorkbookColumn("Max Posts", "Sources", "F", ExcelLimit),
+        followers: new WorkbookColumn("Initial Followers", "Sources", "G", ExcelNumber),
+        credibility: new WorkbookColumn("Initial Credibility", "Sources", "H", ExcelNumber),
+        truePostPercentage: new WorkbookColumn("True Post Percentage", "Sources", "I", ExcelPercentage),
         defaults: {
-            maxPosts: new WorkbookLoc("Max Posts", "Sources", "F16", ExcelNumber),
-            followersMean: new WorkbookLoc("Followers Mean", "Sources", "G16", ExcelNumber),
-            followersStdDev: new WorkbookLoc("Followers Std. Deviation", "Sources", "H16", ExcelNumber),
-            credibilityMean: new WorkbookLoc("Credibility Mean", "Sources", "I16", ExcelNumber),
-            credibilityStdDev: new WorkbookLoc("Credibility Std. Deviation", "Sources", "J16", ExcelNumber)
+            maxPosts: new WorkbookLoc("Max Posts", "Sources", "C16", ExcelLimit),
+            followers: {
+                mean: new WorkbookLoc(
+                    "Default Initial Followers Mean", "Sources", "D16", ExcelNumber),
+                stdDev: new WorkbookLoc(
+                    "Default Initial Followers Std. Deviation", "Sources", "E16", ExcelNumber)
+            },
+            credibility: {
+                mean: new WorkbookLoc(
+                    "Default Initial Credibility Mean", "Sources", "F16", ExcelNumber),
+                stdDev: new WorkbookLoc(
+                    "Default Initial Credibility Std. Deviation", "Sources", "G16", ExcelNumber)
+            }
         }
     },
 
     post: {
-        firstRow: 16,
-        lastRow: 999,
+        firstRow: 23,
+        lastRow: 1006,
         rowStride: 3,
         worksheet: "Posts",
         valueColumns: "DEFGHIJKLMNOPQ",
@@ -89,16 +128,20 @@ const V1 = {
         content: new WorkbookColumn("Content", "Posts", "E", ExcelTextOrImage),
         isTrue: new WorkbookColumn("Is True", "Posts", "F", ExcelBoolean),
         changesToFollowers: {
-            like: new WorkbookColumn("Changes to Followers for Likes", "Posts", "G", ExcelNumber),
-            dislike: new WorkbookColumn("Changes to Followers for Dislikes", "Posts", "H", ExcelNumber),
-            share: new WorkbookColumn("Changes to Followers for Shares", "Posts", "I", ExcelNumber),
-            flag: new WorkbookColumn("Changes to Followers for Flags", "Posts", "J", ExcelNumber)
+            min: -1e9,
+            max: 1e9,
+            like: new WorkbookColumn("Follower Change from Likes", "Posts", "G", ExcelNumber),
+            dislike: new WorkbookColumn("Follower Change from Dislikes", "Posts", "H", ExcelNumber),
+            share: new WorkbookColumn("Follower Change from Shares", "Posts", "I", ExcelNumber),
+            flag: new WorkbookColumn("Follower Change from Flags", "Posts", "J", ExcelNumber)
         },
         changesToCredibility: {
-            like: new WorkbookColumn("Changes to Credibility for Likes", "Posts", "K", ExcelNumber),
-            dislike: new WorkbookColumn("Changes to Credibility for Dislikes", "Posts", "L", ExcelNumber),
-            share: new WorkbookColumn("Changes to Credibility for Shares", "Posts", "M", ExcelNumber),
-            flag: new WorkbookColumn("Changes to Credibility for Flags", "Posts", "N", ExcelNumber)
+            min: -100,
+            max: 100,
+            like: new WorkbookColumn("Credibility Change from Likes", "Posts", "K", ExcelNumber),
+            dislike: new WorkbookColumn("Credibility Change from Dislikes", "Posts", "L", ExcelNumber),
+            share: new WorkbookColumn("Credibility Change from Shares", "Posts", "M", ExcelNumber),
+            flag: new WorkbookColumn("Credibility Change from Flags", "Posts", "N", ExcelNumber)
         },
         comment: {
             valueColumns: "OPQ",
@@ -106,20 +149,8 @@ const V1 = {
             message: new WorkbookColumn("Comment Message", "Posts", "P", ExcelString),
             likes: new WorkbookColumn("Comment Likes", "Posts", "Q", ExcelNumber)
         },
-        defaults: {
-            changesToFollowers: {
-                like: new WorkbookLoc("Changes to Followers for Likes", "Posts", "G11", ExcelNumber),
-                dislike: new WorkbookLoc("Changes to Followers for Dislikes", "Posts", "H11", ExcelNumber),
-                share: new WorkbookLoc("Changes to Followers for Shares", "Posts", "I11", ExcelNumber),
-                flag: new WorkbookLoc("Changes to Followers for Flags", "Posts", "J11", ExcelNumber)
-            },
-            changesToCredibility: {
-                like: new WorkbookLoc("Changes to Credibility for Likes", "Posts", "K11", ExcelNumber),
-                dislike: new WorkbookLoc("Changes to Credibility for Dislikes", "Posts", "L11", ExcelNumber),
-                share: new WorkbookLoc("Changes to Credibility for Shares", "Posts", "M11", ExcelNumber),
-                flag: new WorkbookLoc("Changes to Credibility for Flags", "Posts", "N11", ExcelNumber)
-            }
-        }
+        trueDefaults: generateV1PostDefaultsSpec(true, 16),
+        falseDefaults: generateV1PostDefaultsSpec(false, 18)
     },
 
     predefinedOrder: {
@@ -172,28 +203,36 @@ function readV1SourcePostSelectionMethod(workbook) {
 }
 
 function readV1FollowersDistribution(workbook, row, defaults) {
-    const followersMean = readCellWithDefault(
-        workbook, V1.source.followersMean.row(row), defaults.followersMean);
-    const followersStdDev = readCellWithDefault(
-        workbook, V1.source.followersStdDev.row(row), defaults.followersStdDev);
+    let mean, stdDev;
+    if (isCellBlank(workbook, V1.source.followers.row(row))) {
+        mean = defaults.followersMean;
+        stdDev = defaults.followersStdDev;
+    } else {
+        mean = readCell(workbook, V1.source.followers.row(row));
+        stdDev = 0;
+    }
 
-    // Followers can fall anywhere within 5 standard deviations of the mean.
-    // This helps us to avoid extreme values.
+    // Followers can fall anywhere within 5 standard deviations
+    // of the mean. This helps us to avoid extreme values.
     return new TruncatedNormalDistribution(
-        followersMean, followersStdDev,
-        Math.max(0, followersMean - 5 * followersStdDev),
-        followersMean + 5 * followersStdDev
+        mean, stdDev,
+        Math.max(0, mean - 5 * stdDev),
+        mean + 5 * stdDev
     );
 }
 
 function readV1CredibilityDistribution(workbook, row, defaults) {
-    const credibilityMean = readCellWithDefault(
-        workbook, V1.source.credibilityMean.row(row), defaults.credibilityMean);
-    const credibilityStdDev = readCellWithDefault(
-        workbook, V1.source.credibilityStdDev.row(row), defaults.credibilityStdDev);
+    let mean, stdDev;
+    if (isCellBlank(workbook, V1.source.credibility.row(row))) {
+        mean = defaults.credibilityMean;
+        stdDev = defaults.credibilityStdDev;
+    } else {
+        mean = readCell(workbook, V1.source.credibility.row(row));
+        stdDev = 0;
+    }
 
     // Credibility can fall anywhere from 0 to 100.
-    return new TruncatedNormalDistribution(credibilityMean, credibilityStdDev, 0, 100);
+    return new TruncatedNormalDistribution(mean, stdDev, 0, 100);
 }
 
 /**
@@ -203,10 +242,10 @@ function readV1Sources(workbook) {
     const sources = [];
     const defaults = {
         maxPosts: readCell(workbook, V1.source.defaults.maxPosts),
-        followersMean: readCell(workbook, V1.source.defaults.followersMean),
-        followersStdDev: readCell(workbook, V1.source.defaults.followersStdDev),
-        credibilityMean: readCell(workbook, V1.source.defaults.credibilityMean),
-        credibilityStdDev: readCell(workbook, V1.source.defaults.credibilityStdDev)
+        followersMean: readCell(workbook, V1.source.defaults.followers.mean),
+        followersStdDev: readCell(workbook, V1.source.defaults.followers.stdDev),
+        credibilityMean: readCell(workbook, V1.source.defaults.credibility.mean),
+        credibilityStdDev: readCell(workbook, V1.source.defaults.credibility.stdDev)
     };
     for (let row = V1.source.firstRow; row <= V1.source.lastRow; ++row) {
         // Skip blank rows.
@@ -236,16 +275,27 @@ function readV1Sources(workbook) {
     return Promise.all(sources);
 }
 
-function readV1ReactionValues(workbook, locations, row, defaultLocs) {
-    const defaultLike = readCell(workbook, defaultLocs.like);
-    const defaultDislike = readCell(workbook, defaultLocs.like);
-    const defaultShare = readCell(workbook, defaultLocs.like);
-    const defaultFlag = readCell(workbook, defaultLocs.like);
+function readV1ReactionValue(workbook, loc, min, max, defaultDist) {
+    doNonNullCheck(workbook);
+    doTypeCheck(loc, WorkbookLoc);
+    doTypeCheck(min, "number");
+    doTypeCheck(max, "number");
+    doTypeCheck(defaultDist, TruncatedNormalDistribution);
+    if (isCellBlank(workbook, loc))
+        return defaultDist;
+
+    const value = readCell(workbook, loc);
+    return new TruncatedNormalDistribution(value, 0, min, max);
+}
+
+function readV1ReactionValues(workbook, spec, row, defaults) {
+    const min = spec.min;
+    const max = spec.max;
     return new ReactionValues(
-        readCellWithDefault(workbook, locations.like.row(row), defaultLike),
-        readCellWithDefault(workbook, locations.dislike.row(row), defaultDislike),
-        readCellWithDefault(workbook, locations.share.row(row), defaultShare),
-        readCellWithDefault(workbook, locations.flag.row(row), defaultFlag)
+        readV1ReactionValue(workbook, spec.like.row(row), min, max, defaults.like),
+        readV1ReactionValue(workbook, spec.dislike.row(row), min, max, defaults.dislike),
+        readV1ReactionValue(workbook, spec.share.row(row), min, max, defaults.share),
+        readV1ReactionValue(workbook, spec.flag.row(row), min, max, defaults.flag)
     );
 }
 
@@ -273,11 +323,45 @@ function range(fromInclusive, toExclusive) {
     return arr;
 }
 
+function readV1PostChangeDistDefault(workbook, defaultsSpec, min, max) {
+    return new TruncatedNormalDistribution(
+        readCell(workbook, defaultsSpec.mean),
+        readCell(workbook, defaultsSpec.stdDev),
+        min, max
+    );
+}
+
+function readV1PostQuantityDefaults(workbook, defaultsSpec, min, max) {
+    return {
+        like: readV1PostChangeDistDefault(workbook, defaultsSpec.like, min, max),
+        dislike: readV1PostChangeDistDefault(workbook, defaultsSpec.dislike, min, max),
+        share: readV1PostChangeDistDefault(workbook, defaultsSpec.share, min, max),
+        flag: readV1PostChangeDistDefault(workbook, defaultsSpec.flag, min, max)
+    };
+}
+
+function readV1PostDefaults(workbook, defaultsSpec) {
+    return {
+        changesToFollowers: readV1PostQuantityDefaults(
+            workbook, defaultsSpec.changesToFollowers,
+            V1.post.changesToFollowers.min,
+            V1.post.changesToFollowers.max
+        ),
+        changesToCredibility: readV1PostQuantityDefaults(
+            workbook, defaultsSpec.changesToCredibility,
+            V1.post.changesToCredibility.min,
+            V1.post.changesToCredibility.max
+        )
+    };
+}
+
 /**
  * Returns a Promise to a list of posts read from the workbook.
  */
 function readV1Posts(workbook) {
     const posts = [];
+    const trueDefaults = readV1PostDefaults(workbook, V1.post.trueDefaults);
+    const falseDefaults = readV1PostDefaults(workbook, V1.post.falseDefaults);
     for (let row = V1.post.firstRow; row <= V1.post.lastRow; row += V1.post.rowStride) {
         // Skip blank rows.
         const rows = range(row, row + V1.post.rowStride);
@@ -285,6 +369,8 @@ function readV1Posts(workbook) {
             continue;
 
         const postID = readCell(workbook, V1.post.id.row(row));
+        const isTrue = readCell(workbook, V1.post.isTrue.row(row));
+        const defaults = (isTrue ? trueDefaults : falseDefaults);
 
         // If the content is an image, we have to convert it to our format.
         const contentExcelValue = readCell(workbook, V1.post.content.row(row));
@@ -301,11 +387,11 @@ function readV1Posts(workbook) {
                     postID,
                     readCell(workbook, V1.post.headline.row(row)),
                     content,
-                    readCell(workbook, V1.post.isTrue.row(row)),
+                    isTrue,
                     readV1ReactionValues(
-                        workbook, V1.post.changesToFollowers, row, V1.post.defaults.changesToFollowers),
+                        workbook, V1.post.changesToFollowers, row, defaults.changesToFollowers),
                     readV1ReactionValues(
-                        workbook, V1.post.changesToCredibility, row, V1.post.defaults.changesToCredibility),
+                        workbook, V1.post.changesToCredibility, row, defaults.changesToCredibility),
                     readV1Comments(workbook, row)
                 )
             })
