@@ -45,6 +45,7 @@ class Test(unittest.TestCase):
         search_box.send_keys(Keys.RETURN)
         # to click on the first search result's link
 <<<<<<< HEAD
+<<<<<<< HEAD
         self.driver.find_element_by_xpath("").click()
         # switch to the new tab
         self.driver.switch_to.window(self.driver.window_handles[1])
@@ -53,6 +54,8 @@ class Test(unittest.TestCase):
         # to confirm if a certain item is visible or not
         self.assertTrue(self.driver.find_element_by_id("").is_displayed())
 =======
+=======
+>>>>>>> 96b6f50 (Add tests with credibility settings missing; Add tests with overall-ratio settings missing; Add tests with one sheet missing)
         try:
             pages = self.driver.find_elements_by_xpath(
                 "//a[@class='px-4 py-2 m-0.5 hover:bg-blue-400 rounded font-sans text-white text-lg undefined']")
@@ -203,6 +206,9 @@ class Test(unittest.TestCase):
         except:
             print(
                 "Test of uploading study file with one sheet missing failed!")
+<<<<<<< HEAD
+>>>>>>> 96b6f50 (Add tests with credibility settings missing; Add tests with overall-ratio settings missing; Add tests with one sheet missing)
+=======
 >>>>>>> 96b6f50 (Add tests with credibility settings missing; Add tests with overall-ratio settings missing; Add tests with one sheet missing)
 
     def shutDown(self) -> None:
@@ -221,4 +227,7 @@ if __name__ == "__main__":
     # test.testUploadCredibilitySettingsMissing()
     # test.testUploadOverallRatioSettingsMissing()
     test.UploadtestSheetMissing()
+<<<<<<< HEAD
+>>>>>>> 96b6f50 (Add tests with credibility settings missing; Add tests with overall-ratio settings missing; Add tests with one sheet missing)
+=======
 >>>>>>> 96b6f50 (Add tests with credibility settings missing; Add tests with overall-ratio settings missing; Add tests with one sheet missing)
