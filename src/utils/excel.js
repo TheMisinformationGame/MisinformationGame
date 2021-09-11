@@ -228,18 +228,35 @@ export class WorkbookColumn {
 }
 
 
-function isCellAtAddressBlank(workbook, worksheet, address) {
-    const cell = workbook.getWorksheet(worksheet).getCell(address);
-    // This also returns true for cells that contain images, but oh well...
-    return cell.type === Excel.ValueType.Null || cell.type === Excel.ValueType.Merge;
-}
-
-
 /**
  * An error that is thrown when the value in a cell does
  * not match the type of value that is expected.
  */
 export class CellTypeError extends Error {}
+
+/**
+ * An error that is thrown when the workbook as a whole
+ * contains an error, rather than just one specific cell.
+ */
+export class WorkbookError extends Error {}
+
+/**
+ * Returns the worksheet {@param worksheet} within {@param workbook},
+ * throwing a WorkbookError if the worksheet does not exist.
+ */
+function getWorksheet(workbook, worksheet) {
+    const worksheetValue = workbook.getWorksheet(worksheet);
+    if (worksheetValue === undefined)
+        throw new WorkbookError("The spreadsheet is missing the " + worksheet + " worksheet");
+
+    return worksheetValue;
+}
+
+function isCellAtAddressBlank(workbook, worksheet, address) {
+    const cell = getWorksheet(workbook, worksheet).getCell(address);
+    // This also returns true for cells that contain images, but oh well...
+    return cell.type === Excel.ValueType.Null || cell.type === Excel.ValueType.Merge;
+}
 
 /**
  * Returns whether the cell at the given WorkbookLoc is blank.
@@ -272,7 +289,11 @@ export function readCell(workbook, loc) {
     doNonNullCheck(workbook);
     doTypeCheck(loc, WorkbookLoc);
 
-    const cell = workbook.getWorksheet(loc.worksheet).getCell(loc.cell);
+    const worksheet = workbook.getWorksheet(loc.worksheet);
+    if (worksheet === undefined)
+        throw new WorkbookError("The spreadsheet is missing the " + loc.worksheet + " worksheet");
+
+    const cell = getWorksheet(workbook, loc.worksheet).getCell(loc.cell);
     const value = loc.type.readCellValue(cell);
     if (value === undefined) {
         throw new CellTypeError(
