@@ -353,6 +353,24 @@ export class Study {
         this.posts = posts;
     }
 
+    getSource(sourceID) {
+        for (let index = 0; index < this.sources; ++index) {
+            const source = this.sources[index];
+            if (source.id === sourceID)
+                return source;
+        }
+        throw new Error("Unknown source ID " + sourceID);
+    }
+
+    getPost(postID) {
+        for (let index = 0; index < this.posts; ++index) {
+            const post = this.posts[index];
+            if (post.id === postID)
+                return post;
+        }
+        throw new Error("Unknown post ID " + postID);
+    }
+
     /**
      * Once a full source is loaded, this method can be
      * used to replace the old BaseSource.

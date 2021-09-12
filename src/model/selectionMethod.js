@@ -13,6 +13,14 @@ export class SourcePostSelectionMethod {
         this.type = type;
     }
 
+    /**
+     * This should return an array containing two elements:
+     *     [source to show (GameSource), ID of the post to show (String)]
+     */
+    makeSelection(stateIndex, sources) {
+        throw new Error("makeSelection is not implemented for " + this.type);
+    }
+
     toJSON() {
         return {
             "type": this.type
