@@ -1,4 +1,4 @@
-import {Component, Fragment} from "react";
+import {Component} from "react";
 import ErrorIcon from "@material-ui/icons/Error";
 import {CircularProgress} from "@material-ui/core";
 import DoneIcon from "@material-ui/icons/Done";

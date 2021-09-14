@@ -3,6 +3,10 @@
  * but I've left it in here as an example. -Paddy L.
  */
 
+html, body, #root {
+  min-height: 100vh;
+}
+
 .App {
   text-align: center;
 }
