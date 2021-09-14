@@ -10,46 +10,6 @@ import {odiff} from "../utils/odiff";
  * A source that is missing some information, but at least
  * contains enough info to perform the source/post selection.
  */
-<<<<<<< HEAD
-=======
-export class StudyImage {
-    buffer; // Uint8Array
-    type; // String
-
-    constructor(buffer, type) {
-        doTypeCheck(buffer, Uint8Array);
-        doTypeCheck(type, "string");
-
-        this.buffer = buffer;
-        this.type = type;
-    }
-
-    createImage() {
-        const image = new Image();
-        image.src = URL.createObjectURL(
-            new Blob([this.buffer.buffer], { type: this.type })
-        );
-        return image;
-    }
-
-    static fromExcelImage(excelImage) {
-        return new StudyImage(excelImage.buffer, "image/" + excelImage.extension);
-    }
-
-    toJSON() {
-        throw new Error(
-            "I don't know the best way to store this in JSON... base64 maybe? " +
-            "Although, that said, storing them in Firebase Storage may be the " +
-            "the best solution (it would just be more complicated...)"
-        );
-    }
-}
-
-/**
- * A source that is missing some information, but at least
- * contains enough info to perform the source/post selection.
- */
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
 export class BaseSource {
     id; // String
     name; // String
@@ -88,16 +48,12 @@ export class BaseSource {
         return {
             "id": this.id,
             "name": this.name,
-<<<<<<< HEAD
             "maxPosts": this.maxPosts,
-=======
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
             "followers": this.followers.toJSON(),
             "credibility": this.credibility.toJSON(),
             "truePostPercentage": this.truePostPercentage
         };
     }
-<<<<<<< HEAD
 
     static fromJSON(json) {
         return new BaseSource(
@@ -107,8 +63,6 @@ export class BaseSource {
             json["truePostPercentage"]
         );
     }
-=======
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
 }
 
 /**
@@ -141,7 +95,6 @@ export class Source extends BaseSource {
             "avatar": this.avatar.toJSON()
         };
     }
-<<<<<<< HEAD
 
     static fromJSON(json) {
         const baseSource = BaseSource.fromJSON(json);
@@ -152,8 +105,6 @@ export class Source extends BaseSource {
             baseSource.credibility, baseSource.truePostPercentage
         );
     }
-=======
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
 }
 
 /**
@@ -180,15 +131,12 @@ export class PostComment {
             "likes": this.likes
         };
     }
-<<<<<<< HEAD
 
     static fromJSON(json) {
         return new PostComment(
             json["sourceID"], json["message"], json["likes"]
         );
     }
-=======
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
 }
 
 /**
@@ -213,7 +161,6 @@ export class ReactionValues {
 
     toJSON() {
         return {
-<<<<<<< HEAD
             "like": this.like.toJSON(),
             "dislike": this.dislike.toJSON(),
             "share": this.share.toJSON(),
@@ -229,14 +176,6 @@ export class ReactionValues {
             TruncatedNormalDistribution.fromJSON(json["flag"])
         );
     }
-=======
-            "like": this.like,
-            "dislike": this.dislike,
-            "share": this.share,
-            "flag": this.flag
-        };
-    }
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
 }
 
 /**
@@ -252,11 +191,7 @@ export class BasePost {
     comments; // PostComment[]
 
     constructor(id, headline, isTrue, changesToFollowers, changesToCredibility, comments) {
-<<<<<<< HEAD
         doTypeCheck(id, "string");
-=======
-        doTypeCheck(id, "number");
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
         doTypeCheck(headline, "string");
         doTypeCheck(isTrue, "boolean");
         doTypeCheck(changesToFollowers, ReactionValues);
@@ -278,7 +213,6 @@ export class BasePost {
         return false;
     }
 
-<<<<<<< HEAD
     static commentsToJSON(comments) {
         const commentsJSON = [];
         for (let index = 0; index < comments.length; ++index) {
@@ -296,20 +230,12 @@ export class BasePost {
     }
 
     toJSON() {
-=======
-    toJSON() {
-        const commentsJSON = [];
-        for (let index = 0; index < this.comments.length; ++index) {
-            commentsJSON.push(this.comments[index].toJSON())
-        }
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
         return {
             "id": this.id,
             "headline": this.headline,
             "isTrue": this.isTrue,
             "changesToFollowers": this.changesToFollowers.toJSON(),
             "changesToCredibility": this.changesToCredibility.toJSON(),
-<<<<<<< HEAD
             "comments": BasePost.commentsToJSON(this.comments)
         };
     }
@@ -322,11 +248,6 @@ export class BasePost {
             BasePost.commentsFromJSON(json["comments"])
         );
     }
-=======
-            "comments": commentsJSON
-        };
-    }
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
 }
 
 /**
@@ -342,23 +263,18 @@ export class Post extends BasePost {
     }
 
     toBasePost() {
-<<<<<<< HEAD
         return new BasePost(
             this.id, this.headline, this.isTrue,
             this.changesToFollowers,
             this.changesToCredibility,
             this.comments
         );
-=======
-        return new BasePost(this.id, this.headline, this.isTrue);
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
     }
 
     isFullPost() {
         return true;
     }
 
-<<<<<<< HEAD
     static contentToJSON(content) {
         if (typeof content === "string")
             return content;
@@ -386,13 +302,6 @@ export class Post extends BasePost {
             basePost.isTrue, basePost.changesToFollowers,
             basePost.changesToCredibility, basePost.comments
         );
-=======
-    toJSON() {
-        return {
-            ...super.toJSON(),
-            "content": this.content.toJSON()
-        };
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
     }
 }
 
@@ -444,7 +353,6 @@ export class Study {
         this.posts = posts;
     }
 
-<<<<<<< HEAD
     getSource(sourceID) {
         for (let index = 0; index < this.sources; ++index) {
             const source = this.sources[index];
@@ -500,8 +408,6 @@ export class Study {
         return randDigits(this.completionCodeDigits);
     }
 
-=======
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
     /**
      * Returns all the stripped-down sources for
      * use in source/post selection.
@@ -528,7 +434,6 @@ export class Study {
         return base;
     }
 
-<<<<<<< HEAD
     static sourcesToJSON(sources) {
         const sourcesJSON = [];
         for (let index = 0; index < sources.length; ++index) {
@@ -563,26 +468,11 @@ export class Study {
         return posts;
     }
 
-=======
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
     /**
      * This does _not_ include the full source and post
      * information, just the base information.
      */
     toJSON() {
-<<<<<<< HEAD
-=======
-        const sources = this.getBaseSources();
-        const sourceJSONs = [];
-        for (let index = 0; index < sources.length; ++index) {
-            sourceJSONs.push(sources[index].toJSON());
-        }
-        const posts = this.getBasePosts();
-        const postJSONs = [];
-        for (let index = 0; index < posts.length; ++index) {
-            postJSONs.push(posts[index].toJSON());
-        }
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
         return {
             "name": this.name,
             "description": this.description,
@@ -591,7 +481,6 @@ export class Study {
             "length": this.length,
             "debrief": this.debrief,
             "genCompletionCode": this.genCompletionCode,
-<<<<<<< HEAD
             "completionCodeDigits": this.completionCodeDigits,
             "sourcePostSelectionMethod": this.sourcePostSelectionMethod.toJSON(),
             "sources": Study.sourcesToJSON(this.getBaseSources()),
@@ -643,12 +532,4 @@ export function getChangesToAndFromJSON(study) {
 
     // Return the deep differences between them.
     return odiff(study, reconstructedStudy);
-=======
-            "maxCompletionCode": this.maxCompletionCode,
-            "sourcePostSelectionMethod": this.sourcePostSelectionMethod.toJSON(),
-            "sources": sourceJSONs,
-            "posts": postJSONs
-        }
-    }
->>>>>>> eff2a8dcf7976c9b360ff7a581da4c9269aa7ba6
 }
