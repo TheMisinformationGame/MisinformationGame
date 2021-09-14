@@ -54,10 +54,6 @@ export class GameSource {
         return new GameSource(this.source, newCredibility, newFollowers, newUses);
     }
 
-    updateSourceReference(study) {
-        this.source = study.getSource(this.source.id);
-    }
-
     toJSON() {
         return {
             "sourceID": this.source.id,
@@ -131,8 +127,10 @@ export class GamePost {
         return new GamePost(this.post, true);
     }
 
-    updatePostReference(study) {
-        this.post = study.getPost(this.post.id);
+    addUsedSources(usedSources) {
+        for (let index = 0; index < this.post.comments.length; ++index) {
+            usedSources.add(this.post.comments[index].sourceID);
+        }
     }
 
     toJSON() {
@@ -194,22 +192,16 @@ export class GameState {
         this.posts = posts;
     }
 
-    /**
-     * Fetches the latest Source and Post objects from the
-     * Study of this game, and inserts them into the
-     * GameSource and GamePost objects. This is useful if
-     * full Post or Source object are required, instead of
-     * the BasePost and BaseSource objects that will be loaded
-     * from JSON.
-     */
-    updateSourcePostReferences(study) {
-        this.currentSource.updateSourceReference(study);
-        this.currentPost.updatePostReference(study);
+    addUsedSourcesAndPosts(usedSources, usedPosts) {
+        usedSources.add(this.currentSource.source.id);
+        usedPosts.add(this.currentPost.post.id);
+        this.currentPost.addUsedSources(usedSources);
         for (let index = 0; index < this.sources.length; ++index) {
-            this.sources[index].updateSourceReference(study);
+            usedSources.add(this.sources[index].source.id);
         }
         for (let index = 0; index < this.posts.length; ++index) {
-            this.posts[index].updatePostReference(study);
+            usedPosts.add(this.posts[index].post.id);
+            this.posts[index].addUsedSources(usedSources);
         }
     }
 
@@ -371,17 +363,16 @@ export class Game {
     }
 
     /**
-     * Fetches the latest Source and Post objects from the
-     * Study of this game, and inserts them into the
-     * GameState objects. This is useful if a full Post or
-     * Source object is required in the GameState objects,
-     * instead of the BasePost and BaseSource objects that
-     * will be loaded from JSON.
+     * Returns all source and post IDs used in this game.
+     * @return [string[], string[]] containing [Source IDs, Post IDs]
      */
-    updateSourcePostReferences(study) {
+    findUsedSourcesAndPosts() {
+        const usedSources = new Set();
+        const usedPosts = new Set();
         for (let index = 0; index < this.states.length; ++index) {
-            this.states[index].updateSourcePostReferences(study);
+            this.states[index].addUsedSourcesAndPosts(usedSources, usedPosts);
         }
+        return [[...usedSources.values()], [...usedPosts.values()]];
     }
 
     calculateAllStates() {

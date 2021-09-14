@@ -1,5 +1,5 @@
 import {loadTestStudy} from "./studyExcelReader.test";
-import {Game} from "./game";
+import {Game, getGameChangesToAndFromJSON} from "./game";
 
 test("create a game", (done) => {
     loadTestStudy("StudyTemplate.xlsx", (err, study) => {
@@ -9,7 +9,8 @@ test("create a game", (done) => {
         }
 
         try {
-            Game.createNew(study);
+            const game = Game.createNew(study);
+            expect(getGameChangesToAndFromJSON(game)).toEqual([]);
             done();
         } catch (error) {
             done(error);
