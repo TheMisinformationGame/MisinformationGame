@@ -1,5 +1,6 @@
 import {doTypeCheck} from "../utils/types";
 import {LinearFunction} from "./math";
+import {GamePost, GameSource} from "./game";
 
 
 /**
@@ -15,9 +16,9 @@ export class SourcePostSelectionMethod {
 
     /**
      * This should return an array containing two elements:
-     *     [source to show (GameSource), ID of the post to show (String)]
+     *     [ID of the source to show (GameSource), ID of the post to show (String)]
      */
-    makeSelection(stateIndex, sources) {
+    makeSelection(stateIndex, sources, posts) {
         throw new Error("makeSelection is not implemented for " + this.type);
     }
 
@@ -55,6 +56,13 @@ export class OverallRatioSelectionMethod extends SourcePostSelectionMethod {
         this.truePostPercentage = truePostPercentage;
     }
 
+    makeSelection(stateIndex, sources, posts) {
+        return [
+            GameSource.selectRandomSource(sources).source.id,
+            GamePost.selectRandomPost(posts, this.truePostPercentage).post.id
+        ];
+    }
+
     toJSON() {
         return {
             ...super.toJSON(),
@@ -79,6 +87,12 @@ export class SourceRatioSelectionMethod extends SourcePostSelectionMethod {
         super("Source-Ratios");
     }
 
+    makeSelection(stateIndex, sources, posts) {
+        const source = GameSource.selectRandomSource(sources);
+        const post = GamePost.selectRandomPost(posts, source.source.truePostPercentage);
+        return [source.source.id, post.post.id];
+    }
+
     toJSON() {
         return super.toJSON();
     }
@@ -100,6 +114,13 @@ export class CredibilitySelectionMethod extends SourcePostSelectionMethod {
         super("Credibility");
         doTypeCheck(linearRelationship, LinearFunction);
         this.linearRelationship = linearRelationship;
+    }
+
+    makeSelection(stateIndex, sources, posts) {
+        const source = GameSource.selectRandomSource(sources);
+        const truePostPercentage = this.linearRelationship.get(source.credibility);
+        const post = GamePost.selectRandomPost(posts, truePostPercentage);
+        return [source.source.id, post.post.id];
     }
 
     toJSON() {
@@ -127,6 +148,16 @@ export class PredefinedSelectionMethod extends SourcePostSelectionMethod {
         super("Pre-Defined");
         doTypeCheck(order, Array);
         this.order = order;
+    }
+
+    makeSelection(stateIndex, sources, posts) {
+        if (stateIndex < 0 || stateIndex >= this.order.length) {
+            throw new Error(
+                "Pre-defined only has " + this.order.length + " pairs, " +
+                "but a " + (stateIndex + 1) + "th pair was expected."
+            );
+        }
+        return this.order[stateIndex];
     }
 
     toJSON() {

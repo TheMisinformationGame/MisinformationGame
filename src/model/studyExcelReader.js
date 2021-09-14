@@ -163,12 +163,25 @@ const V1 = {
     }
 }
 
-function readV1PredefinedSourcePostOrder(workbook) {
+function readV1PredefinedSourcePostOrder(workbook, length) {
     const order = [];
-    for (let row = V1.predefinedOrder.firstRow; row <= V1.predefinedOrder.lastRow; ++row) {
-        // Skip blank rows.
-        if (areCellsBlank(workbook, V1.predefinedOrder.worksheet, V1.predefinedOrder.valueColumns, [row]))
-            continue;
+    const lastRow = V1.predefinedOrder.firstRow + length;
+    if (lastRow > V1.predefinedOrder.lastRow) {
+        const maxLength = V1.predefinedOrder.lastRow - V1.predefinedOrder.firstRow + 1;
+        throw new Error(
+            "Study length is too long for pre-defined selection method. " +
+            "The study has a length of " + length + ", but the pre-defined selection " +
+            "method has a max number of " + maxLength + " pairs."
+        );
+    }
+
+    for (let row = V1.predefinedOrder.firstRow; row <= lastRow; ++row) {
+        if (areCellsBlank(workbook, V1.predefinedOrder.worksheet, V1.predefinedOrder.valueColumns, [row])) {
+            throw new Error(
+                "Expected a source/post pair on row " + row + " of the " +
+                "Pre-Defined Source & Post Order sheet"
+            );
+        }
 
         order.push([
             readCell(workbook, V1.predefinedOrder.sourceID.row(row)),
