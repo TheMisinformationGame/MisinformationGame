@@ -2,7 +2,22 @@ import logo from "../logo.svg";
 // Please use Tailwind CSS (https://tailwindcss.com/)
 // instead of plain CSS where possible.
 import "../App.css"
+import { Component } from "react";
 
+
+class GameScreen extends Component {
+    //executable code hook 
+    componentDidMount(){
+        console.log("refactored")
+    };
+
+    //render the page
+    render() {
+        return(Game())
+    }
+};
+
+//function with the HTML content of the game page
 function Game() {
     return (
         <div class="h-screen w-6/12 p-0 flex flex-row flex-col text-center content-center place-content-center space-y-0 fixed left-1/2 transform -translate-x-1/2">
@@ -45,4 +60,4 @@ function Game() {
     );
 }
 
-export default Game;
+export default GameScreen;

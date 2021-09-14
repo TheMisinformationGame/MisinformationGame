@@ -101,7 +101,7 @@ export class StudyImage {
             }
         });
     }
-
+    //take the base64 and then convert to bytes 
     createImage() {
         return new Promise((resolve, reject) => {
             const image = new Image();

@@ -248,8 +248,7 @@ export default class StudyUpload extends Component {
                         <StudyUploadForm onStudyLoad={(study) => {
                             console.log(study);
                             window.lastStudy = study;
-                            let obj = study.toJSON()
-                            postStudy(obj)
+                            postStudy(study.toJSON());
                         }} />
                     </div>
                 </div>
