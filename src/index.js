@@ -6,7 +6,7 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Home from "./screens/Home";
 import AdminHome from "./screens/AdminHome";
 import AdminStudy from "./screens/AdminStudy";
-import Game from "./screens/Game";
+import Game from "./screens/GameInterface";
 import GameIdentification from "./screens/GameIdentification";
 import GameIntroduction from "./screens/GameIntroduction";
 import GamePrompt from "./screens/GamePrompt";

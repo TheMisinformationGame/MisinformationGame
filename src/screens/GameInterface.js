@@ -20,12 +20,12 @@ class GameScreen extends Component {
 
     //render the page
     render() {
-        return(Game())
+        return(GameInterface())
     }
-};
+}
 
 //function with the HTML content of the game page
-function Game() {
+function GameInterface() {
     return (
         <div class="h-screen w-6/12 p-0 flex flex-row flex-col text-center content-center place-content-center space-y-0 fixed left-1/2 transform -translate-x-1/2">
             <header class="h-3/4 p-0 flex flex-col border-2 border-black grid space-y-0">
@@ -59,7 +59,7 @@ function Game() {
                        Your Progress
                     </p>
                     <p>
-                        Followers:999 Credability: 000
+                        Followers:999 Credibility: 000
                     </p>
                 </footer>
             </footer>
