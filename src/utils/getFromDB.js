@@ -2,6 +2,7 @@
 04-09-2021 
 File contains functions which are used to get data from the firestore db
 The db can be gotten from the initFirestore function
+Need to figure out a way to get data from firebase storage
 =====================================================================================================================*/
 import firebase from './firebase'
 import { db } from './initFirestore'
@@ -27,4 +28,9 @@ export function getStudiesIDs(db){
     })
 
     console.log(studiesList) //temporary code
+};
+
+// function will get alll th eposts from a particular study
+export function getPosts(){
+
 }

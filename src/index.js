@@ -12,7 +12,8 @@ import GameIntroduction from "./screens/GameIntroduction";
 import GamePrompt from "./screens/GamePrompt";
 import ErrorScreen from "./screens/Error"
 import StudyUpload from "./components/StudyUpload";
-import db from './utils/initFirestore';
+import { db } from './utils/initFirestore';
+import { postStudy } from './utils/postToDB';
 import getPosts from './utils/getPosts';
 import { postReact, testPostFullObject } from './utils/sendReact';
 
@@ -35,3 +36,25 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+//test shit 
+
+
+
+var temp_obj = {
+    "employees": [
+        {
+            "firstName": "John",
+            "lastName": "Doe"
+        },
+        {
+            "firstName": "Anna",
+            "lastName": "Smith"
+        },
+        {
+            "firstName": "Peter",
+            "lastName": "Jones"
+        }
+    ]
+};
+
+postStudy(temp_obj);

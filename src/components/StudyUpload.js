@@ -3,7 +3,8 @@ import {Component} from "react";
 import {readStudyWorkbook} from "../model/studyExcelReader";
 import StatusLabel, {Status} from "./StatusLabel";
 import {getChangesToAndFromJSON} from "../model/study";
-import xlsxHelp from "./help-export-to-xlsx.png"
+import xlsxHelp from "./help-export-to-xlsx.png";
+import { postStudy } from "../utils/postToDB";
 
 const Excel = require('exceljs');
 
@@ -247,6 +248,8 @@ export default class StudyUpload extends Component {
                         <StudyUploadForm onStudyLoad={(study) => {
                             console.log(study);
                             window.lastStudy = study;
+                            let obj = study.toJSON()
+                            postStudy(obj)
                         }} />
                     </div>
                 </div>
