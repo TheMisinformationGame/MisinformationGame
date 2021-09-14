@@ -1,4 +1,4 @@
-import {doNonNullCheck, doTypeCheck} from "./types";
+import {doNonNullCheck, doTypeCheck, isOfType} from "./types";
 import {convertRichTextToHTML} from "./richText";
 
 const Excel = require("exceljs");
@@ -316,4 +316,22 @@ export function readCellWithDefault(workbook, loc, defaultValue) {
         return defaultValue;
 
     return readCell(workbook, loc);
+}
+
+/**
+ * Converts various buffer types to Uint8Array.
+ * This is required as when running from testing,
+ * NodeJS will use Buffer objects instead of
+ * ArrayBuffer objects.
+ */
+export function coerceBufferToUint8Array(buf) {
+    if (isOfType(buf, Uint8Array))
+        return buf;
+    if (isOfType(buf, ArrayBuffer))
+        return new Uint8Array(buf);
+    if (buf.constructor.name === "Buffer") {
+        const arrayBuffer = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+        return new Uint8Array(arrayBuffer);
+    }
+    throw new Error("Unknown type " + buf.constructor);
 }

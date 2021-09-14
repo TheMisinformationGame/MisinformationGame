@@ -1,6 +1,6 @@
 import "../index.css"
 import {Component} from "react";
-import {readStudyWorkbook} from "../model/studyWorkbookReader";
+import {readStudyWorkbook} from "../model/studyExcelReader";
 import StatusLabel, {Status} from "./StatusLabel";
 import {getChangesToAndFromJSON} from "../model/study";
 import xlsxHelp from "./help-export-to-xlsx.png"

@@ -1,5 +1,6 @@
 import {doTypeCheck} from "../utils/types";
 import {base64ToBytes, bytesToBase64} from "../utils/base64";
+import {coerceBufferToUint8Array} from "../utils/excel";
 
 
 /**
@@ -67,7 +68,11 @@ export class StudyImage {
      * This will scale down this image until it fits within the
      * Firestore image limit defined in FIRESTORE_IMAGE_LIMIT.
      */
-    async scaleDown() {
+    scaleDown() {
+        // On NodeJS in testing, we can't work with images.
+        if (!URL.createObjectURL)
+            return Promise.resolve(this);
+
         return new Promise((resolve, reject) => {
             // If this image is within the limit, fulfill the callback.
             if (this.getBytes() < FIRESTORE_IMAGE_LIMIT.bytes) {
@@ -120,7 +125,10 @@ export class StudyImage {
      * Returns a Promise to a StudyImage from the given excel image.
      */
     static fromExcelImage(excelImage) {
-        return new StudyImage(excelImage.buffer, "image/" + excelImage.extension).scaleDown();
+        return new StudyImage(
+            coerceBufferToUint8Array(excelImage.buffer),
+            "image/" + excelImage.extension
+        ).scaleDown();
     }
 
     static fromJSON(json) {
