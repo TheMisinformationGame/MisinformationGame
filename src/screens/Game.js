@@ -3,12 +3,19 @@ import logo from "../logo.svg";
 // instead of plain CSS where possible.
 import "../App.css"
 import { Component } from "react";
+import { getStudySettings } from '../utils/getFromDB';
 
 
 class GameScreen extends Component {
     //executable code hook 
     componentDidMount(){
-        console.log("refactored")
+        let studyID = "8UsCG45359Hp57i5hmIi" ;//temp code will need to figure a way to have a global active study
+        console.log("Page Rendered");
+        let studyJSON = getStudySettings(studyID);
+        //console.log(studyJSON);
+        studyJSON.then(snapshot => {
+            console.log(snapshot)
+        })
     };
 
     //render the page
