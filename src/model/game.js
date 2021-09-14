@@ -3,6 +3,7 @@
  */
 import {doTypeCheck} from "../utils/types";
 import {BasePost, BaseSource, Study} from "./study";
+import {selectFilteredRandomElement, selectFilteredWeightedRandomElement} from "../utils/random";
 
 
 /**
@@ -25,13 +26,13 @@ function adjustFollowers(current, change) {
  * A source in the game with known credibility and followers.
  */
 export class GameSource {
-    sourceID; // String
+    source; // String
     credibility; // Number
     followers; // Number
     remainingUses; // Number
 
     constructor(source, credibility, followers, remainingUses) {
-        doTypeCheck(source, "string");
+        doTypeCheck(source, BaseSource);
         doTypeCheck(credibility, "number");
         doTypeCheck(followers, "number");
         doTypeCheck(remainingUses, "number");
@@ -53,6 +54,29 @@ export class GameSource {
     }
 
     /**
+     * Selects a random source to show, weighted by source's max posts.
+     */
+    static selectRandomSource(sources) {
+        return selectFilteredWeightedRandomElement(
+            sources,
+            (source) => source.remainingUses === -1 || source.remainingUses > 0,
+            (source) => source.source.maxPosts === -1 ? 0 : source.source.maxPosts
+        );
+    }
+
+    /**
+     * Returns the first source in {@param sources} that has the ID {@param id}.
+     */
+    static findById(sources, id) {
+        for (let index = 0; index < sources.length; ++index) {
+            const source = sources[index];
+            if (source.source.id === id)
+                return source;
+        }
+        throw new Error("Could not find source with ID " + id);
+    }
+
+    /**
      * Creates a new source for use in the game by sampling its
      * credibility and followers from the supplied distribution.
      */
@@ -60,7 +84,52 @@ export class GameSource {
         doTypeCheck(source, BaseSource);
         const credibility = source.credibility.sample();
         const followers = source.followers.sample();
-        return new GameSource(source.id, credibility, followers, source.maxPosts);
+        return new GameSource(source, credibility, followers, source.maxPosts);
+    }
+}
+
+/**
+ * A post in the game that may have been shown already.
+ */
+export class GamePost {
+    post; // BasePost
+    shown; // Bool
+
+    constructor(post, shown) {
+        doTypeCheck(post, BasePost);
+        this.post = post;
+        this.shown = !!shown;
+    }
+
+    /**
+     * Returns a new GamePost for this post after it has been shown.
+     */
+    adjustAfterShown() {
+        return new GamePost(this.post, true);
+    }
+
+    /**
+     * Selects a random post to show, with a {@param truePostPercentage}
+     * percent chance of selecting a true post.
+     *
+     * @param posts The array of posts to choose from.
+     * @param truePostPercentage A percentage value between 0 and 100.
+     */
+    static selectRandomPost(posts, truePostPercentage) {
+        const selectTruePosts = Math.random() * 100 < truePostPercentage;
+        return selectFilteredRandomElement(posts, (post) => selectTruePosts === post.post.isTrue);
+    }
+
+    /**
+     * Returns the first post in {@param posts} that has the ID {@param id}.
+     */
+    static findById(posts, id) {
+        for (let index = 0; index < posts.length; ++index) {
+            const post = posts[index];
+            if (post.post.id === id)
+                return post;
+        }
+        throw new Error("Could not find post with ID " + id);
     }
 }
 
@@ -69,16 +138,19 @@ export class GameSource {
  */
 export class GameState {
     currentSource; // GameSource
-    currentPostID; // String
+    currentPost; // GamePost
     sources; // GameSource[]
+    posts; // GamePost[]
 
-    constructor(currentSource, currentPostID, sources) {
+    constructor(currentSource, currentPost, sources, posts) {
         doTypeCheck(currentSource, GameSource);
-        doTypeCheck(currentPostID, "string");
+        doTypeCheck(currentPost, GamePost);
         doTypeCheck(sources, Array);
+        doTypeCheck(posts, Array);
         this.currentSource = currentSource;
-        this.currentPostID = currentPostID;
+        this.currentPost = currentPost;
         this.sources = sources;
+        this.posts = posts;
     }
 }
 
@@ -149,14 +221,13 @@ export class Game {
      *                 "share", "flag", or "skip".
      */
     advanceState(reaction) {
-        if (["like", "dislike", "share", "flag", "skip"].indexOf(reaction) === -1)
+        if (!["like", "dislike", "share", "flag", "skip"].includes(reaction))
             throw new Error("Unknown reaction " + reaction);
 
         if (reaction === "skip") {
             this.participant.addReaction(reaction, 0, 0);
         } else {
-            const state = this.getCurrentState();
-            const post = this.study.getPost(state.currentPostID);
+            const post = this.getCurrentState().currentPost;
             this.participant.addReaction(
                 reaction,
                 post.changesToCredibility[reaction].sample(),
@@ -175,42 +246,50 @@ export class Game {
         if (this.states.length >= this.study.length)
             throw new Error("Already calculated all states for study");
 
-        let currentSources;
+        // Get or create the sources and posts arrays.
+        let currentSources, currentPosts;
         if (this.states.length > 0) {
             const currentState = this.states[this.states.length - 1];
             currentSources = currentState.sources;
+            currentPosts = currentState.posts;
         } else {
             currentSources = [];
-            for (let index = 0; index < this.study.sources; ++index) {
+            currentPosts = [];
+            for (let index = 0; index < this.study.sources.length; ++index) {
                 currentSources.push(GameSource.sampleNewSource(this.study.sources[index]));
             }
-        }
-
-        const selectionMethod = this.study.sourcePostSelectionMethod;
-        const sourcePostPair = selectionMethod.makeSelection(this.states.length, currentSources);
-        const selectedSource = sourcePostPair[0];
-        const selectedPost = sourcePostPair[1];
-        doTypeCheck(selectedSource, GameSource);
-        doTypeCheck(selectedPost, "string");
-
-        // Adjust the credibility and followers of the source.
-        const newSource = selectedSource.adjustAfterPost(
-            selectedPost.changesToCredibility.share.sample(),
-            selectedPost.changesToFollowers.share.sample()
-        );
-
-        // Replace the adjusted source in the sources for the next state.
-        const nextSources = [];
-        for (let index = 0; index < currentSources.length; ++index) {
-            const source = currentSources[index];
-            if (source.sourceID === newSource.sourceID) {
-                nextSources.push(newSource);
-            } else {
-                nextSources.push(source);
+            for (let index = 0; index < this.study.posts.length; ++index) {
+                currentPosts.push(new GamePost(this.study.posts[index]));
             }
         }
 
-        const newState = new GameState(newSource, selectedPost, nextSources);
+        // Make the source/post selection.
+        const selectionMethod = this.study.sourcePostSelectionMethod;
+        const sourcePostPair = selectionMethod.makeSelection(this.states.length, currentSources, currentPosts);
+        const selectedSource = GameSource.findById(currentSources, sourcePostPair[0]);
+        const selectedPost = GamePost.findById(currentPosts, sourcePostPair[1]);
+
+        // Adjust the state of the source and post.
+        const newSource = selectedSource.adjustAfterPost(
+            selectedPost.post.changesToCredibility.share.sample(),
+            selectedPost.post.changesToFollowers.share.sample()
+        );
+        const newPost = selectedPost.adjustAfterShown();
+
+        // Create the new source & post arrays after they've been shown.
+        const nextSources = [];
+        const nextPosts = [];
+        for (let index = 0; index < currentSources.length; ++index) {
+            const source = currentSources[index];
+            nextSources.push(source.source.id === newSource.source.id ? newSource : source);
+        }
+        for (let index = 0; index < currentPosts.length; ++index) {
+            const post = currentPosts[index];
+            nextPosts.push(post.post.id === newPost.post.id ? newPost : post);
+        }
+
+        // Create the new state.
+        const newState = new GameState(newSource, newPost, nextSources, nextPosts);
         this.states.push(newState);
         return newState;
     }
