@@ -2,7 +2,4 @@
 import firebase from './firebase.js';
 import 'firebase/firestore'
 
-const db = firebase.firestore();
-
-
-export default db 
+export const db = firebase.firestore();
