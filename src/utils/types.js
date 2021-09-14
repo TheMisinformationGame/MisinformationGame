@@ -53,7 +53,7 @@ export function doTypeCheck(value, expectedType) {
  * check if {@param value} is an instance of any of the given types.
  */
 export function doNullableTypeCheck(value, expectedType) {
-    if (value === null)
+    if (value === null || value === undefined)
         return;
     doTypeCheck(value, expectedType);
 }

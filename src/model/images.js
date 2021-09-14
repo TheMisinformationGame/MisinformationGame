@@ -60,7 +60,7 @@ export class StudyImage {
         this.type = type;
     }
 
-    getBytes() {
+    getByteCount() {
         return this.buffer.length;
     }
 
@@ -75,7 +75,7 @@ export class StudyImage {
 
         return new Promise((resolve, reject) => {
             // If this image is within the limit, fulfill the callback.
-            if (this.getBytes() < FIRESTORE_IMAGE_LIMIT.bytes) {
+            if (this.getByteCount() < FIRESTORE_IMAGE_LIMIT.bytes) {
                 resolve(this);
                 return;
             }

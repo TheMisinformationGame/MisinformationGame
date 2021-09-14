@@ -2,8 +2,9 @@ import "../index.css"
 import {Component} from "react";
 import {readStudyWorkbook} from "../model/studyExcelReader";
 import StatusLabel, {Status} from "./StatusLabel";
-import {getChangesToAndFromJSON} from "../model/study";
-import xlsxHelp from "./help-export-to-xlsx.png";
+import {getStudyChangesToAndFromJSON} from "../model/study";
+import xlsxHelp from "./help-export-to-xlsx.png"
+import {Game, getGameChangesToAndFromJSON} from "../model/game";
 import { postStudy } from "../utils/postToDB";
 
 const Excel = require('exceljs');
@@ -46,6 +47,58 @@ export class StudyUploadForm extends Component {
         this.updateState({ url: event.target.value });
     }
 
+    verifyStudy(study, updateStatusFn) {
+        updateStatusFn(Status.progress("Verifying study..."));
+
+        const reportInternalError = (errorMessage) => {
+            return updateStatusFn(Status.error([
+                <b>Internal Error:</b>,
+                "An error was found in the study:",
+                errorMessage
+            ]));
+        };
+
+        // We do this in a setTimeout so that React has a chance to
+        // update the UI with our new status. Its dodgy but it works...
+        setTimeout(() => {
+            // Do more checks to make sure this study plays
+            // nicely with our other systems.
+            try {
+                // Try convert the study to and from JSON.
+                const studyChanges = getStudyChangesToAndFromJSON(study);
+                if (studyChanges.length !== 0) {
+                    console.error(studyChanges);
+                    reportInternalError("The study changed after saving and loading.");
+                    return;
+                }
+
+                // Try create a new Game using the study.
+                const game = Game.createNew(study);
+
+                // Try convert the game to and from JSON.
+                const gameChanges = getGameChangesToAndFromJSON(game);
+                if (gameChanges.length !== 0) {
+                    console.error(gameChanges);
+                    reportInternalError(
+                        "A test game created using this study " +
+                        "changed after saving and loading."
+                    );
+                    return;
+                }
+            } catch (error) {
+                console.error(error);
+                reportInternalError(error.message);
+                return;
+            }
+
+            // Success!
+            updateStatusFn(Status.success("Success"));
+            if (this.props.onStudyLoad) {
+                this.props.onStudyLoad(study);
+            }
+        }, 50);
+    }
+
     readXLSX(buffer, updateStatusFn) {
         new Excel.Workbook().xlsx
             .load(buffer)
@@ -53,24 +106,7 @@ export class StudyUploadForm extends Component {
                 updateStatusFn(Status.progress("Reading spreadsheet..."));
                 readStudyWorkbook(workbook)
                     .then((study) => {
-                        // If we're on localhost, then do more checks.
-                        const host = window.location.hostname;
-                        if (host === "localhost" || host === "127.0.0.1") {
-                            const changes = getChangesToAndFromJSON(study);
-                            if (changes.length !== 0) {
-                                updateStatusFn(Status.error(
-                                    "Original study and study reconstructed " +
-                                    "from JSON are different!"
-                                ));
-                                console.error(changes);
-                            }
-                        }
-
-                        // Success!
-                        updateStatusFn(Status.success("Success"));
-                        if (this.props.onStudyLoad) {
-                            this.props.onStudyLoad(study);
-                        }
+                        this.verifyStudy(study, updateStatusFn);
                     })
                     .catch((error) => {
                         console.error(error);

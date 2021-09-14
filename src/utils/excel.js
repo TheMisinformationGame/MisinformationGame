@@ -164,7 +164,7 @@ class ExcelLimitType extends ExcelType {
             return number;
 
         const text = this.textType.readCellValue(cell);
-        if (text.toUpperCase() === "UNLIMITED")
+        if (text !== undefined && text.toUpperCase() === "UNLIMITED")
             return -1;
 
         return undefined;

@@ -354,7 +354,7 @@ export class Study {
     }
 
     getSource(sourceID) {
-        for (let index = 0; index < this.sources; ++index) {
+        for (let index = 0; index < this.sources.length; ++index) {
             const source = this.sources[index];
             if (source.id === sourceID)
                 return source;
@@ -363,7 +363,7 @@ export class Study {
     }
 
     getPost(postID) {
-        for (let index = 0; index < this.posts; ++index) {
+        for (let index = 0; index < this.posts.length; ++index) {
             const post = this.posts[index];
             if (post.id === postID)
                 return post;
@@ -509,7 +509,7 @@ export class Study {
  * This should return an empty array if everything
  * is working correctly.
  */
-export function getChangesToAndFromJSON(study) {
+export function getStudyChangesToAndFromJSON(study) {
     // Convert the study to JSON.
     const json = study.toJSON();
     const sourcesJSON = [];

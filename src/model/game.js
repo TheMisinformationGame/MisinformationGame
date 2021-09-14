@@ -1,9 +1,10 @@
 /**
  * A source with a known credibility and follower count.
  */
-import {doTypeCheck} from "../utils/types";
+import {doNullableTypeCheck, doTypeCheck} from "../utils/types";
 import {BasePost, BaseSource, Study} from "./study";
 import {selectFilteredRandomElement, selectFilteredWeightedRandomElement} from "../utils/random";
+import {odiff} from "../utils/odiff";
 
 
 /**
@@ -26,7 +27,7 @@ function adjustFollowers(current, change) {
  * A source in the game with known credibility and followers.
  */
 export class GameSource {
-    source; // String
+    source; // BaseSource
     credibility; // Number
     followers; // Number
     remainingUses; // Number
@@ -51,6 +52,28 @@ export class GameSource {
         const newFollowers = adjustFollowers(this.followers, followersChange);
         const newUses = Math.max(-1, this.remainingUses - 1);
         return new GameSource(this.source, newCredibility, newFollowers, newUses);
+    }
+
+    updateSourceReference(study) {
+        this.source = study.getSource(this.source.id);
+    }
+
+    toJSON() {
+        return {
+            "sourceID": this.source.id,
+            "credibility": this.credibility,
+            "followers": this.followers,
+            "remainingUses": this.remainingUses
+        };
+    }
+
+    static fromJSON(json, study) {
+        return new GameSource(
+            study.getSource(json["sourceID"]),
+            json["credibility"],
+            json["followers"],
+            json["remainingUses"]
+        );
     }
 
     /**
@@ -108,6 +131,24 @@ export class GamePost {
         return new GamePost(this.post, true);
     }
 
+    updatePostReference(study) {
+        this.post = study.getPost(this.post.id);
+    }
+
+    toJSON() {
+        return {
+            "postID": this.post.id,
+            "shown": this.shown
+        };
+    }
+
+    static fromJSON(json, study) {
+        return new GamePost(
+            study.getPost(json["postID"]),
+            json["shown"]
+        );
+    }
+
     /**
      * Selects a random post to show, with a {@param truePostPercentage}
      * percent chance of selecting a true post.
@@ -152,6 +193,75 @@ export class GameState {
         this.sources = sources;
         this.posts = posts;
     }
+
+    /**
+     * Fetches the latest Source and Post objects from the
+     * Study of this game, and inserts them into the
+     * GameSource and GamePost objects. This is useful if
+     * full Post or Source object are required, instead of
+     * the BasePost and BaseSource objects that will be loaded
+     * from JSON.
+     */
+    updateSourcePostReferences(study) {
+        this.currentSource.updateSourceReference(study);
+        this.currentPost.updatePostReference(study);
+        for (let index = 0; index < this.sources.length; ++index) {
+            this.sources[index].updateSourceReference(study);
+        }
+        for (let index = 0; index < this.posts.length; ++index) {
+            this.posts[index].updatePostReference(study);
+        }
+    }
+
+    static sourcesToJSON(sources) {
+        const sourcesJSON = [];
+        for (let index = 0; index < sources.length; ++index) {
+            sourcesJSON.push(sources[index].toJSON());
+        }
+        return sourcesJSON;
+    }
+
+    static postsToJSON(posts) {
+        const postsJSON = [];
+        for (let index = 0; index < posts.length; ++index) {
+            postsJSON.push(posts[index].toJSON());
+        }
+        return postsJSON;
+    }
+
+    static sourcesFromJSON(json, study) {
+        const sources = [];
+        for (let index = 0; index < json.length; ++index) {
+            sources.push(GameSource.fromJSON(json[index], study));
+        }
+        return sources;
+    }
+
+    static postsFromJSON(json, study) {
+        const posts = [];
+        for (let index = 0; index < json.length; ++index) {
+            posts.push(GamePost.fromJSON(json[index], study));
+        }
+        return posts;
+    }
+
+    toJSON() {
+        return {
+            "currentSource": this.currentSource.toJSON(),
+            "currentPost": this.currentPost.toJSON(),
+            "sources": GameState.sourcesToJSON(this.sources),
+            "posts": GameState.postsToJSON(this.posts)
+        };
+    }
+
+    static fromJSON(json, study) {
+        return new GameState(
+            GameSource.fromJSON(json["currentSource"], study),
+            GamePost.fromJSON(json["currentPost"], study),
+            GameState.sourcesFromJSON(json["sources"], study),
+            GameState.postsFromJSON(json["posts"], study)
+        );
+    }
 }
 
 /**
@@ -165,14 +275,17 @@ export class GameParticipant {
     credibilityHistory; // Number[]
     followerHistory; // Number[]
 
-    constructor(credibility, followers) {
+    constructor(credibility, followers, reactions, credibilityHistory, followerHistory) {
         doTypeCheck(credibility, "number");
         doTypeCheck(followers, "number");
+        doNullableTypeCheck(reactions, Array);
+        doNullableTypeCheck(credibilityHistory, Array);
+        doNullableTypeCheck(followerHistory, Array);
         this.credibility = credibility;
         this.followers = followers;
-        this.reactions = [];
-        this.credibilityHistory = [];
-        this.followerHistory = [];
+        this.reactions = reactions || [];
+        this.credibilityHistory = credibilityHistory || [];
+        this.followerHistory = followerHistory || [];
     }
 
     addReaction(reaction, credibilityChange, followersChange) {
@@ -182,6 +295,26 @@ export class GameParticipant {
 
         this.credibility = adjustCredibility(this.credibility, credibilityChange);
         this.followers = adjustFollowers(this.followers, followersChange);
+    }
+
+    toJSON() {
+        return {
+            "credibility": this.credibility,
+            "followers": this.followers,
+            "reactions": this.reactions,
+            "credibilityHistory": this.credibilityHistory,
+            "followerHistory": this.followerHistory
+        };
+    }
+
+    static fromJSON(json) {
+        return new GameParticipant(
+            json["credibility"],
+            json["followers"],
+            json["reactions"],
+            json["credibilityHistory"],
+            json["followerHistory"]
+        );
     }
 }
 
@@ -193,12 +326,13 @@ export class Game {
     states; // GameState[]
     participant; // GameParticipant
 
-    constructor(study) {
+    constructor(study, states, participant) {
         doTypeCheck(study, Study);
+        doTypeCheck(states, Array);
+        doTypeCheck(participant, GameParticipant);
         this.study = study;
-        this.states = [];
-        this.participant = new GameParticipant(100, 0);
-        this.calculateAllStates();
+        this.states = states;
+        this.participant = participant;
     }
 
     isFinished() {
@@ -233,6 +367,20 @@ export class Game {
                 post.changesToCredibility[reaction].sample(),
                 post.changesToFollowers[reaction].sample()
             );
+        }
+    }
+
+    /**
+     * Fetches the latest Source and Post objects from the
+     * Study of this game, and inserts them into the
+     * GameState objects. This is useful if a full Post or
+     * Source object is required in the GameState objects,
+     * instead of the BasePost and BaseSource objects that
+     * will be loaded from JSON.
+     */
+    updateSourcePostReferences(study) {
+        for (let index = 0; index < this.states.length; ++index) {
+            this.states[index].updateSourcePostReferences(study);
         }
     }
 
@@ -293,4 +441,64 @@ export class Game {
         this.states.push(newState);
         return newState;
     }
+
+    static statesToJSON(states) {
+        const jsonStates = [];
+        for (let index = 0; index < states.length; ++index) {
+            jsonStates.push(states[index].toJSON());
+        }
+        return jsonStates;
+    }
+
+    static statesFromJSON(json, study) {
+        const states = [];
+        for (let index = 0; index < json.length; ++index) {
+            states.push(GameState.fromJSON(json[index], study));
+        }
+        return states;
+    }
+
+    toJSON() {
+        return {
+            "study": this.study.toJSON(),
+            "states": Game.statesToJSON(this.states),
+            "participant": this.participant.toJSON()
+        };
+    }
+
+    static fromJSON(json) {
+        const study = Study.fromJSON(json["study"]);
+        return new Game(
+            study,
+            Game.statesFromJSON(json["states"], study),
+            GameParticipant.fromJSON(json["participant"])
+        );
+    }
+
+    /**
+     * Creates a new game for a participant in {@param study}.
+     */
+    static createNew(study) {
+        doTypeCheck(study, Study);
+        const game = new Game(study, [], new GameParticipant(100, 0));
+        game.calculateAllStates();
+        return game;
+    }
+}
+
+/**
+ * Converts {@param game} to JSON and back, and
+ * returns an array with all of the changes between
+ * the original game and the reconstructed one.
+ * This should return an empty array if everything
+ * is working correctly.
+ */
+export function getGameChangesToAndFromJSON(game) {
+    // Convert to and from JSON.
+    const converted = Game.fromJSON(game.toJSON());
+
+    // Do the diff on the JSON created from each, as
+    // doing it on the full objects is too slow. Its
+    // not ideal, but it should be good enough.
+    return odiff(game.toJSON(), converted.toJSON());
 }

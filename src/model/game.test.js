@@ -9,7 +9,7 @@ test("create a game", (done) => {
         }
 
         try {
-            new Game(study);
+            Game.createNew(study);
             done();
         } catch (error) {
             done(error);
