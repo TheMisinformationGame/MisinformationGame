@@ -36,25 +36,3 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-//test shit 
-
-
-
-var temp_obj = {
-    "employees": [
-        {
-            "firstName": "John",
-            "lastName": "Doe"
-        },
-        {
-            "firstName": "Anna",
-            "lastName": "Smith"
-        },
-        {
-            "firstName": "Peter",
-            "lastName": "Jones"
-        }
-    ]
-};
-
-postStudy(temp_obj);

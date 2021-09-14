@@ -8,7 +8,6 @@ import { Study } from '../model/study';
 
 //after reading the excel sheet this function should post the object to the database
 export function postStudy(object){
-    //var objectJSON = object.Study.toJSON();
 
     let studyCol = db.collection("Studies");
     let studyDoc = studyCol.doc();  //saves the study and auto populates the id
