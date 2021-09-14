@@ -10,7 +10,7 @@ import "../App.css"
 
 function GameIntroduction() {
 
-    const filler = 'omori '.repeat(100);
+    const filler = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Facilisis leo vel fringilla est ullamcorper eget nulla. Tellus orci ac auctor augue mauris augue. Ut porttitor leo a diam sollicitudin tempor. Pellentesque adipiscing commodo elit at imperdiet dui accumsan sit amet. Egestas maecenas pharetra convallis posuere morbi leo urna molestie. Penatibus et magnis dis parturient montes nascetur ridiculus mus. Malesuada fames ac turpis egestas. At imperdiet dui accumsan sit amet. Dictum fusce ut placerat orci. Tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla. Massa ultricies mi quis hendrerit dolor magna. Amet massa vitae tortor condimentum lacinia quis. Ipsum nunc aliquet bibendum enim facilisis gravida neque.';
 
     return (
         <div>
