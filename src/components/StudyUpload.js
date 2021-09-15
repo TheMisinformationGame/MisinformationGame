@@ -6,8 +6,8 @@ import {getStudyChangesToAndFromJSON} from "../model/study";
 import xlsxHelp from "./help-export-to-xlsx.png"
 import {Game, getGameChangesToAndFromJSON} from "../model/game";
 import { postStudy } from "../utils/postToDB";
-//import 'firebase/storage';
-//import { getStorage, ref, uploadBytes } from "firebase/storage";
+import firebase from '../utils/firebase';
+//import {getStorage} from "firebase/storage";
 //import {storage} from '../utils/initFirestore';
 
 const Excel = require('exceljs');
@@ -285,7 +285,7 @@ export default class StudyUpload extends Component {
                             rounded-md bg-white divide-y max-w-xl">
                         <h2 className="py-2 text-4xl">Upload Study</h2>
                         <StudyUploadForm onStudyLoad={(study) => {
-                            //const storage = getStorage();
+
 
                             //get each post and their id and upload individually
                             for(let i = 0; i < Object.keys(study.posts).length; i++){
@@ -305,7 +305,15 @@ export default class StudyUpload extends Component {
 };
 
 
-function uploadImageToStorage(studyID, imageRef, content){
+function uploadImageToStorage(imageRef, content){
     console.log(imageRef); 
-    console.log(content)
+    console.log(content.buffer);
+
+    /*const storage = getStorage();
+    const ref = firebase.storage().ref();
+
+    let bytes = content.buffer;
+    firebase.storage().uploadBytes(ref, bytes).then((snapshot)=> {
+        console.log("uploaded")
+    })*/
 };
