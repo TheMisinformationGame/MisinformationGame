@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 
+
 const firebaseConfig = {
     apiKey: "AIzaSyBwvE41mT2mEf-GHPdZn9NUKtIFGT2nJn8",
     authDomain: "misinformation-game-group-41.firebaseapp.com",
@@ -12,4 +13,5 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // Make the firebase API available to our pages.
-export default firebase
+export default firebase;
+
