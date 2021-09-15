@@ -8,7 +8,7 @@ import "../App.css"
 
 function GamePrompt() {
 
-    const misInfoMessage = '95% of users on this platform agree that sharing fake news is innapropriate, harmful, and the wrong thing to do!';
+    const promptMessage = '95% of users on this platform agree that sharing fake news is innapropriate, harmful, and the wrong thing to do!';
 
     return (
         <div>
@@ -17,7 +17,7 @@ function GamePrompt() {
             </div> */}
             <div className="bg-white opacity-90 border-2 border-black rounded-md fixed top-0 left-0 w-full h-5/6
                             flex justify-center items-center">
-                <h2 className="absolute align-middle text-4xl mx-80 leading-loose">{misInfoMessage}</h2>
+                <h2 className="absolute align-middle text-4xl mx-80 leading-10">{promptMessage}</h2>
             </div>
             <div className="bg-white opacity-100 border-2 border-black rounded-md py-1 fixed bottom-0 left-0 w-full h-1/6
                             flex justify-center items-center">
