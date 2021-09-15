@@ -9,6 +9,7 @@ import LaunchIcon from '@material-ui/icons/Launch';
 import FlagIcon from '@material-ui/icons/Flag';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import {getDataManager} from "../model/manager";
 
 
 class Source extends Component {
@@ -97,9 +98,8 @@ class ReactionsRow extends Component {
 }
 
 class GameScreen extends Component {
-    componentDidMount(){
-        const studyID = "8UsCG45359Hp57i5hmIiaaa";
-        readStudySettings(studyID).then(study => {
+    componentDidMount() {
+        getDataManager().getStudy().then(study => {
             console.log(study)
         }).catch((err) => {
             console.error(err);
