@@ -454,4 +454,6 @@ export function readStudyWorkbook(workbook) {
     } catch (error) {
         return Promise.reject(error);
     }
-}
+};
+
+//function contentToStoage
