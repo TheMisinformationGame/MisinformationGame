@@ -8,7 +8,7 @@ import gameImage from "./game-mockup.png"
 // instead of plain CSS where possible.
 import "../App.css"
 
-function GameIntroduction() {
+function GameIntroduction({onButton}) {
 
     const filler = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Facilisis leo vel fringilla est ullamcorper eget nulla. Tellus orci ac auctor augue mauris augue. Ut porttitor leo a diam sollicitudin tempor. Pellentesque adipiscing commodo elit at imperdiet dui accumsan sit amet. Egestas maecenas pharetra convallis posuere morbi leo urna molestie. Penatibus et magnis dis parturient montes nascetur ridiculus mus. Malesuada fames ac turpis egestas. At imperdiet dui accumsan sit amet. Dictum fusce ut placerat orci. Tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla. Massa ultricies mi quis hendrerit dolor magna. Amet massa vitae tortor condimentum lacinia quis. Ipsum nunc aliquet bibendum enim facilisis gravida neque.';
 
@@ -28,7 +28,7 @@ function GameIntroduction() {
             </div>
             <div className="bg-white opacity-100 border-2 border-black rounded-md py-1 fixed bottom-0 left-0 w-full h-1/6
                             flex justify-center items-center">
-                <button className="bg-blue-500 px-4 py-2 text-2xl text-white border-black border-2 rounded-md">Continue</button>
+                <button className="bg-blue-500 px-4 py-2 text-2xl text-white border-black border-2 rounded-md" onClick={onButton}>Continue</button>
             </div>
         </div>
     );

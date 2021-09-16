@@ -6,7 +6,7 @@ import {useState} from "react"
 // instead of plain CSS where possible.
 import "../App.css"
 
-function GamePrompt() {
+function GamePrompt({onButton}) {
 
     const promptMessage = '95% of users on this platform agree that sharing fake news is innapropriate, harmful, and the wrong thing to do!';
 
@@ -21,7 +21,7 @@ function GamePrompt() {
             </div>
             <div className="bg-white opacity-100 border-2 border-black rounded-md py-1 fixed bottom-0 left-0 w-full h-1/6
                             flex justify-center items-center">
-                <button className="bg-blue-500 px-4 py-2 text-2xl text-white border-black border-2 rounded-md">Continue</button>
+                <button className="bg-blue-500 px-4 py-2 text-2xl text-white border-black border-2 rounded-md" onClick={onButton}>Continue</button>
             </div>
         </div>
     );
