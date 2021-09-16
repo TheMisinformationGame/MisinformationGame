@@ -22,19 +22,20 @@ export function readStudySettings(studyID) {
 }
 
 //function gets a list of all the studyIDs so that the user can pick one is active
-/*export function getStudiesIDs(db){
+export function getStudiesIDs(db){
     let studiesCol = db.collection('Studies');
     let snapshot = studiesCol.get();
     let studiesList = []
 
+    //to do get each document id into a list
     snapshot.forEach(doc => {
         studiesList.push(doc.id)
     })
 
-    console.log(studiesList) //temporary code
+    return(studiesList)//temporary code
 };
 
 // function will get alll th eposts from a particular study
-export function getPosts(){
+/*export function getPosts()
 
 }*/

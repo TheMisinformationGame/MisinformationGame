@@ -6,9 +6,10 @@ import {getStudyChangesToAndFromJSON} from "../model/study";
 import xlsxHelp from "./help-export-to-xlsx.png"
 import {Game, getGameChangesToAndFromJSON} from "../model/game";
 import { postStudy } from "../utils/postToDB";
+import { getStudiesIDs } from "../utils/getFromDB";
 import firebase from '../utils/firebase';
 //import {getStorage} from "firebase/storage";
-//import {storage} from '../utils/initFirestore';
+import { db, storage, storageRef } from '../utils/initFirestore';
 
 const Excel = require('exceljs');
 
@@ -285,17 +286,31 @@ export default class StudyUpload extends Component {
                             rounded-md bg-white divide-y max-w-xl">
                         <h2 className="py-2 text-4xl">Upload Study</h2>
                         <StudyUploadForm onStudyLoad={(study) => {
-
+                            //set a unique ID
+                            let guid = function() {
+                                return(Date.now().toString()); //use date and time of upload to get uniqueID
+                            };
+                            var studyID = guid();
 
                             //get each post and their id and upload individually
                             for(let i = 0; i < Object.keys(study.posts).length; i++){
                                 console.log(i);
                                 let refID = study.posts[i].id;
-                                uploadImageToStorage(refID, study.posts[i].content);
+                                uploadImageToStorage(refID, study.posts[i].content, studyID);
                             };
+
+                            //get each avatar image and upload to storage for use
+                            for(let i = 0; i < Object.keys(study.sources).length; i++){
+                                console.log(i);
+                                let refID = study.sources[i].id;
+                                uploadImageToStorage(refID, study.sources[i].avatar, studyID);
+                            };
+                            
                             //console.log(study.posts[1].content);
                             window.lastStudy = study;
-                            postStudy(study.toJSON());
+                            postStudy(study.toJSON(), studyID);
+
+
                         }} />
                     </div>
                 </div>
@@ -304,16 +319,14 @@ export default class StudyUpload extends Component {
     }
 };
 
-
-function uploadImageToStorage(imageRef, content){
-    console.log(imageRef); 
-    console.log(content.buffer);
-
-    /*const storage = getStorage();
-    const ref = firebase.storage().ref();
-
+//upload images to firebase storage
+export function uploadImageToStorage(imageRef, content, studyID){
+    //locate the file path to be saved in
+    const locRef = storageRef.child(studyID);                   //change "testStudy" to something useful
+    const fileName = imageRef + "." + content.type.split("/")[1] ; 
     let bytes = content.buffer;
-    firebase.storage().uploadBytes(ref, bytes).then((snapshot)=> {
-        console.log("uploaded")
-    })*/
+
+    locRef.child(fileName).put(bytes).then(( snapshot => {
+        console.log(fileName + " uploaded to " + locRef);
+    }));
 };

@@ -5,13 +5,14 @@ File contains functions which are used to post data to the firestore db
 import firebase from './firebase';
 import { db } from './initFirestore';
 import { Study } from '../model/study';
+import { uploadImageToStorage } from '../components/StudyUpload';
+import { getStudiesIDs } from '../utils/getFromDB';
 
 //after reading the excel sheet this function should post the object to the database
-export function postStudy(object){
-
+export function postStudy(object, studyID){
     let studyCol = db.collection("Studies");
-    let studyDoc = studyCol.doc();  //saves the study and auto populates the id
-    studyDoc.set(object);
+    let studyDoc = studyCol.doc(studyID);  //saves the study and auto populates the id
+    studyDoc.set(object)
 };
 
 //send the object which contains all of the reactions to the post
