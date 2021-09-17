@@ -115,6 +115,7 @@ class GameScreen extends Component {
                 Images named the same as the source id
             */
             
+            //THIS IS ALL TEMPORARY BOILERPLATE AS AN EXAMPLE
             //let the image change the DOM
             var postID = study.posts[0].id;                     //the images are named the same as the id of post or source
             var path = STUDY_ID + "/"+ postID + ".jpg";         //path to the image
