@@ -100,6 +100,8 @@ class ReactionsRow extends Component {
 class GameScreen extends Component {
     componentDidMount() {
         getDataManager().getStudy().then(study => {
+            console.log(study.id)
+    
             console.log(study)
         }).catch((err) => {
             console.error(err);
