@@ -49,5 +49,4 @@ function Study() {
     );
 }
 
-ReactDOM.render(<StudyPage/>, document.getElementById('root'));
 export default StudyPage;
