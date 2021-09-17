@@ -67,5 +67,4 @@ function Admin() {
     );
 }
 
-ReactDOM.render(<AdminPage/>, document.getElementById('root'));
 export default AdminPage;
