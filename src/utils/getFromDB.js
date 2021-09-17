@@ -4,8 +4,10 @@ File contains functions which are used to get data from the firestore db
 The db can be gotten from the initFirestore function
 Need to figure out a way to get data from firebase storage
 =====================================================================================================================*/
-import { db } from "./initFirestore"
+import { db, storage } from "./initFirestore";
 import {Study} from "../model/study";
+import { ChromeReaderMode } from "@material-ui/icons";
+
 
 
 /**
@@ -35,7 +37,20 @@ export function getStudiesIDs(db){
     return(studiesList)//temporary code
 };
 
-// function will get alll th eposts from a particular study
-/*export function getPosts()
-
-}*/
+// get images from the storage
+export function getImagesAndPopulate(path, tagID){
+    var pathref = storage.ref(path);
+    //return the url of the imag
+    pathref.getDownloadURL().then((url) => {
+        var response = new XMLHttpRequest();
+        response.responseType = 'blob';
+        response.onload = (event) => {
+            var imageURL = response.response;
+        }
+    response.open('GET', url);
+    response.send();
+    //populate the DOM
+    var img = document.getElementById(tagID);
+    img.setAttribute('src', url)
+    });
+};

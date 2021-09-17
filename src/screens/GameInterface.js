@@ -10,6 +10,7 @@ import FlagIcon from '@material-ui/icons/Flag';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import {getDataManager} from "../model/manager";
+import { getImagesAndPopulate } from "../utils/getFromDB";
 
 
 class Source extends Component {
@@ -100,9 +101,31 @@ class ReactionsRow extends Component {
 class GameScreen extends Component {
     componentDidMount() {
         getDataManager().getStudy().then(study => {
-            console.log(study.id)
-    
-            console.log(study)
+            const STUDY_ID = "1631805549365"; //temp code will be replaced 
+
+            /*
+            Note for Andrew. So the study object is the object with all the data in it ready to go
+            It is likely that you will need an iterator for the index of study and posts
+            Posts has the following sub headers -> id, headline, changesToCredibility, changesToFollowers, comments, isTrue
+                The changes to credibility and followers both have some sub objects, but this shouldn't matter to you 
+                There may be more than 1 comment aswell. So you can have study.posts[0].comments[0]
+                Comments have the sub headings likes, message and sourceID. 
+                Photos for a post have the same name as the Id of the post
+            Source has the following sub headers -> id, name, credibility, followers, maxPosts, truePostPercentage 
+                Images named the same as the source id
+            */
+            
+            //let the image change the DOM
+            var postID = study.posts[0].id;                     //the images are named the same as the id of post or source
+            var path = STUDY_ID + "/"+ postID + ".jpg";         //path to the image
+            console.log(path);
+            getImagesAndPopulate(path, "postImage");            //get the imageURL, and populate the DOM. Second parameter is the id of the <img>. Function is at bottom of getFromDB.js file.
+            
+            //change the headline 
+            let headliner = study.posts[0].headline;
+            populateDOM(headliner, "headlinerTag");             //function can be used to change the innerHTML of any tag. Just need to change the tagID and the content. Function is on line 187 of this file.
+
+            
         }).catch((err) => {
             console.error(err);
         });
@@ -124,8 +147,8 @@ class GameScreen extends Component {
                             <Source name="Source 1" credibility={87} followers={987} />
                         </div>
                         <div className="flex flex-col flex-grow text-left text-3xl font-bold">
-                            <p className="p-2">Sensationalised Image Post</p>
-                            <img src={placeholderPostImage} className="w-full" alt="logo" />
+                            <p id = "headlinerTag" className="p-2">Sensationalised Image Post</p>
+                            <img id = "postImage" src={placeholderPostImage} className="w-full" alt="logo" />
                         </div>
                         <Comment name="Source 2" credibility={10} followers={1284}
                                  message="I like this content." />
@@ -160,3 +183,9 @@ class GameScreen extends Component {
 }
 
 export default GameScreen;
+
+//reusuable function which will poppulate the specific tag 
+function populateDOM(innerContent, tagID){
+    let tag = document.getElementById(tagID);
+    tag.innerHTML = innerContent;
+}
