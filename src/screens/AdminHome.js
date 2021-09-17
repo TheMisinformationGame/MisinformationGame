@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css'
+import '../App.css'
 
 class AdminPage extends React.Component{
     render() {
