@@ -3,13 +3,39 @@ import ReactDOM from 'react-dom';
 import '../App.css';
 import { getDataManager } from '../model/manager';
 import { db, storage } from '../utils/initFirestore';
-import { getStudiesIDs } from "../utils/getFromDB"
+import { getStudiesIDs } from "../utils/getFromDB";
+
+//create the DOM Widgets
+function constructWidgets(id, data){
+    var widgetArea = document.getElementById("widgetArea");
+    var outsideDiv = document.createElement("div");
+    outsideDiv.className = "rounded-xl border-2 border-gray-400 p-5";
+    var studyLink = document.createElement("a");
+    studyLink.className = "text-blue-600 text-lg font-bold";
+    var studyText = data.name;
+    var authorText = document.createElement("p");
+    var author = id                                     //place holder until we get more data in 
+    studyLink.innerHTML = studyText;
+    authorText.innerHTML = author;
+
+    outsideDiv.appendChild(studyLink);
+    outsideDiv.appendChild(authorText);
+    widgetArea.appendChild(outsideDiv);
+}
+
 
 class AdminPage extends React.Component{
     
     componentDidMount() {
-        const STUDIES_LIST = getStudiesIDs(db);
-    };
+        const STUDIES_LIST = getStudiesIDs(db);         //returns a promis object 
+        
+        //Async get the data from firestore and populate the data into the containers
+        STUDIES_LIST.then(snapshot => {
+            snapshot.docs.forEach( doc =>{
+                constructWidgets(doc.id, doc.data())    //call back function which will populate the DOM with the data
+            })
+        });
+    }
     
     render() {
         return(Admin())
@@ -36,7 +62,7 @@ function Admin() {
         </table>
     
     <div className="box-border h-5/6 w-full pt-10 px-20">
-        <div className="grid grid-cols-2 gap-7">
+        <div className="grid grid-cols-2 gap-7" id = "widgetArea">
             <div className="rounded-xl border-2 border-gray-400 p-5">
                 <a href="https://google.com" className="text-blue-600 text-lg font-bold">First Study</a>
                 <p><b>Author: </b>Assoc/Prof<br/></p>

@@ -24,19 +24,27 @@ export function readStudySettings(studyID) {
 }
 
 //function gets a list of all the studyIDs so that the user can pick one is active
-export function getStudiesIDs(db){
+export async function getStudiesIDs(db){
     var count = 0;
-    const tempCol = {};
-    const studiesCol = db.collection('Studies');
-    studiesCol.get().then((snap) => {
-        snap.forEach(( doc ) => {
-            tempCol[count] = {id: doc.id, data: doc.data()};
-            count = count + 1}
-        )}
-    );
+    var status = true;
+    var tempCol = [];
+    const studiesCol = await db.collection('Studies').get();
 
-    return tempCol
-};
+    return studiesCol
+    /*studiesCol.get().then((snap) => {
+        snap.forEach(( doc ) => {
+            tempCol.push(count)//{id: doc.id, data: doc.data()});
+        }   
+    )})
+    .catch((error) => {
+        console.log("Error Getting Studies List");
+        status = false;
+    });
+    
+    if(status === true){
+        return tempCol
+    }*/
+}
 
 // get images from the storage
 export function getImagesAndPopulate(path, tagID){
