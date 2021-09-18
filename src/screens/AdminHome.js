@@ -1,8 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../App.css'
+import '../App.css';
+import { getDataManager } from '../model/manager';
+import { db, storage } from '../utils/initFirestore';
+import { getStudiesIDs } from "../utils/getFromDB"
 
 class AdminPage extends React.Component{
+    
+    componentDidMount() {
+        const STUDIES_LIST = getStudiesIDs(db);
+        console.log(STUDIES_LIST[0])
+
+    };
+    
     render() {
         return(Admin())
     }
@@ -68,3 +78,4 @@ function Admin() {
 }
 
 export default AdminPage;
+
