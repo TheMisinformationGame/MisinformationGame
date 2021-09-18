@@ -25,14 +25,17 @@ export function readStudySettings(studyID) {
 
 //function gets a list of all the studyIDs so that the user can pick one is active
 export function getStudiesIDs(db){
-    const tempDoc = [];
+    var count = 0;
+    const tempCol = {};
     const studiesCol = db.collection('Studies');
-    studiesCol.get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-            tempDoc.push({id: doc.id, data: doc.data()});
-        })
-    });
-    return(tempDoc);
+    studiesCol.get().then((snap) => {
+        snap.forEach(( doc ) => {
+            tempCol[count] = {id: doc.id, data: doc.data()};
+            count = count + 1}
+        )}
+    );
+
+    return tempCol
 };
 
 // get images from the storage

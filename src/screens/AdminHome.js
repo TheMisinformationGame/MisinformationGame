@@ -9,8 +9,6 @@ class AdminPage extends React.Component{
     
     componentDidMount() {
         const STUDIES_LIST = getStudiesIDs(db);
-        console.log(STUDIES_LIST[0])
-
     };
     
     render() {
