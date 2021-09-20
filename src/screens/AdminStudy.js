@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Link} from "react-router-dom";
 import '../App.css'
 
 class StudyPage extends React.Component{
@@ -21,9 +22,9 @@ function Study() {
             </td>
         
             {/*Gotta add an icon here and the link to the admin page*/}
-            <a href="https://google.com">
-                <button className="h-full bg-gray-100 w-1/10 float-right text-black font-medium text-center border-black border-l-2 border-solid">Back to Dashboard</button>
-            </a>
+            <Link to={"/admin" }>
+                <button className="h-full bg-gray-100 w-1/10 float-right text-black font-medium text-center border-black border-l-2 border-solid" >Back to Dashboard</button>
+            </Link>
         </tr>
         </table>
     

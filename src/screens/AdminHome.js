@@ -13,9 +13,8 @@ class StudySummary extends Component {
         const study = this.props.study;
         return (
             <div className="rounded-xl border-2 border-gray-400 p-3 bg-white shadow">
-                <Link to={"/admin/study/" + study.id}
+                <Link to={"/admin_study" }//+ study.id}
                       className="text-blue-600 text-lg font-bold hover:text-blue-800 hover:underline">
-
                     {study.name}
                 </Link>
                 <p dangerouslySetInnerHTML={{__html: study.description}} />
