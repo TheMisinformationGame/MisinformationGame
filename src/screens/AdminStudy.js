@@ -4,8 +4,11 @@ import {Link} from "react-router-dom";
 import '../App.css'
 
 class StudyPage extends React.Component{
+    componentDidMount(){
+        console.log(this.props.match.params.id);
+        };
+    
 
-    let = this.props.match.params.id
     render() {
         return(Study())
     }

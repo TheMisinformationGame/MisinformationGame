@@ -7,7 +7,7 @@ import Home from "./screens/Home";
 import AdminHome from "./screens/AdminHome";
 import StudyPage from "./screens/AdminStudy";
 import Game from "./screens/GameInterface";
-import GameIdentification from "./screens/GameIdentification";
+import {Game_ID} from "./screens/GameIdentification";
 import GameIntroduction from "./screens/GameIntroduction";
 import GamePrompt from "./screens/GamePrompt";
 import ErrorScreen from "./screens/Error"
@@ -26,7 +26,7 @@ ReactDOM.render(
               <Route exact path="/admin/:id" component={StudyPage} />
               <Route path="/study_upload" component={StudyUpload} />
               <Route path="/game" component={Game} />
-              <Route path="/game_id" component={GameIdentification} />
+              <Route path="/game_id" component={Game_ID} />
               <Route path="/game_intro" component={GameIntroduction} />
               <Route path="/game_prompt" component={GamePrompt} />
               <Route component={ErrorScreen} />
