@@ -63,11 +63,15 @@ class ReactButton extends Component {
     render() {
         return (
             <div id={this.props.reaction}
-                 className="fill-current cursor-pointer text-gray-700
-                            text-5xl px-2 sm:px-3 md:px-4
-                            transform hover:scale-125 transition duration-100
-                            filter hover:drop-shadow"
-                 onClick={() => this.props.onReact(this.props.reaction)}>
+                 className={
+                     "fill-current cursor-pointer text-5xl px-2 sm:px-3 md:px-4 " +
+                     "filter hover:drop-shadow transform transition duration-100 " +
+                     (this.props.enabled ? "text-gray-700 hover:scale-125" : "text-gray-500")}
+                 onClick={() => {
+                    if (this.props.enabled) {
+                        this.props.onReact(this.props.reaction);
+                    }
+                 }}>
 
                 {React.cloneElement(this.props.children, {
                     className: "fill-current", fontSize: "inherit"
@@ -84,11 +88,16 @@ class ReactionsRow extends Component {
             <div className="text-lg flex flex-row justify-center p-2 bg-white"
                  style={{boxShadow: "0 -0.1rem 0.3rem rgba(0, 0, 0, 0.2)"}}>
 
-                <ReactButton reaction="like" onReact={onReact}><ThumbUpIcon/></ReactButton>
-                <ReactButton reaction="dislike" onReact={onReact}><ThumbDownIcon/></ReactButton>
-                <ReactButton reaction="skip" onReact={onReact}><BlockIcon/></ReactButton>
-                <ReactButton reaction="share" onReact={onReact}><LaunchIcon/></ReactButton>
-                <ReactButton reaction="flag" onReact={onReact}><FlagIcon/></ReactButton>
+                <ReactButton reaction="like" onReact={onReact} enabled={this.props.enabled}>
+                    <ThumbUpIcon/></ReactButton>
+                <ReactButton reaction="dislike" onReact={onReact} enabled={this.props.enabled}>
+                    <ThumbDownIcon/></ReactButton>
+                <ReactButton reaction="skip" onReact={onReact} enabled={this.props.enabled}>
+                    <BlockIcon/></ReactButton>
+                <ReactButton reaction="share" onReact={onReact} enabled={this.props.enabled}>
+                    <LaunchIcon/></ReactButton>
+                <ReactButton reaction="flag" onReact={onReact} enabled={this.props.enabled}>
+                    <FlagIcon/></ReactButton>
             </div>
         );
     }
@@ -140,13 +149,18 @@ class GameScreen extends Component {
             error = "Game is finished!";
         }
 
-        this.setState({
+        const state = {
             state: (game ? game.getCurrentState() : null),
             participant: (game ? game.participant : null),
             sourceImage: null,
             postImage: null,
-            error: error
-        });
+            error: error,
+            reactionsAllowed: false
+        };
+        this.setState(state);
+        setTimeout(() => {
+            this.setState({...state, reactionsAllowed: true});
+        }, 600);
     }
 
     componentDidMount() {
@@ -192,7 +206,7 @@ class GameScreen extends Component {
                 {participant && !error &&
                 <div className="fixed w-full md:max-w-xl bottom-0 left-1/2 transform -translate-x-1/2
                                 shadow-2xl md:border-l-2 md:border-r-2 md:border-opacity-0">
-                    <ReactionsRow onReact={r => this.onUserReact(r)} />
+                    <ReactionsRow onReact={r => this.onUserReact(r)} enabled={this.state.reactionsAllowed} />
                     <div className="p-2 px-4 pb-3 bg-gray-200">
                         <p className="text-xl font-bold mb-1">
                             Your Progress
