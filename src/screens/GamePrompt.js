@@ -1,39 +1,44 @@
-import logo from "../logo.svg";
-import {Link} from "react-router-dom";
-import {Component,useState} from "react"
-
-// Please use Tailwind CSS (https://tailwindcss.com/)
-// instead of plain CSS where possible.
+import React, {Component} from "react"
 import "../App.css"
+import {ContinueButton} from "./GameIdentification";
+import {getDataManager} from "../model/manager";
 
 export class GamePrompt extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
 
-    render(){
-    return (
-        <div>
-            {/* <div className="fixed w-full h-full left-0 top-0 bg-gray-200 border-2 border-black rounded-md p-4 overflow-y-scroll">
-                <h2 className=" text-4xl">{'omori '.repeat(1000)}</h2>
-            </div> */}
-            <div className="mx-4 bg-white opacity-90 border-2 border-black rounded-md fixed top-0 left-0 w-full h-5/6
-                            flex justify-center items-center">
-                <h2 className="absolute align-middle text-4xl mx-80 leading-10">
-                    95% of users on this platform agree that sharing fake news is innapropriate, harmful, and the wrong thing to do!
-                </h2>
+    componentDidMount() {
+        getDataManager().getActiveStudy().then((study) => {
+            this.setState({study: study});
+        });
+    }
+
+    render() {
+        const study = this.state.study;
+        return (
+            <div className="fixed left-0 top-0 w-full flex flex-col z-50
+                            justify-center items-center bg-white bg-opacity-80"
+                 style={{minHeight: "100vh"}}>
+
+                {study &&
+                <div className="m-4 max-w-2xl">
+                    <p className="text-center text-4xl" dangerouslySetInnerHTML={{__html: study.prompt}} />
+
+                    {/* Used for reserving space below the continue button. */}
+                    <div className="h-16" />
+                </div>}
+
+                <div className="bg-gray-100 py-1 border-t-2 border-gray-400 shadow-2xl
+                                fixed bottom-0 left-0 w-full h-16
+                                flex justify-center items-center">
+                    <ContinueButton className="text-xl px-4 py-2"
+                                    to={this.props.to} condition={this.props.to}
+                                    onClick={this.props.onClick} />
+                </div>
             </div>
-            <div className="bg-white opacity-100 border-2 border-black rounded-md py-1 fixed bottom-0 left-0 w-full h-1/6
-                            flex justify-center items-center">
-                <Link to = {"/game"}
-                className="bg-blue-500 hover:bg-blue-600 px-4 py-2 text-2xl text-white border-black border-2 rounded-md" >
-                    Continue
-                </Link>
-            </div>
-        </div>
-    );
- }
-    // TODO
-    /**
-     * Media query to make text look neater on mobile
-     * Should the button simply hide the component?
-     */
+        );
+     }
 }
 

@@ -8,7 +8,6 @@ import StudyPage from "./screens/AdminStudy";
 import Game from "./screens/GameInterface";
 import {GameIdentification} from "./screens/GameIdentification";
 import {GameIntroduction} from "./screens/GameIntroduction";
-import {GamePrompt} from "./screens/GamePrompt";
 import ErrorScreen from "./screens/Error"
 import StudyUpload from "./components/StudyUpload";
 
@@ -23,7 +22,6 @@ ReactDOM.render(
               <Route path="/game" component={Game} />
               <Route path="/game_id" component={GameIdentification} />
               <Route path="/game_intro" component={GameIntroduction} />
-              <Route path="/game_prompt" component={GamePrompt} />
               <Route component={ErrorScreen} />
           </Switch>
       </BrowserRouter>

@@ -1,10 +1,11 @@
 /**
  * A source with a known credibility and follower count.
  */
-import {doNullableTypeCheck, doTypeCheck} from "../utils/types";
+import {doNullableTypeCheck, doTypeCheck, isOfType} from "../utils/types";
 import {Post, Source, Study} from "./study";
 import {selectFilteredRandomElement, selectFilteredWeightedRandomElement} from "../utils/random";
 import {odiff} from "../utils/odiff";
+import {getDataManager} from "./manager";
 
 
 /**
@@ -344,14 +345,17 @@ export class Game {
     study; // Study
     states; // GameState[]
     participant; // GameParticipant
+    dismissedPrompt; // boolean
 
-    constructor(study, states, participant) {
+    constructor(study, states, participant, dismissedPrompt) {
         doTypeCheck(study, Study);
         doTypeCheck(states, Array);
         doTypeCheck(participant, GameParticipant);
+        doTypeCheck(dismissedPrompt, "boolean")
         this.study = study;
         this.states = states;
         this.participant = participant;
+        this.dismissedPrompt = dismissedPrompt;
     }
 
     isFinished() {
@@ -363,6 +367,43 @@ export class Game {
             throw new Error("The game has been finished!");
 
         return this.states[this.participant.reactions.length];
+    }
+
+    /**
+     * Preloads the images required for the current state.
+     */
+    preloadCurrentState() {
+        this.preloadState(this.getCurrentState());
+    }
+
+    /**
+     * Preloads the images required for the next state.
+     */
+    preloadNextState() {
+        const nextStateIndex = this.participant.reactions.length + 1;
+        if (nextStateIndex >= this.states.length)
+            return;
+
+        this.preloadState(this.states[nextStateIndex]);
+    }
+
+    /**
+     * Preloads the images required for the given state.
+     */
+    preloadState(state) {
+        const source = state.currentSource.source;
+        const post = state.currentPost.post;
+
+        const manager = getDataManager();
+        manager.getStudyImage(this.study, source.id, source.avatar);
+        if (!isOfType(post.content, "string")) {
+            manager.getStudyImage(this.study, post.id, post.content);
+        }
+        for (let index = 0; index < post.comments.length; ++index) {
+            const commentSource = state.findSource(post.comments[index].sourceID).source;
+            manager.getStudyImage(this.study, commentSource.id, commentSource.avatar);
+
+        }
     }
 
     /**
@@ -483,7 +524,8 @@ export class Game {
             "studyID": this.study.id,
             "study": this.study.toJSON(),
             "states": Game.statesToJSON(this.states),
-            "participant": this.participant.toJSON()
+            "participant": this.participant.toJSON(),
+            "dismissedPrompt": this.dismissedPrompt
         };
     }
 
@@ -493,7 +535,8 @@ export class Game {
         return new Game(
             study,
             Game.statesFromJSON(json["states"], study),
-            GameParticipant.fromJSON(json["participant"])
+            GameParticipant.fromJSON(json["participant"]),
+            json["dismissedPrompt"]
         );
     }
 
@@ -502,7 +545,7 @@ export class Game {
      */
     static createNew(study) {
         doTypeCheck(study, Study);
-        const game = new Game(study, [], new GameParticipant(100, 0));
+        const game = new Game(study, [], new GameParticipant(100, 0), false);
         game.calculateAllStates();
         return game;
     }

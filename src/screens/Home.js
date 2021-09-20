@@ -27,11 +27,8 @@ function Home() {
                 </p>
                 <div className="flex p-2 my-4 rounded bg-gray-700">
                     <Link to="/" name="Home" className="bg-gray-800" />
+                    <Link to="/game_id" name="Game" />
                     <Link to="/admin" name="Admin" />
-                    <Link to="/game" name="Game" />
-                    <Link to="/game_id" name="Game ID" />
-                    <Link to="/game_intro" name="Game Intro" />
-                    <Link to="/game_prompt" name="Game Prompt" />
                 </div>
             </header>
         </div>

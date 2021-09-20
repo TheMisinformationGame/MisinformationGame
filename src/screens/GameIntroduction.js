@@ -3,7 +3,6 @@ import gameImage from "./game-mockup.png"
 import "../App.css"
 import {ContinueButton} from "./GameIdentification";
 import {getDataManager} from "../model/manager";
-import {ProgressLabel} from "../components/StatusLabel";
 
 export class GameIntroduction extends Component {
     constructor(props) {
@@ -14,6 +13,10 @@ export class GameIntroduction extends Component {
     componentDidMount() {
         getDataManager().getActiveStudy().then((study) => {
             this.setState({study: study});
+        });
+        // Preload the game.
+        getDataManager().getActiveGame().then((game) => {
+            game.preloadCurrentState();
         });
     }
 
@@ -38,7 +41,6 @@ export class GameIntroduction extends Component {
                     </p>
                     <img className="max-h-64" src={gameImage} alt="Example of what the game will look like" />
                 </div>}
-                {!this.state.study && <ProgressLabel value="The study is loading..." />}
 
                 {/* Used for reserving space below the continue button. */}
                 <div className="h-16" />
@@ -46,7 +48,7 @@ export class GameIntroduction extends Component {
                 <div className="bg-gray-100 py-1 border-t-2 border-gray-400 shadow-2xl
                                 fixed bottom-0 left-0 w-full h-16
                                 flex justify-center items-center">
-                    <ContinueButton to="game_prompt" className="text-xl px-4 py-2" condition={true} />
+                    <ContinueButton to="game" className="text-xl px-4 py-2" condition={true} />
                 </div>
             </div>
         );

@@ -12,6 +12,7 @@ import {getDataManager} from "../model/manager";
 import {ErrorLabel} from "../components/StatusLabel";
 import {isOfType} from "../utils/types";
 import {PromiseImage} from "../components/PromiseImage";
+import {GamePrompt} from "./GamePrompt";
 
 
 class Source extends Component {
@@ -173,14 +174,15 @@ class GameScreen extends Component {
         const state = {
             state: (game ? game.getCurrentState() : null),
             participant: (game ? game.participant : null),
-            sourceImage: null,
-            postImage: null,
             error: error,
             reactionsAllowed: false
         };
         this.setState(state);
         setTimeout(() => {
             this.setState({...state, reactionsAllowed: true});
+            if (game) {
+                game.preloadNextState();
+            }
         }, 600);
     }
 
@@ -193,12 +195,15 @@ class GameScreen extends Component {
         });
     };
 
+    onPromptContinue() {
+        this.setState({...this.state, dismissedPrompt: true})
+    }
+
     onUserReact(reaction) {
         getDataManager().getActiveGame().then(game => {
             game.advanceState(reaction);
             this.updateGameState(game, null);
         });
-        console.log(reaction);
     }
 
     render() {
@@ -206,41 +211,46 @@ class GameScreen extends Component {
         const fullHeightStyle = {minHeight: "100vh"};
 
         const state = this.state.state;
+        const displayPrompt = !this.state.dismissedPrompt;
         const participant = this.state.participant;
         const error = this.state.error;
         return (
-            <div className="w-full bg-gray-100" style={fullHeightStyle}>
-
-                <div className="w-full md:max-w-xl ml-auto mr-auto bg-gray-200
-                                md:border-l-2 md:border-r-2 md:border-gray-700 shadow-2xl"
+            <>
+                {displayPrompt && <GamePrompt onClick={() => this.onPromptContinue()} />}
+                <div className={"w-full bg-gray-100 " + (displayPrompt ? "filter blur" : "")}
                      style={fullHeightStyle}>
 
-                    {/* Post and comments. */}
-                    {state && !error && <PostComponent state={state} />}
-                    {error && <ErrorLabel value={error} />}
+                    <div className="w-full md:max-w-xl ml-auto mr-auto bg-gray-200
+                                    md:border-l-2 md:border-r-2 md:border-gray-700 shadow-2xl"
+                         style={fullHeightStyle}>
 
-                    {/* Used for reserving space below reactions and progress. */}
-                    <div className="h-40" />
-                </div>
+                        {/* Post and comments. */}
+                        {state && !error && <PostComponent state={state} />}
+                        {error && <ErrorLabel value={error} />}
 
-                {/* Reactions and progress. */}
-                {participant && !error &&
-                <div className="fixed w-full md:max-w-xl bottom-0 left-1/2 transform -translate-x-1/2
-                                shadow-2xl md:border-l-2 md:border-r-2 md:border-opacity-0">
-                    <ReactionsRow onReact={r => this.onUserReact(r)} enabled={this.state.reactionsAllowed} />
-                    <div className="p-2 px-4 pb-3 bg-gray-200">
-                        <p className="text-xl font-bold mb-1">
-                            Your Progress
-                        </p>
-                        <p className="text-xl">
-                            <SupervisedUserCircleIcon className="align-bottom mr-1" />
-                            Followers: {Math.round(participant.followers)}
-                            <CheckCircleIcon className="align-bottom ml-6 mr-1" />
-                            Credibility: {Math.round(participant.credibility)}
-                        </p>
+                        {/* Used for reserving space below reactions and progress. */}
+                        <div className="h-40" />
                     </div>
-                </div>}
-            </div>
+
+                    {/* Reactions and progress. */}
+                    {participant && !error &&
+                    <div className="fixed w-full md:max-w-xl bottom-0 left-1/2 transform -translate-x-1/2
+                                shadow-2xl md:border-l-2 md:border-r-2 md:border-opacity-0">
+                        <ReactionsRow onReact={r => this.onUserReact(r)} enabled={this.state.reactionsAllowed} />
+                        <div className="p-2 px-4 pb-3 bg-gray-200">
+                            <p className="text-xl font-bold mb-1">
+                                Your Progress
+                            </p>
+                            <p className="text-xl">
+                                <SupervisedUserCircleIcon className="align-bottom mr-1" />
+                                Followers: {Math.round(participant.followers)}
+                                <CheckCircleIcon className="align-bottom ml-6 mr-1" />
+                                Credibility: {Math.round(participant.credibility)}
+                            </p>
+                        </div>
+                    </div>}
+                </div>
+            </>
         );
     }
 }
