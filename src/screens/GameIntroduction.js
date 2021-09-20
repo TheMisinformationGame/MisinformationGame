@@ -1,17 +1,15 @@
 import logo from "../logo.svg";
-
-import {useState} from "react"
-
+import {Component, useState} from "react"
+import {Link} from "react-router-dom";
 import gameImage from "./game-mockup.png"
 
 // Please use Tailwind CSS (https://tailwindcss.com/)
 // instead of plain CSS where possible.
 import "../App.css"
 
-function GameIntroduction() {
+export class GameIntroduction extends Component {
 
-    const filler = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Facilisis leo vel fringilla est ullamcorper eget nulla. Tellus orci ac auctor augue mauris augue. Ut porttitor leo a diam sollicitudin tempor. Pellentesque adipiscing commodo elit at imperdiet dui accumsan sit amet. Egestas maecenas pharetra convallis posuere morbi leo urna molestie. Penatibus et magnis dis parturient montes nascetur ridiculus mus. Malesuada fames ac turpis egestas. At imperdiet dui accumsan sit amet. Dictum fusce ut placerat orci. Tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla. Massa ultricies mi quis hendrerit dolor magna. Amet massa vitae tortor condimentum lacinia quis. Ipsum nunc aliquet bibendum enim facilisis gravida neque.';
-
+    render(){
     return (
         <div class="m-px">
             {/* <div className="fixed w-full h-full left-0 top-0 bg-gray-200 border-2 border-black rounded-md p-4 overflow-y-scroll">
@@ -21,23 +19,28 @@ function GameIntroduction() {
                             
                             overflow-y-scroll">
                 <h2 className="align-middle text-4xl mb-4">Study Name</h2>
-                <p className="leading-5 mb-4">{filler}</p>
+                <p className="leading-5 mb-4">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Facilisis leo vel fringilla est ullamcorper eget nulla. Tellus orci ac auctor augue mauris augue. Ut porttitor leo a diam sollicitudin tempor. Pellentesque adipiscing commodo elit at imperdiet dui accumsan sit amet. Egestas maecenas pharetra convallis posuere morbi leo urna molestie. Penatibus et magnis dis parturient montes nascetur ridiculus mus. Malesuada fames ac turpis egestas. At imperdiet dui accumsan sit amet. Dictum fusce ut placerat orci. Tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla. Massa ultricies mi quis hendrerit dolor magna. Amet massa vitae tortor condimentum lacinia quis. Ipsum nunc aliquet bibendum enim facilisis gravida neque.
+                </p>
                 <h2 className="align-middle text-4xl mb-4">How to participate</h2>
-                <p className="leading-5 mb-4">{filler}</p>
+                <p className="leading-5 mb-4">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Facilisis leo vel fringilla est ullamcorper eget nulla. Tellus orci ac auctor augue mauris augue. Ut porttitor leo a diam sollicitudin tempor. Pellentesque adipiscing commodo elit at imperdiet dui accumsan sit amet. Egestas maecenas pharetra convallis posuere morbi leo urna molestie. Penatibus et magnis dis parturient montes nascetur ridiculus mus. Malesuada fames ac turpis egestas. At imperdiet dui accumsan sit amet. Dictum fusce ut placerat orci. Tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla. Massa ultricies mi quis hendrerit dolor magna. Amet massa vitae tortor condimentum lacinia quis. Ipsum nunc aliquet bibendum enim facilisis gravida neque.
+                </p>
                 <img className="max-h-64" src={gameImage} alt="Example of what the game will look like" />
             </div>
             <div className="bg-white opacity-100 border-2 border-black rounded-md py-1 fixed bottom-0 left-0 w-full h-1/6
                             flex justify-center items-center">
-                <button className="bg-blue-500 hover:bg-blue-600 px-4 py-2 text-2xl text-white border-black border-2 rounded-md">Continue</button>
+                <Link to = {"/game_prompt"}
+                className="bg-blue-500 hover:bg-blue-600 px-4 py-2 text-2xl text-white border-black border-2 rounded-md">
+                    Continue
+                </Link>
             </div>
         </div>
     );
-
+    }
     // TODO
     /**
      * Button function?
      * Better picture
      */
 }
-
-export default GameIntroduction;

@@ -8,8 +8,8 @@ import AdminHome from "./screens/AdminHome";
 import StudyPage from "./screens/AdminStudy";
 import Game from "./screens/GameInterface";
 import {Game_ID} from "./screens/GameIdentification";
-import GameIntroduction from "./screens/GameIntroduction";
-import GamePrompt from "./screens/GamePrompt";
+import {GameIntroduction} from "./screens/GameIntroduction";
+import {GamePrompt} from "./screens/GamePrompt";
 import ErrorScreen from "./screens/Error"
 import StudyUpload from "./components/StudyUpload";
 import { db } from './utils/initFirestore';
