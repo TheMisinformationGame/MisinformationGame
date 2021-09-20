@@ -1,104 +1,158 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import {Component} from 'react';
 import '../App.css';
-import { getDataManager } from '../model/manager';
-import { db, storage } from '../utils/initFirestore';
-import { getStudiesIDs } from "../utils/getFromDB";
+import {getDataManager} from "../model/manager";
+import {Link} from "react-router-dom";
+import StudyUpload, {uploadImageToStorage} from "../components/StudyUpload";
+import {postStudy} from "../utils/postToDB";
+import {ErrorLabel, ProgressLabel} from "../components/StatusLabel";
+import UploadIcon from '@mui/icons-material/Upload';
 
-//create the DOM Widgets
-function constructWidgets(id, data){
-    var widgetArea = document.getElementById("widgetArea");
-    var outsideDiv = document.createElement("div");
-    outsideDiv.className = "rounded-xl border-2 border-gray-400 p-5";
-    var studyLink = document.createElement("a");
-    studyLink.className = "text-blue-600 text-lg font-bold";
-    var studyText = data.name;
-    var authorText = document.createElement("p");
-    var author = id                                     //place holder until we get more data in 
-    studyLink.innerHTML = studyText;
-    authorText.innerHTML = author;
 
-    outsideDiv.appendChild(studyLink);
-    outsideDiv.appendChild(authorText);
-    widgetArea.appendChild(outsideDiv);
+class StudySummary extends Component {
+    render() {
+        const study = this.props.study;
+        return (
+            <div className="rounded-xl border-2 border-gray-400 p-3 bg-white shadow">
+                <Link to={"/admin/study/" + study.id}
+                      className="text-blue-600 text-lg font-bold hover:text-blue-800 hover:underline">
+
+                    {study.name}
+                </Link>
+                <p dangerouslySetInnerHTML={{__html: study.description}} />
+            </div>
+        );
+    }
 }
 
+class AdminPage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            studies: null,
+            showUpload: false
+        };
+        this.hideStudyUploadCallback = (event) => {
+            if (event.keyCode === 27) { // The escape key.
+                this.hideStudyUpload();
+            }
+        };
+    }
 
-class AdminPage extends React.Component{
-    
     componentDidMount() {
-        const STUDIES_LIST = getStudiesIDs(db);         //returns a promis object 
-        
-        //Async get the data from firestore and populate the data into the containers
-        STUDIES_LIST.then(snapshot => {
-            snapshot.docs.forEach( doc =>{
-                constructWidgets(doc.id, doc.data())    //call back function which will populate the DOM with the data
-            })
+        getDataManager().getAllStudies().then((studies) => {
+            this.setState({
+                studies: studies,
+                showUpload: this.state.showUpload
+            });
+        });
+        document.addEventListener("keydown", this.hideStudyUploadCallback);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("keydown", this.hideStudyUploadCallback);
+    }
+
+    showStudyUpload() {
+        this.setState({
+            studies: this.state.studies,
+            showUpload: true
         });
     }
-    
-    render() {
-        return(Admin())
+
+    hideStudyUpload() {
+        this.setState({
+            studies: this.state.studies,
+            showUpload: false
+        });
     }
-};
 
-function Admin() {
-    return (
-    <div style={{backgroundImage: 'url(https://www.toptal.com/designers/subtlepatterns/patterns/papyrus.png)'}}>
-        {/**mx-auto means put the container in the middle */}
-    <div className="container min-h-screen w-3/5 mx-auto bg-blue-300 bg-opacity-10 pb-10" >
-        {/*The navigation bar */}
-        <table className="h-10 max-h-20 min-h-10 border-collapse border-black border-2 border-solid pt-3 pb-3 pl-3 w-full bg-gray-100">
-        <tr>
-            <td className="w-9/10">
-                <h2 className="font-black text-xl">The Misinformation Game</h2>
-            </td>
-        
-            {/*Gotta add an icon here and the link to the upload page*/}
-            <a href="https://google.com">
-                <button className="h-full bg-blue-400 w-1/10 float-right text-white text-center border-black border-l-2 border-solid">Upload Study</button>
-            </a>
-        </tr>
-        </table>
-    
-    <div className="box-border h-5/6 w-full pt-10 px-20">
-        <div className="grid grid-cols-2 gap-7" id = "widgetArea">
-            <div className="rounded-xl border-2 border-gray-400 p-5">
-                <a href="https://google.com" className="text-blue-600 text-lg font-bold">First Study</a>
-                <p><b>Author: </b>Assoc/Prof<br/></p>
-                <p><b>Participants: </b>98<br/></p>
-            </div>
+    uploadStudy(study) {
+        console.log(study);
 
-            <div className="rounded-xl border-2 border-gray-400 p-5">
-                <a href="https://google.com" className="text-blue-600 text-lg font-bold">Second Study</a>
-                <p><b>Author: </b>Ben/Prof<br/></p>
-                <p><b>Participants: </b>56<br/></p>
-            </div>
+        //set a unique ID
+        let guid = function() {
+            return(Date.now().toString()); //use date and time of upload to get uniqueID
+        };
+        var studyID = guid();
 
-            <div className="rounded-xl border-2 border-gray-400 p-5">
-                <a href="https://google.com" className="text-blue-600 text-lg font-bold">Third Study</a>
-                <p><b>Author: </b>Chist/Prof<br/></p>
-                <p><b>Participants: </b>78<br/></p>
-            </div>
+        //get each post and their id and upload individually
+        for(let i = 0; i < study.posts.length; i++){
+            console.log(i);
+            let refID = study.posts[i].id;
+            uploadImageToStorage(refID, study.posts[i].content, studyID);
+        }
 
-            <div className="rounded-xl border-2 border-gray-400 p-5">
-                <a href="https://google.com" className="text-blue-600 text-lg font-bold">Forth Study</a>
-                <p><b>Author: </b>Danny/Prof<br/></p>
-                <p><b>Participants: </b>98<br/></p>
-            </div>
+        //get each avatar image and upload to storage for use
+        for(let i = 0; i < study.sources.length; i++){
+            console.log(i);
+            let refID = study.sources[i].id;
+            uploadImageToStorage(refID, study.sources[i].avatar, studyID);
+        }
 
-            <div className="rounded-xl border-2 border-gray-400 p-5">
-                <a href="https://google.com" className="text-blue-600 text-lg font-bold">Fifth Study</a>
-                <p><b>Author: </b>Emma/Prof<br/></p>
-                <p><b>Participants: </b>58<br/></p>
+        //console.log(study.posts[1].content);
+        window.lastStudy = study;
+        postStudy(study.toJSON(), studyID);
+    }
+
+    render() {
+        const studies = this.state.studies || [];
+        const readStudies = this.state.studies !== null;
+        const noStudies = readStudies && studies.length === 0;
+
+        const studyComponents = [];
+        for (let index = 0; index < studies.length; ++index) {
+            const study = studies[index];
+            studyComponents.push((
+                <StudySummary study={study} key={study.id} />
+            ));
+        }
+
+        return (
+            <div className="min-h-screen w-full bg-gray-300" >
+                {/*The navigation bar. */}
+                <div className="flex items-stretch justify-between w-full bg-white shadow">
+                    <div className="font-bold text-xl p-3">
+                        Misinformation Game
+                    </div>
+                    <div className="bg-blue-400 p-3 text-xl text-white font-medium
+                                    hover:bg-blue-500 cursor-pointer select-none"
+                         onClick={() => this.showStudyUpload()}>
+
+                        <UploadIcon className="mr-1" />
+                        Upload Study
+                    </div>
+                </div>
+
+                {/* The studies. */}
+                {readStudies && !noStudies &&
+                    <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-10 m-10">
+                        {studyComponents}
+                    </div>}
+
+                {/* Label saying that the studies are loading. */}
+                {noStudies &&
+                    <div className="m-10">
+                        <ErrorLabel value={[
+                            "No studies were found.",
+                            "You can upload a study using the ",
+                            <b>Upload Study</b>,
+                            "button in the top-right of this page."
+                        ]} />
+                    </div>}
+
+                {/* Label saying that the studies are loading. */}
+                {!readStudies &&
+                    <div className="m-10">
+                        <ProgressLabel value="Loading studies..." />
+                    </div>}
+
+                {/* The study upload component. */}
+                {this.state.showUpload &&
+                    <StudyUpload onHide={() => this.hideStudyUpload()}
+                                 onUpload={(study) => this.uploadStudy(study)} />}
             </div>
-            
-        </div>
-    </div>
-    
-    </div>
-    </div>
-    );
+        );
+    }
 }
 
 export default AdminPage;

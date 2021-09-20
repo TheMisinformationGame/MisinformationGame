@@ -6,7 +6,6 @@ Need to figure out a way to get data from firebase storage
 =====================================================================================================================*/
 import { db, storage } from "./initFirestore";
 import {Study} from "../model/study";
-import { ChromeReaderMode } from "@material-ui/icons";
 
 
 
@@ -14,52 +13,48 @@ import { ChromeReaderMode } from "@material-ui/icons";
  * Returns a Promise for the study metadata for the study {@param studyID}
  * to be read from the database.
  */
-export function readStudySettings(studyID) {
-    return db.collection('Studies').doc(studyID).get().then((snapshot) => {
-        if (!snapshot.exists)
-            throw new Error("Could not find the study with ID " + studyID);
+export async function readStudySettings(studyID) {
+    const snapshot = await db.collection('Studies').doc(studyID).get();
+    if (!snapshot.exists)
+        throw new Error("Could not find the study with ID " + studyID);
 
-        return Study.fromJSON(snapshot.data());
-    });
+    return Study.fromJSON(studyID, snapshot.data());
 }
 
-//function gets a list of all the studyIDs so that the user can pick one is active
-export async function getStudiesIDs(db){
-    var count = 0;
-    var status = true;
-    var tempCol = [];
-    const studiesCol = await db.collection('Studies').get();
-
-    return studiesCol
-    /*studiesCol.get().then((snap) => {
-        snap.forEach(( doc ) => {
-            tempCol.push(count)//{id: doc.id, data: doc.data()});
-        }   
-    )})
-    .catch((error) => {
-        console.log("Error Getting Studies List");
-        status = false;
-    });
-    
-    if(status === true){
-        return tempCol
-    }*/
+/**
+ * Returns a Promise with a list of all the studies in the database.
+ * TODO : In the future, it may be good to use pages, as if the number of studies
+ *        becomes really large, this will become very costly.
+ */
+export async function readAllStudies() {
+    const snapshot = await db.collection('Studies').get();
+    return snapshot.docs.map((doc) => Study.fromJSON(doc.id, doc.data()));
 }
 
-// get images from the storage
-export function getImagesAndPopulate(path, tagID){
-    var pathref = storage.ref(path);
-    //return the url of the imag
-    pathref.getDownloadURL().then((url) => {
-        var response = new XMLHttpRequest();
-        response.responseType = 'blob';
-        response.onload = (event) => {
-            var imageURL = response.response;
-        }
-    response.open('GET', url);
-    response.send();
-    //populate the DOM
-    var img = document.getElementById(tagID);
-    img.setAttribute('src', url)
+/**
+ * Returns a StudyImage loaded from Firebase storage.
+ */
+export async function readStudyImage(path){
+    const url = await storage.ref(path).getDownloadURL();
+    return await new Promise((resolve, reject) => {
+        const request = new XMLHttpRequest();
+        request.open("GET", url, true);
+        request.responseType = "arraybuffer";
+        request.onload = () => {
+            const response = request.response;
+            if (response) {
+                resolve(new Uint8Array(response));
+            } else {
+                reject(new Error("Missing response when loading StudyImage from " + path));
+            }
+        };
+        request.onerror = () => {
+            reject(new Error(
+                "Could not load StudyImage from " + path +
+                (request.status ? " (" + request.status + ")" : "") +
+                (request.statusText ? ": " + request.statusText : "")
+            ));
+        };
+        request.send(null);
     });
-};
+}

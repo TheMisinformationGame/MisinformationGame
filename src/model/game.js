@@ -451,6 +451,7 @@ export class Game {
 
     toJSON() {
         return {
+            "studyID": this.study.id,
             "study": this.study.toJSON(),
             "states": Game.statesToJSON(this.states),
             "participant": this.participant.toJSON()
@@ -458,7 +459,8 @@ export class Game {
     }
 
     static fromJSON(json) {
-        const study = Study.fromJSON(json["study"]);
+        const studyID = json["studyID"];
+        const study = Study.fromJSON(studyID, json["study"]);
         return new Game(
             study,
             Game.statesFromJSON(json["states"], study),

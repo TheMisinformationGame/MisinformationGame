@@ -424,6 +424,7 @@ function readV1Study(workbook) {
         const sources = sourcesAndPosts[0];
         const posts = sourcesAndPosts[1];
         return new Study(
+            "unknown",
             readCell(workbook, V1.name),
             readCell(workbook, V1.description),
             readCell(workbook, V1.introduction),
@@ -454,6 +455,4 @@ export function readStudyWorkbook(workbook) {
     } catch (error) {
         return Promise.reject(error);
     }
-};
-
-//function contentToStoage
+}

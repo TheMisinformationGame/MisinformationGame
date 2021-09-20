@@ -309,6 +309,7 @@ export class Post extends BasePost {
  * Holds the entire specification of a study.
  */
 export class Study {
+    id; // String
     name; // String
     description; // String
     introduction; // String
@@ -322,12 +323,13 @@ export class Study {
     posts; // Post[]
 
     constructor(
-            name, description, introduction,
+            id, name, description, introduction,
             prompt, length, debrief,
             genCompletionCode, completionCodeDigits,
             sourcePostSelectionMethod,
             sources, posts) {
 
+        doTypeCheck(id, "string");
         doTypeCheck(name, "string");
         doTypeCheck(description, "string");
         doTypeCheck(introduction, "string");
@@ -340,6 +342,7 @@ export class Study {
         doTypeCheck(sources, Array);
         doTypeCheck(posts, Array);
 
+        this.id = id;
         this.name = name;
         this.description = description;
         this.introduction = introduction;
@@ -488,9 +491,9 @@ export class Study {
         }
     }
 
-    static fromJSON(json) {
+    static fromJSON(id, json) {
         return new Study(
-            json["name"], json["description"],
+            id, json["name"], json["description"],
             json["introduction"], json["prompt"],
             json["length"], json["debrief"],
             json["genCompletionCode"],
@@ -522,7 +525,7 @@ export function getStudyChangesToAndFromJSON(study) {
     }
 
     // Reconstruct the study from the JSON.
-    const reconstructedStudy = Study.fromJSON(json);
+    const reconstructedStudy = Study.fromJSON(study.id, json);
     for (let index = 0; index < sourcesJSON.length; ++index) {
         reconstructedStudy.replaceSource(Source.fromJSON(sourcesJSON[index]));
     }

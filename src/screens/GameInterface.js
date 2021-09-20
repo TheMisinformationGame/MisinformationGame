@@ -1,7 +1,6 @@
 import placeholderPostImage from "../placeholderPost.png";
 import "../App.css"
 import { Component } from "react";
-import { readStudySettings } from '../utils/getFromDB';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import BlockIcon from '@material-ui/icons/Block';
@@ -10,7 +9,6 @@ import FlagIcon from '@material-ui/icons/Flag';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import {getDataManager} from "../model/manager";
-import { getImagesAndPopulate } from "../utils/getFromDB";
 
 
 class Source extends Component {
@@ -99,6 +97,16 @@ class ReactionsRow extends Component {
 }
 
 class GameScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            source: null,
+            post: null,
+        };
+    }
+
+
+
     componentDidMount() {
         getDataManager().getStudy().then(study => {
             const STUDY_ID = "1631805549365"; //temp code will be replaced 
@@ -120,7 +128,7 @@ class GameScreen extends Component {
             var postID = study.posts[0].id;                     //the images are named the same as the id of post or source
             var path = STUDY_ID + "/"+ postID + ".jpg";         //path to the image
             console.log(path);
-            getImagesAndPopulate(path, "postImage");            //get the imageURL, and populate the DOM. Second parameter is the id of the <img>. Function is at bottom of getFromDB.js file.
+            //getImagesAndPopulate(path, "postImage");            //get the imageURL, and populate the DOM. Second parameter is the id of the <img>. Function is at bottom of getFromDB.js file.
             
             //change the headline 
             let headliner = study.posts[0].headline;
