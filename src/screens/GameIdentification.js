@@ -1,8 +1,8 @@
 import logo from "../logo.svg";
 import {Component, useState} from "react"
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-
-import { ErrorLabel } from '../components/StatusLabel'
+import {Link} from "react-router-dom";
+import { ErrorLabel } from '../components/StatusLabel';
 
 // Please use Tailwind CSS (https://tailwindcss.com/)
 // instead of plain CSS where possible.
@@ -29,12 +29,13 @@ export class Game_ID extends Component{
                     value={this.state.value} 
                     onChange={e => this.setState({...this.state, value: e.target.value})}>
                 </input>
-                <button className="py-1 mx-4 border border-black rounded-md text-white bg-blue-500 hover:bg-blue-600" 
+                <Link to = {"game_intro"} className="py-1 mx-4 border border-black rounded-md text-white bg-blue-500 hover:bg-blue-600" >
+                <button 
                         value={this.state.value} 
                         onClick={() => this.setState({...this.state, clicked: true})}>
-
                         Login
                 </button>
+                </Link>
                 {this.state.clicked && (!this.state.value || this.state.value.trim() === "") && <ErrorLabel value="Please enter an ID" />}
             </div>
         </div>
