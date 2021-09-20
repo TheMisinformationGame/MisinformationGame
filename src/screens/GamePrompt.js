@@ -15,7 +15,7 @@ function GamePrompt({onButton}) {
             {/* <div className="fixed w-full h-full left-0 top-0 bg-gray-200 border-2 border-black rounded-md p-4 overflow-y-scroll">
                 <h2 className=" text-4xl">{'omori '.repeat(1000)}</h2>
             </div> */}
-            <div className="bg-white opacity-90 border-2 border-black rounded-md fixed top-0 left-0 w-full h-5/6
+            <div className="mx-4 bg-white opacity-90 border-2 border-black rounded-md fixed top-0 left-0 w-full h-5/6
                             flex justify-center items-center">
                 <h2 className="absolute align-middle text-4xl mx-80 leading-10">{promptMessage}</h2>
             </div>
