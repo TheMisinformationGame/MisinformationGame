@@ -6,6 +6,7 @@ Need to figure out a way to get data from firebase storage
 =====================================================================================================================*/
 import { db, storage } from "./initFirestore";
 import {Study} from "../model/study";
+import {StudyImage} from "../model/images";
 
 
 
@@ -31,10 +32,19 @@ export async function readAllStudies() {
     return snapshot.docs.map((doc) => Study.fromJSON(doc.id, doc.data()));
 }
 
+function getStudyImagePathType(path) {
+    const pieces = path.split(".");
+    if (pieces.length === 1)
+        throw new Error("Path is missing its extension");
+
+    return pieces[pieces.length - 1];
+}
+
 /**
  * Returns a StudyImage loaded from Firebase storage.
  */
-export async function readStudyImage(path){
+export async function readStudyImage(path) {
+    const type = getStudyImagePathType(path);
     const url = await storage.ref(path).getDownloadURL();
     return await new Promise((resolve, reject) => {
         const request = new XMLHttpRequest();
@@ -43,7 +53,7 @@ export async function readStudyImage(path){
         request.onload = () => {
             const response = request.response;
             if (response) {
-                resolve(new Uint8Array(response));
+                resolve(new StudyImage(new Uint8Array(response), type));
             } else {
                 reject(new Error("Missing response when loading StudyImage from " + path));
             }

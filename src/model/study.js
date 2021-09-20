@@ -1,7 +1,7 @@
-import {doTypeCheck} from "../utils/types";
+import {doTypeCheck, isOfType} from "../utils/types";
 import {SourcePostSelectionMethod} from "./selectionMethod";
 import {TruncatedNormalDistribution} from "./math";
-import {StudyImage} from "./images";
+import {StudyImage, StudyImageMetadata} from "./images";
 import {randDigits} from "../utils/random";
 import {odiff} from "../utils/odiff";
 
@@ -10,16 +10,18 @@ import {odiff} from "../utils/odiff";
  * A source that is missing some information, but at least
  * contains enough info to perform the source/post selection.
  */
-export class BaseSource {
+export class Source {
     id; // String
     name; // String
+    avatar; // Avatar
     maxPosts; // Number
     followers; // TruncatedNormalDistribution
     credibility; // TruncatedNormalDistribution
     truePostPercentage; // null or Number
 
-    constructor(id, name, maxPosts, followers, credibility, truePostPercentage) {
+    constructor(id, name, avatar, maxPosts, followers, credibility, truePostPercentage) {
         doTypeCheck(id, "string");
+        doTypeCheck(avatar, [StudyImage, StudyImageMetadata]);
         doTypeCheck(name, "string");
         doTypeCheck(maxPosts, "number");
         doTypeCheck(followers, TruncatedNormalDistribution);
@@ -36,18 +38,11 @@ export class BaseSource {
         this.truePostPercentage = truePostPercentage;
     }
 
-    toBaseSource() {
-        return this;
-    }
-
-    isFullSource() {
-        return false;
-    }
-
     toJSON() {
         return {
             "id": this.id,
             "name": this.name,
+            "avatar": this.avatar.toMetadata().toJSON(),
             "maxPosts": this.maxPosts,
             "followers": this.followers.toJSON(),
             "credibility": this.credibility.toJSON(),
@@ -56,53 +51,13 @@ export class BaseSource {
     }
 
     static fromJSON(json) {
-        return new BaseSource(
-            json["id"], json["name"], json["maxPosts"],
+        return new Source(
+            json["id"], json["name"],
+            StudyImageMetadata.fromJSON(json["avatar"]),
+            json["maxPosts"],
             TruncatedNormalDistribution.fromJSON(json["followers"]),
             TruncatedNormalDistribution.fromJSON(json["credibility"]),
             json["truePostPercentage"]
-        );
-    }
-}
-
-/**
- * A source that can be used for posts or comments.
- */
-export class Source extends BaseSource {
-    avatar; // Avatar
-
-    constructor(id, name, avatar, maxPosts, followers, credibility, truePostPercentage) {
-        super(id, name, maxPosts, followers, credibility, truePostPercentage);
-        doTypeCheck(avatar, StudyImage);
-        this.avatar = avatar;
-    }
-
-    toBaseSource() {
-        return new BaseSource(
-            this.id, this.name, this.maxPosts,
-            this.followers, this.credibility,
-            this.truePostPercentage
-        );
-    }
-
-    isFullSource() {
-        return true;
-    }
-
-    toJSON() {
-        return {
-            ...super.toJSON(),
-            "avatar": this.avatar.toJSON()
-        };
-    }
-
-    static fromJSON(json) {
-        const baseSource = BaseSource.fromJSON(json);
-        return new Source(
-            baseSource.id, baseSource.name,
-            StudyImage.fromJSON(json["avatar"]),
-            baseSource.maxPosts, baseSource.followers,
-            baseSource.credibility, baseSource.truePostPercentage
         );
     }
 }
@@ -182,35 +137,30 @@ export class ReactionValues {
  * A post that is missing some information, but at least
  * contains enough info to perform the source/post selection.
  */
-export class BasePost {
+export class Post {
     id; // String
     headline; // String
+    content; // StudyImage, StudyImageMetadata, or String
     isTrue; // Boolean
     changesToFollowers; // ReactionValues
     changesToCredibility; // ReactionValues
     comments; // PostComment[]
 
-    constructor(id, headline, isTrue, changesToFollowers, changesToCredibility, comments) {
+    constructor(id, headline, content, isTrue, changesToFollowers, changesToCredibility, comments) {
         doTypeCheck(id, "string");
         doTypeCheck(headline, "string");
+        doTypeCheck(content, [StudyImage, StudyImageMetadata, "string"]);
         doTypeCheck(isTrue, "boolean");
         doTypeCheck(changesToFollowers, ReactionValues);
         doTypeCheck(changesToCredibility, ReactionValues);
         doTypeCheck(comments, Array);
         this.id = id;
         this.headline = headline;
+        this.content = content;
         this.isTrue = isTrue;
         this.changesToFollowers = changesToFollowers;
         this.changesToCredibility = changesToCredibility;
         this.comments = comments;
-    }
-
-    toBasePost() {
-        return this;
-    }
-
-    isFullPost() {
-        return false;
     }
 
     static commentsToJSON(comments) {
@@ -230,77 +180,33 @@ export class BasePost {
     }
 
     toJSON() {
+        let contentJSON = this.content;
+        if (isOfType(contentJSON, [StudyImage, StudyImageMetadata])) {
+            contentJSON = contentJSON.toJSON();
+        }
         return {
             "id": this.id,
             "headline": this.headline,
+            "content": contentJSON,
             "isTrue": this.isTrue,
             "changesToFollowers": this.changesToFollowers.toJSON(),
             "changesToCredibility": this.changesToCredibility.toJSON(),
-            "comments": BasePost.commentsToJSON(this.comments)
+            "comments": Post.commentsToJSON(this.comments)
         };
     }
 
     static fromJSON(json) {
-        return new BasePost(
-            json["id"], json["headline"], json["isTrue"],
+        let content = json["content"];
+        if (!isOfType(content, "string")) {
+            content = StudyImageMetadata.fromJSON(content);
+        }
+
+        return new Post(
+            json["id"], json["headline"],
+            content, json["isTrue"],
             ReactionValues.fromJSON(json["changesToFollowers"]),
             ReactionValues.fromJSON(json["changesToCredibility"]),
-            BasePost.commentsFromJSON(json["comments"])
-        );
-    }
-}
-
-/**
- * Holds the contents of a post.
- */
-export class Post extends BasePost {
-    content; // StudyImage or String
-
-    constructor(id, headline, content, isTrue, changesToFollowers, changesToCredibility, comments) {
-        super(id, headline, isTrue, changesToFollowers, changesToCredibility, comments);
-        doTypeCheck(content, [StudyImage, "string"]);
-        this.content = content;
-    }
-
-    toBasePost() {
-        return new BasePost(
-            this.id, this.headline, this.isTrue,
-            this.changesToFollowers,
-            this.changesToCredibility,
-            this.comments
-        );
-    }
-
-    isFullPost() {
-        return true;
-    }
-
-    static contentToJSON(content) {
-        if (typeof content === "string")
-            return content;
-        return content.toJSON();
-    }
-
-    static contentFromJSON(json) {
-        if (typeof json === "string")
-            return json;
-        return StudyImage.fromJSON(json);
-    }
-
-    toJSON() {
-        return {
-            ...super.toJSON(),
-            "content": Post.contentToJSON(this.content)
-        };
-    }
-
-    static fromJSON(json) {
-        const basePost = BasePost.fromJSON(json);
-        return new Post(
-            basePost.id, basePost.headline,
-            Post.contentFromJSON(json["content"]),
-            basePost.isTrue, basePost.changesToFollowers,
-            basePost.changesToCredibility, basePost.comments
+            Post.commentsFromJSON(json["comments"])
         );
     }
 }
@@ -411,36 +317,10 @@ export class Study {
         return randDigits(this.completionCodeDigits);
     }
 
-    /**
-     * Returns all the stripped-down sources for
-     * use in source/post selection.
-     * This list will always be available.
-     */
-    getBaseSources() {
-        const base = [];
-        for (let index = 0; index < this.sources.length; ++index) {
-            base.push(this.sources[index].toBaseSource());
-        }
-        return base;
-    }
-
-    /**
-     * Returns all the stripped-down posts
-     * for use in source/post selection.
-     * This list will always be available.
-     */
-    getBasePosts() {
-        const base = [];
-        for (let index = 0; index < this.posts.length; ++index) {
-            base.push(this.posts[index].toBasePost());
-        }
-        return base;
-    }
-
     static sourcesToJSON(sources) {
         const sourcesJSON = [];
         for (let index = 0; index < sources.length; ++index) {
-            doTypeCheck(sources[index], BaseSource);
+            doTypeCheck(sources[index], Source);
             sourcesJSON.push(sources[index].toJSON());
         }
         return sourcesJSON;
@@ -449,7 +329,7 @@ export class Study {
     static sourcesFromJSON(json) {
         const sources = [];
         for (let index = 0; index < json.length; ++index) {
-            sources.push(BaseSource.fromJSON(json[index]));
+            sources.push(Source.fromJSON(json[index]));
         }
         return sources;
     }
@@ -457,7 +337,7 @@ export class Study {
     static postsToJSON(posts) {
         const postsJSON = [];
         for (let index = 0; index < posts.length; ++index) {
-            doTypeCheck(posts[index], BasePost);
+            doTypeCheck(posts[index], Post);
             postsJSON.push(posts[index].toJSON());
         }
         return postsJSON;
@@ -466,7 +346,7 @@ export class Study {
     static postsFromJSON(json) {
         const posts = [];
         for (let index = 0; index < json.length; ++index) {
-            posts.push(BasePost.fromJSON(json[index]));
+            posts.push(Post.fromJSON(json[index]));
         }
         return posts;
     }
@@ -486,8 +366,8 @@ export class Study {
             "genCompletionCode": this.genCompletionCode,
             "completionCodeDigits": this.completionCodeDigits,
             "sourcePostSelectionMethod": this.sourcePostSelectionMethod.toJSON(),
-            "sources": Study.sourcesToJSON(this.getBaseSources()),
-            "posts": Study.postsToJSON(this.getBasePosts())
+            "sources": Study.sourcesToJSON(this.sources),
+            "posts": Study.postsToJSON(this.posts)
         }
     }
 

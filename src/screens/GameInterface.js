@@ -10,6 +10,8 @@ import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import {getDataManager} from "../model/manager";
 import {ErrorLabel} from "../components/StatusLabel";
+import {isOfType} from "../utils/types";
+import {PromiseImage} from "../components/PromiseImage";
 
 
 class Source extends Component {
@@ -116,17 +118,26 @@ class PostComponent extends Component {
             );
         }
 
+        let postContent;
+        if (isOfType(post.content, "string")) {
+            postContent = (<p dangerouslySetInnerHTML={{__html: post.content}} />);
+        } else {
+            postContent = (<PromiseImage image={
+                getDataManager().getStudyImage(state.study, post.id, post.content)
+            } />);
+        }
+
         return (
             <div className="flex flex-col">
                 <div className="bg-white shadow">
                     <div className="flex p-2 bg-white">
                         <Source source={state.currentSource} />
                     </div>
-                    <div className="flex flex-col flex-grow text-left text-3xl bg-white
+                    <div className="flex flex-col flex-grow text-left text-2xl bg-white
                                     font-bold mb-1">
 
-                        <p className="p-2">{post.headline}</p>
-                        {/*<img src={placeholderPostImage} className="w-full" alt="logo" />*/}
+                        <p className="p-2 mb-1">{post.headline}</p>
+                        {postContent}
                     </div>
                 </div>
                 {commentComponents.length > 0 &&

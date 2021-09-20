@@ -1,5 +1,8 @@
-import {readAllStudies, readStudySettings} from "../utils/getFromDB";
+import {readAllStudies, readStudyImage, readStudySettings} from "../utils/getFromDB";
 import {Game} from "./game";
+import {doTypeCheck, isOfType} from "../utils/types";
+import {Study} from "./study";
+import {StudyImage, StudyImageMetadata} from "./images";
 
 /**
  * This class manages the data required for the games.
@@ -8,9 +11,9 @@ class DataManager {
     constructor() {
         this.allStudiesPromiseGenerator = null;
         this.studyPromiseGenerators = {};
-
         this.activeGameStudyID = null;
         this.activeGamePromiseGenerator = null;
+        this.imagePromiseGenerators = {};
     }
 
     /**
@@ -20,14 +23,6 @@ class DataManager {
     getActiveStudyID() {
         // TODO: Dynamically get this from the URL.
         return "1631805549365";
-    }
-
-    /**
-     * Returns whether the current page should have an active study.
-     */
-    isStudyActive() {
-        // TODO: Dynamically get this from the URL.
-        return true;
     }
 
     /**
@@ -130,6 +125,43 @@ class DataManager {
             return this.readActiveGame(studyID);
 
         return this.activeGamePromiseGenerator();
+    }
+
+    /**
+     * Reads an image from storage and returns a Promise to a StudyImage for it.
+     * This should not be called directly, instead use {@link DataManager#getStudyImage()}.
+     */
+    readStudyImage(study, imageID, imageMetadata) {
+        const path = StudyImage.getPath(study.id, imageID, imageMetadata);
+        console.log("Reading image " + path + "...");
+        const imagePromise = readStudyImage(path).then((image) => {
+            this.imagePromiseGenerators[path] = () => Promise.resolve(image);
+            return image;
+        }).catch((err) => {
+            this.imagePromiseGenerators[path] = () => Promise.reject(err);
+            throw err;
+        });
+        this.imagePromiseGenerators[path] = () => imagePromise;
+        return imagePromise;
+    }
+
+    /**
+     * Returns a Promise to the study image with the given ID.
+     */
+    getStudyImage(study, imageID, imageMetadata) {
+        doTypeCheck(study, Study);
+        doTypeCheck(imageID, "string");
+
+        // Already an image, just return it.
+        if (isOfType(imageMetadata, StudyImage))
+            return Promise.resolve(imageMetadata);
+
+        doTypeCheck(imageMetadata, StudyImageMetadata);
+        const path = StudyImage.getPath(study.id, imageID, imageMetadata);
+        if (!this.imagePromiseGenerators[path])
+            return this.readStudyImage(study, imageID, imageMetadata);
+
+        return this.imagePromiseGenerators[path]();
     }
 }
 

@@ -1,49 +1,33 @@
 import {doTypeCheck} from "../utils/types";
-import {base64ToBytes, bytesToBase64} from "../utils/base64";
 import {coerceBufferToUint8Array} from "../utils/excel";
 
 
 /**
- * We limit the size of images to 500 KiB to stay
- * within the Firestore 1 MiB object limit after
- * conversion to base 64.
+ * Represents the metadata required to read a StudyImage from storage.
  */
-export const FIRESTORE_IMAGE_LIMIT = {
-    bytes: 500 * 1024,
-    text: "500 KiB"
-};
+export class StudyImageMetadata {
+    type; // String
 
-/**
- * Creates a canvas element to draw into.
- * Taken from https://github.com/Sothatsit/RoyalUrClient.
- */
-function renderResource(width, height, renderFunction) {
-    if (isNaN(width) || isNaN(height))
-        throw new Error("Width and height cannot be NaN, was given " + width + " x " + height);
-    if (width < 1 || height < 1)
-        throw new Error("Width and height must both be at least 1, was given " + width + " x " + height);
+    constructor(type) {
+        doTypeCheck(type, "string");
+        this.type = type;
+    }
 
-    const canvas = document.createElement("canvas"),
-          ctx = canvas.getContext("2d");
+    toMetadata() {
+        return this;
+    }
 
-    canvas.width = width;
-    canvas.height = height;
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = "high";
-    renderFunction(ctx, canvas);
-    return canvas;
-}
+    toJSON() {
+        return {
+            type: this.type
+        };
+    }
 
-/**
- * Halves the dimension of {@param image} by drawing a
- * scaled down version of it into a Canvas element.
- */
-function halveImageSize(image) {
-    const scaledWidth = Math.round(image.width / 2);
-    const scaledHeight = Math.round(image.height / 2);
-    return renderResource(scaledWidth, scaledHeight, (ctx) => {
-        ctx.drawImage(image, 0, 0, scaledWidth, scaledHeight);
-    });
+    static fromJSON(json) {
+        if (!json || !json["type"])
+            return new StudyImageMetadata("jpg");
+        return new StudyImageMetadata(json["type"]);
+    }
 }
 
 /**
@@ -60,65 +44,27 @@ export class StudyImage {
         this.type = type;
     }
 
-    getByteCount() {
-        return this.buffer.length;
+    /**
+     * Returns the metadata required to load this image.
+     */
+    toMetadata() {
+        return new StudyImageMetadata(this.type);
     }
 
     /**
-     * This will scale down this image until it fits within the
-     * Firestore image limit defined in FIRESTORE_IMAGE_LIMIT.
+     * Returns the URL that should be used to populate the image.
      */
-    scaleDown() {
-        // On NodeJS in testing, we can't work with images.
-        if (!URL.createObjectURL)
-            return Promise.resolve(this);
-
-        return new Promise((resolve, reject) => {
-            // If this image is within the limit, fulfill the callback.
-            if (this.getByteCount() < FIRESTORE_IMAGE_LIMIT.bytes) {
-                resolve(this);
-                return;
-            }
-
-            // Otherwise halve the size of the image and try again.
-            try {
-                this.createImage().then((image) => {
-                    const scaled = halveImageSize(image);
-                    scaled.toBlob((blob) => {
-                        blob.arrayBuffer().then((arrayBuffer) => {
-                            try {
-                                const newBuffer = new Uint8Array(arrayBuffer);
-                                const newImage = new StudyImage(newBuffer, blob.type);
-                                newImage.scaleDown().then(resolve, reject);
-                            } catch (error) {
-                                reject(error);
-                            }
-                        }).catch(reject);
-                    }, this.type, 0.9);
-                }).catch(reject);
-            } catch (error) {
-                reject(error);
-            }
-        });
-    }
-    //take the base64 and then convert to bytes 
-    createImage() {
-        return new Promise((resolve, reject) => {
-            const image = new Image();
-            image.src = URL.createObjectURL(
-                new Blob([this.buffer.buffer], { type: this.type })
-            );
-            image.onload = () => resolve(image);
-            image.onerror = () => reject(new Error("Image could not be created from Blob"));
-            return image;
-        });
+    createImageSrc() {
+        return URL.createObjectURL(
+            new Blob([this.buffer.buffer], { type: "image/" + this.type })
+        );
     }
 
-    toJSON() {
-        return {
-            "type": this.type,
-            "buffer": bytesToBase64(this.buffer)
-        };
+    /**
+     * Returns the path to this image in storage.
+     */
+    static getPath(studyID, imageID, imageMetadata) {
+        return studyID + "/" + imageID + "." + imageMetadata.type;
     }
 
     /**
@@ -126,12 +72,7 @@ export class StudyImage {
      */
     static fromExcelImage(excelImage) {
         return new StudyImage(
-            coerceBufferToUint8Array(excelImage.buffer),
-            "image/" + excelImage.extension
-        ).scaleDown();
-    }
-
-    static fromJSON(json) {
-        return new StudyImage(base64ToBytes(json["buffer"]), json["type"]);
+            coerceBufferToUint8Array(excelImage.buffer), excelImage.extension
+        );
     }
 }

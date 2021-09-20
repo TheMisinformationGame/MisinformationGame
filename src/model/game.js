@@ -2,7 +2,7 @@
  * A source with a known credibility and follower count.
  */
 import {doNullableTypeCheck, doTypeCheck} from "../utils/types";
-import {BasePost, BaseSource, Study} from "./study";
+import {Post, Source, Study} from "./study";
 import {selectFilteredRandomElement, selectFilteredWeightedRandomElement} from "../utils/random";
 import {odiff} from "../utils/odiff";
 
@@ -33,7 +33,7 @@ export class GameSource {
     remainingUses; // Number
 
     constructor(source, credibility, followers, remainingUses) {
-        doTypeCheck(source, BaseSource);
+        doTypeCheck(source, Source);
         doTypeCheck(credibility, "number");
         doTypeCheck(followers, "number");
         doTypeCheck(remainingUses, "number");
@@ -100,7 +100,7 @@ export class GameSource {
      * credibility and followers from the supplied distribution.
      */
     static sampleNewSource(source) {
-        doTypeCheck(source, BaseSource);
+        doTypeCheck(source, Source);
         const credibility = source.credibility.sample();
         const followers = source.followers.sample();
         return new GameSource(source, credibility, followers, source.maxPosts);
@@ -115,7 +115,7 @@ export class GamePost {
     shown; // Bool
 
     constructor(post, shown) {
-        doTypeCheck(post, BasePost);
+        doTypeCheck(post, Post);
         this.post = post;
         this.shown = !!shown;
     }
@@ -176,16 +176,21 @@ export class GamePost {
  * Holds the current state of a game.
  */
 export class GameState {
+    // The study is not saved as part of the game states, it is only here for convenience.
+    study; // Study
+
     currentSource; // GameSource
     currentPost; // GamePost
     sources; // GameSource[]
     posts; // GamePost[]
 
-    constructor(currentSource, currentPost, sources, posts) {
+    constructor(study, currentSource, currentPost, sources, posts) {
+        doTypeCheck(study, Study);
         doTypeCheck(currentSource, GameSource);
         doTypeCheck(currentPost, GamePost);
         doTypeCheck(sources, Array);
         doTypeCheck(posts, Array);
+        this.study = study;
         this.currentSource = currentSource;
         this.currentPost = currentPost;
         this.sources = sources;
@@ -257,6 +262,7 @@ export class GameState {
 
     static fromJSON(json, study) {
         return new GameState(
+            study,
             GameSource.fromJSON(json["currentSource"], study),
             GamePost.fromJSON(json["currentPost"], study),
             GameState.sourcesFromJSON(json["sources"], study),
@@ -437,7 +443,7 @@ export class Game {
         }
 
         // Create the new state.
-        const newState = new GameState(newSource, newPost, nextSources, nextPosts);
+        const newState = new GameState(this.study, newSource, newPost, nextSources, nextPosts);
         this.states.push(newState);
         return newState;
     }
