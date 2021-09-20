@@ -147,6 +147,9 @@ export class PredefinedSelectionMethod extends SourcePostSelectionMethod {
     constructor(order) {
         super("Pre-Defined");
         doTypeCheck(order, Array);
+        if (order.length === 0)
+            throw new Error("Empty pre-defined selection order");
+
         this.order = order;
     }
 
@@ -157,7 +160,8 @@ export class PredefinedSelectionMethod extends SourcePostSelectionMethod {
                 "but a " + (stateIndex + 1) + "th pair was expected."
             );
         }
-        return this.order[stateIndex];
+        const selection = this.order[stateIndex];
+        return [selection.sourceID, selection.postID];
     }
 
     toJSON() {

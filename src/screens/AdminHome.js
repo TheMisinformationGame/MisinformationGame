@@ -2,10 +2,11 @@ import {Component} from 'react';
 import '../App.css';
 import {getDataManager} from "../model/manager";
 import {Link, Redirect} from "react-router-dom";
-import StudyUpload, {uploadImageToStorage} from "../components/StudyUpload";
-import {postStudy} from "../utils/postToDB";
+import StudyUpload from "../components/StudyUpload";
+import {postStudy, uploadImageToStorage} from "../utils/postToDB";
 import {ErrorLabel, ProgressLabel} from "../components/StatusLabel";
 import UploadIcon from '@mui/icons-material/Upload';
+import {isOfType} from "../utils/types";
 
 
 class StudySummary extends Component {
@@ -71,29 +72,35 @@ class AdminPage extends Component {
         console.log(study);
 
         //set a unique ID
-        let guid = function() {
-            return(Date.now().toString()); //use date and time of upload to get uniqueID
+        let guid = function () {
+            return (Date.now().toString()); //use date and time of upload to get uniqueID
         };
         var studyID = guid();
 
         //get each post and their id and upload individually
-        for(let i = 0; i < study.posts.length; i++){
-            console.log(i);
-            let refID = study.posts[i].id;
-            uploadImageToStorage(refID, study.posts[i].content, studyID);
+        for (let i = 0; i < study.posts.length; i++) {
+            const post = study.posts[i];
+            if (!isOfType(post.content, "string")) {
+                uploadImageToStorage(studyID, post.id, post.content);
+            }
         }
 
         //get each avatar image and upload to storage for use
-        for(let i = 0; i < study.sources.length; i++){
-            console.log(i);
-            let refID = study.sources[i].id;
-            uploadImageToStorage(refID, study.sources[i].avatar, studyID);
+        for (let i = 0; i < study.sources.length; i++) {
+            const source = study.sources[i];
+            uploadImageToStorage(studyID, source.id, source.avatar);
         }
-
-        //console.log(study.posts[1].content);
-        window.lastStudy = study;
         postStudy(study.toJSON(), studyID);
+
+        this.hideStudyUpload();
+        getDataManager().readAllStudies().then((studies) => {
+            this.setState({
+                studies: studies,
+                showUpload: this.state.showUpload
+            });
+        });
     }
+
 
     render() {
         const studies = this.state.studies || [];

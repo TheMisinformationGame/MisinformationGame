@@ -5,8 +5,6 @@ import StatusLabel, {Status} from "./StatusLabel";
 import {getStudyChangesToAndFromJSON} from "../model/study";
 import xlsxHelp from "./help-export-to-xlsx.png"
 import {Game, getGameChangesToAndFromJSON} from "../model/game";
-import { postStudy } from "../utils/postToDB";
-import { storageRef } from '../utils/initFirestore';
 
 const Excel = require('exceljs');
 
@@ -259,16 +257,3 @@ export default class StudyUpload extends Component {
         );
     }
 };
-
-//upload images to firebase storage
-export function uploadImageToStorage(imageRef, content, studyID){
-    //locate the file path to be saved in
-    const locRef = storageRef.child(studyID);                   //change "testStudy" to something useful
-    //convert all files to jpg
-    const fileName = imageRef + "." + "jpg"; //content.type.split("/")[1] ;
-    let bytes = content.buffer;
-
-    locRef.child(fileName).put(bytes).then(( snapshot => {
-        console.log(fileName + " uploaded to " + locRef);
-    }));
-}

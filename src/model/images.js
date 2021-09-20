@@ -71,8 +71,8 @@ export class StudyImage {
      * Returns a Promise to a StudyImage from the given excel image.
      */
     static fromExcelImage(excelImage) {
-        return new StudyImage(
+        return Promise.resolve(new StudyImage(
             coerceBufferToUint8Array(excelImage.buffer), excelImage.extension
-        );
+        ));
     }
 }

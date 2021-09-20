@@ -32,6 +32,7 @@ export class Source {
 
         this.id = id;
         this.name = name;
+        this.avatar = avatar;
         this.maxPosts = maxPosts;
         this.followers = followers;
         this.credibility = credibility;
@@ -182,7 +183,7 @@ export class Post {
     toJSON() {
         let contentJSON = this.content;
         if (isOfType(contentJSON, [StudyImage, StudyImageMetadata])) {
-            contentJSON = contentJSON.toJSON();
+            contentJSON = contentJSON.toMetadata().toJSON();
         }
         return {
             "id": this.id,
@@ -395,24 +396,10 @@ export class Study {
 export function getStudyChangesToAndFromJSON(study) {
     // Convert the study to JSON.
     const json = study.toJSON();
-    const sourcesJSON = [];
-    const postsJSON = [];
-    for (let index = 0; index < study.sources.length; ++index) {
-        sourcesJSON.push(study.sources[index].toJSON());
-    }
-    for (let index = 0; index < study.posts.length; ++index) {
-        postsJSON.push(study.posts[index].toJSON());
-    }
 
-    // Reconstruct the study from the JSON.
-    const reconstructedStudy = Study.fromJSON(study.id, json);
-    for (let index = 0; index < sourcesJSON.length; ++index) {
-        reconstructedStudy.replaceSource(Source.fromJSON(sourcesJSON[index]));
-    }
-    for (let index = 0; index < postsJSON.length; ++index) {
-        reconstructedStudy.replacePost(Post.fromJSON(postsJSON[index]));
-    }
+    // Reconstruct the study from the JSON, and convert it back to JSON.
+    const reconstructedJSON = Study.fromJSON(study.id, json).toJSON();
 
     // Return the deep differences between them.
-    return odiff(study, reconstructedStudy);
+    return odiff(json, reconstructedJSON);
 }

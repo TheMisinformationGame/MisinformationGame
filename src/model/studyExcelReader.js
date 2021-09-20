@@ -164,6 +164,9 @@ const V1 = {
 }
 
 function readV1PredefinedSourcePostOrder(workbook, length) {
+    if (!length || length <= 0)
+        throw new Error("Length must be positive");
+
     const order = [];
     const lastRow = V1.predefinedOrder.firstRow + length;
     if (lastRow > V1.predefinedOrder.lastRow) {
@@ -183,10 +186,10 @@ function readV1PredefinedSourcePostOrder(workbook, length) {
             );
         }
 
-        order.push([
-            readCell(workbook, V1.predefinedOrder.sourceID.row(row)),
-            readCell(workbook, V1.predefinedOrder.postID.row(row))
-        ]);
+        order.push({
+            sourceID: readCell(workbook, V1.predefinedOrder.sourceID.row(row)),
+            postID: readCell(workbook, V1.predefinedOrder.postID.row(row))
+        });
     }
     return order;
 }
@@ -208,7 +211,7 @@ function readV1SourcePostSelectionMethod(workbook) {
         );
     } else if (method === "Pre-Defined") {
         return new PredefinedSelectionMethod(
-            readV1PredefinedSourcePostOrder(workbook)
+            readV1PredefinedSourcePostOrder(workbook, readCell(workbook, V1.length))
         );
     } else {
         throw new Error("Unknown Source & Post Selection Method " + method);

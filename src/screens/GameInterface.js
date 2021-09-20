@@ -29,21 +29,31 @@ class Source extends Component {
         const source = this.props.source;
         const text_xl = (small ? "text-lg" : "text-xl");
         return (
-            <div className={this.props.className}>
-                <div className="flex">
-                    <p className={text_xl}>{source.source.name} (</p>
-                    <p className={text_xl + " " + Source.pickCredibilityColourClass(source.credibility)}>
-                        &nbsp;{Math.round(source.credibility)}&nbsp;
-                    </p>
-                    <p className={text_xl}>)</p>
+            <div className={"flex " + (this.props.className || "")}>
+                <div className={"mr-2 " + (small ? "h-8" : "h-12")}>
+                    <PromiseImage className="h-full"
+                                  imageClassName="rounded-full shadow"
+                                  loadingSpinner={small ? "small" : ""}
+                                  image={getDataManager().getStudyImage(
+                            source.study, source.source.id, source.source.avatar
+                    )} />
                 </div>
+                <div>
+                    <div className="flex">
+                        <p className={text_xl}>{source.source.name} (</p>
+                        <p className={text_xl + " " + Source.pickCredibilityColourClass(source.credibility)}>
+                            &nbsp;{Math.round(source.credibility)}&nbsp;
+                        </p>
+                        <p className={text_xl}>)</p>
+                    </div>
 
-                {small || /* Hides the followers if smol is true. */
-                <div className="flex">
-                    <p className="text-sm">
-                        {Math.round(source.followers)}&nbsp;followers
-                    </p>
-                </div>}
+                    {!small &&
+                    <div className="flex">
+                        <p className="text-sm">
+                            {Math.round(source.followers)}&nbsp;followers
+                        </p>
+                    </div>}
+                </div>
             </div>
         );
     }

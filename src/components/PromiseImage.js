@@ -52,12 +52,14 @@ export class PromiseImage extends Component {
         if (!image) {
             // Image is still loading.
             return (<span className={"w-full flex justify-center " + this.props.className}>
-                <CircularProgress size={48} />
+                <CircularProgress size={this.props.loadingSpinner === "small" ? 32 : 48} />
             </span>);
         }
 
         return (
-            <img src={image.createImageSrc()} className={this.props.className} alt="" />
+            <img src={image.createImageSrc()}
+                 className={(this.props.imageClassName || "") + " " + (this.props.className || "")}
+                 alt="" />
         );
     }
 }

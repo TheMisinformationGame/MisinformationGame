@@ -27,16 +27,21 @@ function adjustFollowers(current, change) {
  * A source in the game with known credibility and followers.
  */
 export class GameSource {
+    // The study is not saved as part of the game states, it is only here for convenience.
+    study; // Study
+
     source; // BaseSource
     credibility; // Number
     followers; // Number
     remainingUses; // Number
 
-    constructor(source, credibility, followers, remainingUses) {
+    constructor(study, source, credibility, followers, remainingUses) {
+        doTypeCheck(study, Study);
         doTypeCheck(source, Source);
         doTypeCheck(credibility, "number");
         doTypeCheck(followers, "number");
         doTypeCheck(remainingUses, "number");
+        this.study = study;
         this.source = source;
         this.credibility = credibility;
         this.followers = followers;
@@ -51,7 +56,7 @@ export class GameSource {
         const newCredibility = adjustCredibility(this.credibility, credibilityChange);
         const newFollowers = adjustFollowers(this.followers, followersChange);
         const newUses = Math.max(-1, this.remainingUses - 1);
-        return new GameSource(this.source, newCredibility, newFollowers, newUses);
+        return new GameSource(this.study, this.source, newCredibility, newFollowers, newUses);
     }
 
     toJSON() {
@@ -65,6 +70,7 @@ export class GameSource {
 
     static fromJSON(json, study) {
         return new GameSource(
+            study,
             study.getSource(json["sourceID"]),
             json["credibility"],
             json["followers"],
@@ -99,11 +105,11 @@ export class GameSource {
      * Creates a new source for use in the game by sampling its
      * credibility and followers from the supplied distribution.
      */
-    static sampleNewSource(source) {
+    static sampleNewSource(study, source) {
         doTypeCheck(source, Source);
         const credibility = source.credibility.sample();
         const followers = source.followers.sample();
-        return new GameSource(source, credibility, followers, source.maxPosts);
+        return new GameSource(study, source, credibility, followers, source.maxPosts);
     }
 }
 
@@ -111,11 +117,16 @@ export class GameSource {
  * A post in the game that may have been shown already.
  */
 export class GamePost {
+    // The study is not saved as part of the game states, it is only here for convenience.
+    study; // Study
+
     post; // BasePost
     shown; // Bool
 
-    constructor(post, shown) {
+    constructor(study, post, shown) {
+        doTypeCheck(study, Study);
         doTypeCheck(post, Post);
+        this.study = study;
         this.post = post;
         this.shown = !!shown;
     }
@@ -124,7 +135,7 @@ export class GamePost {
      * Returns a new GamePost for this post after it has been shown.
      */
     adjustAfterShown() {
-        return new GamePost(this.post, true);
+        return new GamePost(this.study, this.post, true);
     }
 
     addUsedSources(usedSources) {
@@ -142,6 +153,7 @@ export class GamePost {
 
     static fromJSON(json, study) {
         return new GamePost(
+            study,
             study.getPost(json["postID"]),
             json["shown"]
         );
@@ -410,10 +422,12 @@ export class Game {
             currentSources = [];
             currentPosts = [];
             for (let index = 0; index < this.study.sources.length; ++index) {
-                currentSources.push(GameSource.sampleNewSource(this.study.sources[index]));
+                currentSources.push(
+                    GameSource.sampleNewSource(this.study, this.study.sources[index])
+                );
             }
             for (let index = 0; index < this.study.posts.length; ++index) {
-                currentPosts.push(new GamePost(this.study.posts[index]));
+                currentPosts.push(new GamePost(this.study, this.study.posts[index]));
             }
         }
 
