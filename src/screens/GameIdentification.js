@@ -24,7 +24,7 @@ export class ContinueButton extends Component {
 export class GameIdentification extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {value: "", clicked: false};
     };
 
     componentDidMount() {

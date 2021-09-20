@@ -59,7 +59,7 @@ export class OverallRatioSelectionMethod extends SourcePostSelectionMethod {
     makeSelection(stateIndex, sources, posts) {
         return [
             GameSource.selectRandomSource(sources).source.id,
-            GamePost.selectRandomPost(posts, this.truePostPercentage).post.id
+            GamePost.selectRandomPost(posts, 100 * this.truePostPercentage).post.id
         ];
     }
 
@@ -89,7 +89,7 @@ export class SourceRatioSelectionMethod extends SourcePostSelectionMethod {
 
     makeSelection(stateIndex, sources, posts) {
         const source = GameSource.selectRandomSource(sources);
-        const post = GamePost.selectRandomPost(posts, source.source.truePostPercentage);
+        const post = GamePost.selectRandomPost(posts, 100 * source.source.truePostPercentage);
         return [source.source.id, post.post.id];
     }
 

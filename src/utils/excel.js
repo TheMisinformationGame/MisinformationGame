@@ -252,17 +252,21 @@ function getWorksheet(workbook, worksheet) {
     return worksheetValue;
 }
 
-function isCellAtAddressBlank(workbook, worksheet, address) {
-    const cell = getWorksheet(workbook, worksheet).getCell(address);
-    // This also returns true for cells that contain images, but oh well...
-    return cell.type === Excel.ValueType.Null || cell.type === Excel.ValueType.Merge;
+function isCellAtLocBlank(workbook, worksheet, cellName) {
+    const cell = getWorksheet(workbook, worksheet).getCell(cellName);
+    if (cell.type !== Excel.ValueType.Null && cell.type !== Excel.ValueType.Merge)
+        return false;
+
+    // Make sure it doesn't contain an image.
+    const image = readCellValue(workbook, worksheet, cellName, ExcelImage);
+    return image === undefined;
 }
 
 /**
  * Returns whether the cell at the given WorkbookLoc is blank.
  */
 export function isCellBlank(workbook, loc) {
-    return isCellAtAddressBlank(workbook, loc.worksheet, loc.address);
+    return isCellAtLocBlank(workbook, loc.worksheet, loc.cell);
 }
 
 /**
@@ -272,12 +276,20 @@ export function isCellBlank(workbook, loc) {
 export function areCellsBlank(workbook, worksheet, columns, rows) {
     for (let colIndex = 0; colIndex < columns.length; ++colIndex) {
         for (let rowIndex = 0; rowIndex < rows.length; ++rowIndex) {
-            const address = columns[colIndex] + rows[rowIndex];
-            if (!isCellAtAddressBlank(workbook, worksheet, address))
+            const cellName = columns[colIndex] + rows[rowIndex];
+            if (!isCellAtLocBlank(workbook, worksheet, cellName))
                 return false;
         }
     }
     return true;
+}
+
+/**
+ * Reads the value in the given cell using the given type.
+ */
+function readCellValue(workbook, worksheetName, address, type) {
+    const cell = getWorksheet(workbook, worksheetName).getCell(address);
+    return type.readCellValue(cell);
 }
 
 /**
@@ -289,13 +301,9 @@ export function readCell(workbook, loc) {
     doNonNullCheck(workbook);
     doTypeCheck(loc, WorkbookLoc);
 
-    const worksheet = workbook.getWorksheet(loc.worksheet);
-    if (worksheet === undefined)
-        throw new WorkbookError("The spreadsheet is missing the " + loc.worksheet + " worksheet");
-
-    const cell = getWorksheet(workbook, loc.worksheet).getCell(loc.cell);
-    const value = loc.type.readCellValue(cell);
+    const value = readCellValue(workbook, loc.worksheet, loc.cell, loc.type);
     if (value === undefined) {
+        const cell = getWorksheet(workbook, loc.worksheet).getCell(loc.cell);
         throw new CellTypeError(
             "Expected " + loc.address + " (" + loc.name + ") to contain " + loc.type.name +
             ", but instead it contained " + ExcelType.getExcelJSTypeName(cell.type) +

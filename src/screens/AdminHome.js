@@ -13,7 +13,7 @@ class StudySummary extends Component {
     render() {
         const study = this.props.study;
         return (
-            <div className="rounded-xl border border-gray-400 p-3 bg-white shadow">
+            <div className="rounded-xl border-2 border-gray-400 p-3 bg-white shadow">
                 
                 <Link to={`/admin/${study.id}`}
                       className="text-blue-600 text-lg font-bold hover:text-blue-800 hover:underline">
@@ -131,28 +131,26 @@ class AdminPage extends Component {
                     </div>
                 </div>
 
-                {/* The studies. */}
-                {readStudies && !noStudies &&
-                    <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-10 m-10">
+                <div className="w-full p-10">
+                    {/* The studies. */}
+                    {readStudies && !noStudies &&
+                    <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-10">
                         {studyComponents}
                     </div>}
 
-                {/* Label saying that the studies are loading. */}
-                {noStudies &&
-                    <div className="m-10">
+                    {/* Label saying that the studies are loading. */}
+                    {noStudies &&
                         <ErrorLabel value={[
                             "No studies were found.",
                             "You can upload a study using the ",
                             <b>Upload Study</b>,
                             "button in the top-right of this page."
-                        ]} />
-                    </div>}
+                        ]} />}
 
-                {/* Label saying that the studies are loading. */}
-                {!readStudies &&
-                    <div className="m-10">
-                        <ProgressLabel value="Loading studies..." />
-                    </div>}
+                    {/* Label saying that the studies are loading. */}
+                    {!readStudies &&
+                        <ProgressLabel value="Loading studies..." />}
+                </div>
 
                 {/* The study upload component. */}
                 {this.state.showUpload &&

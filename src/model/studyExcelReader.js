@@ -389,19 +389,27 @@ function readV1Posts(workbook) {
         const defaults = (isTrue ? trueDefaults : falseDefaults);
 
         // If the content is an image, we have to convert it to our format.
-        const contentExcelValue = readCell(workbook, V1.post.content.row(row));
+        const contentExcelValue = readCellWithDefault(workbook, V1.post.content.row(row), "");
         let contentPromise;
-        if (typeof content !== "string") {
+        if (typeof contentExcelValue !== "string") {
             contentPromise = StudyImage.fromExcelImage(contentExcelValue);
         } else {
             contentPromise = Promise.resolve(contentExcelValue);
+        }
+
+        const headline = readCellWithDefault(workbook, V1.post.headline.row(row), "");
+        if (headline === "" && contentExcelValue === "") {
+            throw new Error(
+                "Post " + postID + " is missing both its headline and its content. " +
+                "It must have either a headline, content, or both."
+            );
         }
 
         posts.push(
             contentPromise.then((content) => {
                 return new Post(
                     postID,
-                    readCell(workbook, V1.post.headline.row(row)),
+                    headline,
                     content,
                     isTrue,
                     readV1ReactionValues(
