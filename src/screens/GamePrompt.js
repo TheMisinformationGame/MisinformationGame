@@ -21,7 +21,7 @@ function GamePrompt({onButton}) {
             </div>
             <div className="bg-white opacity-100 border-2 border-black rounded-md py-1 fixed bottom-0 left-0 w-full h-1/6
                             flex justify-center items-center">
-                <button className="bg-blue-500 px-4 py-2 text-2xl text-white border-black border-2 rounded-md" onClick={onButton}>Continue</button>
+                <button className="bg-blue-500 hover:bg-blue-600 px-4 py-2 text-2xl text-white border-black border-2 rounded-md" onClick={onButton}>Continue</button>
             </div>
         </div>
     );
