@@ -5,7 +5,7 @@ import firebase from "./utils/firebase";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Home from "./screens/Home";
 import AdminHome from "./screens/AdminHome";
-import AdminStudy from "./screens/AdminStudy";
+import StudyPage from "./screens/AdminStudy";
 import Game from "./screens/GameInterface";
 import GameIdentification from "./screens/GameIdentification";
 import GameIntroduction from "./screens/GameIntroduction";
@@ -22,8 +22,8 @@ ReactDOM.render(
       <BrowserRouter>
           <Switch>
               <Route exact path="/" component={Home} />
-              <Route path="/admin" component={AdminHome} />
-              <Route path="/admin_study" component={AdminStudy} />
+              <Route exact path="/admin" component={AdminHome} />
+              <Route exact path="/admin/:id" component={StudyPage} />
               <Route path="/study_upload" component={StudyUpload} />
               <Route path="/game" component={Game} />
               <Route path="/game_id" component={GameIdentification} />
