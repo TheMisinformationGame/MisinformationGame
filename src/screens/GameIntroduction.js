@@ -7,7 +7,7 @@ import {getDataManager} from "../model/manager";
 export class GameIntroduction extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {study: null};
     }
 
     componentDidMount() {

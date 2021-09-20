@@ -13,7 +13,7 @@ class StudySummary extends Component {
     render() {
         const study = this.props.study;
         return (
-            <div className="rounded-xl border border-gray-400 p-3 bg-white shadow">
+            <div className="rounded-xl border-2 border-gray-400 p-3 bg-white shadow">
                 
                 <Link to={`/admin/${study.id}`}
                       className="text-blue-600 text-lg font-bold hover:text-blue-800 hover:underline">

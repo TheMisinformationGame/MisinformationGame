@@ -122,7 +122,7 @@ export class GamePost {
     study; // Study
 
     post; // BasePost
-    shown; // Bool
+    shown; // boolean
 
     constructor(study, post, shown) {
         doTypeCheck(study, Study);
@@ -168,8 +168,8 @@ export class GamePost {
      * @param truePostPercentage A percentage value between 0 and 100.
      */
     static selectRandomPost(posts, truePostPercentage) {
-        const selectTruePosts = Math.random() < truePostPercentage;
-        return selectFilteredRandomElement(posts, (post) => selectTruePosts === post.post.isTrue);
+        const selectTruePosts = 100 * Math.random() < truePostPercentage;
+        return selectFilteredRandomElement(posts, (post) => !post.shown && selectTruePosts === post.post.isTrue);
     }
 
     /**

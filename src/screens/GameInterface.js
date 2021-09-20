@@ -120,6 +120,7 @@ class PostComponent extends Component {
     render() {
         const state = this.props.state;
         const post = state.currentPost.post;
+        console.log(post);
         const commentComponents = [];
         for (let index = 0; index < post.comments.length; ++index) {
             const comment = post.comments[index];
@@ -131,7 +132,9 @@ class PostComponent extends Component {
 
         let postContent;
         if (isOfType(post.content, "string")) {
-            postContent = (<p dangerouslySetInnerHTML={{__html: post.content}} />);
+            postContent = (
+                <p className="text-lg font-normal p-2 pt-0" dangerouslySetInnerHTML={{__html: post.content}} />
+            );
         } else {
             postContent = (<PromiseImage image={
                 getDataManager().getStudyImage(state.study, post.id, post.content)
@@ -162,7 +165,13 @@ class PostComponent extends Component {
 class GameScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            state: null,
+            participant: null,
+            error: null,
+            reactionsAllowed: false,
+            dismissedPrompt: false
+        };
     }
 
     updateGameState(game, error) {

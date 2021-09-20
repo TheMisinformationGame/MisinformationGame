@@ -44,7 +44,9 @@ export class PromiseImage extends Component {
 
         const image = this.state.image;
         if (promise !== this.state.promise) {
-            this.load(promise);
+            setTimeout(() => {
+                this.load(promise);
+            });
         }
         if (!promise)
             return null;
