@@ -155,7 +155,7 @@ export class GamePost {
      * @param truePostPercentage A percentage value between 0 and 100.
      */
     static selectRandomPost(posts, truePostPercentage) {
-        const selectTruePosts = Math.random() * 100 < truePostPercentage;
+        const selectTruePosts = Math.random() < truePostPercentage;
         return selectFilteredRandomElement(posts, (post) => selectTruePosts === post.post.isTrue);
     }
 
@@ -190,6 +190,15 @@ export class GameState {
         this.currentPost = currentPost;
         this.sources = sources;
         this.posts = posts;
+    }
+
+    findSource(id) {
+        for (let index = 0; index < this.sources.length; ++index) {
+            const source = this.sources[index];
+            if (source.source.id === id)
+                return source;
+        }
+        throw new Error("Could not find source with ID " + id);
     }
 
     addUsedSourcesAndPosts(usedSources, usedPosts) {
@@ -353,7 +362,7 @@ export class Game {
         if (reaction === "skip") {
             this.participant.addReaction(reaction, 0, 0);
         } else {
-            const post = this.getCurrentState().currentPost;
+            const post = this.getCurrentState().currentPost.post;
             this.participant.addReaction(
                 reaction,
                 post.changesToCredibility[reaction].sample(),

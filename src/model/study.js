@@ -183,7 +183,7 @@ export class ReactionValues {
  * contains enough info to perform the source/post selection.
  */
 export class BasePost {
-    id; // String -> [DL] Consider switching to number type
+    id; // String
     headline; // String
     isTrue; // Boolean
     changesToFollowers; // ReactionValues
