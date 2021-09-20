@@ -1,7 +1,7 @@
 import {Component} from 'react';
 import '../App.css';
 import {getDataManager} from "../model/manager";
-import {Link, Redirect} from "react-router-dom";
+import {Link} from "react-router-dom";
 import StudyUpload from "../components/StudyUpload";
 import {postStudy, uploadImageToStorage} from "../utils/postToDB";
 import {ErrorLabel, ProgressLabel} from "../components/StatusLabel";
@@ -13,7 +13,7 @@ class StudySummary extends Component {
     render() {
         const study = this.props.study;
         return (
-            <div className="rounded-xl border-2 border-gray-400 p-3 bg-white shadow">
+            <div className="rounded-xl border border-gray-400 p-3 bg-white shadow">
                 
                 <Link to={`/admin/${study.id}`}
                       className="text-blue-600 text-lg font-bold hover:text-blue-800 hover:underline">
