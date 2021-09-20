@@ -28,8 +28,6 @@ function Home() {
                 <div className="flex p-2 my-4 rounded bg-gray-700">
                     <Link to="/" name="Home" className="bg-gray-800" />
                     <Link to="/admin" name="Admin" />
-                    <Link to="/admin_study" name="Study" />
-                    <Link to="/study_upload" name="Upload" />
                     <Link to="/game" name="Game" />
                     <Link to="/game_id" name="Game ID" />
                     <Link to="/game_intro" name="Game Intro" />
