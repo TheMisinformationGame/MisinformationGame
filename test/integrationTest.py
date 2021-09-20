@@ -1,64 +1,59 @@
 import os
+import time
 import unittest
 import pandas as pd
 from selenium import webdriver
+import selenium
 from selenium.webdriver.common.keys import Keys
+import subprocess
 
 
 class Test(unittest.TestCase):
 
-    # declare variable to store the url to be visited
-    base_url = ""
-    # declare variable to store search term
-    search_term = ""
+    base_url = "https://misinformation-game-group-41.web.app"
 
     def setUp(self) -> None:
 
         path = os.getcwd()
         # declare and initialize driver
-        self.driver = webdriver.Chrome(os.path.join(path, "chromedriver"))
+        while True:
+            driver_choice = input(
+                "please select the webdriver, chrome or firefox: \n")
+            if driver_choice.lower() == "chrome":
+                self.driver = webdriver.Chrome(
+                    os.path.join(path, "chromedriver"))
+                break
+            elif driver_choice.lower() == "firefox":
+                self.driver = webdriver.Firefox(
+                    os.path.join(path, "geckodriver"))
+                break
+        # subprocess.check_call("npm start", shell=True)
+
+    def testPages(self) -> None:
 
         # browser loads in maximized window
         self.driver.maximize_window()
-        # driver waits implicitly for 10 seconds, for the element under consideration to load
-        self.driver.implicitly_wait(10)
-
-    def testSample(self) -> None:
 
         # load a given url in browser window
         self.driver.get(self.base_url)
+        time.sleep(2)
 
-        # fetech the content with xpath
-        content_list = self.driver.find_elements_by_xpath(
-            "//h3/span[contains(text(),'')]/../..//table//td")
-        item_list = []
+        # # fetech the content with xpath
+        # content_list = self.driver.find_elements_by_xpath(
+        #     "//h3/span[contains(text(),'')]/../..//table//td")
+        # item_list = []
 
-        # collect the result in a dataframe
-        df = pd.DataFrame(item_list)
+        # # collect the result in a dataframe
+        # df = pd.DataFrame(item_list)
 
-        # find search box
-        search_box = self.driver.find_element_by_id("")
-        # enter the search term in the search textbox
-        search_box.send_keys(self.search_term)
+        # # find search box
+        # search_box = self.driver.find_element_by_id("")
+        # # enter the search term in the search textbox
+        # search_box.send_keys(self.search_term)
 
-        # to search for the entered search term
-        search_box.send_keys(Keys.RETURN)
+        # # to search for the entered search term
+        # search_box.send_keys(Keys.RETURN)
         # to click on the first search result's link
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        self.driver.find_element_by_xpath("").click()
-        # switch to the new tab
-        self.driver.switch_to.window(self.driver.window_handles[1])
-        # to confirm if a certain page has loaded
-        self.assertTrue(self.driver.title.startswith(""))
-        # to confirm if a certain item is visible or not
-        self.assertTrue(self.driver.find_element_by_id("").is_displayed())
-=======
-=======
->>>>>>> 96b6f50 (Add tests with credibility settings missing; Add tests with overall-ratio settings missing; Add tests with one sheet missing)
-=======
->>>>>>> 96b6f50 (Add tests with credibility settings missing; Add tests with overall-ratio settings missing; Add tests with one sheet missing)
         try:
             pages = self.driver.find_elements_by_xpath(
                 "//a[@class='px-4 py-2 m-0.5 hover:bg-blue-400 rounded font-sans text-white text-lg undefined']")
@@ -209,19 +204,10 @@ class Test(unittest.TestCase):
         except:
             print(
                 "Test of uploading study file with one sheet missing failed!")
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 96b6f50 (Add tests with credibility settings missing; Add tests with overall-ratio settings missing; Add tests with one sheet missing)
-=======
->>>>>>> 96b6f50 (Add tests with credibility settings missing; Add tests with overall-ratio settings missing; Add tests with one sheet missing)
-=======
->>>>>>> 96b6f50 (Add tests with credibility settings missing; Add tests with overall-ratio settings missing; Add tests with one sheet missing)
 
     def shutDown(self) -> None:
 
         self.driver.quit()
-<<<<<<< HEAD
-=======
 
 
 if __name__ == "__main__":
@@ -233,10 +219,3 @@ if __name__ == "__main__":
     # test.testUploadCredibilitySettingsMissing()
     # test.testUploadOverallRatioSettingsMissing()
     test.UploadtestSheetMissing()
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 96b6f50 (Add tests with credibility settings missing; Add tests with overall-ratio settings missing; Add tests with one sheet missing)
-=======
->>>>>>> 96b6f50 (Add tests with credibility settings missing; Add tests with overall-ratio settings missing; Add tests with one sheet missing)
-=======
->>>>>>> 96b6f50 (Add tests with credibility settings missing; Add tests with overall-ratio settings missing; Add tests with one sheet missing)
