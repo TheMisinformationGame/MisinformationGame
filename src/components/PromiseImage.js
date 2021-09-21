@@ -1,6 +1,8 @@
 import {Component} from "react";
 import {ErrorLabel} from "./StatusLabel";
 import {CircularProgress} from "@material-ui/core";
+import {isOfType} from "../utils/types";
+import {StudyImage} from "../model/images";
 
 /**
  * An image that may still be loading.
@@ -12,6 +14,14 @@ export class PromiseImage extends Component {
     }
 
     load(imagePromise) {
+        if (isOfType(imagePromise, StudyImage)) {
+            this.setState({
+                promise: imagePromise,
+                image: imagePromise
+            });
+            return;
+        }
+
         this.setState({
             promise: imagePromise,
             image: null
@@ -38,11 +48,10 @@ export class PromiseImage extends Component {
 
     render() {
         const promise = this.props.image;
-        if (this.state.error && this.state.promise === promise) {
+        if (this.state.error && this.state.promise === promise)
             return (<ErrorLabel value={this.state.error} />);
-        }
 
-        const image = this.state.image;
+        const image = (isOfType(promise, StudyImage) ? promise : this.state.image);
         if (promise !== this.state.promise) {
             setTimeout(() => {
                 this.load(promise);

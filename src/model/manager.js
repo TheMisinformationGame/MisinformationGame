@@ -135,7 +135,7 @@ class DataManager {
         const path = StudyImage.getPath(study.id, imageID, imageMetadata);
         console.log("Reading image " + path + "...");
         const imagePromise = readStudyImage(path).then((image) => {
-            this.imagePromiseGenerators[path] = () => Promise.resolve(image);
+            this.imagePromiseGenerators[path] = () => image;
             return image;
         }).catch((err) => {
             this.imagePromiseGenerators[path] = () => Promise.reject(err);
@@ -146,7 +146,8 @@ class DataManager {
     }
 
     /**
-     * Returns a Promise to the study image with the given ID.
+     * Returns a Promise to the study image with the given ID,
+     * or if the image is already loaded, just that image.
      */
     getStudyImage(study, imageID, imageMetadata) {
         doTypeCheck(study, Study);
@@ -154,7 +155,7 @@ class DataManager {
 
         // Already an image, just return it.
         if (isOfType(imageMetadata, StudyImage))
-            return Promise.resolve(imageMetadata);
+            return imageMetadata;
 
         doTypeCheck(imageMetadata, StudyImageMetadata);
         const path = StudyImage.getPath(study.id, imageID, imageMetadata);
