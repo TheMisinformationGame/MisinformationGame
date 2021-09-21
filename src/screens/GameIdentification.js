@@ -38,8 +38,10 @@ class GameIdentification extends Component {
 
     handleKeyPress(e) {
         const { history } = this.props;
-        if (e.charCode == 13) {
+        if (e.charCode == 13 && this.state.value.trim() !== "") {
+            console.log('value = ' + this.state.value)
             history.push(`/game_intro`);
+            this.state.clicked = true;
         }
     }
 
