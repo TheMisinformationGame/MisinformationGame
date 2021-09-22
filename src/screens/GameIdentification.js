@@ -1,5 +1,4 @@
 import {Component} from "react"
-import {withRouter} from 'react-router-dom'
 import {ErrorLabel} from '../components/StatusLabel';
 import "../App.css"
 import {ConditionalLink} from "../components/ConditionalLink";
@@ -22,7 +21,7 @@ export class ContinueButton extends Component {
     }
 }
 
-class GameIdentification extends Component {
+export class GameIdentification extends Component {
     constructor(props) {
         super(props);
         this.state = {value: "", clicked: false};
@@ -36,12 +35,19 @@ class GameIdentification extends Component {
         });
     }
 
+    static isValidValue(value) {
+        return value && value.trim() !== "";
+    }
+
     handleKeyPress(e) {
-        const { history } = this.props;
-        if (e.charCode == 13 && this.state.value.trim() !== "") {
-            console.log('value = ' + this.state.value)
+        // We only want to try to submit the ID if enter was pressed.
+        if (e.charCode !== 13)
+            return;
+
+        this.setState({...this.state, clicked: true});
+        if (GameIdentification.isValidValue(this.state.value)) {
+            const { history } = this.props;
             history.push(`/game_intro`);
-            this.state.clicked = true;
         }
     }
 
@@ -63,12 +69,10 @@ class GameIdentification extends Component {
                         <ErrorLabel value="Please enter an ID" />}
 
                     <ContinueButton to="game_intro"
-                                    condition={this.state.value && this.state.value.trim() !== ""}
+                                    condition={GameIdentification.isValidValue(this.state.value)}
                                     onClick={() => this.setState({...this.state, clicked: true})} />
                 </div>
             </div>
         )
     }
 }
-
-export default withRouter(GameIdentification)

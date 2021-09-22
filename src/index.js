@@ -6,7 +6,7 @@ import Home from "./screens/Home";
 import AdminHome from "./screens/AdminHome";
 import StudyPage from "./screens/AdminStudy";
 import Game from "./screens/GameInterface";
-import GameIdentification from "./screens/GameIdentification";
+import {GameIdentification} from "./screens/GameIdentification";
 import {GameIntroduction} from "./screens/GameIntroduction";
 import ErrorScreen from "./screens/Error"
 import StudyUpload from "./components/StudyUpload";

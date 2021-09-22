@@ -30,7 +30,7 @@ export class GameIntroduction extends Component {
                     <h2 className="align-middle text-4xl mb-4">How to participate</h2>
                     <p className="leading-5 mb-4">
                     When participating in a study you will have five options. These are the "like", "dislike", "skip", "share" and "flag" buttons on the bottom row. You can react to the post you are looking at with these options.</p>
-                    <ul class="list-disc list-inside">
+                    <ul className="list-disc list-inside">
                         <li className="leading-5 mb-4">The like button will tell everyone that you like this post.</li>
                         <li className="leading-5 mb-4">The dislike button will tell everyone that you dislike this post.</li>
                         <li className="leading-5 mb-4">The skip button will remove the post from your screen but will not tell your followers anything.</li>
