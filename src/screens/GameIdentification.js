@@ -12,7 +12,8 @@ export class ContinueButton extends Component {
                              className={
                                  "px-3 py-2 rounded-md text-white cursor-pointer " +
                                  "select-none bg-blue-500 hover:bg-blue-600 " +
-                                 (this.props.className || "")
+                                 (this.props.className || "") + " " +
+                                 (this.props.active ? "bg-blue-600" : "active:bg-blue-600")
                              }>
 
                 Continue
@@ -24,8 +25,13 @@ export class ContinueButton extends Component {
 export class GameIdentification extends Component {
     constructor(props) {
         super(props);
-        this.state = {value: "", clicked: false};
-        this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.state = {
+            value: "",
+            displayError: false,
+            ignoreKeyDowns: false,
+            submitOnEnterUp: false
+        };
+        this.submitCancelTimer = null;
     };
 
     componentDidMount() {
@@ -35,19 +41,50 @@ export class GameIdentification extends Component {
         });
     }
 
+    componentWillUnmount() {
+        if (this.submitCancelTimer !== null) {
+            clearTimeout(this.submitCancelTimer);
+        }
+    }
+
     static isValidValue(value) {
         return value && value.trim() !== "";
     }
 
-    handleKeyPress(e) {
-        // We only want to try to submit the ID if enter was pressed.
-        if (e.charCode !== 13)
+    static isEnterKey(e) {
+        return e.charCode === 13 || e.keyCode === 13
+    }
+
+    handleKeyDown(e) {
+        if (this.state.ignoreKeyDowns || !GameIdentification.isEnterKey(e))
             return;
 
-        this.setState({...this.state, clicked: true});
         if (GameIdentification.isValidValue(this.state.value)) {
-            const { history } = this.props;
-            history.push(`/game_intro`);
+            // Set the state so the release of the enter key will submit.
+            this.setState({
+                ...this.state, displayError: true,
+                submitOnEnterUp: true, ignoreKeyDowns: true
+            });
+
+            // If the user waits a second without releasing enter, cancel the submit.
+            this.submitCancelTimer = setTimeout(() => {
+                this.submitCancelTimer = null;
+                this.setState({...this.state, submitOnEnterUp: false});
+            }, 1000);
+        } else {
+            // If the ID is invalid, display the error.
+            this.setState({...this.state, displayError: true});
+        }
+    }
+
+    handleKeyUp(e) {
+        if (!GameIdentification.isEnterKey(e))
+            return;
+
+        if (this.state.submitOnEnterUp && GameIdentification.isValidValue(this.state.value)) {
+            this.props.history.push(`/game_intro`);
+        } else if(this.state.ignoreKeyDowns) {
+            this.setState({...this.state, ignoreKeyDowns: false});
         }
     }
 
@@ -63,14 +100,16 @@ export class GameIdentification extends Component {
                            placeholder="ID Number"
                            value={this.state.value}
                            onChange={e => this.setState({...this.state, value: e.target.value})}
-                           onKeyPress={e => this.handleKeyPress(e)}>
+                           onKeyDown={e => this.handleKeyDown(e)}
+                           onKeyUp={e => this.handleKeyUp(e)}>
                     </input>
-                    {this.state.clicked && (!this.state.value || this.state.value.trim() === "") &&
+                    {this.state.displayError && (!this.state.value || this.state.value.trim() === "") &&
                         <ErrorLabel value="Please enter an ID" />}
 
                     <ContinueButton to="game_intro"
                                     condition={GameIdentification.isValidValue(this.state.value)}
-                                    onClick={() => this.setState({...this.state, clicked: true})} />
+                                    onClick={() => this.setState({...this.state, displayError: true})}
+                                    active={this.state.submitOnEnterUp} />
                 </div>
             </div>
         )
