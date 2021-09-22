@@ -1,4 +1,5 @@
 import {Component} from "react"
+import {withRouter} from 'react-router-dom'
 import {ErrorLabel} from '../components/StatusLabel';
 import "../App.css"
 import {ConditionalLink} from "../components/ConditionalLink";
@@ -21,10 +22,11 @@ export class ContinueButton extends Component {
     }
 }
 
-export class GameIdentification extends Component {
+class GameIdentification extends Component {
     constructor(props) {
         super(props);
         this.state = {value: "", clicked: false};
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     };
 
     componentDidMount() {
@@ -32,6 +34,15 @@ export class GameIdentification extends Component {
         getDataManager().getActiveGame().then((game) => {
             game.preloadCurrentState();
         });
+    }
+
+    handleKeyPress(e) {
+        const { history } = this.props;
+        if (e.charCode == 13 && this.state.value.trim() !== "") {
+            console.log('value = ' + this.state.value)
+            history.push(`/game_intro`);
+            this.state.clicked = true;
+        }
     }
 
     render() {
@@ -45,7 +56,8 @@ export class GameIdentification extends Component {
                     <input className="px-3 py-2 border border-gray-400 rounded-md justify-self-center bg-gray-100"
                            placeholder="ID Number"
                            value={this.state.value}
-                           onChange={e => this.setState({...this.state, value: e.target.value})}>
+                           onChange={e => this.setState({...this.state, value: e.target.value})}
+                           onKeyPress={e => this.handleKeyPress(e)}>
                     </input>
                     {this.state.clicked && (!this.state.value || this.state.value.trim() === "") &&
                         <ErrorLabel value="Please enter an ID" />}
@@ -57,5 +69,6 @@ export class GameIdentification extends Component {
             </div>
         )
     }
-    
 }
+
+export default withRouter(GameIdentification)
