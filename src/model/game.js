@@ -545,7 +545,7 @@ export class Game {
      */
     static createNew(study) {
         doTypeCheck(study, Study);
-        const game = new Game(study, [], new GameParticipant(100, 0), false);
+        const game = new Game(study, [], new GameParticipant(50, 0), false);
         game.calculateAllStates();
         return game;
     }

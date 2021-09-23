@@ -15,19 +15,28 @@ import {GamePrompt} from "./GamePrompt";
 
 
 class CredibilityLabel extends Component {
-    static pickCredibilityColourClass(credibility) {
-        if (credibility < 30)
-            return "text-red-500";
-        if (credibility < 70)
-            return "text-yellow-500";
-        return "text-green-600";
+    /**
+     * Intermediate colours generated using
+     * https://colordesigner.io/gradient-generator.
+     */
+    static getCredibilityColour(credibility) {
+        if (credibility < 10) return "#b91c1c";
+        if (credibility < 20) return "#c53a18";
+        if (credibility < 30) return "#cf5314";
+        if (credibility < 40) return "#d86910";
+        if (credibility < 50) return "#e07f0e";
+        if (credibility < 60) return "#e69512";
+        if (credibility < 70) return "#c5a200";
+        if (credibility < 80) return "#9dac00";
+        if (credibility < 90) return "#6db30f";
+        return "#0ab83d";
     }
 
     render() {
         const cred = this.props.credibility;
-        const colour = CredibilityLabel.pickCredibilityColourClass(cred);
+        const colour = CredibilityLabel.getCredibilityColour(cred);
         return (
-            <span className={(this.props.className || "") + " " + colour}>
+            <span className={(this.props.className || "")} style={{color: colour}}>
                 &nbsp;{Math.round(cred)}&nbsp;
             </span>
         );
@@ -130,8 +139,8 @@ class ReactionsRow extends Component {
                         <FlagIcon/></ReactButton>
                 </div>
 
-                <ReactButton reaction="skip" onReact={onReact} enabled={enabled} className="w-32"
-                             fontSize="1.3rem" childClassName="transform translate-y-0.5">
+                <ReactButton reaction="skip" onReact={onReact} enabled={enabled} className="w-30"
+                             fontSize="1.25rem" childClassName="transform translate-y-1">
                     <p>Skip Post</p>
                 </ReactButton>
             </div>
@@ -188,6 +197,31 @@ class PostComponent extends Component {
                 {commentComponents.length > 0 &&
                     <p className="font-bold text-gray-600 p-1">Comments:</p>}
                 {commentComponents}
+            </div>
+        );
+    }
+}
+
+class ParticipantProgress extends Component {
+    render() {
+        const participant = this.props.participant;
+        return (
+            <div className="fixed w-full md:max-w-xl bottom-0 left-1/2 transform -translate-x-1/2
+                                    shadow-2xl md:border-l-2 md:border-r-2 md:border-opacity-0">
+                <div className="p-2 px-4 pb-3 bg-white border-t border-gray-400">
+                    <p className="text-xl font-bold mb-1">
+                        Your Progress
+                    </p>
+                    <p className="text-xl">
+                        <SupervisedUserCircleIcon className="align-bottom mr-1" />
+                        Followers:
+                        <span>&nbsp;{Math.round(participant.followers)}&nbsp;</span>
+
+                        <CheckCircleIcon className="align-bottom ml-6 mr-1" />
+                        Credibility:
+                        <CredibilityLabel credibility={participant.credibility} />
+                    </p>
+                </div>
             </div>
         );
     }
@@ -278,24 +312,7 @@ class GameScreen extends Component {
                     </div>
 
                     {/* Progress. */}
-                    {participant && !error &&
-                    <div className="fixed w-full md:max-w-xl bottom-0 left-1/2 transform -translate-x-1/2
-                                    shadow-2xl md:border-l-2 md:border-r-2 md:border-opacity-0">
-                        <div className="p-2 px-4 pb-3 bg-white border-t border-gray-400">
-                            <p className="text-xl font-bold mb-1">
-                                Your Progress
-                            </p>
-                            <p className="text-xl">
-                                <SupervisedUserCircleIcon className="align-bottom mr-1" />
-                                Followers:
-                                {Math.round(participant.followers)}
-
-                                <CheckCircleIcon className="align-bottom ml-6 mr-1" />
-                                Credibility:
-                                <CredibilityLabel credibility={participant.credibility} />
-                            </p>
-                        </div>
-                    </div>}
+                    {participant && !error && <ParticipantProgress participant={participant} />}
                 </div>
             </>
         );
