@@ -3,8 +3,7 @@ import React from 'react';
 import {Component} from "react";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-import BlockIcon from '@material-ui/icons/Block';
-import LaunchIcon from '@material-ui/icons/Launch';
+import ReplyIcon from '@mui/icons-material/Reply';
 import FlagIcon from '@material-ui/icons/Flag';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -15,8 +14,7 @@ import {PromiseImage} from "../components/PromiseImage";
 import {GamePrompt} from "./GamePrompt";
 
 
-class Source extends Component {
-
+class CredibilityLabel extends Component {
     static pickCredibilityColourClass(credibility) {
         if (credibility < 30)
             return "text-red-500";
@@ -25,6 +23,18 @@ class Source extends Component {
         return "text-green-600";
     }
 
+    render() {
+        const cred = this.props.credibility;
+        const colour = CredibilityLabel.pickCredibilityColourClass(cred);
+        return (
+            <span className={(this.props.className || "") + " " + colour}>
+                &nbsp;{Math.round(cred)}&nbsp;
+            </span>
+        );
+    }
+}
+
+class Source extends Component {
     render() {
         const small = !!this.props.small;
         const source = this.props.source;
@@ -42,9 +52,7 @@ class Source extends Component {
                 <div>
                     <div className="flex">
                         <p className={text_xl}>{source.source.name} (</p>
-                        <p className={text_xl + " " + Source.pickCredibilityColourClass(source.credibility)}>
-                            &nbsp;{Math.round(source.credibility)}&nbsp;
-                        </p>
+                        <CredibilityLabel credibility={source.credibility} className={text_xl} />
                         <p className={text_xl}>)</p>
                     </div>
 
@@ -77,9 +85,11 @@ class ReactButton extends Component {
         return (
             <div id={this.props.reaction}
                  className={
-                     "fill-current cursor-pointer text-5xl px-2 sm:px-3 md:px-4 " +
-                     "filter hover:drop-shadow transform transition duration-100 " +
-                     (this.props.enabled ? "text-gray-700 hover:scale-125" : "text-gray-500")}
+                     "group h-12 w-16 pt-1.5 px-2 sm:px-3 md:px-4 rounded " +
+                     "fill-current cursor-pointer transition duration-100 hover:bg-gray-100 " +
+                     "text-center " + (this.props.enabled ? "text-gray-700 " : "text-gray-500 ") +
+                     (this.props.className || "")}
+                 style={{fontSize: (this.props.fontSize || "2.5rem")}}
                  onClick={() => {
                     if (this.props.enabled) {
                         this.props.onReact(this.props.reaction);
@@ -87,7 +97,10 @@ class ReactButton extends Component {
                  }}>
 
                 {React.cloneElement(this.props.children, {
-                    className: "fill-current", fontSize: "inherit"
+                    className: "fill-current " +
+                        (this.props.enabled ? "transform group-hover:scale-110 " : "") +
+                        (this.props.childClassName || ""),
+                    fontSize: "inherit"
                 })}
             </div>
         );
@@ -97,20 +110,30 @@ class ReactButton extends Component {
 class ReactionsRow extends Component {
     render() {
         const onReact = this.props.onReact;
+        const enabled = this.props.enabled;
         return (
-            <div className="text-lg flex flex-row justify-center p-2 bg-white"
-                 style={{boxShadow: "0 -0.1rem 0.3rem rgba(0, 0, 0, 0.2)"}}>
+            <div className="text-lg flex flex-row p-2">
+                <div className="flex flex-grow">
+                    <ReactButton reaction="like" onReact={onReact} enabled={enabled}
+                                 childClassName="transform -translate-y-0.5 -translate-x-1">
+                        <ThumbUpIcon/></ReactButton>
+                    <ReactButton reaction="dislike" onReact={onReact} enabled={enabled}
+                                 childClassName="transform -translate-y-0.5 -translate-x-1">
+                        <ThumbDownIcon/></ReactButton>
+                    <ReactButton reaction="share" onReact={onReact} enabled={enabled}
+                                 fontSize="3.25rem"
+                                 childClassName="transform -translate-y-2.5 -translate-x-1.5">
+                        <ReplyIcon/></ReactButton>
+                    <ReactButton reaction="flag" onReact={onReact} enabled={enabled}
+                                 fontSize="2.6rem"
+                                 childClassName="transform -translate-y-1 -translate-x-1">
+                        <FlagIcon/></ReactButton>
+                </div>
 
-                <ReactButton reaction="like" onReact={onReact} enabled={this.props.enabled}>
-                    <ThumbUpIcon/></ReactButton>
-                <ReactButton reaction="dislike" onReact={onReact} enabled={this.props.enabled}>
-                    <ThumbDownIcon/></ReactButton>
-                <ReactButton reaction="skip" onReact={onReact} enabled={this.props.enabled}>
-                    <BlockIcon/></ReactButton>
-                <ReactButton reaction="share" onReact={onReact} enabled={this.props.enabled}>
-                    <LaunchIcon/></ReactButton>
-                <ReactButton reaction="flag" onReact={onReact} enabled={this.props.enabled}>
-                    <FlagIcon/></ReactButton>
+                <ReactButton reaction="skip" onReact={onReact} enabled={enabled} className="w-32"
+                             fontSize="1.3rem" childClassName="transform translate-y-0.5">
+                    <p>Skip Post</p>
+                </ReactButton>
             </div>
         );
     }
@@ -120,7 +143,6 @@ class PostComponent extends Component {
     render() {
         const state = this.props.state;
         const post = state.currentPost.post;
-        console.log(post);
         const commentComponents = [];
         for (let index = 0; index < post.comments.length; ++index) {
             const comment = post.comments[index];
@@ -144,18 +166,27 @@ class PostComponent extends Component {
         return (
             <div className="flex flex-col">
                 <div className="bg-white shadow">
+                    {/* The source of the post. */}
                     <div className="flex p-2 bg-white">
                         <Source source={state.currentSource} />
                     </div>
+
+                    {/* The content of the post. */}
                     <div className="flex flex-col flex-grow text-left text-2xl bg-white
-                                    font-bold mb-1">
+                                    font-bold">
 
                         <p className="p-2 mb-1">{post.headline}</p>
                         {postContent}
                     </div>
+
+                    {/* The reactions to the post. */}
+                    <hr />
+                    <ReactionsRow onReact={this.props.onReact} enabled={this.props.enableReactions} />
                 </div>
+
+                {/* The comments on the post. */}
                 {commentComponents.length > 0 &&
-                <p className="font-bold text-gray-600 p-1">Comments:</p>}
+                    <p className="font-bold text-gray-600 p-1">Comments:</p>}
                 {commentComponents}
             </div>
         );
@@ -233,28 +264,35 @@ class GameScreen extends Component {
                                     md:border-l-2 md:border-r-2 md:border-gray-700 shadow-2xl"
                          style={fullHeightStyle}>
 
-                        {/* Post and comments. */}
-                        {state && !error && <PostComponent state={state} />}
+                        {/* Post, reactions, and comments. */}
+                        {state && !error &&
+                            <PostComponent state={state}
+                                           onReact={r => this.onUserReact(r)}
+                                           enableReactions={this.state.reactionsAllowed} />}
+
+                        {/* If there is an error, display it here. */}
                         {error && <ErrorLabel value={error} />}
 
                         {/* Used for reserving space below reactions and progress. */}
                         <div className="h-40" />
                     </div>
 
-                    {/* Reactions and progress. */}
+                    {/* Progress. */}
                     {participant && !error &&
                     <div className="fixed w-full md:max-w-xl bottom-0 left-1/2 transform -translate-x-1/2
-                                shadow-2xl md:border-l-2 md:border-r-2 md:border-opacity-0">
-                        <ReactionsRow onReact={r => this.onUserReact(r)} enabled={this.state.reactionsAllowed} />
-                        <div className="p-2 px-4 pb-3 bg-gray-200">
+                                    shadow-2xl md:border-l-2 md:border-r-2 md:border-opacity-0">
+                        <div className="p-2 px-4 pb-3 bg-white border-t border-gray-400">
                             <p className="text-xl font-bold mb-1">
                                 Your Progress
                             </p>
                             <p className="text-xl">
                                 <SupervisedUserCircleIcon className="align-bottom mr-1" />
-                                Followers: {Math.round(participant.followers)}
+                                Followers:
+                                {Math.round(participant.followers)}
+
                                 <CheckCircleIcon className="align-bottom ml-6 mr-1" />
-                                Credibility: {Math.round(participant.credibility)}
+                                Credibility:
+                                <CredibilityLabel credibility={participant.credibility} />
                             </p>
                         </div>
                     </div>}
