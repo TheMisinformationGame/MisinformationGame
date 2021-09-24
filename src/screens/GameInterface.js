@@ -21,23 +21,29 @@ class CredibilityLabel extends Component {
      */
     static getCredibilityColour(credibility) {
         if (credibility < 10) return "#b91c1c";
-        if (credibility < 20) return "#c53a18";
-        if (credibility < 30) return "#cf5314";
-        if (credibility < 40) return "#d86910";
-        if (credibility < 50) return "#e07f0e";
-        if (credibility < 60) return "#e69512";
-        if (credibility < 70) return "#c5a200";
-        if (credibility < 80) return "#9dac00";
-        if (credibility < 90) return "#6db30f";
-        return "#0ab83d";
+        if (credibility < 20) return "#c23b18";
+        if (credibility < 30) return "#c95215";
+        if (credibility < 40) return "#d06814";
+        if (credibility < 50) return "#d57c17";
+        if (credibility < 60) return "#28A289";
+        if (credibility < 70) return "#008a8f";
+        if (credibility < 80) return "#007cc4";
+        if (credibility < 90) return "#005aec";
+        return "#0041e3";
     }
 
     render() {
         const cred = this.props.credibility;
         const colour = CredibilityLabel.getCredibilityColour(cred);
         return (
-            <span className={(this.props.className || "")} style={{color: colour}}>
-                &nbsp;{Math.round(cred)}&nbsp;
+            <span className={"inline-table font-bold text-white text-center rounded-full mx-1 " +
+                             (this.props.className || "")}
+                  style={{backgroundColor: colour, width: "1.6em", height: "1.57em"}}>
+
+                <span className="table-cell align-middle transform -translate-y-px"
+                      style={{fontSize: "0.9em"}}>
+                    &nbsp;{Math.round(cred)}&nbsp;
+                </span>
             </span>
         );
     }
@@ -60,9 +66,8 @@ class Source extends Component {
                 </div>
                 <div>
                     <div className="flex">
-                        <p className={text_xl}>{source.source.name} (</p>
+                        <p className={text_xl}>{source.source.name}</p>
                         <CredibilityLabel credibility={source.credibility} className={text_xl} />
-                        <p className={text_xl}>)</p>
                     </div>
 
                     {!small &&
@@ -180,6 +185,20 @@ class PostComponent extends Component {
                         <Source source={state.currentSource} />
                     </div>
 
+                    {/* Uncomment to preview the credibility badges. */}
+                    {/*<p className="pl-2 text-3xl">*/}
+                    {/*    <CredibilityLabel credibility={5} />*/}
+                    {/*    <CredibilityLabel credibility={15} />*/}
+                    {/*    <CredibilityLabel credibility={25} />*/}
+                    {/*    <CredibilityLabel credibility={35} />*/}
+                    {/*    <CredibilityLabel credibility={45} />*/}
+                    {/*    <CredibilityLabel credibility={55} />*/}
+                    {/*    <CredibilityLabel credibility={65} />*/}
+                    {/*    <CredibilityLabel credibility={75} />*/}
+                    {/*    <CredibilityLabel credibility={85} />*/}
+                    {/*    <CredibilityLabel credibility={95} />*/}
+                    {/*</p>*/}
+
                     {/* The content of the post. */}
                     <div className="flex flex-col flex-grow text-left text-2xl bg-white
                                     font-bold">
@@ -214,12 +233,13 @@ class ParticipantProgress extends Component {
                     </p>
                     <p className="text-xl">
                         <SupervisedUserCircleIcon className="align-bottom mr-1" />
-                        Followers:
                         <span>&nbsp;{Math.round(participant.followers)}&nbsp;</span>
+                        {Math.round(participant.followers) === 1 ? "Follower" : "Followers"}
 
                         <CheckCircleIcon className="align-bottom ml-6 mr-1" />
                         Credibility:
-                        <CredibilityLabel credibility={participant.credibility} />
+                        <CredibilityLabel credibility={participant.credibility}
+                                          className={"transform translate-y-2" /* There has to be a better way... */} />
                     </p>
                 </div>
             </div>
