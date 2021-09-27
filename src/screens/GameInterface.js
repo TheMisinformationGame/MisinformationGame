@@ -26,10 +26,10 @@ class CredibilityLabel extends Component {
         if (credibility < 40) return "#dc9221";
         if (credibility < 50) return "#eaba32";
         if (credibility < 60) return "#19d0cc";
-        if (credibility < 70) return "#00b7e0";
-        if (credibility < 80) return "#009af7";
-        if (credibility < 90) return "#0076fd";
-        return "#0041e3";
+        if (credibility < 70) return "#00b3d9";
+        if (credibility < 80) return "#0092e6";
+        if (credibility < 90) return "#006be2";
+        return "#0038c3";
     }
 
     render() {
