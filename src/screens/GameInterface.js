@@ -8,48 +8,14 @@ import FlagIcon from '@material-ui/icons/Flag';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import {getDataManager} from "../model/manager";
-import {ErrorLabel} from "../components/StatusLabel";
 import {isOfType} from "../utils/types";
 import {PromiseImage} from "../components/PromiseImage";
 import {GamePrompt} from "./GamePrompt";
 import {ActiveStudyScreen} from "./ActiveStudyScreen";
-import {ContinueButton} from "./GameIdentification";
+import {ContinueButton} from "../components/ContinueButton";
+import {ErrorLabel} from "../components/StatusLabel"
+import {CredibilityLabel} from "../components/CredibilityLabel"
 
-
-class CredibilityLabel extends Component {
-    /**
-     * Intermediate colours generated using
-     * https://colordesigner.io/gradient-generator.
-     */
-    static getCredibilityColour(credibility) {
-        if (credibility < 10) return "#961818";
-        if (credibility < 20) return "#b24418";
-        if (credibility < 30) return "#c96b1a";
-        if (credibility < 40) return "#dc9221";
-        if (credibility < 50) return "#eaba32";
-        if (credibility < 60) return "#19d0cc";
-        if (credibility < 70) return "#00b3d9";
-        if (credibility < 80) return "#0092e6";
-        if (credibility < 90) return "#006be2";
-        return "#0038c3";
-    }
-
-    render() {
-        const cred = Math.round(this.props.credibility);
-        const colour = CredibilityLabel.getCredibilityColour(cred);
-        return (
-            <span className={"inline-table font-bold text-white text-center rounded-full mx-1 " +
-                             (this.props.className || "")}
-                  style={{backgroundColor: colour, width: "1.6em", height: "1.57em"}}>
-
-                <span className="table-cell align-middle transform -translate-y-px"
-                      style={{fontSize: "0.9em"}}>
-                    &nbsp;{cred}&nbsp;
-                </span>
-            </span>
-        );
-    }
-}
 
 class Source extends Component {
     render() {
@@ -212,29 +178,16 @@ class PostComponent extends Component {
 
 class GameFinished extends Component {
     render() {
-
+        const target = "/game/" + getDataManager().getActiveStudyID() + "/debrief";
         return (
             <div className="flex justify-center items-center">
                 <div className="bg-white shadow">
-                    {/* The source of the post. */}
-                    {/* <div className="flex p-2 bg-white">
-                        <Source source={state.currentSource} />
-                    </div> */}
-
-                    {/* The reactions to the post. */}
-                    {/* <hr /> */}
-                    {/* <ReactionsRow onReact={this.props.onReact} enabled={this.props.enableReactions} /> */}
-
                     <div className="grid space-y-2 px-10 py-4 max-w-full text-center
                                     fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                         <p className="text-xl"> Congratulations! You have completed the study. </p>
                         {/* TODO Possibly put the debrief message here? or  */}
-                        <ContinueButton className=""
-                                        to="/debrief/"
-                                        condition={true}
-                        />
+                        <ContinueButton to={target} condition={true} />
                     </div>
-                    {/* <ContinueButton to={"/debrief/"} className="text-xl px-4 py-2 top-2" condition={true} /> */}
                 </div>
             </div>
         )
@@ -267,15 +220,16 @@ class ParticipantProgress extends Component {
     }
 }
 
-class GameScreen extends ActiveStudyScreen {
+export class GameScreen extends ActiveStudyScreen {
     constructor(props) {
         super(props);
         this.state = {
+            game: null,
             state: null,
             participant: null,
             error: null,
             reactionsAllowed: false,
-            dismissedPrompt: true // ONLY FOR TESTING, IF THIS IS SET TO TRUE I FORGOT TO CHANGE IT BACK :) - Danny
+            dismissedPrompt: false
         };
     }
 
@@ -284,18 +238,15 @@ class GameScreen extends ActiveStudyScreen {
             this.updateGameState(game, null);
         }).catch((err) => {
             console.error(err);
-            this.updateGameState(null, null, err.message);
+            this.updateGameState(null, err.message);
         });
     };
 
     updateGameState(game, error) {
-        if (game && !error && game.isFinished()) {
-            game = null;
-            error = "Game is finished!";
-        }
-
         const state = {
-            state: (game ? game.getCurrentState() : null),
+            ...this.state,
+            game: game,
+            state: (game && !game.isFinished() ? game.getCurrentState() : null),
             participant: (game ? game.participant : null),
             error: error,
             reactionsAllowed: false
@@ -325,12 +276,15 @@ class GameScreen extends ActiveStudyScreen {
         const fullHeightStyle = {minHeight: "100vh"};
 
         const state = this.state.state;
-        const displayPrompt = !this.state.dismissedPrompt;
+        const game = this.state.game;
+        const displayPrompt = state && !this.state.dismissedPrompt;
         const participant = this.state.participant;
         const error = this.state.error;
         return (
             <>
-                {displayPrompt && <GamePrompt onClick={() => this.onPromptContinue()} />}
+                {displayPrompt &&
+                    <GamePrompt study={state.study} onClick={() => this.onPromptContinue()} />}
+
                 <div className={"w-full bg-gray-100 " + (displayPrompt ? "filter blur" : "")}
                      style={fullHeightStyle}>
 
@@ -344,12 +298,13 @@ class GameScreen extends ActiveStudyScreen {
                                            onReact={r => this.onUserReact(r)}
                                            enableReactions={this.state.reactionsAllowed} />}
 
-                        {!(state && !error) && 
+                        {/* If the game is finished, display a game completed prompt. */}
+                        {game && game.isFinished() &&
                             <GameFinished />
                         }
 
                         {/* If there is an error, display it here. */}
-                        {/* {error && <ErrorLabel value={error} />} */} {/* ONLY DISABLED FOR TESTING :) - Danny */}
+                        {error && <ErrorLabel value={error} />}
 
                         {/* Used for reserving space below reactions and progress. */}
                         <div className="h-40" />
@@ -362,5 +317,3 @@ class GameScreen extends ActiveStudyScreen {
         );
     }
 }
-
-export default GameScreen;

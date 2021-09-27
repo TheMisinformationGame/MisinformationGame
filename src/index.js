@@ -4,10 +4,11 @@ import './index.css';
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Home from "./screens/Home";
 import AdminHome from "./screens/AdminHome";
-import StudyPage, {AdminStudy} from "./screens/AdminStudy";
-import Game from "./screens/GameInterface";
+import {AdminStudy} from "./screens/AdminStudy";
+import {GameScreen} from "./screens/GameInterface";
 import {GameIdentification} from "./screens/GameIdentification";
-import {GameIntroduction} from "./screens/GameIntroduction";
+import {GamePreIntroduction, GamePostIntroduction} from "./screens/GameIntroduction";
+import {GameRules} from "./screens/GameRules";
 import {GameDebrief} from "./screens/GameDebrief";
 import ErrorScreen from "./screens/Error";
 
@@ -18,10 +19,12 @@ ReactDOM.render(
               <Route exact path="/" component={Home} />
               <Route exact path="/admin" component={AdminHome} />
               <Route exact path="/admin/:studyID" component={AdminStudy} />
-              <Route exact path="/game/:studyID" component={Game} />
+              <Route exact path="/game/:studyID" component={GameScreen} />
               <Route exact path="/game/:studyID/id" component={GameIdentification} />
-              <Route exact path="/game/:studyID/intro" component={GameIntroduction} />
-              <Route exact path="/debrief" component={GameDebrief} />
+              <Route exact path="/game/:studyID/pre-intro" component={GamePreIntroduction} />
+              <Route exact path="/game/:studyID/rules" component={GameRules} />
+              <Route exact path="/game/:studyID/post-intro" component={GamePostIntroduction} />
+              <Route exact path="/game/:studyID/debrief" component={GameDebrief} />
               <Route component={ErrorScreen} />
           </Switch>
       </BrowserRouter>

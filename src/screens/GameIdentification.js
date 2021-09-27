@@ -1,32 +1,15 @@
-import {Component} from "react"
 import {ErrorLabel} from '../components/StatusLabel';
 import "../App.css"
-import {ConditionalLink} from "../components/ConditionalLink";
 import {getDataManager} from "../model/manager";
 import {ActiveStudyScreen} from "./ActiveStudyScreen";
+import {ContinueButton} from "../components/ContinueButton"
 
-
-export class ContinueButton extends Component {
-    render() {
-        return (
-            <ConditionalLink to={this.props.to} condition={this.props.condition} onClick={this.props.onClick}
-                             className={
-                                 "px-3 py-2 rounded-md text-white cursor-pointer " +
-                                 "select-none bg-blue-500 hover:bg-blue-600 " +
-                                 (this.props.className || "") + " " +
-                                 (this.props.active ? "bg-blue-600" : "active:bg-blue-600")
-                             }>
-
-                Continue
-            </ConditionalLink>
-        );
-    }
-}
 
 export class GameIdentification extends ActiveStudyScreen {
     constructor(props) {
         super(props);
         this.state = {
+            ...this.state,
             value: "",
             displayError: false,
             ignoreKeyDowns: false,
@@ -36,9 +19,9 @@ export class GameIdentification extends ActiveStudyScreen {
     };
 
     componentDidMount() {
-        // Preload the active study.
-        getDataManager().getActiveGame().then((game) => {
-            game.preloadCurrentState();
+        // Preload the study.
+        getDataManager().getActiveStudy().catch(err => {
+            console.error(err);
         });
     }
 
@@ -90,7 +73,7 @@ export class GameIdentification extends ActiveStudyScreen {
     }
 
     render() {
-        const target = "/game/" + getDataManager().getActiveStudyID() + "/intro";
+        const target = "/game/" + getDataManager().getActiveStudyID() + "/pre-intro";
         return (
             <div className="w-full bg-gray-100" style={{minHeight: "100vh"}}>
                 <div className="bg-white rounded-xl shadow-xl border border-gray-400

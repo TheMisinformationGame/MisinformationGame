@@ -378,6 +378,8 @@ export class Game {
      * Preloads the images required for the current state.
      */
     preloadCurrentState() {
+        if (this.isFinished())
+            return;
         this.preloadState(this.getCurrentState());
     }
 
