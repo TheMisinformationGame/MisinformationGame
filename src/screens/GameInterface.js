@@ -185,20 +185,6 @@ class PostComponent extends Component {
                         <Source source={state.currentSource} />
                     </div>
 
-                    {/* Uncomment to preview the credibility badges. */}
-                    <p className="pl-2 text-3xl">
-                        <CredibilityLabel credibility={5} />
-                        <CredibilityLabel credibility={15} />
-                        <CredibilityLabel credibility={25} />
-                        <CredibilityLabel credibility={35} />
-                        <CredibilityLabel credibility={45} />
-                        <CredibilityLabel credibility={55} />
-                        <CredibilityLabel credibility={65} />
-                        <CredibilityLabel credibility={75} />
-                        <CredibilityLabel credibility={85} />
-                        <CredibilityLabel credibility={95} />
-                    </p>
-
                     {/* The content of the post. */}
                     <div className="flex flex-col flex-grow text-left text-2xl bg-white
                                     font-bold">
