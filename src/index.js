@@ -8,6 +8,7 @@ import StudyPage, {AdminStudy} from "./screens/AdminStudy";
 import Game from "./screens/GameInterface";
 import {GameIdentification} from "./screens/GameIdentification";
 import {GameIntroduction} from "./screens/GameIntroduction";
+import {GameDebrief} from "./screens/GameDebrief";
 import ErrorScreen from "./screens/Error";
 
 ReactDOM.render(
@@ -20,6 +21,7 @@ ReactDOM.render(
               <Route exact path="/game/:studyID" component={Game} />
               <Route exact path="/game/:studyID/id" component={GameIdentification} />
               <Route exact path="/game/:studyID/intro" component={GameIntroduction} />
+              <Route exact path="/debrief" component={GameDebrief} />
               <Route component={ErrorScreen} />
           </Switch>
       </BrowserRouter>

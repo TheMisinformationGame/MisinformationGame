@@ -13,6 +13,7 @@ import {isOfType} from "../utils/types";
 import {PromiseImage} from "../components/PromiseImage";
 import {GamePrompt} from "./GamePrompt";
 import {ActiveStudyScreen} from "./ActiveStudyScreen";
+import {ContinueButton} from "./GameIdentification";
 
 
 class CredibilityLabel extends Component {
@@ -209,6 +210,37 @@ class PostComponent extends Component {
     }
 }
 
+class GameFinished extends Component {
+    render() {
+
+        return (
+            <div className="flex justify-center items-center">
+                <div className="bg-white shadow">
+                    {/* The source of the post. */}
+                    {/* <div className="flex p-2 bg-white">
+                        <Source source={state.currentSource} />
+                    </div> */}
+
+                    {/* The reactions to the post. */}
+                    {/* <hr /> */}
+                    {/* <ReactionsRow onReact={this.props.onReact} enabled={this.props.enableReactions} /> */}
+
+                    <div className="grid space-y-2 px-10 py-4 max-w-full text-center
+                                    fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <p className="text-xl"> Congratulations! You have completed the study. </p>
+                        {/* TODO Possibly put the debrief message here? or  */}
+                        <ContinueButton className=""
+                                        to="/debrief/"
+                                        condition={true}
+                        />
+                    </div>
+                    {/* <ContinueButton to={"/debrief/"} className="text-xl px-4 py-2 top-2" condition={true} /> */}
+                </div>
+            </div>
+        )
+    }
+}
+
 class ParticipantProgress extends Component {
     render() {
         const participant = this.props.participant;
@@ -243,7 +275,7 @@ class GameScreen extends ActiveStudyScreen {
             participant: null,
             error: null,
             reactionsAllowed: false,
-            dismissedPrompt: false
+            dismissedPrompt: true // ONLY FOR TESTING, IF THIS IS SET TO TRUE I FORGOT TO CHANGE IT BACK :) - Danny
         };
     }
 
@@ -312,8 +344,12 @@ class GameScreen extends ActiveStudyScreen {
                                            onReact={r => this.onUserReact(r)}
                                            enableReactions={this.state.reactionsAllowed} />}
 
+                        {!(state && !error) && 
+                            <GameFinished />
+                        }
+
                         {/* If there is an error, display it here. */}
-                        {error && <ErrorLabel value={error} />}
+                        {/* {error && <ErrorLabel value={error} />} */} {/* ONLY DISABLED FOR TESTING :) - Danny */}
 
                         {/* Used for reserving space below reactions and progress. */}
                         <div className="h-40" />
