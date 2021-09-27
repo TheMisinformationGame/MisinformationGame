@@ -136,7 +136,8 @@ class ReactionsRow extends Component {
                         <ThumbDownIcon/></ReactButton>
                     <ReactButton reaction="share" onReact={onReact} enabled={enabled}
                                  fontSize="3.25rem"
-                                 childClassName="transform -translate-y-2.5 -translate-x-1.5">
+                                 className="transform flip-x"
+                                 childClassName="transform -translate-y-2.5 -translate-x-3">
                         <ReplyIcon/></ReactButton>
                     <ReactButton reaction="flag" onReact={onReact} enabled={enabled}
                                  fontSize="2.6rem"
