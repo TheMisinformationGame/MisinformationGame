@@ -11,7 +11,6 @@ export class GameIntroduction extends ActiveStudyScreen {
     }
 
     componentDidMount() {
-        super.componentDidMount();
         getDataManager().getActiveStudy().then((study) => {
             this.setState({study: study});
         });

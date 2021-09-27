@@ -14,7 +14,6 @@ export class AdminStudy extends ActiveStudyScreen {
     }
 
     componentDidMount() {
-        super.componentDidMount();
         getDataManager().getActiveStudy().then((study) => {
             this.setState({study: study});
         });

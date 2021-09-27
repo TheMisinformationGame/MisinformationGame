@@ -85,6 +85,8 @@ class DataManager {
      * Returns a Promise to the study with the given ID.
      */
     getStudy(studyID) {
+        if (!studyID)
+            return Promise.reject("Please specify a study ID");
         if (!this.studyPromiseGenerators[studyID])
             return this.readStudy(studyID);
 
@@ -96,6 +98,12 @@ class DataManager {
      */
     readActiveGame(studyID) {
         this.activeGameStudyID = studyID;
+
+        // If there is no active study.
+        if (!studyID) {
+            this.activeGamePromiseGenerator = () => Promise.reject("There is no active study");
+            return this.activeGamePromiseGenerator();
+        }
 
         // TODO : Save this in the browser local storage.
         const gamePromise = this.getStudy(studyID).then((study) => {
@@ -119,6 +127,10 @@ class DataManager {
      * If a study ID is supplied, will return a Promise to that study.
      */
     getActiveStudy() {
+        const studyID = this.getActiveStudyID();
+        if (!studyID)
+            return Promise.reject("There is no currently active study");
+
         return this.getStudy(this.getActiveStudyID());
     }
 

@@ -36,8 +36,6 @@ export class GameIdentification extends ActiveStudyScreen {
     };
 
     componentDidMount() {
-        super.componentDidMount();
-
         // Preload the active study.
         getDataManager().getActiveGame().then((game) => {
             game.preloadCurrentState();

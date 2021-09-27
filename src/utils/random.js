@@ -47,39 +47,59 @@ export function randDigits(digits) {
 
 /**
  * Returns a random element of {@param array}, with elements
- * filtered by {@param filterFn}.
+ * filtered by {@param filterFn}. If there are any elements that
+ * are preferred by {@param preferenceFn}, they will be selected
+ * before any others.
  *
  * @param filterFn (element) => Whether to include the element.
+ * @param preferenceFn (element) => Whether the element is preferred for selection.
  */
-export function selectFilteredRandomElement(array, filterFn) {
-    return selectFilteredWeightedRandomElement(array, filterFn, () => 1);
+export function selectFilteredRandomElement(array, filterFn, preferenceFn) {
+    return selectFilteredWeightedRandomElement(array, filterFn, preferenceFn, () => 1);
 }
 
 /**
  * Returns a random element of {@param array}, with elements filtered
- * by {@param filterFn}, and weighted by {@param weightFn}.
+ * by {@param filterFn}, and weighted by {@param weightFn}. If there are
+ * any elements that are preferred by {@param preferenceFn}, they will be
+ * selected before any others.
  *
  * @param filterFn (element) => Whether to include the element.
+ * @param preferenceFn (element) => Whether the element is preferred for selection.
  * @param weightFn (element) => Weighting number.
  *                 If the weighting number is zero, then it will
  *                 be weighted by the mean of all the other weights.
  */
-export function selectFilteredWeightedRandomElement(array, filterFn, weightFn) {
+export function selectFilteredWeightedRandomElement(array, filterFn, preferenceFn, weightFn) {
     doTypeCheck(array, Array);
     if (array.length === 0)
         throw new Error("Array cannot be empty");
 
-    // Filter out elements and compute the weight of the remaining elements.
+    // Filter out elements, and find all the preferred elements.
+    const preferred = [];
     const filtered = [];
-    const weights = [];
-    let weightSum = 0;
-    let nonZeroWeights = 0;
     for (let index = 0; index < array.length; ++index) {
         const elem = array[index];
         if (!filterFn(elem))
             continue;
 
         filtered.push(elem);
+        if (preferenceFn(elem)) {
+            preferred.push(elem);
+        }
+    }
+    if (filtered.length === 0)
+        throw new Error("No elements remaining after filter");
+
+    // If there are preferred elements, use those.
+    const collection = (preferred.length > 0 ? preferred : filtered);
+
+    // Filter out elements and compute the weight of the remaining elements.
+    const weights = [];
+    let weightSum = 0;
+    let nonZeroWeights = 0;
+    for (let index = 0; index < collection.length; ++index) {
+        const elem = collection[index];
         const weight = weightFn(elem);
         doTypeCheck(weight, "number");
         if (weight < 0)
@@ -91,12 +111,10 @@ export function selectFilteredWeightedRandomElement(array, filterFn, weightFn) {
             nonZeroWeights += 1;
         }
     }
-    if (filtered.length === 0)
-        throw new Error("No elements remaining after applying filterFn");
 
     // Replace weights that are zero by the mean weight.
     const weightMean = (nonZeroWeights <= 0 ? 1 : weightSum / nonZeroWeights);
-    for (let index = 0; index < filtered.length; ++index) {
+    for (let index = 0; index < collection.length; ++index) {
         const weight = weights[index];
         if (weight === 0) {
             weights[index] = weightMean;
@@ -107,10 +125,10 @@ export function selectFilteredWeightedRandomElement(array, filterFn, weightFn) {
     // Select the random element!
     const weightedSelection = Math.random() * weightSum;
     let cumulativeWeight = 0;
-    for (let index = 0; index < filtered.length; ++index) {
+    for (let index = 0; index < collection.length; ++index) {
         cumulativeWeight += weights[index];
         if (weightedSelection <= cumulativeWeight)
-            return filtered[index];
+            return collection[index];
     }
     throw new Error("Weighted selection failed unexpectedly");
 }

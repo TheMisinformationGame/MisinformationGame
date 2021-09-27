@@ -248,10 +248,6 @@ class GameScreen extends ActiveStudyScreen {
     }
 
     componentDidMount() {
-        super.componentDidMount();
-
-        console.log(this.props.match.params.studyID);
-
         getDataManager().getActiveGame().then(game => {
             this.updateGameState(game, null);
         }).catch((err) => {

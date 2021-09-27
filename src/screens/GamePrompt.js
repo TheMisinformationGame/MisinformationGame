@@ -1,7 +1,8 @@
-import React, {Component} from "react"
 import "../App.css"
 import {ContinueButton} from "./GameIdentification";
 import {getDataManager} from "../model/manager";
+import {Component} from "react";
+
 
 export class GamePrompt extends Component {
     constructor(props) {

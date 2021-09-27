@@ -86,6 +86,7 @@ export class GameSource {
         return selectFilteredWeightedRandomElement(
             sources,
             (source) => source.remainingUses === -1 || source.remainingUses > 0,
+            () => false,
             (source) => source.source.maxPosts === -1 ? 0 : source.source.maxPosts
         );
     }
@@ -169,7 +170,11 @@ export class GamePost {
      */
     static selectRandomPost(posts, truePostPercentage) {
         const selectTruePosts = 100 * Math.random() < truePostPercentage;
-        return selectFilteredRandomElement(posts, (post) => !post.shown && selectTruePosts === post.post.isTrue);
+        return selectFilteredRandomElement(
+            posts,
+            (post) => !post.shown, // Hard Filter
+            (post) => selectTruePosts === post.post.isTrue // Soft Filter
+        );
     }
 
     /**
