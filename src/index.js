@@ -4,7 +4,7 @@ import './index.css';
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Home from "./screens/Home";
 import AdminHome from "./screens/AdminHome";
-import StudyPage from "./screens/AdminStudy";
+import StudyPage, {AdminStudy} from "./screens/AdminStudy";
 import Game from "./screens/GameInterface";
 import {GameIdentification} from "./screens/GameIdentification";
 import {GameIntroduction} from "./screens/GameIntroduction";
@@ -16,7 +16,7 @@ ReactDOM.render(
           <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/admin" component={AdminHome} />
-              <Route exact path="/admin/:studyID" component={StudyPage} />
+              <Route exact path="/admin/:studyID" component={AdminStudy} />
               <Route exact path="/game/:studyID" component={Game} />
               <Route exact path="/game/:studyID/id" component={GameIdentification} />
               <Route exact path="/game/:studyID/intro" component={GameIntroduction} />
