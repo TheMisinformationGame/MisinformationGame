@@ -20,20 +20,20 @@ class CredibilityLabel extends Component {
      * https://colordesigner.io/gradient-generator.
      */
     static getCredibilityColour(credibility) {
-        if (credibility < 10) return "#b91c1c";
-        if (credibility < 20) return "#c23b18";
-        if (credibility < 30) return "#c95215";
-        if (credibility < 40) return "#d06814";
-        if (credibility < 50) return "#d57c17";
-        if (credibility < 60) return "#28A289";
-        if (credibility < 70) return "#008a8f";
-        if (credibility < 80) return "#007cc4";
-        if (credibility < 90) return "#005aec";
+        if (credibility < 10) return "#961818";
+        if (credibility < 20) return "#b24418";
+        if (credibility < 30) return "#c96b1a";
+        if (credibility < 40) return "#dc9221";
+        if (credibility < 50) return "#eaba32";
+        if (credibility < 60) return "#19d0cc";
+        if (credibility < 70) return "#00b7e0";
+        if (credibility < 80) return "#009af7";
+        if (credibility < 90) return "#0076fd";
         return "#0041e3";
     }
 
     render() {
-        const cred = this.props.credibility;
+        const cred = Math.round(this.props.credibility);
         const colour = CredibilityLabel.getCredibilityColour(cred);
         return (
             <span className={"inline-table font-bold text-white text-center rounded-full mx-1 " +
@@ -42,7 +42,7 @@ class CredibilityLabel extends Component {
 
                 <span className="table-cell align-middle transform -translate-y-px"
                       style={{fontSize: "0.9em"}}>
-                    &nbsp;{Math.round(cred)}&nbsp;
+                    &nbsp;{cred}&nbsp;
                 </span>
             </span>
         );
@@ -186,18 +186,18 @@ class PostComponent extends Component {
                     </div>
 
                     {/* Uncomment to preview the credibility badges. */}
-                    {/*<p className="pl-2 text-3xl">*/}
-                    {/*    <CredibilityLabel credibility={5} />*/}
-                    {/*    <CredibilityLabel credibility={15} />*/}
-                    {/*    <CredibilityLabel credibility={25} />*/}
-                    {/*    <CredibilityLabel credibility={35} />*/}
-                    {/*    <CredibilityLabel credibility={45} />*/}
-                    {/*    <CredibilityLabel credibility={55} />*/}
-                    {/*    <CredibilityLabel credibility={65} />*/}
-                    {/*    <CredibilityLabel credibility={75} />*/}
-                    {/*    <CredibilityLabel credibility={85} />*/}
-                    {/*    <CredibilityLabel credibility={95} />*/}
-                    {/*</p>*/}
+                    <p className="pl-2 text-3xl">
+                        <CredibilityLabel credibility={5} />
+                        <CredibilityLabel credibility={15} />
+                        <CredibilityLabel credibility={25} />
+                        <CredibilityLabel credibility={35} />
+                        <CredibilityLabel credibility={45} />
+                        <CredibilityLabel credibility={55} />
+                        <CredibilityLabel credibility={65} />
+                        <CredibilityLabel credibility={75} />
+                        <CredibilityLabel credibility={85} />
+                        <CredibilityLabel credibility={95} />
+                    </p>
 
                     {/* The content of the post. */}
                     <div className="flex flex-col flex-grow text-left text-2xl bg-white
