@@ -1,16 +1,17 @@
-import React, {Component} from "react"
 import gameImage from "./game-mockup.png"
 import "../App.css"
 import {ContinueButton} from "./GameIdentification";
 import {getDataManager} from "../model/manager";
+import {ActiveStudyScreen} from "./ActiveStudyScreen";
 
-export class GameIntroduction extends Component {
+export class GameIntroduction extends ActiveStudyScreen {
     constructor(props) {
         super(props);
         this.state = {study: null};
     }
 
     componentDidMount() {
+        super.componentDidMount();
         getDataManager().getActiveStudy().then((study) => {
             this.setState({study: study});
         });
@@ -22,6 +23,7 @@ export class GameIntroduction extends Component {
 
     render() {
         const study = this.state.study;
+        const target = "/game/" + getDataManager().getActiveStudyID();
         return (
             <div className="m-px">
                 {this.state.study && <div className="m-px bg-white opacity-90 p-10">
@@ -53,7 +55,7 @@ export class GameIntroduction extends Component {
                 <div className="bg-gray-100 py-1 border-t-2 border-gray-400 shadow-2xl
                                 fixed bottom-0 left-0 w-full h-16
                                 flex justify-center items-center">
-                    <ContinueButton to="game" className="text-xl px-4 py-2" condition={true} />
+                    <ContinueButton to={target} className="text-xl px-4 py-2" condition={true} />
                 </div>
             </div>
         );

@@ -8,8 +8,7 @@ import StudyPage from "./screens/AdminStudy";
 import Game from "./screens/GameInterface";
 import {GameIdentification} from "./screens/GameIdentification";
 import {GameIntroduction} from "./screens/GameIntroduction";
-import ErrorScreen from "./screens/Error"
-import StudyUpload from "./components/StudyUpload";
+import ErrorScreen from "./screens/Error";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,15 +16,13 @@ ReactDOM.render(
           <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/admin" component={AdminHome} />
-              <Route exact path="/admin/:id" component={StudyPage} />
-              <Route path="/study_upload" component={StudyUpload} />
-              <Route path="/game" component={Game} />
-              <Route path="/game_id" component={GameIdentification} />
-              <Route path="/game_intro" component={GameIntroduction} />
+              <Route exact path="/admin/:studyID" component={StudyPage} />
+              <Route exact path="/game/:studyID" component={Game} />
+              <Route exact path="/game/:studyID/id" component={GameIdentification} />
+              <Route exact path="/game/:studyID/intro" component={GameIntroduction} />
               <Route component={ErrorScreen} />
           </Switch>
       </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
-

@@ -17,12 +17,18 @@ class DataManager {
     }
 
     /**
+     * Sets the ID of the currently active study to display.
+     */
+    setActiveStudy(studyID) {
+        this.activeGameStudyID = studyID;
+    }
+
+    /**
      * Returns the ID of the currently active study,
      * or else throws an error if no study is active.
      */
     getActiveStudyID() {
-        // TODO: Dynamically get this from the URL.
-        return "1632160809753";
+        return this.activeGameStudyID;
     }
 
     /**

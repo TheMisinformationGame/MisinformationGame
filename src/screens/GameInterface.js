@@ -12,6 +12,7 @@ import {ErrorLabel} from "../components/StatusLabel";
 import {isOfType} from "../utils/types";
 import {PromiseImage} from "../components/PromiseImage";
 import {GamePrompt} from "./GamePrompt";
+import {ActiveStudyScreen} from "./ActiveStudyScreen";
 
 
 class CredibilityLabel extends Component {
@@ -234,7 +235,7 @@ class ParticipantProgress extends Component {
     }
 }
 
-class GameScreen extends Component {
+class GameScreen extends ActiveStudyScreen {
     constructor(props) {
         super(props);
         this.state = {
@@ -245,6 +246,19 @@ class GameScreen extends Component {
             dismissedPrompt: false
         };
     }
+
+    componentDidMount() {
+        super.componentDidMount();
+
+        console.log(this.props.match.params.studyID);
+
+        getDataManager().getActiveGame().then(game => {
+            this.updateGameState(game, null);
+        }).catch((err) => {
+            console.error(err);
+            this.updateGameState(null, null, err.message);
+        });
+    };
 
     updateGameState(game, error) {
         if (game && !error && game.isFinished()) {
@@ -266,15 +280,6 @@ class GameScreen extends Component {
             }
         }, 600);
     }
-
-    componentDidMount() {
-        getDataManager().getActiveGame().then(game => {
-            this.updateGameState(game, null);
-        }).catch((err) => {
-            console.error(err);
-            this.updateGameState(null, null, err.message);
-        });
-    };
 
     onPromptContinue() {
         this.setState({...this.state, dismissedPrompt: true})

@@ -3,6 +3,7 @@ import {ErrorLabel} from '../components/StatusLabel';
 import "../App.css"
 import {ConditionalLink} from "../components/ConditionalLink";
 import {getDataManager} from "../model/manager";
+import {ActiveStudyScreen} from "./ActiveStudyScreen";
 
 
 export class ContinueButton extends Component {
@@ -22,7 +23,7 @@ export class ContinueButton extends Component {
     }
 }
 
-export class GameIdentification extends Component {
+export class GameIdentification extends ActiveStudyScreen {
     constructor(props) {
         super(props);
         this.state = {
@@ -35,6 +36,8 @@ export class GameIdentification extends Component {
     };
 
     componentDidMount() {
+        super.componentDidMount();
+
         // Preload the active study.
         getDataManager().getActiveGame().then((game) => {
             game.preloadCurrentState();
@@ -77,18 +80,19 @@ export class GameIdentification extends Component {
         }
     }
 
-    handleKeyUp(e) {
+    handleKeyUp(e, target) {
         if (!GameIdentification.isEnterKey(e))
             return;
 
         if (this.state.submitOnEnterUp && GameIdentification.isValidValue(this.state.value)) {
-            this.props.history.push(`/game_intro`);
+            this.props.history.push(target);
         } else if(this.state.ignoreKeyDowns) {
             this.setState({...this.state, ignoreKeyDowns: false});
         }
     }
 
     render() {
+        const target = "/game/" + getDataManager().getActiveStudyID() + "/intro";
         return (
             <div className="w-full bg-gray-100" style={{minHeight: "100vh"}}>
                 <div className="bg-white rounded-xl shadow-xl border border-gray-400
@@ -101,12 +105,12 @@ export class GameIdentification extends Component {
                            value={this.state.value}
                            onChange={e => this.setState({...this.state, value: e.target.value})}
                            onKeyDown={e => this.handleKeyDown(e)}
-                           onKeyUp={e => this.handleKeyUp(e)}>
+                           onKeyUp={e => this.handleKeyUp(e, target)}>
                     </input>
                     {this.state.displayError && (!this.state.value || this.state.value.trim() === "") &&
                         <ErrorLabel value="Please enter an ID" />}
 
-                    <ContinueButton to="game_intro"
+                    <ContinueButton to={target}
                                     condition={GameIdentification.isValidValue(this.state.value)}
                                     onClick={() => this.setState({...this.state, displayError: true})}
                                     active={this.state.submitOnEnterUp} />

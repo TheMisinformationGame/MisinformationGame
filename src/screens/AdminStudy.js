@@ -3,11 +3,13 @@ import {Link} from "react-router-dom";
 import '../App.css'
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CloseIcon from '@mui/icons-material/Close';
+import {ActiveStudyScreen} from "./ActiveStudyScreen";
 
-class StudyPage extends React.Component{
-    componentDidMount(){
-        console.log(this.props.match.params.id);
-        };
+class StudyPage extends ActiveStudyScreen {
+    componentDidMount() {
+        super.componentDidMount();
+        console.log(this.props.match.params.studyID);
+    };
     
 
     render() {
