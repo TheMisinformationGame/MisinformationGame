@@ -8,6 +8,7 @@ import {ErrorLabel, ProgressLabel} from "../components/StatusLabel";
 import UploadIcon from '@mui/icons-material/Upload';
 import {isOfType} from "../utils/types";
 import {BrokenStudy} from "../model/study";
+import {MountAwareComponent} from "../components/MountAwareComponent";
 
 
 class StudySummary extends Component {
@@ -43,7 +44,7 @@ class StudySummary extends Component {
     }
 }
 
-class AdminPage extends Component {
+class AdminPage extends MountAwareComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -58,8 +59,9 @@ class AdminPage extends Component {
     }
 
     componentDidMount() {
+        super.componentDidMount();
         getDataManager().getAllStudies().then((studies) => {
-            this.setState({
+            this.setStateIfMounted({
                 studies: studies,
                 showUpload: this.state.showUpload
             });
@@ -68,6 +70,7 @@ class AdminPage extends Component {
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         document.removeEventListener("keydown", this.hideStudyUploadCallback);
     }
 
@@ -111,7 +114,7 @@ class AdminPage extends Component {
 
         this.hideStudyUpload();
         getDataManager().readAllStudies().then((studies) => {
-            this.setState({
+            this.setStateIfMounted({
                 studies: studies,
                 showUpload: this.state.showUpload
             });

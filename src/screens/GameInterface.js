@@ -234,6 +234,7 @@ export class GameScreen extends ActiveStudyScreen {
     }
 
     componentDidMount() {
+        super.componentDidMount();
         getDataManager().getActiveGame().then(game => {
             this.updateGameState(game, null);
         }).catch((err) => {
@@ -251,10 +252,10 @@ export class GameScreen extends ActiveStudyScreen {
             error: error,
             reactionsAllowed: !game
         };
-        this.setState(state);
+        this.setStateIfMounted(state);
         if (game) {
             setTimeout(() => {
-                this.setState({...this.state, reactionsAllowed: true});
+                this.setStateIfMounted({...this.state, reactionsAllowed: true});
                 game.preloadNextState();
             }, game.study.reactDelaySeconds * 1000);
         }

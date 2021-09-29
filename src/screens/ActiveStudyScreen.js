@@ -1,11 +1,11 @@
-import {Component} from "react";
 import {getDataManager} from "../model/manager";
 import {ErrorLabel, ProgressLabel} from '../components/StatusLabel';
+import {MountAwareComponent} from "../components/MountAwareComponent";
 
 /**
  * Automatically sets the active study for the data manager.
  */
-export class ActiveStudyScreen extends Component {
+export class ActiveStudyScreen extends MountAwareComponent {
     constructor(props) {
         super(props);
         getDataManager().setActiveStudy(
@@ -30,11 +30,13 @@ export class SimpleActiveStudyScreen extends ActiveStudyScreen {
     }
 
     componentDidMount() {
+        super.componentDidMount();
+
         getDataManager().getActiveStudy().then(study => {
-            this.setState({...this.state, study: study, studyLoading: false});
+            this.setStateIfMounted({...this.state, study: study, studyLoading: false});
         }).catch(err => {
             console.error(err);
-            this.setState({...this.state, studyLoadError: err.message, studyLoading: false});
+            this.setStateIfMounted({...this.state, studyLoadError: err.message, studyLoading: false});
         });
 
         // Preload the game.
@@ -43,7 +45,7 @@ export class SimpleActiveStudyScreen extends ActiveStudyScreen {
                 game.preloadCurrentState();
             }).catch(err => {
                 console.error(err);
-                this.setState({...this.state, studyLoadError: err.message, studyLoading: false});
+                this.setStateIfMounted({...this.state, studyLoadError: err.message, studyLoading: false});
             });
         }
     }

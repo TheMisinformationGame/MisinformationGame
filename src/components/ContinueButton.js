@@ -1,15 +1,16 @@
 import {Component} from "react";
 import {ConditionalLink} from "./ConditionalLink";
+import {MountAwareComponent} from "./MountAwareComponent";
 
 
-export class ContinueButton extends Component {
+export class ContinueButton extends MountAwareComponent {
     constructor(props) {
         super(props);
         this.state = {disabled: true};
-        this.activateTimer = null;
     }
 
     componentDidMount() {
+        super.componentDidMount();
         const delaySeconds = this.props.delay;
         if (!delaySeconds || delaySeconds <= 0) {
             this.setState({...this.state, disabled: false});
@@ -17,13 +18,9 @@ export class ContinueButton extends Component {
         }
 
         this.setState({...this.state, disabled: true});
-        this.activateTimer = setTimeout(() => {
-            this.setState({...this.state, disabled: false});
+        setTimeout(() => {
+            this.setStateIfMounted({...this.state, disabled: false});
         }, delaySeconds * 1000);
-    }
-
-    componentWillUnmount() {
-        clearTimeout(this.activateTimer);
     }
 
     render() {

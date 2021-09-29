@@ -15,20 +15,14 @@ export class GameIdentification extends ActiveStudyScreen {
             ignoreKeyDowns: false,
             submitOnEnterUp: false
         };
-        this.submitCancelTimer = null;
     };
 
     componentDidMount() {
+        super.componentDidMount();
         // Preload the study.
         getDataManager().getActiveStudy().catch(err => {
             console.error(err);
         });
-    }
-
-    componentWillUnmount() {
-        if (this.submitCancelTimer !== null) {
-            clearTimeout(this.submitCancelTimer);
-        }
     }
 
     static isValidValue(value) {
@@ -51,9 +45,9 @@ export class GameIdentification extends ActiveStudyScreen {
             });
 
             // If the user waits a second without releasing enter, cancel the submit.
-            this.submitCancelTimer = setTimeout(() => {
+            setTimeout(() => {
                 this.submitCancelTimer = null;
-                this.setState({...this.state, submitOnEnterUp: false});
+                this.setStateIfMounted({...this.state, submitOnEnterUp: false});
             }, 1000);
         } else {
             // If the ID is invalid, display the error.
