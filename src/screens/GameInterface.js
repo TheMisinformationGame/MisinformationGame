@@ -243,17 +243,21 @@ export class GameScreen extends ActiveStudyScreen {
         });
     };
 
-    updateGameState(game, error) {
+    updateGameState(game, error, setDismissedPrompt) {
         const state = {
             ...this.state,
             game: game,
             state: (game && !game.isFinished() ? game.getCurrentState() : null),
             participant: (game ? game.participant : null),
             error: error,
-            reactionsAllowed: !game
+            reactionsAllowed: (!this.state.dismissedPrompt && !game)
         };
+        if (setDismissedPrompt) {
+            state.dismissedPrompt = true;
+        }
+
         this.setStateIfMounted(state);
-        if (game) {
+        if ((this.state.dismissedPrompt || setDismissedPrompt) && game) {
             setTimeout(() => {
                 this.setStateIfMounted({...this.state, reactionsAllowed: true});
                 game.preloadNextState();
@@ -262,7 +266,8 @@ export class GameScreen extends ActiveStudyScreen {
     }
 
     onPromptContinue() {
-        this.setState({...this.state, dismissedPrompt: true})
+        // Dismiss the prompt and disable the reactions for a brief period of time.
+        this.updateGameState(this.state.game, this.state.error, true);
     }
 
     onUserReact(reaction) {
