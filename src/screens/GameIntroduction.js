@@ -20,7 +20,7 @@ class GameIntroductionScreen extends SimpleActiveStudyScreen {
         return (
             <div>
                 <div className="p-10">
-                    <p dangerouslySetInnerHTML={{__html: study.introduction}} />
+                    <p dangerouslySetInnerHTML={{__html: this.getContent(study)}} />
                 </div>
                 <ContinueBanner to={this.getTarget(study)} condition={true} />
             </div>
@@ -30,7 +30,7 @@ class GameIntroductionScreen extends SimpleActiveStudyScreen {
 
 export class GamePreIntroduction extends GameIntroductionScreen {
     getContent(study) {
-        return study.introduction;
+        return study.preIntro;
     }
 
     getTarget(study) {
@@ -40,7 +40,7 @@ export class GamePreIntroduction extends GameIntroductionScreen {
 
 export class GamePostIntroduction extends GameIntroductionScreen {
     getContent(study) {
-        return study.introduction;
+        return study.postIntro;
     }
 
     getTarget(study) {

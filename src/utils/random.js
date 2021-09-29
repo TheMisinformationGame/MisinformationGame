@@ -71,7 +71,7 @@ export function selectFilteredRandomElement(array, filterFn, preferenceFn) {
  *                 be weighted by the mean of all the other weights.
  */
 export function selectFilteredWeightedRandomElement(array, filterFn, preferenceFn, weightFn) {
-    doTypeCheck(array, Array);
+    doTypeCheck(array, Array, "Array of Elements");
     if (array.length === 0)
         throw new Error("Array cannot be empty");
 
@@ -101,7 +101,7 @@ export function selectFilteredWeightedRandomElement(array, filterFn, preferenceF
     for (let index = 0; index < collection.length; ++index) {
         const elem = collection[index];
         const weight = weightFn(elem);
-        doTypeCheck(weight, "number");
+        doTypeCheck(weight, "number", "Calculated Weight for " + JSON.stringify(elem));
         if (weight < 0)
             throw new Error("Weights cannot be negative: weightFn returned " + weight);
 

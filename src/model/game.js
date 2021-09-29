@@ -2,7 +2,7 @@
  * A source with a known credibility and follower count.
  */
 import {doNullableTypeCheck, doTypeCheck, isOfType} from "../utils/types";
-import {Post, Source, Study} from "./study";
+import {BrokenStudy, Post, Source, Study} from "./study";
 import {selectFilteredRandomElement, selectFilteredWeightedRandomElement} from "../utils/random";
 import {odiff} from "../utils/odiff";
 import {getDataManager} from "./manager";
@@ -37,11 +37,11 @@ export class GameSource {
     remainingUses; // Number
 
     constructor(study, source, credibility, followers, remainingUses) {
-        doTypeCheck(study, Study);
-        doTypeCheck(source, Source);
-        doTypeCheck(credibility, "number");
-        doTypeCheck(followers, "number");
-        doTypeCheck(remainingUses, "number");
+        doTypeCheck(study, Study, "Source's Study");
+        doTypeCheck(source, Source, "Source's Metadata");
+        doTypeCheck(credibility, "number", "Source's Credibility");
+        doTypeCheck(followers, "number", "Source's Followers");
+        doTypeCheck(remainingUses, "number", "Source's Remaining Uses");
         this.study = study;
         this.source = source;
         this.credibility = credibility;
@@ -108,7 +108,8 @@ export class GameSource {
      * credibility and followers from the supplied distribution.
      */
     static sampleNewSource(study, source) {
-        doTypeCheck(source, Source);
+        doTypeCheck(study, Study, "Study")
+        doTypeCheck(source, Source, "Source");
         const credibility = source.credibility.sample();
         const followers = source.followers.sample();
         return new GameSource(study, source, credibility, followers, source.maxPosts);
@@ -126,8 +127,9 @@ export class GamePost {
     shown; // boolean
 
     constructor(study, post, shown) {
-        doTypeCheck(study, Study);
-        doTypeCheck(post, Post);
+        doTypeCheck(study, Study, "Post's Study");
+        doTypeCheck(post, Post, "Post's Metadata");
+        doNullableTypeCheck(shown, "boolean", "Whether the post has been shown")
         this.study = study;
         this.post = post;
         this.shown = !!shown;
@@ -203,11 +205,11 @@ export class GameState {
     posts; // GamePost[]
 
     constructor(study, currentSource, currentPost, sources, posts) {
-        doTypeCheck(study, Study);
-        doTypeCheck(currentSource, GameSource);
-        doTypeCheck(currentPost, GamePost);
-        doTypeCheck(sources, Array);
-        doTypeCheck(posts, Array);
+        doTypeCheck(study, Study, "Game's Study");
+        doTypeCheck(currentSource, GameSource, "Game's Current Source");
+        doTypeCheck(currentPost, GamePost, "Game's Current Post");
+        doTypeCheck(sources, Array, "Game's Sources");
+        doTypeCheck(posts, Array, "Game's Posts");
         this.study = study;
         this.currentSource = currentSource;
         this.currentPost = currentPost;
@@ -301,11 +303,11 @@ export class GameParticipant {
     followerHistory; // Number[]
 
     constructor(credibility, followers, reactions, credibilityHistory, followerHistory) {
-        doTypeCheck(credibility, "number");
-        doTypeCheck(followers, "number");
-        doNullableTypeCheck(reactions, Array);
-        doNullableTypeCheck(credibilityHistory, Array);
-        doNullableTypeCheck(followerHistory, Array);
+        doTypeCheck(credibility, "number", "Participant's Credibility");
+        doTypeCheck(followers, "number", "Participant's Followers");
+        doNullableTypeCheck(reactions, Array, "Participant's Reactions to Posts");
+        doNullableTypeCheck(credibilityHistory, Array, "Participant's Credibility History");
+        doNullableTypeCheck(followerHistory, Array, "Participant's Follower History");
         this.credibility = credibility;
         this.followers = followers;
         this.reactions = reactions || [];
@@ -353,10 +355,10 @@ export class Game {
     dismissedPrompt; // boolean
 
     constructor(study, states, participant, dismissedPrompt) {
-        doTypeCheck(study, Study);
-        doTypeCheck(states, Array);
-        doTypeCheck(participant, GameParticipant);
-        doTypeCheck(dismissedPrompt, "boolean")
+        doTypeCheck(study, Study, "Game Study");
+        doTypeCheck(states, Array, "Game States");
+        doTypeCheck(participant, GameParticipant, "Game Participant");
+        doTypeCheck(dismissedPrompt, "boolean", "Whether the prompt has been dismissed")
         this.study = study;
         this.states = states;
         this.participant = participant;
@@ -551,7 +553,10 @@ export class Game {
      * Creates a new game for a participant in {@param study}.
      */
     static createNew(study) {
-        doTypeCheck(study, Study);
+        if (isOfType(study, BrokenStudy))
+            throw new Error("The study is broken: " + study.error);
+
+        doTypeCheck(study, Study, "Game Study");
         const game = new Game(study, [], new GameParticipant(50, 0), false);
         game.calculateAllStates();
         return game;

@@ -56,12 +56,19 @@ function generateV1PostDefaultsSpec(isTrue, firstRow) {
 const V1 = {
     name: new WorkbookLoc("Name", "General", "D4", ExcelString),
     description: new WorkbookLoc("Description", "General", "D5", ExcelString),
-    introduction: new WorkbookLoc("Introduction", "General", "D6", ExcelString),
-    prompt: new WorkbookLoc("Prompt", "General", "D7", ExcelString),
-    length: new WorkbookLoc("Length", "General", "D8", ExcelNumber),
-    debrief: new WorkbookLoc("Debrief", "General", "D9", ExcelString),
-    genCompletionCode: new WorkbookLoc("Generate Completion Code", "General", "D10", ExcelBoolean),
-    completionCodeDigits: new WorkbookLoc("Completion Code Digits", "General", "D11", ExcelNumber),
+    prompt: new WorkbookLoc("Prompt", "General", "D6", ExcelString),
+    length: new WorkbookLoc("Length of Game", "General", "D7", ExcelNumber),
+    requireIdentification: new WorkbookLoc("Require Participant Identification", "General", "D8", ExcelBoolean),
+    introDelaySeconds: new WorkbookLoc("Introduction Continue Delay (Seconds)", "General", "D9", ExcelNumber),
+    reactDelaySeconds: new WorkbookLoc("Reaction Delay (Seconds)", "General", "D10", ExcelNumber),
+    genCompletionCode: new WorkbookLoc("Generate Completion Code", "General", "D11", ExcelBoolean),
+    completionCodeDigits: new WorkbookLoc("Completion Code Digits", "General", "D12", ExcelNumber),
+
+    pages: {
+        preIntro: new WorkbookLoc("Introduction before Game Rules", "Pages", "B6", ExcelString),
+        postIntro: new WorkbookLoc("Introduction after Game Rules", "Pages", "B21", ExcelString),
+        debrief: new WorkbookLoc("Debrief", "Pages", "B36", ExcelString),
+    },
 
     sourcePostSelection: {
         worksheet: "Source & Post Selection",
@@ -292,11 +299,11 @@ function readV1Sources(workbook) {
 }
 
 function readV1ReactionValue(workbook, loc, min, max, defaultDist) {
-    doNonNullCheck(workbook);
-    doTypeCheck(loc, WorkbookLoc);
-    doTypeCheck(min, "number");
-    doTypeCheck(max, "number");
-    doTypeCheck(defaultDist, TruncatedNormalDistribution);
+    doNonNullCheck(workbook, "Study Workbook");
+    doTypeCheck(loc, WorkbookLoc, "WorkBook Location for Reaction Value");
+    doTypeCheck(min, "number", "Minimum Reaction Value");
+    doTypeCheck(max, "number", "Maximum Reaction Value");
+    doTypeCheck(defaultDist, TruncatedNormalDistribution, "Default Reaction Value Distribution");
     if (isCellBlank(workbook, loc))
         return defaultDist;
 
@@ -438,12 +445,16 @@ function readV1Study(workbook) {
             "unknown",
             readCell(workbook, V1.name),
             readCell(workbook, V1.description),
-            readCell(workbook, V1.introduction),
             readCell(workbook, V1.prompt),
             readCell(workbook, V1.length),
-            readCell(workbook, V1.debrief),
+            readCell(workbook, V1.requireIdentification),
+            readCell(workbook, V1.introDelaySeconds),
+            readCell(workbook, V1.reactDelaySeconds),
             readCell(workbook, V1.genCompletionCode),
             readCell(workbook, V1.completionCodeDigits),
+            readCell(workbook, V1.pages.preIntro),
+            readCell(workbook, V1.pages.postIntro),
+            readCell(workbook, V1.pages.debrief),
             readV1SourcePostSelectionMethod(workbook),
             sources, posts
         );

@@ -10,8 +10,8 @@ export class LinearFunction {
     intercept; // Number
 
     constructor(slope, intercept) {
-        doTypeCheck(slope, "number");
-        doTypeCheck(intercept, "number");
+        doTypeCheck(slope, "number", "Linear Function's Slope");
+        doTypeCheck(intercept, "number", "Linear Function's Intercept");
 
         this.slope = slope;
         this.intercept = intercept;
@@ -47,10 +47,10 @@ export class TruncatedNormalDistribution {
     max; // Number
 
     constructor(mean, stdDeviation, min, max) {
-        doTypeCheck(mean, "number");
-        doTypeCheck(stdDeviation, "number");
-        doTypeCheck(min, "number");
-        doTypeCheck(max, "number");
+        doTypeCheck(mean, "number", "Truncated Normal Distribution's Mean");
+        doTypeCheck(stdDeviation, "number", "Truncated Normal Distribution's Std. Deviation");
+        doTypeCheck(min, "number", "Truncated Normal Distribution's Minimum Value");
+        doTypeCheck(max, "number", "Truncated Normal Distribution's Maximum Value");
 
         this.mean = mean;
         this.stdDeviation = stdDeviation;

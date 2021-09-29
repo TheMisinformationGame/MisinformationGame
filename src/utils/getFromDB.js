@@ -5,9 +5,21 @@ The db can be gotten from the initFirestore function
 Need to figure out a way to get data from firebase storage
 =====================================================================================================================*/
 import { db, storage } from "./initFirestore";
-import {Study} from "../model/study";
+import {BrokenStudy, Study} from "../model/study";
 import {StudyImage} from "../model/images";
 
+
+/**
+ * Tries to load a study from the given JSON.
+ * However, if it fails a stub study will be returned.
+ */
+function studyOrBrokenFromJson(studyID, json) {
+    try {
+        return Study.fromJSON(studyID, json);
+    } catch (e) {
+        return BrokenStudy.fromJSON(studyID, json, e.message);
+    }
+}
 
 
 /**
@@ -19,7 +31,7 @@ export async function readStudySettings(studyID) {
     if (!snapshot.exists)
         throw new Error("Could not find the study with ID " + studyID);
 
-    return Study.fromJSON(studyID, snapshot.data());
+    return studyOrBrokenFromJson(studyID, snapshot.data());
 }
 
 /**
@@ -29,7 +41,7 @@ export async function readStudySettings(studyID) {
  */
 export async function readAllStudies() {
     const snapshot = await db.collection('Studies').get();
-    return snapshot.docs.map((doc) => Study.fromJSON(doc.id, doc.data()));
+    return snapshot.docs.map((doc) => studyOrBrokenFromJson(doc.id, doc.data()));
 }
 
 function getStudyImagePathType(path) {

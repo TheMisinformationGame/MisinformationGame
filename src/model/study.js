@@ -1,4 +1,4 @@
-import {doTypeCheck, isOfType} from "../utils/types";
+import {doNonNullCheck, doNullableTypeCheck, doTypeCheck, isOfType} from "../utils/types";
 import {SourcePostSelectionMethod} from "./selectionMethod";
 import {TruncatedNormalDistribution} from "./math";
 import {StudyImage, StudyImageMetadata} from "./images";
@@ -20,15 +20,13 @@ export class Source {
     truePostPercentage; // null or Number
 
     constructor(id, name, avatar, maxPosts, followers, credibility, truePostPercentage) {
-        doTypeCheck(id, "string");
-        doTypeCheck(avatar, [StudyImage, StudyImageMetadata]);
-        doTypeCheck(name, "string");
-        doTypeCheck(maxPosts, "number");
-        doTypeCheck(followers, TruncatedNormalDistribution);
-        doTypeCheck(credibility, TruncatedNormalDistribution);
-        if (truePostPercentage !== null) {
-            doTypeCheck(truePostPercentage, "number");
-        }
+        doTypeCheck(id, "string", "Source ID");
+        doTypeCheck(avatar, [StudyImage, StudyImageMetadata], "Source Avatar");
+        doTypeCheck(name, "string", "Source Name");
+        doTypeCheck(maxPosts, "number", "Source Maximum Posts");
+        doTypeCheck(followers, TruncatedNormalDistribution, "Source Initial Followers");
+        doTypeCheck(credibility, TruncatedNormalDistribution, "Source Initial Credibility");
+        doNullableTypeCheck(truePostPercentage, "number", "Source True Post Percentage");
 
         this.id = id;
         this.name = name;
@@ -72,9 +70,9 @@ export class PostComment {
     likes; // Number
 
     constructor(sourceID, message, likes) {
-        doTypeCheck(sourceID, "string");
-        doTypeCheck(message, "string");
-        doTypeCheck(likes, "number");
+        doTypeCheck(sourceID, "string", "Comment's Source ID");
+        doTypeCheck(message, "string", "Comment's Message");
+        doTypeCheck(likes, "number", "Comment Likes");
         this.sourceID = sourceID;
         this.message = message;
         this.likes = likes;
@@ -105,10 +103,10 @@ export class ReactionValues {
     flag; // TruncatedNormalDistribution
 
     constructor(like, dislike, share, flag) {
-        doTypeCheck(like, TruncatedNormalDistribution);
-        doTypeCheck(dislike, TruncatedNormalDistribution);
-        doTypeCheck(share, TruncatedNormalDistribution);
-        doTypeCheck(flag, TruncatedNormalDistribution);
+        doTypeCheck(like, TruncatedNormalDistribution, "Reaction Value for a Like");
+        doTypeCheck(dislike, TruncatedNormalDistribution, "Reaction Value for a Dislike");
+        doTypeCheck(share, TruncatedNormalDistribution, "Reaction Value for a Share");
+        doTypeCheck(flag, TruncatedNormalDistribution, "Reaction Value for a Flag");
         this.like = like;
         this.dislike = dislike;
         this.share = share;
@@ -148,13 +146,13 @@ export class Post {
     comments; // PostComment[]
 
     constructor(id, headline, content, isTrue, changesToFollowers, changesToCredibility, comments) {
-        doTypeCheck(id, "string");
-        doTypeCheck(headline, "string");
-        doTypeCheck(content, [StudyImage, StudyImageMetadata, "string"]);
-        doTypeCheck(isTrue, "boolean");
-        doTypeCheck(changesToFollowers, ReactionValues);
-        doTypeCheck(changesToCredibility, ReactionValues);
-        doTypeCheck(comments, Array);
+        doTypeCheck(id, "string", "Post ID");
+        doTypeCheck(headline, "string", "Post Headline");
+        doTypeCheck(content, [StudyImage, StudyImageMetadata, "string"], "Post Content");
+        doTypeCheck(isTrue, "boolean", "Whether the post is true");
+        doTypeCheck(changesToFollowers, ReactionValues, "Post's Change to Followers");
+        doTypeCheck(changesToCredibility, ReactionValues, "Post's Change to Credibility");
+        doTypeCheck(comments, Array, "Post's Comments");
         this.id = id;
         this.headline = headline;
         this.content = content;
@@ -213,51 +211,100 @@ export class Post {
 }
 
 /**
+ * A study that is missing most of its information
+ * because it could not be read properly.
+ */
+export class BrokenStudy {
+    id; // String
+    json; // JSON Object
+    error; // String
+    name; // String
+    description; // String
+
+    constructor(id, json, error, name, description) {
+        doTypeCheck(id, "string", "Invalid Study's ID");
+        doNonNullCheck(json, "Invalid Study's JSON");
+        doTypeCheck(error, "string", "Invalid Study's Error");
+        this.id = id;
+        this.json = json;
+        this.error = error;
+        this.name = name || "Unknown Name";
+        this.description = description || "Missing Description";
+    }
+
+    static fromJSON(id, json, error) {
+        return new BrokenStudy(
+            id, json, error, json["name"], json["description"]
+        );
+    }
+}
+
+/**
  * Holds the entire specification of a study.
  */
 export class Study {
     id; // String
     name; // String
     description; // String
-    introduction; // String
     prompt; // String
     length; // Number
-    debrief; // String
+    requireIdentification; // Boolean
+    introDelaySeconds; // Number
+    reactDelaySeconds; // Number
     genCompletionCode; // Boolean
     completionCodeDigits; // Number
+
+    preIntro; // HTML String
+    postIntro; // HTML String
+    debrief; // HTML String
+
     sourcePostSelectionMethod; // SourcePostSelectionMethod
     sources; // Source[]
     posts; // Post[]
 
     constructor(
-            id, name, description, introduction,
-            prompt, length, debrief,
+            id, name, description,
+            prompt, length, requireIdentification,
+            introDelaySeconds, reactDelaySeconds,
             genCompletionCode, completionCodeDigits,
+            preIntro, postIntro, debrief,
             sourcePostSelectionMethod,
             sources, posts) {
 
-        doTypeCheck(id, "string");
-        doTypeCheck(name, "string");
-        doTypeCheck(description, "string");
-        doTypeCheck(introduction, "string");
-        doTypeCheck(prompt, "string");
-        doTypeCheck(length, "number");
-        doTypeCheck(debrief, "string");
-        doTypeCheck(genCompletionCode, "boolean");
-        doTypeCheck(completionCodeDigits, "number");
-        doTypeCheck(sourcePostSelectionMethod, SourcePostSelectionMethod);
-        doTypeCheck(sources, Array);
-        doTypeCheck(posts, Array);
+        doTypeCheck(id, "string", "Study ID");
+        doTypeCheck(name, "string", "Study Name");
+        doTypeCheck(description, "string", "Study Description");
+        doTypeCheck(prompt, "string", "Study Prompt");
+        doTypeCheck(length, "number", "Study Length");
+        doTypeCheck(requireIdentification, "boolean", "Whether the study requires identification");
+        doTypeCheck(introDelaySeconds, "number", "Study Introduction Continue Delay");
+        doTypeCheck(reactDelaySeconds, "number", "Study Reaction Delay");
+        doTypeCheck(genCompletionCode, "boolean", "Whether the study generates a completion code");
+        doTypeCheck(completionCodeDigits, "number", "Study Completion Code Digits");
+
+        doTypeCheck(preIntro, "string", "Study Introduction before Game Rules");
+        doTypeCheck(postIntro, "string", "Study Introduction after Game Rules");
+        doTypeCheck(debrief, "string", "Study Debrief");
+
+        doTypeCheck(sourcePostSelectionMethod, SourcePostSelectionMethod, "Study Source/Post Selection Method");
+        doTypeCheck(sources, Array, "Study Sources");
+        doTypeCheck(posts, Array, "Study Posts");
 
         this.id = id;
         this.name = name;
         this.description = description;
-        this.introduction = introduction;
         this.prompt = prompt;
         this.length = length;
-        this.debrief = debrief;
+        this.requireIdentification = requireIdentification;
+        this.introDelaySeconds = introDelaySeconds;
+        this.reactDelaySeconds = reactDelaySeconds;
         this.genCompletionCode = genCompletionCode;
         this.completionCodeDigits = completionCodeDigits;
+
+        this.preIntro = preIntro;
+        this.postIntro = postIntro;
+        this.debrief = debrief;
+
         this.sourcePostSelectionMethod = sourcePostSelectionMethod;
         this.sources = sources;
         this.posts = posts;
@@ -282,36 +329,6 @@ export class Study {
     }
 
     /**
-     * Once a full source is loaded, this method can be
-     * used to replace the old BaseSource.
-     */
-    replaceSource(source) {
-        for (let index = 0; index < this.sources.length; ++index) {
-            const existing = this.sources[index];
-            if (existing.id === source.id) {
-                this.sources[index] = source;
-                return;
-            }
-        }
-        throw new Error("Could not find source with ID " + source.id);
-    }
-
-    /**
-     * Once a full post is loaded, this method can be
-     * used to replace the old BasePost.
-     */
-    replacePost(post) {
-        for (let index = 0; index < this.posts.length; ++index) {
-            const existing = this.posts[index];
-            if (existing.id === post.id) {
-                this.posts[index] = post;
-                return;
-            }
-        }
-        throw new Error("Could not find post with ID " + post.id);
-    }
-
-    /**
      * Generates a random completion code string for this study.
      */
     generateRandomCompletionCode() {
@@ -321,7 +338,7 @@ export class Study {
     static sourcesToJSON(sources) {
         const sourcesJSON = [];
         for (let index = 0; index < sources.length; ++index) {
-            doTypeCheck(sources[index], Source);
+            doTypeCheck(sources[index], Source, "Source at index " + index);
             sourcesJSON.push(sources[index].toJSON());
         }
         return sourcesJSON;
@@ -338,7 +355,7 @@ export class Study {
     static postsToJSON(posts) {
         const postsJSON = [];
         for (let index = 0; index < posts.length; ++index) {
-            doTypeCheck(posts[index], Post);
+            doTypeCheck(posts[index], Post, "Post at index " + index);
             postsJSON.push(posts[index].toJSON());
         }
         return postsJSON;
@@ -360,12 +377,16 @@ export class Study {
         return {
             "name": this.name,
             "description": this.description,
-            "introduction": this.introduction,
             "prompt": this.prompt,
             "length": this.length,
-            "debrief": this.debrief,
+            "requireIdentification": this.requireIdentification,
+            "introDelaySeconds": this.introDelaySeconds,
+            "reactDelaySeconds": this.reactDelaySeconds,
             "genCompletionCode": this.genCompletionCode,
             "completionCodeDigits": this.completionCodeDigits,
+            "preIntro": this.preIntro,
+            "postIntro": this.postIntro,
+            "debrief": this.debrief,
             "sourcePostSelectionMethod": this.sourcePostSelectionMethod.toJSON(),
             "sources": Study.sourcesToJSON(this.sources),
             "posts": Study.postsToJSON(this.posts)
@@ -375,10 +396,10 @@ export class Study {
     static fromJSON(id, json) {
         return new Study(
             id, json["name"], json["description"],
-            json["introduction"], json["prompt"],
-            json["length"], json["debrief"],
-            json["genCompletionCode"],
-            json["completionCodeDigits"],
+            json["prompt"], json["length"], json["requireIdentification"],
+            json["introDelaySeconds"], json["reactDelaySeconds"],
+            json["genCompletionCode"], json["completionCodeDigits"],
+            json["preIntro"], json["postIntro"], json["debrief"],
             SourcePostSelectionMethod.fromJSON(json["sourcePostSelectionMethod"]),
             Study.sourcesFromJSON(json["sources"]),
             Study.postsFromJSON(json["posts"])

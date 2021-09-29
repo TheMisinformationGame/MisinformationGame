@@ -7,11 +7,28 @@ import {postStudy, uploadImageToStorage} from "../utils/postToDB";
 import {ErrorLabel, ProgressLabel} from "../components/StatusLabel";
 import UploadIcon from '@mui/icons-material/Upload';
 import {isOfType} from "../utils/types";
+import {BrokenStudy} from "../model/study";
 
 
 class StudySummary extends Component {
     render() {
         const study = this.props.study;
+        // Handle broken studies specially.
+        if (isOfType(study, BrokenStudy)) {
+            return (
+                <div className="rounded-xl border border-red-800 p-3 bg-white shadow">
+
+                    <Link to={`/admin/${study.id}`}
+                          className="text-red-500 text-lg font-bold hover:text-red-700 hover:underline">
+                        {study.name}
+                    </Link>
+
+                    <p dangerouslySetInnerHTML={{__html: study.description}} />
+                    <ErrorLabel className="mt-3" value={[<b>This study is broken:</b>, study.error]} />
+                </div>
+            );
+        }
+
         return (
             <div className="rounded-xl border border-gray-400 p-3 bg-white shadow">
                 

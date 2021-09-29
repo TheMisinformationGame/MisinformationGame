@@ -1,11 +1,68 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import '../App.css'
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CloseIcon from '@mui/icons-material/Close';
 import {SimpleActiveStudyScreen} from "./ActiveStudyScreen";
+import {isOfType} from "../utils/types";
+import {BrokenStudy} from "../model/study";
+import {ErrorLabel} from "../components/StatusLabel";
 
-export class AdminStudy extends SimpleActiveStudyScreen {
+
+class AdminStudy extends Component {
+    render() {
+        const study = this.props.study;
+
+        let content;
+        if (isOfType(study, BrokenStudy)) {
+            content = (
+                <>
+                    <ErrorLabel className="mb-6" value={[<b>This study is broken:</b>, study.error]} />
+                    <h1 className="font-semibold text-4xl">{study.name}</h1>
+                    <p dangerouslySetInnerHTML={{__html: study.description}}
+                       className="my-4" />
+                </>
+            );
+        } else {
+            const target = "/game/" + study.id + (study.requireIdentification ? "/id" : "");
+            content = (
+                <>
+                    <h1 className="font-semibold text-4xl">{study.name}</h1>
+                    <p className="mt-2">
+                        <b>URL:&nbsp;</b>
+                        <Link to={target}
+                              className="text-blue-500 hover:text-blue-700 underline">
+                            {window.location.host + "/game/" + study.id + "/id"}
+                        </Link>
+                    </p>
+                    <p dangerouslySetInnerHTML={{__html: study.description}}
+                       className="my-4" />
+                </>
+            );
+        }
+
+        return (
+            <div className="box-border w-full pt-10 px-10">
+                {content}
+                <div className="bg-blue-400 hover:bg-blue-500 w-48 text-white
+                                        text-center border-black border border-opacity-50 pt-3
+                                        pb-3 border-solid font-semibold rounded-md cursor-pointer
+                                        select-none">
+
+                    <FileDownloadIcon className="mr-1" />
+                    Download results
+                </div>
+            </div>
+        );
+    }
+}
+
+
+export class AdminStudyPage extends SimpleActiveStudyScreen {
+    constructor(props) {
+        super(props, false);
+    }
+
     renderWithStudy(study) {
         return (
             <div className="bg-gradient-to-r from-gray-50 via-white to-gray-50 bg-opacity-">
@@ -33,28 +90,7 @@ export class AdminStudy extends SimpleActiveStudyScreen {
                         </tr>
                     </table>
 
-                    <div className="box-border h-5/6 w-full pt-10 px-10 text-black">
-                        {/**This part should fetch data from database, will change it later */}
-                        <h1 className="font-semibold text-4xl">{study.name}</h1>
-                        <p className="mt-2">
-                            <b>URL:&nbsp;</b>
-                            <Link to={"/game/" + study.id + "/id"}
-                                  className="text-blue-500 hover:text-blue-700 underline">
-                                {window.location.host + "/game/" + study.id + "/id"}
-                            </Link>
-                        </p>
-                        <p dangerouslySetInnerHTML={{__html: study.description}}
-                           className="my-4" />
-
-                        <div className="bg-blue-400 hover:bg-blue-500 w-48 text-white
-                                        text-center border-black border border-opacity-50 pt-3
-                                        pb-3 border-solid font-semibold rounded-md cursor-pointer
-                                        select-none">
-
-                            <FileDownloadIcon className="mr-1" />
-                            Download results
-                        </div>
-                    </div>
+                    <AdminStudy study={study} />
                 </div>
             </div>
         );

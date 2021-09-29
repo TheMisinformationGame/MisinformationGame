@@ -168,14 +168,14 @@ class DataManager {
      * or if the image is already loaded, just that image.
      */
     getStudyImage(study, imageID, imageMetadata) {
-        doTypeCheck(study, Study);
-        doTypeCheck(imageID, "string");
+        doTypeCheck(study, Study, "Image's Study");
+        doTypeCheck(imageID, "string", "Image ID");
 
         // Already an image, just return it.
         if (isOfType(imageMetadata, StudyImage))
             return imageMetadata;
 
-        doTypeCheck(imageMetadata, StudyImageMetadata);
+        doTypeCheck(imageMetadata, StudyImageMetadata, "Image Metadata");
         const path = StudyImage.getPath(study.id, imageID, imageMetadata);
         if (!this.imagePromiseGenerators[path])
             return this.readStudyImage(study, imageID, imageMetadata);

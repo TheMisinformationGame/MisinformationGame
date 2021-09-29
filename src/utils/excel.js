@@ -8,8 +8,8 @@ export class ExcelType {
     name; // String
 
     constructor(exceljsType, name) {
-        doNonNullCheck(exceljsType);
-        doTypeCheck(name, "string");
+        doNonNullCheck(exceljsType, "Excel Type's corresponding Excel.js ValueType");
+        doTypeCheck(name, "string", "Excel Type Name");
 
         this.exceljsType = exceljsType;
         this.name = name;
@@ -36,7 +36,7 @@ export class ExcelType {
     }
 
     static getExcelJSTypeName(exceljsType) {
-        doNonNullCheck(exceljsType);
+        doNonNullCheck(exceljsType, "Excel.js ValueType");
 
         switch (exceljsType) {
             case Excel.ValueType.Null:
@@ -187,10 +187,10 @@ export class WorkbookLoc {
     type; // ExcelType
 
     constructor(name, worksheet, cell, type) {
-        doTypeCheck(name, "string");
-        doTypeCheck(worksheet, "string");
-        doTypeCheck(cell, "string");
-        doTypeCheck(type, ExcelType);
+        doTypeCheck(name, "string", "Workbook Location Name");
+        doTypeCheck(worksheet, "string", "Workbook Location's Worksheet");
+        doTypeCheck(cell, "string", "Workbook Location's Address");
+        doTypeCheck(type, ExcelType, "Workbook Location's Type");
 
         this.name = name;
         this.worksheet = worksheet;
@@ -210,10 +210,10 @@ export class WorkbookColumn {
     type; // ExcelType
 
     constructor(name, worksheet, column, type) {
-        doTypeCheck(name, "string");
-        doTypeCheck(worksheet, "string");
-        doTypeCheck(column, "string");
-        doTypeCheck(type, ExcelType);
+        doTypeCheck(name, "string", "Workbook Column Name");
+        doTypeCheck(worksheet, "string", "Workbook Column's Worksheet");
+        doTypeCheck(column, "string", "Workbook Column's Address");
+        doTypeCheck(type, ExcelType, "Workbook Column's Type");
 
         this.name = name;
         this.worksheet = worksheet;
@@ -222,7 +222,7 @@ export class WorkbookColumn {
     }
 
     row(row) {
-        doTypeCheck(row, "number");
+        doTypeCheck(row, "number", "Row in Column");
         return new WorkbookLoc(this.name, this.worksheet, this.column + row, this.type);
     }
 }
@@ -298,8 +298,8 @@ function readCellValue(workbook, worksheetName, address, type) {
  * then an error will be thrown.
  */
 export function readCell(workbook, loc) {
-    doNonNullCheck(workbook);
-    doTypeCheck(loc, WorkbookLoc);
+    doNonNullCheck(workbook, "Study Workbook for Cell");
+    doTypeCheck(loc, WorkbookLoc, "Cell's Location in Workbook");
 
     const value = readCellValue(workbook, loc.worksheet, loc.cell, loc.type);
     if (value === undefined) {

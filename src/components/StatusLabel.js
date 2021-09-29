@@ -100,7 +100,10 @@ export class Status {
     error;
 
     constructor(progress, success, warning, error) {
-        doNullableTypeCheck(progress, ["string", Component, Array]);
+        doNullableTypeCheck(progress, ["string", Component, Array], "Status Progress Message");
+        doNullableTypeCheck(success, ["string", Component, Array], "Status Success Message");
+        doNullableTypeCheck(warning, ["string", Component, Array], "Status Warning Message");
+        doNullableTypeCheck(error, ["string", Component, Array], "Status Error Message");
         this.progress = progress;
         this.success = success;
         this.warning = warning;

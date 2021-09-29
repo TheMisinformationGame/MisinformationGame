@@ -9,7 +9,7 @@ export class StudyImageMetadata {
     type; // String
 
     constructor(type) {
-        doTypeCheck(type, "string");
+        doTypeCheck(type, "string", "Image Type");
         this.type = type;
     }
 
@@ -38,8 +38,8 @@ export class StudyImage {
     type; // String
 
     constructor(buffer, type) {
-        doTypeCheck(buffer, Uint8Array);
-        doTypeCheck(type, "string");
+        doTypeCheck(buffer, Uint8Array, "Image Contents");
+        doTypeCheck(type, "string", "Image Type");
         this.buffer = buffer;
         this.type = type;
     }

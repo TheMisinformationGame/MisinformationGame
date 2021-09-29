@@ -10,7 +10,7 @@ export class SourcePostSelectionMethod {
     type; // String
 
     constructor(type) {
-        doTypeCheck(type, "string");
+        doTypeCheck(type, "string", "Source/Post Selection Method Type");
         this.type = type;
     }
 
@@ -52,7 +52,7 @@ export class OverallRatioSelectionMethod extends SourcePostSelectionMethod {
 
     constructor(truePostPercentage) {
         super("Overall-Ratio");
-        doTypeCheck(truePostPercentage, "number");
+        doTypeCheck(truePostPercentage, "number", "Overall-Ratio Selection Method True Post Percentage");
         this.truePostPercentage = truePostPercentage;
     }
 
@@ -112,7 +112,7 @@ export class CredibilitySelectionMethod extends SourcePostSelectionMethod {
 
     constructor(linearRelationship) {
         super("Credibility");
-        doTypeCheck(linearRelationship, LinearFunction);
+        doTypeCheck(linearRelationship, LinearFunction, "Credibility Selection Method Linear Relationship");
         this.linearRelationship = linearRelationship;
     }
 
@@ -146,7 +146,7 @@ export class PredefinedSelectionMethod extends SourcePostSelectionMethod {
 
     constructor(order) {
         super("Pre-Defined");
-        doTypeCheck(order, Array);
+        doTypeCheck(order, Array, "Pre-Defined Selection Method Source/Post Order");
         if (order.length === 0)
             throw new Error("Empty pre-defined selection order");
 

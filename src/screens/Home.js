@@ -26,7 +26,7 @@ function Home() {
                     <div className="flex justify-center">
                         <div className="flex p-2 my-4 rounded bg-gray-700 shadow">
                             <Link to="/" name="Home" className="bg-gray-800" />
-                            <Link to="/game/1632160809753/id" name="Game" className="mx-3 bg-gray-600" />
+                            <Link to="/game/1632891323584/id" name="Game" className="mx-3 bg-gray-600" />
                             <Link to="/admin" name="Admin" className="bg-gray-600" />
                         </div>
                     </div>
