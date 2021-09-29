@@ -14,7 +14,8 @@ module.exports = {
   variants: {
     extend: {
       dropShadow: ['hover'],
-      scale: ['group-hover']
+      scale: ['group-hover'],
+      backgroundColor: ['active']
     },
   },
   plugins: [],
