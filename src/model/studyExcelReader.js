@@ -452,8 +452,8 @@ function readV1Study(workbook) {
             readCell(workbook, V1.reactDelaySeconds),
             readCell(workbook, V1.genCompletionCode),
             readCell(workbook, V1.completionCodeDigits),
-            readCell(workbook, V1.pages.preIntro),
-            readCell(workbook, V1.pages.postIntro),
+            readCellWithDefault(workbook, V1.pages.preIntro, ""),
+            readCellWithDefault(workbook, V1.pages.postIntro, ""),
             readCell(workbook, V1.pages.debrief),
             readV1SourcePostSelectionMethod(workbook),
             sources, posts

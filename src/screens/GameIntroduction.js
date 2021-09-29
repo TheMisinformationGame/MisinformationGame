@@ -17,12 +17,22 @@ class GameIntroductionScreen extends SimpleActiveStudyScreen {
     }
 
     renderWithStudy(study) {
+        const content = this.getContent(study);
+        const target = this.getTarget(study);
+
+        // If this page is empty, redirect them to the next page.
+        if (content.trim().length === 0) {
+            this.props.history.push(target);
+            return (
+                <div>Redirecting...</div>
+            );
+        }
         return (
             <div>
                 <div className="p-10">
-                    <p dangerouslySetInnerHTML={{__html: this.getContent(study)}} />
+                    <p dangerouslySetInnerHTML={{__html: content}} />
                 </div>
-                <ContinueBanner to={this.getTarget(study)} condition={true} delay={study.introDelaySeconds} />
+                <ContinueBanner to={target} condition={true} delay={study.introDelaySeconds} />
             </div>
         );
     }
