@@ -22,7 +22,7 @@ class GameIntroductionScreen extends SimpleActiveStudyScreen {
                 <div className="p-10">
                     <p dangerouslySetInnerHTML={{__html: this.getContent(study)}} />
                 </div>
-                <ContinueBanner to={this.getTarget(study)} condition={true} />
+                <ContinueBanner to={this.getTarget(study)} condition={true} delay={study.introDelaySeconds} />
             </div>
         );
     }

@@ -37,7 +37,7 @@ export class GameRules extends SimpleActiveStudyScreen {
                     <img className="max-h-64" src={gameImage} alt="Example of what the game will look like" />
                 </div>
 
-                <ContinueBanner to={target} condition={true} />
+                <ContinueBanner to={target} condition={true} delay={study.introDelaySeconds} />
             </div>
         );
     }

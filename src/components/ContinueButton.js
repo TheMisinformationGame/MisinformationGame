@@ -3,14 +3,43 @@ import {ConditionalLink} from "./ConditionalLink";
 
 
 export class ContinueButton extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {disabled: true};
+        this.activateTimer = null;
+    }
+
+    componentDidMount() {
+        const delaySeconds = this.props.delay;
+        if (!delaySeconds || delaySeconds <= 0) {
+            this.setState({...this.state, disabled: false});
+            return;
+        }
+
+        this.setState({...this.state, disabled: true});
+        this.activateTimer = setTimeout(() => {
+            this.setState({...this.state, disabled: false});
+        }, delaySeconds * 1000);
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.activateTimer);
+    }
+
     render() {
+        const disabled = this.state.disabled;
         return (
-            <ConditionalLink to={this.props.to} condition={this.props.condition} onClick={this.props.onClick}
+            <ConditionalLink to={this.props.to}
+                             condition={!disabled && this.props.condition}
+                             onClick={this.props.onClick}
                              className={
-                                 "px-3 py-2 rounded-md text-white cursor-pointer " +
-                                 "select-none bg-blue-500 hover:bg-blue-600 " +
+                                 "px-3 py-2 rounded-md text-white " +
+                                 (disabled ? "" : "cursor-pointer ") +
+                                 "select-none " +
                                  (this.props.className || "") + " " +
-                                 (this.props.active ? "bg-blue-600" : "active:bg-blue-600")
+                                 (disabled ? "bg-gray-400 " :
+                                     (this.props.active ? "bg-blue-600 " : "bg-blue-500 active:bg-blue-600 ") +
+                                     "hover:bg-blue-600")
                              }>
 
                 Continue
@@ -34,6 +63,7 @@ export class ContinueBanner extends Component {
                         to={this.props.to}
                         condition={this.props.condition}
                         onClick={this.props.onClick}
+                        delay={this.props.delay}
                         className="text-xl px-4 py-2" />
                 </div>
             </>

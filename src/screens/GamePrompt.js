@@ -20,7 +20,8 @@ export class GamePrompt extends Component {
 
                 <ContinueBanner to={this.props.to}
                                 condition={this.props.to}
-                                onClick={this.props.onClick} />
+                                onClick={this.props.onClick}
+                                delay={study.reactDelaySeconds}/>
             </div>
         );
      }

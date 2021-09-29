@@ -67,9 +67,9 @@ class ReactButton extends Component {
         return (
             <div id={this.props.reaction}
                  className={
-                     "group h-12 w-16 pt-1.5 px-2 sm:px-3 md:px-4 rounded " +
-                     "fill-current cursor-pointer transition duration-100 hover:bg-gray-100 " +
-                     "text-center " + (this.props.enabled ? "text-gray-700 " : "text-gray-500 ") +
+                     "group h-12 w-16 pt-1.5 px-2 sm:px-3 md:px-4 rounded text-center " +
+                     "fill-current transition duration-100 hover:bg-gray-100 " +
+                     (this.props.enabled ? "text-gray-700 cursor-pointer " : "text-gray-500 ") +
                      (this.props.className || "")}
                  style={{fontSize: (this.props.fontSize || "2.5rem")}}
                  onClick={() => {
@@ -249,15 +249,15 @@ export class GameScreen extends ActiveStudyScreen {
             state: (game && !game.isFinished() ? game.getCurrentState() : null),
             participant: (game ? game.participant : null),
             error: error,
-            reactionsAllowed: false
+            reactionsAllowed: !game
         };
         this.setState(state);
-        setTimeout(() => {
-            this.setState({...state, reactionsAllowed: true});
-            if (game) {
+        if (game) {
+            setTimeout(() => {
+                this.setState({...this.state, reactionsAllowed: true});
                 game.preloadNextState();
-            }
-        }, 600);
+            }, game.study.reactDelaySeconds * 1000);
+        }
     }
 
     onPromptContinue() {
