@@ -4,6 +4,9 @@ import '../App.css'
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import UploadIcon from "@mui/icons-material/Upload";
+import BlockIcon from '@mui/icons-material/Block';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import {SimpleActiveStudyScreen} from "./ActiveStudyScreen";
 import {isOfType} from "../utils/types";
 import {BrokenStudy} from "../model/study";
@@ -54,17 +57,49 @@ class AdminStudy extends Component {
                     <span dangerouslySetInnerHTML={{__html: study.description}} />
                 </p>
 
+                {/* Actions. */}
+                <p className="mt-6 mb-2">
+                    <b className="block">Actions:&nbsp;</b>
+                </p>
+
                 {/* Download Results Button. */}
-                <div className="w-48 pt-3 pb-3 mb-4 mt-6 bg-blue-400 hover:bg-blue-500 text-white
+                <div className="w-52 pt-3 pb-3 mb-4 bg-purple-400 hover:bg-purple-500
                                 text-center select-none border-black border border-opacity-50
                                 border-solid font-semibold rounded-md cursor-pointer">
 
                     <FileDownloadIcon className="mr-1" />
-                    Download results
+                    Download Results
+                </div>
+
+                {/* Update Study Button. */}
+                <div className="w-52 pt-3 pb-3 mb-4 bg-blue-400 hover:bg-blue-500
+                                text-center select-none border-black border border-opacity-50
+                                border-solid font-semibold rounded-md cursor-pointer">
+
+                    <UploadIcon className="mr-1" />
+                    Update Study
+                </div>
+
+                {/* Disable/Enable Study Button. */}
+                <div className="w-52 pt-3 pb-3 mb-4 bg-yellow-300 hover:bg-yellow-400
+                                text-center select-none border-black border border-opacity-50
+                                border-solid font-semibold rounded-md cursor-pointer">
+
+                    <BlockIcon className="mr-2 mb-0.5" />
+                    Disable Study
+                </div>
+
+                {/* Disable/Enable Study Button. */}
+                <div className="w-52 pt-3 pb-3 mb-4 bg-green-400 hover:bg-green-500
+                                text-center select-none border-black border border-opacity-50
+                                border-solid font-semibold rounded-md cursor-pointer">
+
+                    <ControlPointIcon className="mr-2" />
+                    Enable Study
                 </div>
 
                 {/* Delete Study Button. */}
-                <div className="w-48 pt-3 pb-3 mb-4 bg-red-400 hover:bg-red-500 text-white
+                <div className="w-52 pt-3 pb-3 mb-4 bg-red-400 hover:bg-red-500
                                 text-center select-none border-black border border-opacity-50
                                 border-solid font-semibold rounded-md cursor-pointer">
 
