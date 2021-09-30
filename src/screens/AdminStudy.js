@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import '../App.css'
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CloseIcon from '@mui/icons-material/Close';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {SimpleActiveStudyScreen} from "./ActiveStudyScreen";
 import {isOfType} from "../utils/types";
 import {BrokenStudy} from "../model/study";
@@ -51,6 +52,15 @@ class AdminStudy extends Component {
 
                     <FileDownloadIcon className="mr-1" />
                     Download results
+                </div>
+                <br/>
+                <div className="bg-red-400 hover:bg-red-500 w-48 text-white
+                                        text-center border-black border border-opacity-50 pt-3
+                                        pb-2 border-solid font-semibold rounded-md cursor-pointer
+                                        select-none">
+
+                    <DeleteForeverIcon className="mr-1 mb-1" />
+                    Delete Study
                 </div>
             </div>
         );
