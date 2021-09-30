@@ -2,9 +2,14 @@ import "../index.css"
 import {Component} from "react";
 import {readStudyWorkbook} from "../model/studyExcelReader";
 import StatusLabel, {Status} from "./StatusLabel";
-import {getStudyChangesToAndFromJSON} from "../model/study";
+import {getStudyChangesToAndFromJSON, Study} from "../model/study";
 import xlsxHelp from "./help-export-to-xlsx.png"
 import {Game, getGameChangesToAndFromJSON} from "../model/game";
+import {doTypeCheck, isOfType} from "../utils/types";
+import {uploadImagesToStorage, uploadStudyConfiguration} from "../database/postToDB";
+import {generateUID} from "../utils/uuid";
+import {StudyImage} from "../model/images";
+import {MountAwareComponent} from "./MountAwareComponent";
 
 const Excel = require('exceljs');
 
@@ -21,32 +26,88 @@ class UploadIcon extends Component {
     }
 }
 
-export class StudyUploadForm extends Component {
+/**
+ * This uses an excessive number of callbacks to handle the uploading
+ * of studies. It is hard to avoid because there are so many async tasks
+ * to chain together, but it could probably be cleaned up using async/yield.
+ */
+export class StudyUploadForm extends MountAwareComponent {
     constructor(props) {
         super(props);
-        this.state = StudyUploadForm.createStateWithDefaults({});
-    }
-
-    static createStateWithDefaults(incompleteState) {
-        return {
-            ...{ // Defaults
-                url: null,
-                urlStatus: null,
-                fileStatus: null
-            },
-            ...incompleteState
+        this.state = {
+            fileStatus: null
         };
     }
 
-    updateState(incompleteState) {
-        this.setState(StudyUploadForm.createStateWithDefaults(incompleteState));
+    /**
+     * Uploads {@param study} to the database.
+     *
+     * @param updateStatusFn the function used to update the UI with progress information.
+     */
+    uploadStudy(study, updateStatusFn) {
+        updateStatusFn(Status.progress("Uploading images..."));
+
+        // We do this in a setTimeout so that React has a chance to
+        // update the UI with our new status. Its dodgy but it works...
+        setTimeout(() => {
+            // Collect all images to upload.
+            const images = {};
+            for (let i = 0; i < study.posts.length; i++) {
+                const post = study.posts[i];
+                if (!isOfType(post.content, "string")) {
+                    const path = StudyImage.getPath(
+                        study.id, post.id, post.content.toMetadata()
+                    );
+                    images[path] = post.content;
+                }
+            }
+            for (let i = 0; i < study.sources.length; i++) {
+                const source = study.sources[i];
+                const path = StudyImage.getPath(
+                    study.id, source.id, source.avatar.toMetadata()
+                );
+                images[path] = source.avatar;
+            }
+
+            // Upload all the images.
+            uploadImagesToStorage(images, (uploaded, total) => {
+                updateStatusFn(Status.progress("Uploading images... (" + uploaded + " / " + total + ")"));
+            }).then(() => {
+                // Upload the study itself.
+                updateStatusFn(Status.progress("Uploading study configuration..."));
+                setTimeout(() => {
+                    uploadStudyConfiguration(study).then(() => {
+                        // Successfully uploaded the study!
+                        updateStatusFn(Status.success("Success"));
+                        if (this.props.onStudyLoad) {
+                            this.props.onStudyLoad(study);
+                        }
+                    }).catch((error) => {
+                        console.error(error);
+                        updateStatusFn(Status.error([
+                            <b>Study could not be uploaded:</b>,
+                            error.message
+                        ]));
+                    });
+                }, 50);
+            }).catch((error) => {
+                console.error(error);
+                updateStatusFn(Status.error([
+                    <b>Study images could not be uploaded:</b>,
+                    error.message
+                ]));
+            });
+        }, 50);
     }
 
-    onURLChange(event) {
-        this.updateState({ url: event.target.value });
-    }
-
-    verifyStudy(study, updateStatusFn) {
+    /**
+     * Verifies the contents of {@param study} to check for
+     * errors in the study before it is uploaded to the database.
+     *
+     * @param updateStatusFn the function used to update the UI with progress information.
+     * @param onComplete the function to be called with the study once it has been successfully verified.
+     */
+    verifyStudy(study, updateStatusFn, onComplete) {
         updateStatusFn(Status.progress("Verifying study..."));
 
         const reportInternalError = (errorMessage) => {
@@ -60,6 +121,14 @@ export class StudyUploadForm extends Component {
         // We do this in a setTimeout so that React has a chance to
         // update the UI with our new status. Its dodgy but it works...
         setTimeout(() => {
+            try {
+                doTypeCheck(study, Study, "The study");
+            } catch (error) {
+                console.error(error);
+                reportInternalError("The study was not loaded correctly.");
+                return;
+            }
+
             // Do more checks to make sure this study plays
             // nicely with our other systems.
             try {
@@ -70,10 +139,26 @@ export class StudyUploadForm extends Component {
                     reportInternalError("The study changed after saving and loading.");
                     return;
                 }
+            } catch (error) {
+                console.error(error);
+                reportInternalError("An error occurred while saving this study: " + error.message);
+                return;
+            }
 
+            let game;
+            try {
                 // Try create a new Game using the study.
-                const game = Game.createNew(study);
+                game = Game.createNew(study);
+            } catch (error) {
+                console.error(error);
+                reportInternalError(
+                    "An error occurred while simulating a game using this study: " +
+                    error.message
+                );
+                return;
+            }
 
+            try {
                 // Try convert the game to and from JSON.
                 const gameChanges = getGameChangesToAndFromJSON(game);
                 if (gameChanges.length !== 0) {
@@ -86,26 +171,35 @@ export class StudyUploadForm extends Component {
                 }
             } catch (error) {
                 console.error(error);
-                reportInternalError(error.message);
+                reportInternalError(
+                    "An error occurred saving a sample game simulated using this study: " +
+                    error.message
+                );
                 return;
             }
 
-            // Success!
-            updateStatusFn(Status.success("Success"));
-            if (this.props.onStudyLoad) {
-                this.props.onStudyLoad(study);
-            }
+            // Study was verified as correct!
+            onComplete(study);
         }, 50);
     }
 
-    readXLSX(buffer, updateStatusFn) {
+    /**
+     * Reads the study contained in the Excel workbook whose contents are in {@param buffer}.
+     *
+     * @param updateStatusFn the function used to update the UI with progress information.
+     * @param onComplete the function to be called with the study once it has been successfully read.
+     */
+    readXLSX(buffer, updateStatusFn, onComplete) {
         new Excel.Workbook().xlsx
             .load(buffer)
             .then((workbook) => {
                 updateStatusFn(Status.progress("Reading spreadsheet..."));
                 readStudyWorkbook(workbook)
                     .then((study) => {
-                        this.verifyStudy(study, updateStatusFn);
+                        // Generate a unique ID for the study.
+                        study.id = generateUID();
+                        // Mark that we've done reading the study.
+                        onComplete(study);
                     })
                     .catch((error) => {
                         console.error(error);
@@ -116,6 +210,7 @@ export class StudyUploadForm extends Component {
                     });
             })
             .catch((error) => {
+                console.error(error);
                 updateStatusFn(Status.error([
                     <strong>Error parsing spreadsheet:</strong>,
                     error
@@ -128,13 +223,25 @@ export class StudyUploadForm extends Component {
         if (!file)
             return;
 
-        this.updateState({ fileStatus: Status.progress("Reading file...") });
+        this.setStateIfMounted({ fileStatus: Status.progress("Reading file...") });
         const reader = new FileReader();
+
+        // Callbacks on callbacks on callbacks on callbacks.
         reader.onload = (event) => {
-            this.readXLSX(event.target.result, (status) => this.updateState({ fileStatus: status }));
+            const updateStatusFn = (status) => this.setStateIfMounted({ fileStatus: status });
+            this.readXLSX(
+                event.target.result,
+                updateStatusFn,
+                (study) => {
+                    this.verifyStudy(
+                        study, updateStatusFn,
+                        (study) => this.uploadStudy(study, updateStatusFn)
+                    );
+                }
+            );
         };
         reader.onerror = () => {
-            this.updateState({
+            this.setStateIfMounted({
                 fileStatus: Status.error([
                     <strong>Error reading file:</strong>,
                     reader.error
@@ -144,64 +251,9 @@ export class StudyUploadForm extends Component {
         reader.readAsArrayBuffer(file);
     }
 
-    doURLUpload(url) {
-        let id;
-        if (url.includes("/")) {
-            const matches = [...url.matchAll("/d/([a-zA-Z0-9-_]+)")];
-            if (matches.length > 0) {
-                id = matches[0][1];
-            } else {
-                this.updateState({ urlStatus: Status.error("Could not find document ID in URL")});
-                return;
-            }
-        } else {
-            id = url;
-        }
-
-        const xlsxURL = "https://docs.google.com/spreadsheets/export?id=" + id + "&exportFormat=xlsx";
-        console.log("Downloading " + xlsxURL + "...");
-        this.updateState({ urlStatus: Status.progress("Downloading spreadsheet...")});
-
-        const request = new XMLHttpRequest();
-        request.open("GET", xlsxURL, true);
-        request.responseType = "arraybuffer";
-        request.onreadystatechange = () => {
-            if (request.readyState < 4)
-                return;
-
-            if (request.status === 200) {
-                this.updateState({ urlStatus: Status.progress("Parsing spreadsheet...")});
-                this.readXLSX(request.response, (status) => this.updateState({ urlStatus: status }));
-            } else {
-                this.updateState({
-                    urlStatus: Status.error([
-                        <strong>Unable to download spreadsheet{request.statusText && ": "}</strong>,
-                        request.statusText + " (Status " + request.status + ")",
-                        (request.statusText === "Unauthorized" && request.status === 401 ?
-                            " If your Google Sheets spreadsheet is private, " +
-                                "you will need to upload it as an XLSX file." :
-                            null)
-                    ])
-                });
-            }
-        };
-        request.send();
-    }
-
-    handleURLSubmit(event) {
-        event.preventDefault();
-        if (this.state.url) {
-            this.doURLUpload(this.state.url);
-        } else {
-            this.updateState({ urlStatus: Status.error("Please enter your Google Sheets URL or ID")});
-        }
-        return false;
-    }
-
     render() {
         return (
-            <form className="flex flex-col items-start max-w-xl"
-                  onSubmit={evt => this.handleURLSubmit(evt)}>
+            <form className="flex flex-col items-start max-w-xl" onSubmit={() => {}}>
 
                 <span className="flex mt-4 mb-3">
                     Upload your study configuration spreadsheet as an XLSX file:

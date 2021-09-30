@@ -1,4 +1,4 @@
-import {readAllStudies, readStudyImage, readStudySettings} from "../utils/getFromDB";
+import {readAllStudies, readStudyImage, readStudySettings} from "../database/getFromDB";
 import {Game} from "./game";
 import {doTypeCheck, isOfType} from "../utils/types";
 import {Study} from "./study";
@@ -29,6 +29,23 @@ class DataManager {
      */
     getActiveStudyID() {
         return this.activeGameStudyID;
+    }
+
+    /**
+     * Clears all the cached studies so that they must be downloaded again.
+     */
+    clearCachedStudies() {
+        this.allStudiesPromiseGenerator = null;
+        this.studyPromiseGenerators = {};
+        this.activeGamePromiseGenerator = null;
+    }
+
+    /**
+     * Caches the study {@param study} so that it
+     * doesn't have to be read from the database.
+     */
+    cacheStudy(study) {
+        this.studyPromiseGenerators[study.id] = () => Promise.resolve(study);
     }
 
     /**
@@ -149,9 +166,7 @@ class DataManager {
      * Reads an image from storage and returns a Promise to a StudyImage for it.
      * This should not be called directly, instead use {@link DataManager#getStudyImage()}.
      */
-    readStudyImage(study, imageID, imageMetadata) {
-        const path = StudyImage.getPath(study.id, imageID, imageMetadata);
-        console.log("Reading image " + path + "...");
+    readStudyImage(path) {
         const imagePromise = readStudyImage(path).then((image) => {
             this.imagePromiseGenerators[path] = () => image;
             return image;
@@ -178,7 +193,7 @@ class DataManager {
         doTypeCheck(imageMetadata, StudyImageMetadata, "Image Metadata");
         const path = StudyImage.getPath(study.id, imageID, imageMetadata);
         if (!this.imagePromiseGenerators[path])
-            return this.readStudyImage(study, imageID, imageMetadata);
+            return this.readStudyImage(path);
 
         return this.imagePromiseGenerators[path]();
     }

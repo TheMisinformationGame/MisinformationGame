@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
-
+import 'firebase/firestore';
+import 'firebase/storage';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBwvE41mT2mEf-GHPdZn9NUKtIFGT2nJn8",
@@ -13,5 +14,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // Make the firebase API available to our pages.
-export default firebase;
-
+export const db = firebase.firestore();
+export const storage = firebase.storage();
+export const storageRef = storage.ref();

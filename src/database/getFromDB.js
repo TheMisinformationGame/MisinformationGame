@@ -1,10 +1,9 @@
-/*=====================================================================================================================
-04-09-2021 
-File contains functions which are used to get data from the firestore db
-The db can be gotten from the initFirestore function
-Need to figure out a way to get data from firebase storage
-=====================================================================================================================*/
-import { db, storage } from "./initFirestore";
+/*
+ * This file contains functions to retrieve data from
+ * the Firestore Database, and from Firebase Storage.
+ */
+
+import {db, storage} from "./firebase";
 import {BrokenStudy, Study} from "../model/study";
 import {StudyImage} from "../model/images";
 
@@ -53,7 +52,7 @@ function getStudyImagePathType(path) {
 }
 
 /**
- * Returns a StudyImage loaded from Firebase storage.
+ * Returns a promise to a StudyImage loaded from Firebase Storage at the path {@param path}.
  */
 export async function readStudyImage(path) {
     const type = getStudyImagePathType(path);

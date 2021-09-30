@@ -3,7 +3,7 @@ import '../App.css';
 import {getDataManager} from "../model/manager";
 import {Link} from "react-router-dom";
 import StudyUpload from "../components/StudyUpload";
-import {postStudy, uploadImageToStorage} from "../utils/postToDB";
+import {postStudy, uploadImageToStorage} from "../database/postToDB";
 import {ErrorLabel, ProgressLabel} from "../components/StatusLabel";
 import UploadIcon from '@mui/icons-material/Upload';
 import {isOfType} from "../utils/types";
@@ -88,39 +88,15 @@ class AdminPage extends MountAwareComponent {
         });
     }
 
-    uploadStudy(study) {
-        console.log(study);
+    afterStudyUpload(study) {
+        // Refresh the list of all studies.
+        const manager = getDataManager();
+        manager.clearCachedStudies();
+        manager.cacheStudy(study);
 
-        //set a unique ID
-        let guid = function () {
-            return (Date.now().toString()); //use date and time of upload to get uniqueID
-        };
-        var studyID = guid();
-
-        //get each post and their id and upload individually
-        for (let i = 0; i < study.posts.length; i++) {
-            const post = study.posts[i];
-            if (!isOfType(post.content, "string")) {
-                uploadImageToStorage(studyID, post.id, post.content);
-            }
-        }
-
-        //get each avatar image and upload to storage for use
-        for (let i = 0; i < study.sources.length; i++) {
-            const source = study.sources[i];
-            uploadImageToStorage(studyID, source.id, source.avatar);
-        }
-        postStudy(study.toJSON(), studyID);
-
-        this.hideStudyUpload();
-        getDataManager().readAllStudies().then((studies) => {
-            this.setStateIfMounted({
-                studies: studies,
-                showUpload: this.state.showUpload
-            });
-        });
+        // Move to the study page for the uploaded study.
+        this.props.history.push("/admin/" + study.id);
     }
-
 
     render() {
         const studies = this.state.studies || [];
@@ -175,7 +151,7 @@ class AdminPage extends MountAwareComponent {
                 {/* The study upload component. */}
                 {this.state.showUpload &&
                     <StudyUpload onHide={() => this.hideStudyUpload()}
-                                 onUpload={(study) => this.uploadStudy(study)} />}
+                                 onUpload={(study) => this.afterStudyUpload(study)} />}
             </div>
         );
     }
