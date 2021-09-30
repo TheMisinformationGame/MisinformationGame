@@ -198,6 +198,8 @@ export class StudyUploadForm extends MountAwareComponent {
                     .then((study) => {
                         // Generate a unique ID for the study.
                         study.id = generateUID();
+                        study.updateLastModifiedTime();
+
                         // Mark that we've done reading the study.
                         onComplete(study);
                     })

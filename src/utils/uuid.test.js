@@ -1,6 +1,6 @@
 import {generateUID} from "./uuid";
 
-test("that the UUIDs generated are unique", (done) => {
+test("that the UIDs generated are unique", (done) => {
     const uids = [];
     for (let index = 0; index < 10000; ++index) {
         const uid = generateUID();

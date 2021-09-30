@@ -56,6 +56,9 @@ class DataManager {
     readAllStudies() {
         console.log("Reading all studies...");
         const studiesPromise = readAllStudies().then((studies) => {
+            // Sort descending order by the last time they were modified.
+            studies.sort((a, b) => b.lastModifiedTime - a.lastModifiedTime);
+
             this.allStudiesPromiseGenerator = () => Promise.resolve(studies);
             for (let index = 0; index < studies.length; ++index) {
                 const study = studies[index];

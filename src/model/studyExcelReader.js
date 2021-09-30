@@ -441,10 +441,11 @@ function readV1Study(workbook) {
     return Promise.all([sourcesPromise, postsPromise]).then((sourcesAndPosts) => {
         const sources = sourcesAndPosts[0];
         const posts = sourcesAndPosts[1];
-        return new Study(
+        const study = new Study(
             "unknown",
             readCell(workbook, V1.name),
             readCell(workbook, V1.description),
+            -1, // lastModifiedTime
             readCell(workbook, V1.prompt),
             readCell(workbook, V1.length),
             readCell(workbook, V1.requireIdentification),
@@ -458,6 +459,8 @@ function readV1Study(workbook) {
             readV1SourcePostSelectionMethod(workbook),
             sources, posts
         );
+        study.updateLastModifiedTime();
+        return study;
     });
 }
 

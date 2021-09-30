@@ -220,21 +220,26 @@ export class BrokenStudy {
     error; // String
     name; // String
     description; // String
+    lastModifiedTime; // Number, UNIX Epoch Time in Seconds
 
-    constructor(id, json, error, name, description) {
+    constructor(id, json, error, name, description, lastModifiedTime) {
         doTypeCheck(id, "string", "Invalid Study's ID");
         doNonNullCheck(json, "Invalid Study's JSON");
         doTypeCheck(error, "string", "Invalid Study's Error");
+        doNullableTypeCheck(name, "string", "Invalid Study's Name");
+        doNullableTypeCheck(description, "string", "Invalid Study's Description");
+        doNullableTypeCheck(lastModifiedTime, "number", "The last time the invalid study was modified");
         this.id = id;
         this.json = json;
         this.error = error;
         this.name = name || "Unknown Name";
         this.description = description || "Missing Description";
+        this.lastModifiedTime = lastModifiedTime || 0;
     }
 
     static fromJSON(id, json, error) {
         return new BrokenStudy(
-            id, json, error, json["name"], json["description"]
+            id, json, error, json["name"], json["description"], json["lastModifiedTime"]
         );
     }
 }
@@ -246,6 +251,8 @@ export class Study {
     id; // String
     name; // String
     description; // String
+    lastModifiedTime; // Number, UNIX Epoch Time in Seconds
+
     prompt; // String
     length; // Number
     requireIdentification; // Boolean
@@ -263,7 +270,7 @@ export class Study {
     posts; // Post[]
 
     constructor(
-            id, name, description,
+            id, name, description, lastModifiedTime,
             prompt, length, requireIdentification,
             introDelaySeconds, reactDelaySeconds,
             genCompletionCode, completionCodeDigits,
@@ -274,6 +281,8 @@ export class Study {
         doTypeCheck(id, "string", "Study ID");
         doTypeCheck(name, "string", "Study Name");
         doTypeCheck(description, "string", "Study Description");
+        doNullableTypeCheck(lastModifiedTime, "number", "The last time the study was modified");
+
         doTypeCheck(prompt, "string", "Study Prompt");
         doTypeCheck(length, "number", "Study Length");
         doTypeCheck(requireIdentification, "boolean", "Whether the study requires identification");
@@ -293,6 +302,8 @@ export class Study {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.lastModifiedTime = lastModifiedTime || 0;
+
         this.prompt = prompt;
         this.length = length;
         this.requireIdentification = requireIdentification;
@@ -308,6 +319,13 @@ export class Study {
         this.sourcePostSelectionMethod = sourcePostSelectionMethod;
         this.sources = sources;
         this.posts = posts;
+    }
+
+    /**
+     * Updates the last modified time to now.
+     */
+    updateLastModifiedTime() {
+        this.lastModifiedTime = Math.round(new Date().getTime() / 1000);
     }
 
     getSource(sourceID) {
@@ -377,6 +395,7 @@ export class Study {
         return {
             "name": this.name,
             "description": this.description,
+            "lastModifiedTime": this.lastModifiedTime,
             "prompt": this.prompt,
             "length": this.length,
             "requireIdentification": this.requireIdentification,
@@ -395,7 +414,7 @@ export class Study {
 
     static fromJSON(id, json) {
         return new Study(
-            id, json["name"], json["description"],
+            id, json["name"], json["description"], json["lastModifiedTime"],
             json["prompt"], json["length"], json["requireIdentification"],
             json["introDelaySeconds"], json["reactDelaySeconds"],
             json["genCompletionCode"], json["completionCodeDigits"],
@@ -419,7 +438,7 @@ export function getStudyChangesToAndFromJSON(study) {
     const json = study.toJSON();
 
     // Reconstruct the study from the JSON, and convert it back to JSON.
-    const reconstructedJSON = Study.fromJSON(study.id, json).toJSON();
+    const reconstructedJSON = Study.fromJSON(study.id, json, study.lastModifiedTime).toJSON();
 
     // Return the deep differences between them.
     return odiff(json, reconstructedJSON);
