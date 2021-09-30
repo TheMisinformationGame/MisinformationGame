@@ -22,7 +22,9 @@ class GameIntroductionScreen extends SimpleActiveStudyScreen {
 
         // If this page is empty, redirect them to the next page.
         if (content.trim().length === 0) {
-            this.props.history.push(target);
+            setTimeout(() => {
+                this.props.history.push(target);
+            });
             return (
                 <div>Redirecting...</div>
             );

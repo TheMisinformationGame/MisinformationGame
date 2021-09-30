@@ -555,6 +555,8 @@ export class Game {
     static createNew(study) {
         if (isOfType(study, BrokenStudy))
             throw new Error("The study is broken: " + study.error);
+        if (!study.enabled)
+            throw new Error("The study is disabled");
 
         doTypeCheck(study, Study, "Game Study");
         const game = new Game(study, [], new GameParticipant(50, 0), false);

@@ -4,7 +4,6 @@ import {getDataManager} from "../model/manager";
 import {Link} from "react-router-dom";
 import StudyUpload from "../components/StudyUpload";
 import {ErrorLabel, ProgressLabel} from "../components/StatusLabel";
-import BlockIcon from '@mui/icons-material/Block';
 import UploadIcon from '@mui/icons-material/Upload';
 import {isOfType} from "../utils/types";
 import {BrokenStudy} from "../model/study";
