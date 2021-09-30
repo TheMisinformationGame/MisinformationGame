@@ -11,9 +11,70 @@ import {SimpleActiveStudyScreen} from "./ActiveStudyScreen";
 import {isOfType} from "../utils/types";
 import {BrokenStudy} from "../model/study";
 import {ErrorLabel} from "../components/StatusLabel";
+import {ConfirmationDialog} from "../components/ConfirmationDialog";
 
+
+class AdminStudyActionButton extends Component {
+    render() {
+        return (
+            <div className={"w-52 pt-3 pb-3 mb-4 " + (this.props.className || "") + " " +
+                            "text-center select-none border-black border border-opacity-50 " +
+                            "border-solid font-semibold rounded-md cursor-pointer "}
+                 onClick={this.props.onClick}>
+
+                {this.props.children}
+            </div>
+        );
+    }
+}
 
 class AdminStudy extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {confirmation: null};
+    }
+
+    downloadResults(study) {
+        // TODO
+        console.log("Download Results Clicked");
+    }
+
+    updateStudy(study) {
+        // TODO
+        console.log("Update Study Clicked");
+    }
+
+    enableStudy(study) {
+        this.setState({...this.state, confirmation: "enable-study"});
+    }
+
+    confirmEnableStudy(study) {
+        console.log("Confirm enable study");
+        this.hideConfirmation();
+    }
+
+    disableStudy(study) {
+        this.setState({...this.state, confirmation: "disable-study"});
+    }
+
+    confirmDisableStudy(study) {
+        console.log("Confirm disable study");
+        this.hideConfirmation();
+    }
+
+    deleteStudy(study) {
+        this.setState({...this.state, confirmation: "delete-study"});
+    }
+
+    confirmDeleteStudy(study) {
+        console.log("Confirm delete study");
+        this.hideConfirmation();
+    }
+
+    hideConfirmation() {
+        this.setState({...this.state, confirmation: null});
+    }
+
     render() {
         const study = this.props.study;
         const modifiedTime = new Date(study.lastModifiedTime * 1000);
@@ -63,49 +124,93 @@ class AdminStudy extends Component {
                 </p>
 
                 {/* Download Results Button. */}
-                <div className="w-52 pt-3 pb-3 mb-4 bg-purple-400 hover:bg-purple-500
-                                text-center select-none border-black border border-opacity-50
-                                border-solid font-semibold rounded-md cursor-pointer">
+                <AdminStudyActionButton className="bg-purple-400 hover:bg-purple-500"
+                                        onClick={() => this.downloadResults(study)}>
 
-                    <FileDownloadIcon className="mr-1" />
+                <FileDownloadIcon className="mr-1" />
                     Download Results
-                </div>
+                </AdminStudyActionButton>
 
                 {/* Update Study Button. */}
-                <div className="w-52 pt-3 pb-3 mb-4 bg-blue-400 hover:bg-blue-500
-                                text-center select-none border-black border border-opacity-50
-                                border-solid font-semibold rounded-md cursor-pointer">
+                <AdminStudyActionButton className="bg-blue-400 hover:bg-blue-500"
+                                        onClick={() => this.updateStudy(study)}>
 
-                    <UploadIcon className="mr-1" />
+                <UploadIcon className="mr-1" />
                     Update Study
-                </div>
+                </AdminStudyActionButton>
 
-                {/* Disable/Enable Study Button. */}
-                <div className="w-52 pt-3 pb-3 mb-4 bg-yellow-300 hover:bg-yellow-400
-                                text-center select-none border-black border border-opacity-50
-                                border-solid font-semibold rounded-md cursor-pointer">
+                {!isBroken && <>
+                    {/* Disable Study Button. */}
+                    {study.enabled && <>
+                        <AdminStudyActionButton className="bg-yellow-300 hover:bg-yellow-400"
+                                                onClick={() => this.disableStudy(study)}>
 
-                    <BlockIcon className="mr-2 mb-0.5" />
-                    Disable Study
-                </div>
+                            <BlockIcon className="mr-2 mb-0.5" />
+                            Disable Study
+                        </AdminStudyActionButton>
 
-                {/* Disable/Enable Study Button. */}
-                <div className="w-52 pt-3 pb-3 mb-4 bg-green-400 hover:bg-green-500
-                                text-center select-none border-black border border-opacity-50
-                                border-solid font-semibold rounded-md cursor-pointer">
+                        <ConfirmationDialog title="Disable the Study"
+                                            actionName={<><BlockIcon className="mr-2 mb-0.5" />Disable Study</>}
+                                            visible={this.state.confirmation === "disable-study"}
+                                            onConfirm={() => this.confirmDisableStudy(study)}
+                                            onCancel={() => this.hideConfirmation()}>
 
-                    <ControlPointIcon className="mr-2" />
-                    Enable Study
-                </div>
+                            <p className="mb-2">
+                                <b>Are you sure you wish to disable this study?</b>
+                            </p>
+                            <p className="mb-2">
+                                Once disabled, no more users will be able to participate in the study.
+                            </p>
+                        </ConfirmationDialog>
+                    </>}
+
+                    {/* Enable Study Button. */}
+                    {!study.enabled && <>
+                        <AdminStudyActionButton className="bg-green-400 hover:bg-green-500"
+                                                onClick={() => this.enableStudy(study)}>
+
+                            <ControlPointIcon className="mr-2 mb-0.5" />
+                            Enable Study
+                        </AdminStudyActionButton>
+
+                        <ConfirmationDialog title="Enable the Study"
+                                            actionName={<><ControlPointIcon className="mr-2 mb-0.5" />Enable Study</>}
+                                            visible={this.state.confirmation === "enable-study"}
+                                            onConfirm={() => this.confirmEnableStudy(study)}
+                                            onCancel={() => this.hideConfirmation()}>
+
+                            <p className="mb-2">
+                                <b>Are you sure you wish to enable this study?</b>
+                            </p>
+                            <p className="mb-2">
+                                Once enabled, anyone with the URL to this study will be able
+                                to access the game and participate in the study.
+                            </p>
+                        </ConfirmationDialog>
+                    </>}
+                </>}
 
                 {/* Delete Study Button. */}
-                <div className="w-52 pt-3 pb-3 mb-4 bg-red-400 hover:bg-red-500
-                                text-center select-none border-black border border-opacity-50
-                                border-solid font-semibold rounded-md cursor-pointer">
+                <AdminStudyActionButton className="bg-red-400 hover:bg-red-500"
+                                        onClick={() => this.deleteStudy(study)}>
 
                     <DeleteForeverIcon className="mr-1 mb-1" />
                     Delete Study
-                </div>
+                </AdminStudyActionButton>
+
+                <ConfirmationDialog title="Delete the Study"
+                                    actionName={<><DeleteForeverIcon className="mr-1 mb-1" />Delete Study</>}
+                                    visible={this.state.confirmation === "delete-study"}
+                                    onConfirm={() => this.confirmDeleteStudy(study)}
+                                    onCancel={() => this.hideConfirmation()}>
+
+                    <p className="mb-2">
+                        <b>Are you sure you wish to delete this study?</b>
+                    </p>
+                    <p className="mb-2">
+                        Once deleted, the study and its results cannot be recovered.
+                    </p>
+                </ConfirmationDialog>
             </div>
         );
     }

@@ -10,6 +10,7 @@ import {uploadImagesToStorage, uploadStudyConfiguration} from "../database/postT
 import {generateUID} from "../utils/uuid";
 import {StudyImage} from "../model/images";
 import {MountAwareComponent} from "./MountAwareComponent";
+import {Dialog} from "./Dialog";
 
 const Excel = require('exceljs');
 
@@ -289,25 +290,10 @@ export class StudyUploadForm extends MountAwareComponent {
 export default class StudyUpload extends Component {
     render() {
         return (
-            <div>
-                {/* Gray-out content beneath study upload UI. */}
-                <div className="fixed left-0 top-0 w-full h-full z-40 bg-black opacity-60"
-                     onClick={this.props.onHide} />
-
-                {/* Place study upload form above grayed-out background. */}
-                <div className="fixed left-0 top-0 w-full h-full overflow-y-scroll z-50
-                        flex flex-row justify-center items-start"
-                     onClick={this.props.onHide}>
-
-                    <div className="flex flex-col m-8 p-8 shadow
-                            rounded-md bg-white divide-y max-w-xl"
-                         onClick={(event) => event.stopPropagation()}>
-
-                        <h2 className="py-2 text-4xl">Upload Study</h2>
-                        <StudyUploadForm onStudyLoad={this.props.onUpload} />
-                    </div>
-                </div>
-            </div>
+            <Dialog title="Upload Study" visible={this.props.visible}
+                    onHide={this.props.onHide} className={this.props.className}>
+                <StudyUploadForm onStudyLoad={this.props.onUpload} />
+            </Dialog>
         );
     }
 };

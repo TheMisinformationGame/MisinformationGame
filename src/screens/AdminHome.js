@@ -51,11 +51,6 @@ class AdminPage extends MountAwareComponent {
             studies: null,
             showUpload: false
         };
-        this.hideStudyUploadCallback = (event) => {
-            if (event.keyCode === 27) { // The escape key.
-                this.hideStudyUpload();
-            }
-        };
     }
 
     componentDidMount() {
@@ -66,12 +61,6 @@ class AdminPage extends MountAwareComponent {
                 showUpload: this.state.showUpload
             });
         });
-        document.addEventListener("keydown", this.hideStudyUploadCallback);
-    }
-
-    componentWillUnmount() {
-        super.componentWillUnmount();
-        document.removeEventListener("keydown", this.hideStudyUploadCallback);
     }
 
     showStudyUpload() {
@@ -149,9 +138,9 @@ class AdminPage extends MountAwareComponent {
                 </div>
 
                 {/* The study upload component. */}
-                {this.state.showUpload &&
-                    <StudyUpload onHide={() => this.hideStudyUpload()}
-                                 onUpload={(study) => this.afterStudyUpload(study)} />}
+                <StudyUpload visible={this.state.showUpload}
+                             onHide={() => this.hideStudyUpload()}
+                             onUpload={(study) => this.afterStudyUpload(study)} />
             </div>
         );
     }

@@ -252,6 +252,7 @@ export class Study {
     name; // String
     description; // String
     lastModifiedTime; // Number, UNIX Epoch Time in Seconds
+    enabled; // Boolean
 
     prompt; // String
     length; // Number
@@ -270,7 +271,7 @@ export class Study {
     posts; // Post[]
 
     constructor(
-            id, name, description, lastModifiedTime,
+            id, name, description, lastModifiedTime, enabled,
             prompt, length, requireIdentification,
             introDelaySeconds, reactDelaySeconds,
             genCompletionCode, completionCodeDigits,
@@ -282,6 +283,7 @@ export class Study {
         doTypeCheck(name, "string", "Study Name");
         doTypeCheck(description, "string", "Study Description");
         doNullableTypeCheck(lastModifiedTime, "number", "The last time the study was modified");
+        doNullableTypeCheck(enabled, "boolean", "Whether the study is enabled");
 
         doTypeCheck(prompt, "string", "Study Prompt");
         doTypeCheck(length, "number", "Study Length");
@@ -303,6 +305,7 @@ export class Study {
         this.name = name;
         this.description = description;
         this.lastModifiedTime = lastModifiedTime || 0;
+        this.enabled = enabled || false;
 
         this.prompt = prompt;
         this.length = length;
@@ -396,6 +399,7 @@ export class Study {
             "name": this.name,
             "description": this.description,
             "lastModifiedTime": this.lastModifiedTime,
+            "enabled": this.enabled,
             "prompt": this.prompt,
             "length": this.length,
             "requireIdentification": this.requireIdentification,
@@ -414,7 +418,8 @@ export class Study {
 
     static fromJSON(id, json) {
         return new Study(
-            id, json["name"], json["description"], json["lastModifiedTime"],
+            id, json["name"], json["description"],
+            json["lastModifiedTime"], json["enabled"],
             json["prompt"], json["length"], json["requireIdentification"],
             json["introDelaySeconds"], json["reactDelaySeconds"],
             json["genCompletionCode"], json["completionCodeDigits"],

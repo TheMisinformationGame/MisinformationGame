@@ -3,7 +3,7 @@
  * Returns the name of the type {@param type}.
  */
 export function typeToString(type) {
-    return type.name;
+    return isOfType(type, "string") ? type : type.name;
 }
 
 /**
