@@ -15,62 +15,58 @@ class AdminStudy extends Component {
         const study = this.props.study;
         const modifiedTime = new Date(study.lastModifiedTime * 1000);
 
-        let content;
-        if (isOfType(study, BrokenStudy)) {
-            content = (
-                <>
-                    <h1 className="font-semibold text-4xl">{study.name}</h1>
-                    <p className="mt-2">
-                        <b>Last Modified:&nbsp;</b>
-                        <span>{
-                            modifiedTime.toLocaleString("en-US", {weekday: "long"}) +
-                            ", " + modifiedTime.toLocaleString()
-                        }</span>
-                    </p>
-                    <ErrorLabel className="my-6" value={[<b>This study is broken:</b>, study.error]} />
-                    <p dangerouslySetInnerHTML={{__html: study.description}}
-                       className="my-4" />
-                </>
-            );
-        } else {
-            const target = "/game/" + study.id + (study.requireIdentification ? "/id" : "/pre-intro");
-            content = (
-                <>
-                    <h1 className="font-semibold text-4xl">{study.name}</h1>
-                    <p className="mt-2">
-                        <b>URL:&nbsp;</b>
-                        <Link to={target}
-                              className="text-blue-500 hover:text-blue-700 underline">
-                            {window.location.host + "/game/" + study.id + "/id"}
-                        </Link>
-                    </p>
-                    <p className="mt-2">
-                        <b>Last Modified:&nbsp;</b>
-                        <span>{
-                            modifiedTime.toLocaleString("en-US", {weekday: "long"}) +
-                            ", " + modifiedTime.toLocaleString()
-                        }</span>
-                    </p>
-                    <p dangerouslySetInnerHTML={{__html: study.description}}
-                       className="my-4" />
-                </>
-            );
+        const isBroken = isOfType(study, BrokenStudy);
+        let target = null;
+        if (!isBroken) {
+            target = "/game/" + study.id + (study.requireIdentification ? "/id" : "/pre-intro");
         }
 
         return (
             <div className="box-border w-full pt-10 px-10">
-                {content}
-                <div className="w-48 pt-3 pb-3 mb-4 bg-blue-400 hover:bg-blue-500 text-white
+                {/* Name of the study. */}
+                <h1 className="font-semibold text-4xl">{study.name}</h1>
+
+                {/* If not broken, the game URL for this study. */}
+                {!isBroken && <p className="mt-2">
+                    <b>URL:&nbsp;</b>
+                    <Link to={target}
+                          className="text-blue-500 hover:text-blue-700 underline">
+                        {window.location.host + "/game/" + study.id + "/id"}
+                    </Link>
+                </p>}
+
+                {/* Last Modified Time. */}
+                <p className="mt-2">
+                    <b>Last Modified:&nbsp;</b>
+                    <span>{
+                        modifiedTime.toLocaleString("en-US", {weekday: "long"}) +
+                        ", " + modifiedTime.toLocaleString()
+                    }</span>
+                </p>
+
+                {/* Error if Broken. */}
+                {isBroken &&
+                    <ErrorLabel className="my-6" value={[<b>This study is broken:</b>, study.error]} />}
+
+                {/* Description. */}
+                <p className="mt-2">
+                    <b className="block">Description:&nbsp;</b>
+                    <span dangerouslySetInnerHTML={{__html: study.description}} />
+                </p>
+
+                {/* Download Results Button. */}
+                <div className="w-48 pt-3 pb-3 mb-4 mt-6 bg-blue-400 hover:bg-blue-500 text-white
                                 text-center select-none border-black border border-opacity-50
                                 border-solid font-semibold rounded-md cursor-pointer">
 
                     <FileDownloadIcon className="mr-1" />
                     Download results
                 </div>
-                <div className="bg-red-400 hover:bg-red-500 w-48 text-white
-                                text-center border-black border border-opacity-50 pt-3
-                                pb-2 border-solid font-semibold rounded-md cursor-pointer
-                                select-none">
+
+                {/* Delete Study Button. */}
+                <div className="w-48 pt-3 pb-3 mb-4 bg-red-400 hover:bg-red-500 text-white
+                                text-center select-none border-black border border-opacity-50
+                                border-solid font-semibold rounded-md cursor-pointer">
 
                     <DeleteForeverIcon className="mr-1 mb-1" />
                     Delete Study
