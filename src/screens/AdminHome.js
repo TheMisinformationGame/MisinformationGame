@@ -18,11 +18,6 @@ class StudySummary extends Component {
         if (isOfType(study, BrokenStudy)) {
             return (
                 <div className="rounded-xl border border-red-800 p-3 bg-white shadow">
-
-                    <div className="inline-block text-lg text-red-600">
-                        <BlockIcon className="mb-0.5 mr-1.5" fontSize="inherit" />
-                    </div>
-
                     <Link to={`/admin/${study.id}`}
                           className="text-red-500 text-lg font-bold hover:text-red-700 hover:underline">
                         {study.name}
