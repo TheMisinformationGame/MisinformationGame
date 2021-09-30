@@ -1,7 +1,7 @@
 import {readAllStudies, readStudyImage, readStudySettings} from "../database/getFromDB";
 import {Game} from "./game";
 import {doTypeCheck, isOfType} from "../utils/types";
-import {Study} from "./study";
+import {BrokenStudy, Study} from "./study";
 import {StudyImage, StudyImageMetadata} from "./images";
 
 /**
@@ -54,10 +54,25 @@ class DataManager {
      * call {@link DataManager#getAllStudies()} to get a promise to all the studies.
      */
     readAllStudies() {
-        console.log("Reading all studies...");
         const studiesPromise = readAllStudies().then((studies) => {
-            // Sort descending order by the last time they were modified.
-            studies.sort((a, b) => b.lastModifiedTime - a.lastModifiedTime);
+            studies.sort((a, b) => {
+                // First, sort by whether the studies are errored.
+                const aErrored = isOfType(a, BrokenStudy);
+                const bErrored = isOfType(b, BrokenStudy);
+                if (!aErrored && bErrored)
+                    return -1;
+                if (aErrored && !bErrored)
+                    return 1;
+
+                // Second, sort by whether the studies are enabled.
+                if (a.enabled && !b.enabled)
+                    return -1;
+                if (!a.enabled && b.enabled)
+                    return 1;
+
+                // Third, sort by most recently modified.
+                return b.lastModifiedTime - a.lastModifiedTime;
+            });
 
             this.allStudiesPromiseGenerator = () => Promise.resolve(studies);
             for (let index = 0; index < studies.length; ++index) {

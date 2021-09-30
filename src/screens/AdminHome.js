@@ -3,8 +3,8 @@ import '../App.css';
 import {getDataManager} from "../model/manager";
 import {Link} from "react-router-dom";
 import StudyUpload from "../components/StudyUpload";
-import {postStudy, uploadImageToStorage} from "../database/postToDB";
 import {ErrorLabel, ProgressLabel} from "../components/StatusLabel";
+import BlockIcon from '@mui/icons-material/Block';
 import UploadIcon from '@mui/icons-material/Upload';
 import {isOfType} from "../utils/types";
 import {BrokenStudy} from "../model/study";
@@ -19,6 +19,10 @@ class StudySummary extends Component {
             return (
                 <div className="rounded-xl border border-red-800 p-3 bg-white shadow">
 
+                    <div className="inline-block text-lg text-red-600">
+                        <BlockIcon className="mb-0.5 mr-1.5" fontSize="inherit" />
+                    </div>
+
                     <Link to={`/admin/${study.id}`}
                           className="text-red-500 text-lg font-bold hover:text-red-700 hover:underline">
                         {study.name}
@@ -31,10 +35,18 @@ class StudySummary extends Component {
         }
 
         return (
-            <div className="rounded-xl border border-gray-400 p-3 bg-white shadow">
-                
+            <div className={"rounded-xl border p-3 bg-white shadow " +
+                            (study.enabled ? "border-green-600" : "border-gray-400")}>
+
+                {study.enabled &&
+                    <span className="inline-block w-3.5 h-3.5 mr-2 bg-green-500 rounded-full"
+                          title="Study is Enabled" />}
+
                 <Link to={`/admin/${study.id}`}
-                      className="text-blue-600 text-lg font-bold hover:text-blue-800 hover:underline">
+                      className={"text-lg font-bold hover:underline " +
+                                 (study.enabled ? "text-green-600 hover:text-green-700" :
+                                                  "text-blue-600 hover:text-blue-700")}>
+
                     {study.name}
                 </Link>
                 

@@ -38,7 +38,9 @@ export class ProgressLabel extends Component {
     render() {
         return (
             <div className={"flex flex-wrap text-blue-600 text-lg " + (this.props.className || "")}>
-                <span className="mr-3"><CircularProgress size={24} /></span>
+                <span className="mr-3">
+                    <CircularProgress size={24} />
+                </span>
                 <LabelSpan value={this.props.value} defaultValue="Working..." />
             </div>
         );
@@ -52,7 +54,9 @@ export class SuccessLabel extends Component {
     render() {
         return (
             <div className={"flex flex-wrap text-green-600 text-lg " + (this.props.className || "")}>
-                <span className="mr-1 text-green-500"><DoneIcon /></span>
+                <span className="mr-1 text-green-500">
+                    <DoneIcon fontSize={this.props.size || "medium"} />
+                </span>
                 <LabelSpan value={this.props.value} defaultValue="Success" className="pt-0.5" />
             </div>
         );
@@ -66,7 +70,9 @@ export class WarningLabel extends Component {
     render() {
         return (
             <div className={"flex flex-wrap text-yellow-600 text-lg " + (this.props.className || "")}>
-                <span className="mr-1 text-yellow-400"><WarningIcon /></span>
+                <span className="mr-1 text-yellow-400">
+                    <WarningIcon fontSize={this.props.size || "medium"} />
+                </span>
                 <LabelSpan value={this.props.value} defaultValue="Warning" className="pt-0.5" />
             </div>
         );
@@ -80,7 +86,9 @@ export class ErrorLabel extends Component {
     render() {
         return (
             <div className={"flex flex-wrap text-red-600 text-lg " + (this.props.className || "")}>
-                <span className="mr-1"><ErrorIcon /></span>
+                <span className="mr-1">
+                    <ErrorIcon fontSize={this.props.size || "medium"} />
+                </span>
                 <LabelSpan value={this.props.value} defaultValue="Error" className="pt-0.5" />
             </div>
         );
@@ -140,12 +148,13 @@ export default class StatusLabel extends Component {
             return null;
 
         const status = this.props.status;
+        const cn = (this.props.size === "large" ? "text-2xl" : "");
         return (
             <div className={this.props.className || ""}>
-                {status.progress && <ProgressLabel value={status.progress} />}
-                {status.success && <SuccessLabel value={status.success} />}
-                {status.warning && <WarningLabel value={status.warning} />}
-                {status.error && <ErrorLabel value={status.error} />}
+                {status.progress && <ProgressLabel value={status.progress} className={cn} size={this.props.size} />}
+                {status.success && <SuccessLabel value={status.success} className={cn} size={this.props.size} />}
+                {status.warning && <WarningLabel value={status.warning} className={cn} size={this.props.size} />}
+                {status.error && <ErrorLabel value={status.error} className={cn} size={this.props.size} />}
             </div>
         );
     }

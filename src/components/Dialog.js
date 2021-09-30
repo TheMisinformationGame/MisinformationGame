@@ -29,6 +29,7 @@ export class Dialog extends MountAwareComponent {
         if (!this.props.visible)
             return null;
 
+        const size = this.props.size;
         return (
             <div>
                 {/* Gray-out content beneath dialog. */}
@@ -41,22 +42,25 @@ export class Dialog extends MountAwareComponent {
                      onClick={this.props.onHide}>
 
                     <div className="relative flex flex-col m-8 px-4 py-4 shadow
-                                    rounded-md bg-white max-w-xl"
+                                    rounded-md bg-white w-xl"
                          onClick={(event) => event.stopPropagation()}>
 
                         {/* Title in top-left. */}
-                        <h2 className="absolute left-6 top-4 text-4xl font-medium">
+                        <h2 className={"absolute left-6 top-4 font-medium " +
+                                       (size === "small" ? "text-2xl" : "text-4xl")}>
+
                             {this.props.title}
                         </h2>
 
                         {/* Close button in top-right. */}
-                        <CloseIcon className="absolute right-2 top-4 cursor-pointer
-                                              text-gray-600 hover:text-gray-800"
+                        <CloseIcon className={"absolute right-2 cursor-pointer " +
+                                              "text-gray-600 hover:text-gray-800 " +
+                                              (size === "small" ? "top-3" : "top-4")}
                                    fontSize="large"
                                    onClick={this.props.onHide} />
 
                         {/* Reserve whitespace for title and close button. */}
-                        <div className="h-12" />
+                        <div className={size === "small" ? "h-10" : "h-12"} />
                         <hr/>
 
                         <div className="px-4">

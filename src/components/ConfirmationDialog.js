@@ -8,9 +8,9 @@ export class ConfirmationDialog extends Component {
             <Dialog title={this.props.title} visible={this.props.visible}
                     onHide={this.props.onCancel} className={this.props.className}>
 
-                <p className="my-4">
+                <div className="my-4">
                     {this.props.children}
-                </p>
+                </div>
                 <div className="flex justify-around">
                     <div className={"w-52 pt-3 pb-3 bg-yellow-400 hover:bg-yellow-500 " +
                                     "text-center select-none border-black border border-opacity-50 " +

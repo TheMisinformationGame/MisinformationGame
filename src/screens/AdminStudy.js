@@ -10,8 +10,12 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import {SimpleActiveStudyScreen} from "./ActiveStudyScreen";
 import {isOfType} from "../utils/types";
 import {BrokenStudy} from "../model/study";
-import {ErrorLabel} from "../components/StatusLabel";
+import {ErrorLabel, Status} from "../components/StatusLabel";
 import {ConfirmationDialog} from "../components/ConfirmationDialog";
+import {ProgressDialog} from "../components/ProgressDialog";
+import {uploadStudyConfiguration} from "../database/postToDB";
+import {MountAwareComponent} from "../components/MountAwareComponent";
+import {getDataManager} from "../model/manager";
 
 
 class AdminStudyActionButton extends Component {
@@ -28,10 +32,22 @@ class AdminStudyActionButton extends Component {
     }
 }
 
-class AdminStudy extends Component {
+class AdminStudy extends MountAwareComponent {
     constructor(props) {
         super(props);
-        this.state = {confirmation: null};
+        this.state = {
+            confirmation: null,
+            progressTitle: null,
+            progress: null
+        };
+    }
+
+    hideConfirmation() {
+        this.setState({...this.state, confirmation: null});
+    }
+
+    hideProgress() {
+        this.setState({...this.state, progressTitle: null});
     }
 
     downloadResults(study) {
@@ -44,22 +60,50 @@ class AdminStudy extends Component {
         console.log("Update Study Clicked");
     }
 
-    enableStudy(study) {
-        this.setState({...this.state, confirmation: "enable-study"});
+    updateStudyEnabled(study, enabled, title, message, completeTitle) {
+        this.setState({
+            ...this.state,
+            confirmation: null,
+            progressTitle: title,
+            progress: Status.progress(message)
+        });
+        setTimeout(() => {
+            study.enabled = enabled;
+            study.updateLastModifiedTime();
+            uploadStudyConfiguration(study).then(() => {
+                getDataManager().clearCachedStudies();
+                this.setStateIfMounted({
+                    ...this.state,
+                    progressTitle: completeTitle,
+                    progress: Status.success("Success")
+                });
+            }).catch((error) => {
+                this.setStateIfMounted({
+                    ...this.state,
+                    progressTitle: completeTitle,
+                    progress: Status.error([
+                        <b>There was an error:</b>,
+                        error.message
+                    ])
+                });
+            });
+        }, 50);
     }
 
-    confirmEnableStudy(study) {
-        console.log("Confirm enable study");
-        this.hideConfirmation();
+    enableStudy(study) {
+        this.setState({...this.state, confirmation: "enable-study"});
     }
 
     disableStudy(study) {
         this.setState({...this.state, confirmation: "disable-study"});
     }
 
+    confirmEnableStudy(study) {
+        this.updateStudyEnabled(study, true, "Enabling Study...", "Enabling the study...", "Enabled Study");
+    }
+
     confirmDisableStudy(study) {
-        console.log("Confirm disable study");
-        this.hideConfirmation();
+        this.updateStudyEnabled(study, false, "Disabling Study...", "Disabling the study...", "Disabled Study");
     }
 
     deleteStudy(study) {
@@ -67,12 +111,9 @@ class AdminStudy extends Component {
     }
 
     confirmDeleteStudy(study) {
-        console.log("Confirm delete study");
+        // TODO
+        console.log("Confirm Delete Study");
         this.hideConfirmation();
-    }
-
-    hideConfirmation() {
-        this.setState({...this.state, confirmation: null});
     }
 
     render() {
@@ -88,16 +129,28 @@ class AdminStudy extends Component {
         return (
             <div className="box-border w-full pt-10 px-10">
                 {/* Name of the study. */}
-                <h1 className="font-semibold text-4xl">{study.name}</h1>
+                <h1 className="block font-semibold text-4xl mb-4">
+                    {study.enabled &&
+                    <span className="inline-block w-4 h-4 mb-1 mr-2 bg-green-500 rounded-full"
+                          title="Study is Enabled" />}
+
+                    {study.name}
+                </h1>
 
                 {/* If not broken, the game URL for this study. */}
-                {!isBroken && <p className="mt-2">
-                    <b>URL:&nbsp;</b>
-                    <Link to={target}
-                          className="text-blue-500 hover:text-blue-700 underline">
-                        {window.location.host + "/game/" + study.id + "/id"}
-                    </Link>
-                </p>}
+                {!isBroken && <>
+                    <p className="mt-2">
+                        <b>URL:&nbsp;</b>
+                        <Link to={target}
+                              className="text-blue-500 hover:text-blue-700 underline">
+                            {window.location.host + "/game/" + study.id + "/id"}
+                        </Link>
+                    </p>
+                    <p className="mt-2">
+                        <b>Enabled:&nbsp;</b>
+                        {study.enabled ? "Yes, the study is enabled." : "No, the study is disabled."}
+                    </p>
+                </>}
 
                 {/* Last Modified Time. */}
                 <p className="mt-2">
@@ -122,22 +175,6 @@ class AdminStudy extends Component {
                 <p className="mt-6 mb-2">
                     <b className="block">Actions:&nbsp;</b>
                 </p>
-
-                {/* Download Results Button. */}
-                <AdminStudyActionButton className="bg-purple-400 hover:bg-purple-500"
-                                        onClick={() => this.downloadResults(study)}>
-
-                <FileDownloadIcon className="mr-1" />
-                    Download Results
-                </AdminStudyActionButton>
-
-                {/* Update Study Button. */}
-                <AdminStudyActionButton className="bg-blue-400 hover:bg-blue-500"
-                                        onClick={() => this.updateStudy(study)}>
-
-                <UploadIcon className="mr-1" />
-                    Update Study
-                </AdminStudyActionButton>
 
                 {!isBroken && <>
                     {/* Disable Study Button. */}
@@ -190,6 +227,22 @@ class AdminStudy extends Component {
                     </>}
                 </>}
 
+                {/* Download Results Button. */}
+                <AdminStudyActionButton className="bg-purple-400 hover:bg-purple-500"
+                                        onClick={() => this.downloadResults(study)}>
+
+                <FileDownloadIcon className="mr-1" />
+                    Download Results
+                </AdminStudyActionButton>
+
+                {/* Update Study Button. */}
+                <AdminStudyActionButton className="bg-blue-400 hover:bg-blue-500"
+                                        onClick={() => this.updateStudy(study)}>
+
+                <UploadIcon className="mr-1" />
+                    Update Study
+                </AdminStudyActionButton>
+
                 {/* Delete Study Button. */}
                 <AdminStudyActionButton className="bg-red-400 hover:bg-red-500"
                                         onClick={() => this.deleteStudy(study)}>
@@ -211,6 +264,12 @@ class AdminStudy extends Component {
                         Once deleted, the study and its results cannot be recovered.
                     </p>
                 </ConfirmationDialog>
+
+                {/* Progress Dialog */}
+                <ProgressDialog title={this.state.progressTitle}
+                                visible={this.state.progressTitle !== null}
+                                status={this.state.progress}
+                                onHide={() => this.hideProgress()} />
             </div>
         );
     }
