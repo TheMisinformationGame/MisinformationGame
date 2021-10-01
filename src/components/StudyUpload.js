@@ -199,7 +199,7 @@ export class StudyUploadForm extends MountAwareComponent {
             let game;
             try {
                 // Try create a new Game using the study.
-                game = Game.createNew(study, true);
+                game = Game.createNew(study);
             } catch (error) {
                 console.error(error);
                 reportInternalError(
