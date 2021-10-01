@@ -3,6 +3,20 @@
  * Returns the name of the type {@param type}.
  */
 export function typeToString(type) {
+    if (type instanceof Array) {
+        if (type.length === 0)
+            return "[No types specified]";
+
+        let types = "[";
+        for (let index = 0; index < type.length; ++index) {
+            if (index !== 0) {
+                types += " or ";
+            }
+            types += typeToString(type[index]);
+        }
+        types += "]";
+        return types;
+    }
     return isOfType(type, "string") ? type : type.name;
 }
 
@@ -55,7 +69,7 @@ export function doTypeCheck(value, expectedType, valueName) {
         valueName = valueName || "Value";
         throw new Error(
             valueName + " should be of type " + typeToString(expectedType) +
-            ", but it was a " + typeToString(value.constructor)
+            ", but it had type " + typeToString(value.constructor)
         );
     }
 }

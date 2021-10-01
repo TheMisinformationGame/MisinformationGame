@@ -3,6 +3,7 @@ import {Game} from "./game";
 import {doTypeCheck, isOfType} from "../utils/types";
 import {BrokenStudy, Study} from "./study";
 import {StudyImage, StudyImageMetadata} from "./images";
+import {removeByValue} from "../utils/arrays";
 
 /**
  * This class manages the data required for the games.
@@ -14,6 +15,44 @@ class DataManager {
         this.activeGameStudyID = null;
         this.activeGamePromiseGenerator = null;
         this.imagePromiseGenerators = {};
+        this.updateListeners = [];
+    }
+
+    /**
+     * Adds the listener function {@param listener} to listen for
+     * updates to any cached studies.
+     */
+    addUpdateListener(listener) {
+        this.updateListeners.push(listener);
+    }
+
+    /**
+     * Stops the listener {@param listener} from listening
+     * to updates to cached studies.
+     */
+    removeUpdateListener(listener) {
+        removeByValue(this.updateListeners, listener);
+    }
+
+    /**
+     * Notifies all listeners that the study
+     * {@param study} has been updated.
+     */
+    postStudyUpdateEvent(study) {
+        let firstError = null;
+        for (let index = 0; index < this.updateListeners.length; ++index) {
+            try {
+                this.updateListeners[index](study);
+            } catch (err) {
+                if (firstError) {
+                    console.error(err);
+                } else {
+                    firstError = err;
+                }
+            }
+        }
+        if (firstError)
+            throw firstError;
     }
 
     /**
@@ -46,6 +85,7 @@ class DataManager {
      */
     cacheStudy(study) {
         this.studyPromiseGenerators[study.id] = () => Promise.resolve(study);
+        this.postStudyUpdateEvent(study);
     }
 
     /**
@@ -78,6 +118,7 @@ class DataManager {
             for (let index = 0; index < studies.length; ++index) {
                 const study = studies[index];
                 this.studyPromiseGenerators[study.id] = () => Promise.resolve(study);
+                this.postStudyUpdateEvent(study);
             }
             return studies;
         }).catch((err) => {
@@ -107,6 +148,7 @@ class DataManager {
         console.log("Reading study " + studyID + "...");
         const studyPromise = readStudySettings(studyID).then((study) => {
             this.studyPromiseGenerators[studyID] = () => Promise.resolve(study);
+            this.postStudyUpdateEvent(study);
             return study;
         }).catch((err) => {
             this.studyPromiseGenerators[studyID] = () => Promise.reject(err);

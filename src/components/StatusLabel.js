@@ -9,7 +9,7 @@ import {doNullableTypeCheck, isOfType} from "../utils/types";
  * A label that generates <span> elements from an array of strings and components.
  */
 class LabelSpan extends Component {
-    renderSingle(value) {
+    renderSingle(value, index) {
         if (!value) {
             value = this.props.defaultValue;
             if (!value)
@@ -17,7 +17,7 @@ class LabelSpan extends Component {
         }
 
         return (
-            <span key={value.toString()} className={"mr-1 " + (this.props.className || "")}>
+            <span key={index + ": " + value.toString()} className={"mr-1 " + (this.props.className || "")}>
                 {value}
             </span>
         );
@@ -27,7 +27,7 @@ class LabelSpan extends Component {
         if (!isOfType(this.props.value, Array))
             return this.renderSingle(this.props.value);
 
-        return this.props.value.map((value) => this.renderSingle(value));
+        return this.props.value.map((value, index) => this.renderSingle(value, index));
     }
 }
 

@@ -446,6 +446,7 @@ function readV1Study(workbook) {
             readCell(workbook, V1.name),
             readCell(workbook, V1.description),
             -1, // lastModifiedTime
+            false, // enabled
             readCell(workbook, V1.prompt),
             readCell(workbook, V1.length),
             readCell(workbook, V1.requireIdentification),

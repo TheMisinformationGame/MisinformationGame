@@ -551,11 +551,13 @@ export class Game {
 
     /**
      * Creates a new game for a participant in {@param study}.
+     * This will error if the study is disabled,
+     * unless {@param ignoreDisabled} is true.
      */
-    static createNew(study) {
+    static createNew(study, ignoreDisabled) {
         if (isOfType(study, BrokenStudy))
             throw new Error("The study is broken: " + study.error);
-        if (!study.enabled)
+        if (!ignoreDisabled && !study.enabled)
             throw new Error("The study is disabled");
 
         doTypeCheck(study, Study, "Game Study");

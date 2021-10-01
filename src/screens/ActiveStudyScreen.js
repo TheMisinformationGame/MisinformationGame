@@ -27,12 +27,21 @@ export class SimpleActiveStudyScreen extends ActiveStudyScreen {
             studyLoading: true,
             studyLoadError: null
         };
+        this.studyUpdateListener = (study) => {
+            const currentStudy = this.state.study;
+            if (currentStudy && study.id === currentStudy.id) {
+                this.setStateIfMounted({...this.state, study: study, studyLoading: false});
+            }
+        };
     }
 
     componentDidMount() {
         super.componentDidMount();
 
-        getDataManager().getActiveStudy().then(study => {
+        const manager = getDataManager();
+        manager.addUpdateListener(this.studyUpdateListener);
+
+        manager.getActiveStudy().then(study => {
             this.setStateIfMounted({...this.state, study: study, studyLoading: false});
         }).catch(err => {
             console.error(err);
@@ -41,13 +50,18 @@ export class SimpleActiveStudyScreen extends ActiveStudyScreen {
 
         // Preload the game.
         if (this.preloadGame) {
-            getDataManager().getActiveGame().then((game) => {
+            manager.getActiveGame().then((game) => {
                 game.preloadCurrentState();
             }).catch(err => {
                 console.error(err);
                 this.setStateIfMounted({...this.state, studyLoadError: err.message, studyLoading: false});
             });
         }
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        getDataManager().removeUpdateListener(this.studyUpdateListener);
     }
 
     /**

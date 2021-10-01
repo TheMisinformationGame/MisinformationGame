@@ -16,6 +16,7 @@ import {ProgressDialog} from "../components/ProgressDialog";
 import {uploadStudyConfiguration} from "../database/postToDB";
 import {MountAwareComponent} from "../components/MountAwareComponent";
 import {getDataManager} from "../model/manager";
+import StudyUpload from "../components/StudyUpload";
 
 
 class AdminStudyActionButton extends Component {
@@ -35,11 +36,15 @@ class AdminStudyActionButton extends Component {
 class AdminStudy extends MountAwareComponent {
     constructor(props) {
         super(props);
-        this.state = {
+        this.defaultState = {
             confirmation: null,
+
             progressTitle: null,
-            progress: null
+            progress: null,
+
+            showStudyUpdate: false
         };
+        this.state = this.defaultState;
     }
 
     hideConfirmation() {
@@ -50,20 +55,44 @@ class AdminStudy extends MountAwareComponent {
         this.setState({...this.state, progressTitle: null});
     }
 
+    hideStudyUpdate() {
+        this.setState({...this.state, showStudyUpdate: false});
+    }
+
+    showError(errorTitle, errorMessage) {
+        this.setState({...this.state, progressTitle: errorTitle, progress: Status.error(errorMessage)});
+    }
+
     downloadResults(study) {
         // TODO
         console.log("Download Results Clicked");
     }
 
     updateStudy(study) {
-        // TODO
-        console.log("Update Study Clicked");
+        if (study.enabled) {
+            this.showError(
+                "Cannot Update Study", [
+                    <b>Enabled studies cannot be updated.</b>,
+                    <span className="block mt-2">Disable the study to update it.</span>
+                ]
+            );
+            return;
+        }
+
+        this.setState({
+            ...this.defaultState,
+            showStudyUpdate: true
+        });
+    }
+
+    afterStudyUpdate(study) {
+        getDataManager().cacheStudy(study);
+        this.hideStudyUpdate();
     }
 
     updateStudyEnabled(study, enabled, title, message, completeTitle) {
         this.setState({
-            ...this.state,
-            confirmation: null,
+            ...this.defaultState,
             progressTitle: title,
             progress: Status.progress(message)
         });
@@ -73,13 +102,13 @@ class AdminStudy extends MountAwareComponent {
             uploadStudyConfiguration(study).then(() => {
                 getDataManager().clearCachedStudies();
                 this.setStateIfMounted({
-                    ...this.state,
+                    ...this.defaultState,
                     progressTitle: completeTitle,
                     progress: Status.success("Success")
                 });
             }).catch((error) => {
                 this.setStateIfMounted({
-                    ...this.state,
+                    ...this.defaultState,
                     progressTitle: completeTitle,
                     progress: Status.error([
                         <b>There was an error:</b>,
@@ -91,11 +120,11 @@ class AdminStudy extends MountAwareComponent {
     }
 
     enableStudy(study) {
-        this.setState({...this.state, confirmation: "enable-study"});
+        this.setState({...this.defaultState, confirmation: "enable-study"});
     }
 
     disableStudy(study) {
-        this.setState({...this.state, confirmation: "disable-study"});
+        this.setState({...this.defaultState, confirmation: "disable-study"});
     }
 
     confirmEnableStudy(study) {
@@ -107,7 +136,7 @@ class AdminStudy extends MountAwareComponent {
     }
 
     deleteStudy(study) {
-        this.setState({...this.state, confirmation: "delete-study"});
+        this.setState({...this.defaultState, confirmation: "delete-study"});
     }
 
     confirmDeleteStudy(study) {
@@ -270,6 +299,13 @@ class AdminStudy extends MountAwareComponent {
                                 visible={this.state.progressTitle !== null}
                                 status={this.state.progress}
                                 onHide={() => this.hideProgress()} />
+
+                {/* Allows new studies to be uploaded. */}
+                <StudyUpload title="Update Study"
+                             previousStudy={study}
+                             visible={this.state.showStudyUpdate}
+                             onHide={() => this.hideStudyUpdate()}
+                             onUpload={(study) => this.afterStudyUpdate(study)} />
             </div>
         );
     }
@@ -291,21 +327,23 @@ export class AdminStudyPage extends SimpleActiveStudyScreen {
                     <table className="h-10 max-h-20 min-h-10 border-collapse border-black
                                       border-t-2 border-b-2 border-solid pt-5 pb-5 pl-3
                                       w-full bg-gray-100 border-opacity-75">
-                        <tr>
+                        <tbody><tr>
                             <td className="w-9/10">
                                 <h2 className="font-black text-2xl pl-5">The Misinformation Game</h2>
                             </td>
 
-                            <Link to={"/admin" }>
-                                <div className="bg-gray-200 hover:bg-gray-300 float-right min-w-40 text-black
+                            <td className="p-0">
+                                <Link to={"/admin" }>
+                                    <div className="bg-gray-200 hover:bg-gray-300 float-right min-w-40 text-black
                                                 text-center border-black border-opacity-75 border-l-2 border-solid
                                                 pt-3 pb-3 pl-2 font-semibold cursor-pointer select-none">
 
                                         Back to Dashboard
                                         <CloseIcon className="mb-1" />
-                                </div>
-                            </Link>
-                        </tr>
+                                    </div>
+                                </Link>
+                            </td>
+                        </tr></tbody>
                     </table>
 
                     <AdminStudy study={study} />

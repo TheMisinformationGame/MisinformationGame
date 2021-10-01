@@ -143,8 +143,9 @@ class AdminPage extends MountAwareComponent {
                         <ProgressLabel value="Loading studies..." />}
                 </div>
 
-                {/* The study upload component. */}
-                <StudyUpload visible={this.state.showUpload}
+                {/* Allows new studies to be uploaded. */}
+                <StudyUpload title="Upload Study"
+                             visible={this.state.showUpload}
                              onHide={() => this.hideStudyUpload()}
                              onUpload={(study) => this.afterStudyUpload(study)} />
             </div>

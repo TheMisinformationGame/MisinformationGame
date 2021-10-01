@@ -6,11 +6,12 @@ import {getStudyChangesToAndFromJSON, Study} from "../model/study";
 import xlsxHelp from "./help-export-to-xlsx.png"
 import {Game, getGameChangesToAndFromJSON} from "../model/game";
 import {doTypeCheck, isOfType} from "../utils/types";
-import {uploadImagesToStorage, uploadStudyConfiguration} from "../database/postToDB";
+import {deletePathsFromStorage, uploadImagesToStorage, uploadStudyConfiguration} from "../database/postToDB";
 import {generateUID} from "../utils/uuid";
 import {StudyImage} from "../model/images";
 import {MountAwareComponent} from "./MountAwareComponent";
 import {Dialog} from "./Dialog";
+import {removeByValue} from "../utils/arrays";
 
 const Excel = require('exceljs');
 
@@ -41,7 +42,32 @@ export class StudyUploadForm extends MountAwareComponent {
     }
 
     /**
-     * Uploads {@param study} to the database.
+     * Uploads the study configuration of {@param study}.
+     *
+     * @param updateStatusFn the function used to update the UI with progress information.
+     */
+    uploadStudyConfig(study, updateStatusFn) {
+        // Upload the study itself.
+        updateStatusFn(Status.progress("Uploading study configuration..."));
+        setTimeout(() => {
+            uploadStudyConfiguration(study).then(() => {
+                // Successfully uploaded the study!
+                updateStatusFn(Status.success("Success"));
+                if (this.props.onStudyLoad) {
+                    this.props.onStudyLoad(study);
+                }
+            }).catch((error) => {
+                console.error(error);
+                updateStatusFn(Status.error([
+                    <b>Study could not be uploaded:</b>,
+                    error.message
+                ]));
+            });
+        }, 50);
+    }
+
+    /**
+     * Uploads {@param study}, including its configuration and all its images, to the database.
      *
      * @param updateStatusFn the function used to update the UI with progress information.
      */
@@ -51,44 +77,68 @@ export class StudyUploadForm extends MountAwareComponent {
         // We do this in a setTimeout so that React has a chance to
         // update the UI with our new status. Its dodgy but it works...
         setTimeout(() => {
+            // We want to delete images that we aren't going to overwrite.
+            const previousStudy = this.props.previousStudy;
+            const imagePathsToDelete = [];
+            if (previousStudy) {
+                for (let index = 0; index < previousStudy.posts.length; ++index) {
+                    const post = previousStudy.posts[index];
+                    if (!isOfType(post.content, "string")) {
+                        imagePathsToDelete.push(StudyImage.getPath(
+                            study.id, post.id, post.content.toMetadata()
+                        ));
+                    }
+                }
+                for (let index = 0; index < previousStudy.sources.length; ++index) {
+                    const source = study.sources[index];
+                    imagePathsToDelete.push(StudyImage.getPath(
+                        study.id, source.id, source.avatar.toMetadata()
+                    ));
+                }
+            }
+
+
             // Collect all images to upload.
             const images = {};
-            for (let i = 0; i < study.posts.length; i++) {
-                const post = study.posts[i];
+            for (let index = 0; index < study.posts.length; ++index) {
+                const post = study.posts[index];
                 if (!isOfType(post.content, "string")) {
                     const path = StudyImage.getPath(
                         study.id, post.id, post.content.toMetadata()
                     );
                     images[path] = post.content;
+                    removeByValue(imagePathsToDelete, path);
                 }
             }
-            for (let i = 0; i < study.sources.length; i++) {
-                const source = study.sources[i];
+            for (let index = 0; index < study.sources.length; ++index) {
+                const source = study.sources[index];
                 const path = StudyImage.getPath(
                     study.id, source.id, source.avatar.toMetadata()
                 );
                 images[path] = source.avatar;
+                removeByValue(imagePathsToDelete, path);
             }
 
             // Upload all the images.
             uploadImagesToStorage(images, (uploaded, total) => {
                 updateStatusFn(Status.progress("Uploading images... (" + uploaded + " / " + total + ")"));
             }).then(() => {
-                // Upload the study itself.
-                updateStatusFn(Status.progress("Uploading study configuration..."));
+                if (imagePathsToDelete.length === 0) {
+                    this.uploadStudyConfig(study, updateStatusFn);
+                    return;
+                }
+
+                // Delete old, now unused, images.
+                updateStatusFn(Status.progress("Deleting old images..."));
                 setTimeout(() => {
-                    uploadStudyConfiguration(study).then(() => {
-                        // Successfully uploaded the study!
-                        updateStatusFn(Status.success("Success"));
-                        if (this.props.onStudyLoad) {
-                            this.props.onStudyLoad(study);
-                        }
+                    deletePathsFromStorage(imagePathsToDelete).then(() => {
+                        this.uploadStudyConfig(study, updateStatusFn);
                     }).catch((error) => {
+                        // Just print the error and continue...
+                        // This might leave hanging images in
+                        // the database, but oh well.
                         console.error(error);
-                        updateStatusFn(Status.error([
-                            <b>Study could not be uploaded:</b>,
-                            error.message
-                        ]));
+                        this.uploadStudyConfig(study, updateStatusFn);
                     });
                 }, 50);
             }).catch((error) => {
@@ -149,7 +199,7 @@ export class StudyUploadForm extends MountAwareComponent {
             let game;
             try {
                 // Try create a new Game using the study.
-                game = Game.createNew(study);
+                game = Game.createNew(study, true);
             } catch (error) {
                 console.error(error);
                 reportInternalError(
@@ -197,8 +247,14 @@ export class StudyUploadForm extends MountAwareComponent {
                 updateStatusFn(Status.progress("Reading spreadsheet..."));
                 readStudyWorkbook(workbook)
                     .then((study) => {
-                        // Generate a unique ID for the study.
-                        study.id = generateUID();
+                        const previousStudy = this.props.previousStudy;
+
+                        // If updating a study, use its ID, or else generate a new one.
+                        if (previousStudy) {
+                            study.id = previousStudy.id;
+                        } else {
+                            study.id = generateUID();
+                        }
                         study.updateLastModifiedTime();
 
                         // Mark that we've done reading the study.
@@ -290,9 +346,10 @@ export class StudyUploadForm extends MountAwareComponent {
 export default class StudyUpload extends Component {
     render() {
         return (
-            <Dialog title="Upload Study" visible={this.props.visible}
+            <Dialog title={this.props.title} visible={this.props.visible}
                     onHide={this.props.onHide} className={this.props.className}>
-                <StudyUploadForm onStudyLoad={this.props.onUpload} />
+
+                <StudyUploadForm previousStudy={this.props.previousStudy} onStudyLoad={this.props.onUpload} />
             </Dialog>
         );
     }
