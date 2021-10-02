@@ -29,6 +29,7 @@ export class ContinueButton extends MountAwareComponent {
             <ConditionalLink to={this.props.to}
                              condition={!disabled && this.props.condition}
                              onClick={this.props.onClick}
+                             tooltip={disabled ? "The continue button will be enabled shortly" : ""}
                              className={
                                  "px-3 py-2 rounded-md text-white " +
                                  (disabled ? "" : "cursor-pointer ") +
