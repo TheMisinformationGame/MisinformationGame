@@ -87,6 +87,14 @@ export class SimpleActiveStudyScreen extends ActiveStudyScreen {
                             value={this.state.studyLoadError} />
             );
         }
-        return this.renderWithStudy(this.state.study);
+
+        const study = this.state.study;
+        if (!study) {
+            return (
+                <ErrorLabel className="text-2xl m-2"
+                            value="The study did not load correctly." />
+            );
+        }
+        return this.renderWithStudy(study);
     }
 }
