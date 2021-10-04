@@ -54,7 +54,15 @@ class AdminStudy extends MountAwareComponent {
     }
 
     hideProgress() {
-        this.setState({...this.defaultState});
+        if (this.state.deletingStudy) {
+            this.setStateIfMounted({
+                ...this.defaultState,
+                progressTitle: "Study Deletion Cancelled",
+                progress: Status.success("The deletion of this study has been cancelled.")
+            });
+        } else {
+            this.setState({...this.defaultState});
+        }
     }
 
     hideStudyUpdate() {
@@ -162,14 +170,8 @@ class AdminStudy extends MountAwareComponent {
         // We give users 2 seconds to cancel the deletion by closing the dialog.
         setTimeout(() => {
             // The user cancelled.
-            if (!this.state.deletingStudy) {
-                this.setStateIfMounted({
-                    ...this.defaultState,
-                    progressTitle: "Study Deletion Cancelled",
-                    progress: Status.success("The deletion of this study has been cancelled.")
-                });
+            if (!this.state.deletingStudy)
                 return;
-            }
 
             deleteStudy(study).then((study) => {
                 getDataManager().clearCachedStudies();
