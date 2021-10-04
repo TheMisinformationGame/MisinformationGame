@@ -127,9 +127,9 @@ class AdminPage extends MountAwareComponent {
             <div className="min-h-screen w-full bg-gray-100" >
                 {/* The navigation bar. */}
                 <div className="flex items-stretch justify-between w-full bg-white shadow">
-                    <div className="font-bold text-xl p-3">
+                    <Link to="/" className="font-bold text-xl p-3">
                         Misinformation Game
-                    </div>
+                    </Link>
                     <div className="bg-blue-400 p-3 text-xl text-white font-medium
                                     hover:bg-blue-500 cursor-pointer select-none"
                          onClick={() => this.showStudyUpload()}>

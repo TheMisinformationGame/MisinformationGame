@@ -374,9 +374,9 @@ export class AdminStudyPage extends SimpleActiveStudyScreen {
             <div className="min-h-screen w-full bg-gray-100" >
                 {/* The navigation bar. */}
                 <div className="flex items-stretch justify-between w-full bg-white shadow">
-                    <div className="font-bold text-xl p-3">
+                    <Link to="/" className="font-bold text-xl p-3">
                         Misinformation Game
-                    </div>
+                    </Link>
                 </div>
 
                 {/* The study information itself */}
