@@ -74,7 +74,13 @@ class AdminStudy extends MountAwareComponent {
             this.showError(
                 "Cannot Update Study", [
                     <b>Enabled studies cannot be updated.</b>,
-                    <span className="block mt-2">Disable the study to update it.</span>
+                    <span className="block mt-2 text-lg">
+                        Updating a study while people are playing
+                        through the game may break their game.
+                    </span>,
+                    <span className="block mt-2 text-2xl">
+                        Disable the study to update it.
+                    </span>,
                 ]
             );
             return;

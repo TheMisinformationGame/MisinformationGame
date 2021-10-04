@@ -129,10 +129,14 @@ export function deletePathsFromStorage(paths) {
 }
 
 //send the object which contains all of the reactions to the post
-export function postReacts(object, participantID){
-    let userCol = db.collection("Participants");
-    let participantDoc = userCol.doc(participantID);
-    participantDoc.update({'Study results': object, 'Completion Status': true });
+export function postResults(object,studyID, participantID){
+    let resultsCol = db.collection("Results");
+    let studyDoc = resultsCol.doc(studyID);
+    studyDoc.doc(participantID).set(object).then((data) => {
+        console.log("Results uploaded!");
+    }).catch((error) => {
+        console.log(error)
+    });
 }
 
 //mTurk ID to be inserted into the study from qualtrics
