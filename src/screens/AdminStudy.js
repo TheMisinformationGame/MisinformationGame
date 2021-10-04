@@ -279,6 +279,12 @@ class AdminStudy extends MountAwareComponent {
                             <p className="mb-2">
                                 Once disabled, no more users will be able to participate in the study.
                             </p>
+                            <p>
+                               <b>Warning:&nbsp;</b>
+                                The games of anyone who is currently participating in this study will
+                                be lost. This will happen due to their access to the game being suddenly
+                                revoked while they are playing.
+                            </p>
                         </ConfirmationDialog>
                     </>}
 
