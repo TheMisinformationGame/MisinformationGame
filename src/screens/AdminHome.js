@@ -53,9 +53,10 @@ class StudySummary extends Component {
 class UploadStudyButton extends Component {
     render() {
         return (
-            <div className="flex justify-around items-center rounded-xl bg-gray-100
-                            cursor-pointer hover:bg-blue-100 hover:shadow
+            <div className="flex justify-around items-center rounded-xl
+                            bg-gray-100 cursor-pointer hover:bg-blue-100 hover:shadow
                             border-2 border-dashed border-gray-800 overflow-hidden"
+                 style={{minHeight: "8rem"}}
                  onClick={this.props.onClick}>
 
                 <p className="text-xl font-semibold">
