@@ -135,8 +135,6 @@ export class postDocument{
         let Reaction = MetaDataArray[2];
         let GameData = MetaDataArray[3];
         let ReactionTime = MetaDataArray[4];
-
-
         return new postDocument(PostID, reactionInfo.newReact(PostOrder, SourceInfo, Reaction, GameData, ReactionTime ))
     }
 };
@@ -150,8 +148,8 @@ export class allReactions{
     reactions; //postDocument []
 
     constructor(reactions){
-        doTypeCheck(reactions, Array, "Reaction MetaData to particular post")
-        this.reactions = reactions
+        doTypeCheck(reactions, Array, "Reaction MetaData to particular post");
+        this.reactions = reactions;
     }
 
     toJSON(postID){
@@ -160,11 +158,16 @@ export class allReactions{
         }
     }
 
+    //add new reaction to the object
     addReaction(PostID, PostMetaData){
-        this.reactions.push(newDocument(PostID, PostMetaData))
+        this.reactions.push(postDocument.newDocument(PostID, PostMetaData))
     }
-}
 
+    //create new object 
+    createReactionDoc(){
+        return new allReactions
+    }
+};
 
 
 
@@ -582,6 +585,11 @@ export class Game {
             );
             //DL TO INCL. CODE HERE
             //INTENTION IS TO CONSTRUCT THE DATA PAYLOAD FUNCTIONS HERE
+            
+
+
+
+
         }
     }
 
