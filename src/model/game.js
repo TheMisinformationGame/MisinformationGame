@@ -24,6 +24,151 @@ function adjustFollowers(current, change) {
     return Math.max(0, current + change);
 }
 
+
+/**
+ * collect the reaction meta data
+*/
+export class reactionInfo{
+    PostOrder; //int  //can act as a react id
+    SourceID; //string
+    SourceFollowers; //int
+    SourceCredibility; //int
+    ParticipantReaction; //string
+    ChangesToCredibility; //int
+    ChangesToFollowers; //int
+    BeforeCredibility; //int
+    BeforeFollowers; //int
+    AfterCredibility; //int
+    AfterFollowers; //int
+    ReactionTime; //int
+
+    constructor(PostOrder,  SourceID, SourceFollowers, SourceCredibility,
+                ParticipantReaction, ChangesToCredibility, ChangesToFollowers, BeforeCredibility,
+                BeforeFollowers, AfterCredibility, AfterFollowers, ReactionTime){ 
+        doTypeCheck(PostOrder, 'number', "Order of Post");   
+        doTypeCheck(SourceID, 'string', "What source");            
+        doTypeCheck(SourceFollowers, 'number', "# of followers for Source");            
+        doTypeCheck(SourceCredibility, 'number', "Source credibility #");            
+        doTypeCheck(ParticipantReaction, 'string', "The reaction chosen");            
+        doTypeCheck(ChangesToCredibility, 'number', "How the reaction chosen changed credibility");            
+        doTypeCheck(ChangesToFollowers, 'number', "How the reaction chosen changed followers");            
+        doTypeCheck(BeforeCredibility, 'number', "Credibility before reaction");            
+        doTypeCheck(BeforeFollowers, 'number', "Followers before reaction");            
+        doTypeCheck(AfterCredibility, 'number', "Credibility after reaction");
+        doTypeCheck(AfterFollowers, 'number', "Followers after reaction");
+        doTypeCheck(ReactionTime, 'number', "ms of react time");
+        this.PostOrder = PostOrder;
+        this.SourceID = SourceID;
+        this.SourceFollowers =  SourceFollowers;
+        this.SourceCredibility =  SourceCredibility;
+        this.ParticipantReaction = ParticipantReaction;
+        this.ChangesToCredibility = ChangesToCredibility;
+        this.ChangesToFollowers = ChangesToFollowers;
+        this.BeforeCredibility =  BeforeCredibility;
+        this.BeforeFollowers = BeforeFollowers;
+        this.AfterCredibility = AfterCredibility;
+        this.AfterFollowers = AfterFollowers;
+        this.ReactionTime =  ReactionTime;
+    };
+
+    newReact(PostOrder, SourceInfo, Reaction, GameData, ReactionTime){
+        //decompose the parsed data
+        let SourceID = SourceInfo[0];
+        let SourceFollowers = SourceInfo[1]
+        let SourceCredibility = SourceInfo[2];
+        let ParticipantReaction = Reaction;
+        let ChangesToCredibility = GameData[0];
+        let ChangesToFollowers = GameData[1];
+        let BeforeCredibility = GameData[2];
+        let BeforeFollowers = GameData[3] 
+        let AfterCredibility = GameData[4];
+        let AfterFollowers = GameData[5]
+
+        return new reactionInfo(PostOrder, SourceID, SourceFollowers, SourceCredibility,
+            ParticipantReaction, ChangesToCredibility, ChangesToFollowers, BeforeCredibility,
+            BeforeFollowers, AfterCredibility, AfterFollowers, ReactionTime)
+    };
+
+    toJSON() {
+        return {
+            "PostOrder" : this.PostOrder,
+            "SourceID" : this.SourceID,
+            "SourceFollowers" : this.SourceFollowers,
+            "SourceCredibility" : this.SourceCredibility,
+            "ParticipantReaction" : this.ParticipantReaction,
+            "ChangesToCredibility" : this.ChangesToCredibility,
+            "ChangesToFollowers" : this.ChangesToFollowers,
+            "BeforeCredibility" : this.BeforeCredibility,
+            "AfterCredibility" : this.AfterCredibility,
+            "AfterFollowers" : this.AfterFollowers,
+            "ReactionTime" : this.ReactionTime
+        };
+    }
+    
+};
+
+/**
+ * Create post document which contains the metadata
+ * NOTE: THIS WILL IN THEORY CREATE A NEW FIELD IN THE REACTIONS DOCUMENT
+ */
+export class postDocument{
+    PostID;
+    PostReaction; //reactionInfo []
+
+    constructor(PostID, PostReaction){
+        doTypeCheck(PostID, 'string', "What Post");            
+        doTypeCheck(PostReaction, reactionInfo, "reaction metadata");        
+        this.PostID = PostID;
+        this.PostReaction = PostReaction;    
+    };
+
+    toJSON(PostID){
+        return{
+            PostID : this.PostReaction.toJSON()
+        }
+    };
+
+    newDocument(PostID, MetaDataArray ){
+        //code here for readability
+        let PostOrder = MetaDataArray[0];
+        let SourceInfo = MetaDataArray[1];
+        let Reaction = MetaDataArray[2];
+        let GameData = MetaDataArray[3];
+        let ReactionTime = MetaDataArray[4];
+
+
+        return new postDocument(PostID, reactionInfo.newReact(PostOrder, SourceInfo, Reaction, GameData, ReactionTime ))
+    }
+};
+
+/**
+ * We will post this. This allows us to post 1 document with all the reactions
+ * NOTE: THE IDEA IS THAT ONCE WE UPLOAD THIS INTO THE FIREBASE THAT THERE IS 1 DOC 
+ *       WITH n FIELDS. WHERE n = PostID.
+ */
+export class allReactions{
+    reactions; //postDocument []
+
+    constructor(reactions){
+        doTypeCheck(reactions, Array, "Reaction MetaData to particular post")
+        this.reactions = reactions
+    }
+
+    toJSON(postID){
+        return{ 
+            "reaction" : this.reaction.toJSON(postID)
+        }
+    }
+
+    addReaction(PostID, PostMetaData){
+        this.reactions.push(newDocument(PostID, PostMetaData))
+    }
+}
+
+
+
+
+
 /**
  * A source in the game with known credibility and followers.
  */
@@ -296,9 +441,9 @@ export class GameState {
  * of a participant throughout the game.
  */
 export class GameParticipant {
+    reactions; // String[]
     credibility; // Number
     followers; // Number
-    reactions; // String[]
     credibilityHistory; // Number[]
     followerHistory; // Number[]
 
@@ -319,7 +464,6 @@ export class GameParticipant {
         this.reactions.push(reaction);
         this.credibilityHistory.push(this.credibility);
         this.followerHistory.push(this.followers);
-
         this.credibility = adjustCredibility(this.credibility, credibilityChange);
         this.followers = adjustFollowers(this.followers, followersChange);
     }
@@ -436,6 +580,8 @@ export class Game {
                 post.changesToCredibility[reaction].sample(),
                 post.changesToFollowers[reaction].sample()
             );
+            //DL TO INCL. CODE HERE
+            //INTENTION IS TO CONSTRUCT THE DATA PAYLOAD FUNCTIONS HERE
         }
     }
 
@@ -579,3 +725,4 @@ export function getGameChangesToAndFromJSON(game) {
     // not ideal, but it should be good enough.
     return odiff(game.toJSON(), converted.toJSON());
 }
+

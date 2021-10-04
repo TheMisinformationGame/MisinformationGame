@@ -97,24 +97,29 @@ class ReactionsRow extends Component {
             <div className="text-lg flex flex-row p-2">
                 <div className="flex flex-grow">
                     <ReactButton reaction="like" onReact={onReact} enabled={enabled}
-                                 childClassName="transform -translate-y-0.5 -translate-x-1">
+                                 childClassName="transform -translate-y-0.5 -translate-x-1"
+                                 >
                         <ThumbUpIcon/></ReactButton>
                     <ReactButton reaction="dislike" onReact={onReact} enabled={enabled}
-                                 childClassName="transform -translate-y-0.5 -translate-x-1">
+                                 childClassName="transform -translate-y-0.5 -translate-x-1"
+                                 >
                         <ThumbDownIcon/></ReactButton>
                     <ReactButton reaction="share" onReact={onReact} enabled={enabled}
                                  fontSize="3.25rem"
                                  className="transform flip-x"
-                                 childClassName="transform -translate-y-2.5 -translate-x-3">
+                                 childClassName="transform -translate-y-2.5 -translate-x-3"
+                                 >
                         <ReplyIcon/></ReactButton>
                     <ReactButton reaction="flag" onReact={onReact} enabled={enabled}
                                  fontSize="2.6rem"
-                                 childClassName="transform -translate-y-1 -translate-x-1">
+                                 childClassName="transform -translate-y-1 -translate-x-1"
+                                 >
                         <FlagIcon/></ReactButton>
                 </div>
 
                 <ReactButton reaction="skip" onReact={onReact} enabled={enabled} className="w-30"
-                             fontSize="1.25rem" childClassName="transform translate-y-1">
+                             fontSize="1.25rem" childClassName="transform translate-y-1"
+                             >
                     <p>Skip Post</p>
                 </ReactButton>
             </div>
