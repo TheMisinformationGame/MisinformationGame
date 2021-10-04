@@ -57,8 +57,8 @@ export class GameDebrief extends SimpleActiveStudyScreen {
                         onClick={() => {navigator.clipboard.writeText(completionCode)}}>
 
                     <ContentCopyIcon  />
-                    {/* TODO include a tooltip when copy button is pressed */}
                 </button>
+                <p className="leading-5 mt-4">This is your completion code, please copy and paste it into your Mechanical Turks response as proof of completion.</p>
             </div>
         );
     }
