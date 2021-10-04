@@ -15,6 +15,7 @@ import {ActiveStudyScreen} from "./ActiveStudyScreen";
 import {ContinueButton} from "../components/ContinueButton";
 import {ErrorLabel} from "../components/StatusLabel"
 import {CredibilityLabel} from "../components/CredibilityLabel"
+import { gatherAllReactions } from "../model/game";
 
 
 class Source extends Component {

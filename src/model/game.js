@@ -144,7 +144,7 @@ export class postDocument{
  * NOTE: THE IDEA IS THAT ONCE WE UPLOAD THIS INTO THE FIREBASE THAT THERE IS 1 DOC 
  *       WITH n FIELDS. WHERE n = PostID.
  */
-export class allReactions{
+export class gatherAllReactions{
     reactions; //postDocument []
 
     constructor(reactions){
@@ -152,11 +152,13 @@ export class allReactions{
         this.reactions = reactions;
     }
 
+    /*
     toJSON(postID){
         return{ 
             "reaction" : this.reaction.toJSON(postID)
         }
     }
+    */
 
     //add new reaction to the object
     addReaction(PostID, PostMetaData){
@@ -164,8 +166,8 @@ export class allReactions{
     }
 
     //create new object 
-    createReactionDoc(){
-        return new allReactions
+    createReactionObject(){
+        return new gatherAllReactions
     }
 };
 
@@ -500,16 +502,19 @@ export class Game {
     states; // GameState[]
     participant; // GameParticipant
     dismissedPrompt; // boolean
+    //REACT_OBJECT; //gatherAllReactions 
 
-    constructor(study, states, participant, dismissedPrompt) {
+    constructor(study, states, participant, dismissedPrompt, /*REACT_OBJECT*/) {
         doTypeCheck(study, Study, "Game Study");
         doTypeCheck(states, Array, "Game States");
         doTypeCheck(participant, GameParticipant, "Game Participant");
-        doTypeCheck(dismissedPrompt, "boolean", "Whether the prompt has been dismissed")
+        doTypeCheck(dismissedPrompt, "boolean", "Whether the prompt has been dismissed");
+        //doTypeCheck(REACT_OBJECT, gatherAllReactions, "Object of results being gathered in ideal format")
         this.study = study;
         this.states = states;
         this.participant = participant;
         this.dismissedPrompt = dismissedPrompt;
+        //this.REACT_OBJECT = REACT_OBJECT;
     }
 
     isFinished() {
@@ -583,12 +588,27 @@ export class Game {
                 post.changesToCredibility[reaction].sample(),
                 post.changesToFollowers[reaction].sample()
             );
-            //DL TO INCL. CODE HERE
-            //INTENTION IS TO CONSTRUCT THE DATA PAYLOAD FUNCTIONS HERE
-            
+            /**
+             * BELOW CONSTRUCTS THE REACTION OBJECT TO BE SENT AT THE END OF THE STUDY
+             */
+            //construct the data payloads
+            const sourceDir = this.getCurrentState().currentSource;
+            let sourceInfo = [sourceDir.source.id, sourceDir.credibility, sourceDir.followers];
+            const participantDir = this.participant;
+            let GameData = [post.changesToCredibility[reaction].sample(),
+                            post.changesToFollowers[reaction].sample(),
+                            participantDir.credibilityHistory[-1],
+                            participantDir.followerHistory[-1],
+                            participantDir.credibility,
+                            participantDir.followers];
+            let PostOrder = participantDir.reactions.length + 1;
+            let reactionTime = 1000; //temp code
+            let metadata = [PostOrder, sourceInfo, reaction, GameData, reactionTime];
+            let PostID = post.id;
+            //add new attribute to the reaction object
+            //this.REACT_OBJECT.addReaction(PostID, metadata);
 
-
-
+            //TO DO: have a function which figures out when it wants to post the intermediary data 
 
         }
     }
