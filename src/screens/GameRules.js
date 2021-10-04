@@ -32,7 +32,7 @@ export class GameRules extends SimpleActiveStudyScreen {
                         <li className="leading-5 mb-4"><ThumbDownIcon /> The <b><i>dislike</i></b> button indicates that you dislike the content of this post.</li>
                         <li className="leading-5 mb-4"><ReplyIcon /> The <b><i>share</i></b> button will show this post to your followers.</li>
                         <li className="leading-5 mb-4"><FlagIcon /> The <b><i>flag</i></b> button will report this post. Use this for rulebreaking or dangerious posts.</li>
-                        <li className="leading-5 mb-4"> The <b><i>skip post</i></b> button will take you straight to the next post.</li>
+                        <li className="leading-5 mb-4"> The <b><i>skip post </i></b> button will take you straight to the next post.</li>
                     </ul>
 
                     <img className="border-2 border-black rounded-md" src={reactionOptions} alt="Example of what the game will look like" />
