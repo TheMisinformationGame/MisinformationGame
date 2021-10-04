@@ -50,6 +50,23 @@ class StudySummary extends Component {
     }
 }
 
+class UploadStudyButton extends Component {
+    render() {
+        return (
+            <div className="flex justify-around items-center rounded-xl bg-gray-100
+                            cursor-pointer hover:bg-blue-100 hover:shadow
+                            border-2 border-dashed border-gray-800 overflow-hidden"
+                 onClick={this.props.onClick}>
+
+                <p className="text-xl font-semibold">
+                    <UploadIcon className="mr-1" />
+                    Upload New Study
+                </p>
+            </div>
+        );
+    }
+}
+
 class AdminPage extends MountAwareComponent {
     constructor(props) {
         super(props);
@@ -127,6 +144,7 @@ class AdminPage extends MountAwareComponent {
                     {readStudies && !noStudies &&
                     <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-10">
                         {studyComponents}
+                        <UploadStudyButton onClick={() => this.showStudyUpload()}/>
                     </div>}
 
                     {/* Label saying that the studies are loading. */}
