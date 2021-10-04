@@ -17,6 +17,7 @@ import {uploadStudyConfiguration} from "../database/postToDB";
 import {MountAwareComponent} from "../components/MountAwareComponent";
 import {getDataManager} from "../model/manager";
 import StudyUpload from "../components/StudyUpload";
+import {storageRef, db} from "../database/firebase";
 
 
 class AdminStudyActionButton extends Component {
@@ -140,7 +141,16 @@ class AdminStudy extends MountAwareComponent {
     }
 
     confirmDeleteStudy(study) {
-        // TODO
+        // TODO should add function to delete images in storage later
+        var studyRef = db.collection("Studies").doc(study.id);
+        studyRef.delete()
+            .then(function(){
+                console.log("Remove succeeded.")
+            })
+            .catch(function(error){
+                console.log("Remove failed: " + error.message)
+            })
+
         console.log("Confirm Delete Study");
         this.hideConfirmation();
     }
