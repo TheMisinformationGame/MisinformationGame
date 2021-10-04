@@ -208,9 +208,9 @@ class AdminStudy extends MountAwareComponent {
         }
 
         return (
-            <div className="box-border w-full pt-10 px-10">
+            <div className="box-border w-full pt-6 px-10">
                 {/* Name of the study. */}
-                <h1 className="block font-semibold text-4xl mb-4">
+                <h1 className="block font-semibold text-4xl mb-6">
                     {study.enabled &&
                     <span className="inline-block w-4 h-4 mb-1 mr-2 bg-green-500 rounded-full"
                           title="Study is Enabled" />}
@@ -371,34 +371,24 @@ export class AdminStudyPage extends SimpleActiveStudyScreen {
 
     renderWithStudy(study) {
         return (
-            <div className="bg-gradient-to-r from-gray-50 via-white to-gray-50 bg-opacity-">
-                <div className="container min-h-screen w-3/5 mx-auto bg-blue-50 pb-10 border-black
-                                border-l-2 border-r-2 border-solid border-opacity-50" >
+            <div className="min-h-screen w-full bg-gray-100" >
+                {/* The navigation bar. */}
+                <div className="flex items-stretch justify-between w-full bg-white shadow">
+                    <div className="font-bold text-xl p-3">
+                        Misinformation Game
+                    </div>
+                </div>
 
-                    {/*The navigation bar */}
-                    <table className="h-10 max-h-20 min-h-10 border-collapse border-black
-                                      border-t-2 border-b-2 border-solid pt-5 pb-5 pl-3
-                                      w-full bg-gray-100 border-opacity-75">
-                        <tbody><tr>
-                            <td className="w-9/10">
-                                <h2 className="font-black text-2xl pl-5">The Misinformation Game</h2>
-                            </td>
-
-                            <td className="p-0">
-                                <Link to={"/admin" }>
-                                    <div className="bg-gray-200 hover:bg-gray-300 float-right min-w-40 text-black
-                                                text-center border-black border-opacity-75 border-l-2 border-solid
-                                                pt-3 pb-3 pl-2 font-semibold cursor-pointer select-none">
-
-                                        Back to Dashboard
-                                        <CloseIcon className="mb-1" />
-                                    </div>
-                                </Link>
-                            </td>
-                        </tr></tbody>
-                    </table>
+                {/* The study information itself */}
+                <div className="relative mt-3 w-full md:max-w-2xl mx-auto
+                                rounded-xl border bg-white shadow-xl border-gray-400" >
 
                     <AdminStudy study={study} history={this.props.history} />
+
+                    {/* Close button in top-right. */}
+                    <Link to="/admin" className="absolute right-2 top-3 cursor-pointer">
+                        <CloseIcon className="text-gray-600 hover:text-gray-800" fontSize="large"/>
+                    </Link>
                 </div>
             </div>
         );

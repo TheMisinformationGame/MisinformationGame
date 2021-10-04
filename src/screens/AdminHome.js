@@ -108,7 +108,7 @@ class AdminPage extends MountAwareComponent {
 
         return (
             <div className="min-h-screen w-full bg-gray-100" >
-                {/*The navigation bar. */}
+                {/* The navigation bar. */}
                 <div className="flex items-stretch justify-between w-full bg-white shadow">
                     <div className="font-bold text-xl p-3">
                         Misinformation Game
