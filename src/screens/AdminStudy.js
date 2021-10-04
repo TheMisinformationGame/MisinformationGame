@@ -17,7 +17,7 @@ import {uploadStudyConfiguration} from "../database/postToDB";
 import {MountAwareComponent} from "../components/MountAwareComponent";
 import {getDataManager} from "../model/manager";
 import StudyUpload from "../components/StudyUpload";
-import {storageRef, db} from "../database/firebase";
+import {deleteStudy} from "../database/deleteFromDB";
 
 
 class AdminStudyActionButton extends Component {
@@ -39,6 +39,7 @@ class AdminStudy extends MountAwareComponent {
         super(props);
         this.defaultState = {
             confirmation: null,
+            deletingStudy: false,
 
             progressTitle: null,
             progress: null,
@@ -49,19 +50,23 @@ class AdminStudy extends MountAwareComponent {
     }
 
     hideConfirmation() {
-        this.setState({...this.state, confirmation: null});
+        this.setState({...this.defaultState});
     }
 
     hideProgress() {
-        this.setState({...this.state, progressTitle: null});
+        this.setState({...this.defaultState});
     }
 
     hideStudyUpdate() {
-        this.setState({...this.state, showStudyUpdate: false});
+        this.setState({...this.defaultState});
     }
 
     showError(errorTitle, errorMessage) {
-        this.setState({...this.state, progressTitle: errorTitle, progress: Status.error(errorMessage)});
+        this.setState({
+            ...this.defaultState,
+            progressTitle: errorTitle,
+            progress: Status.error(errorMessage)
+        });
     }
 
     downloadResults(study) {
@@ -147,18 +152,47 @@ class AdminStudy extends MountAwareComponent {
     }
 
     confirmDeleteStudy(study) {
-        // TODO should add function to delete images in storage later
-        var studyRef = db.collection("Studies").doc(study.id);
-        studyRef.delete()
-            .then(function(){
-                console.log("Remove succeeded.")
-            })
-            .catch(function(error){
-                console.log("Remove failed: " + error.message)
-            })
+        this.setState({
+            ...this.defaultState,
+            deletingStudy: true,
+            progressTitle: "Deleting Study...",
+            progress: Status.progress("The study and its results are being deleted...")
+        });
 
-        console.log("Confirm Delete Study");
-        this.hideConfirmation();
+        // We give users 2 seconds to cancel the deletion by closing the dialog.
+        setTimeout(() => {
+            // The user cancelled.
+            if (!this.state.deletingStudy) {
+                this.setStateIfMounted({
+                    ...this.defaultState,
+                    progressTitle: "Study Deletion Cancelled",
+                    progress: Status.success("The deletion of this study has been cancelled.")
+                });
+                return;
+            }
+
+            deleteStudy(study).then((study) => {
+                getDataManager().clearCachedStudies();
+                this.setStateIfMounted({
+                    ...this.defaultState,
+                    progressTitle: "Study Deleted",
+                    progress: Status.success("Success. You will be redirected shortly.")
+                });
+                setTimeout(() => {
+                    this.props.history.push("/admin");
+                }, 500);
+            }).catch((error) => {
+                console.error(error);
+                this.setStateIfMounted({
+                    ...this.defaultState,
+                    progressTitle: "Error Deleting Study",
+                    progress: Status.error([
+                        <b>There was an error deleting the study:</b>,
+                        <span>{error.message}</span>
+                    ])
+                });
+            });
+        }, 2000);
     }
 
     render() {
@@ -362,7 +396,7 @@ export class AdminStudyPage extends SimpleActiveStudyScreen {
                         </tr></tbody>
                     </table>
 
-                    <AdminStudy study={study} />
+                    <AdminStudy study={study} history={this.props.history} />
                 </div>
             </div>
         );

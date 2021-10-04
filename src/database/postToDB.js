@@ -24,14 +24,6 @@ export function uploadImageToStorage(path, image) {
 }
 
 /**
- * Deletes the file at {@param path} from storage.
- * @return {Promise<any>} a Promise for the completion of the deletion.
- */
-export function deletePathFromStorage(path) {
-    return storageRef.child(path).delete();
-}
-
-/**
  * Uploads all images in the dictionary {@param imageDict} to storage,
  * with the keys used as paths, and the images as the values.
  * @param progressFn will be periodically called with the number of images uploaded and
@@ -86,48 +78,6 @@ export function uploadImagesToStorage(imageDict, progressFn) {
     });
 }
 
-/**
- * Deletes all paths in {@param paths} from Firebase Storage, printing deletion errors to console.
- * @return Promise<void> a Promise that will complete when all paths have been deleted.
- */
-export function deletePathsFromStorage(paths) {
-    return new Promise((resolve, reject) => {
-        const progress = {
-            uploaded: 0,
-            started: 0,
-            errors: [],
-            allStarted: false
-        };
-        const onAllComplete = () => {
-            if (progress.errors.length === 0) {
-                resolve();
-            } else {
-                // Would be nice to propagate all the errors.
-                reject(progress.errors[0]);
-            }
-        };
-        const onTaskComplete = () => {
-            progress.uploaded += 1;
-            if (progress.allStarted && (progress.uploaded === progress.started)) {
-                onAllComplete();
-            }
-        };
-        for (let index = 0; index < paths.length; ++index) {
-            deletePathFromStorage(paths[index]).then(onTaskComplete).catch((error) => {
-                progress.errors.push(error);
-                onTaskComplete();
-            });
-
-            progress.started += 1;
-        }
-        if (progress.uploaded === progress.started) {
-            onAllComplete();
-        } else {
-            progress.allStarted = true;
-        }
-    });
-}
-
 //send the object which contains all of the reactions to the post
 export function postResults(object,studyID, participantID){
     let resultsCol = db.collection("Results");
@@ -137,11 +87,4 @@ export function postResults(object,studyID, participantID){
     }).catch((error) => {
         console.log(error)
     });
-}
-
-//mTurk ID to be inserted into the study from qualtrics
-//This function makes a document for new participants
-export function postParticipant(object, participantID){
-    let userCol = db.collection("Participants");
-    userCol.doc(participantID).set(object); //saves the participant and assigns them a new name
 }

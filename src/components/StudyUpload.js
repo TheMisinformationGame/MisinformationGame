@@ -6,12 +6,13 @@ import {getStudyChangesToAndFromJSON, Study} from "../model/study";
 import xlsxHelp from "./help-export-to-xlsx.png"
 import {Game, getGameChangesToAndFromJSON} from "../model/game";
 import {doTypeCheck, isOfType} from "../utils/types";
-import {deletePathsFromStorage, uploadImagesToStorage, uploadStudyConfiguration} from "../database/postToDB";
+import {uploadImagesToStorage, uploadStudyConfiguration} from "../database/postToDB";
 import {generateUID} from "../utils/uuid";
 import {StudyImage} from "../model/images";
 import {MountAwareComponent} from "./MountAwareComponent";
 import {Dialog} from "./Dialog";
 import {removeByValue} from "../utils/arrays";
+import {deletePathsFromStorage} from "../database/deleteFromDB";
 
 const Excel = require('exceljs');
 
@@ -79,24 +80,7 @@ export class StudyUploadForm extends MountAwareComponent {
         setTimeout(() => {
             // We want to delete images that we aren't going to overwrite.
             const previousStudy = this.props.previousStudy;
-            const imagePathsToDelete = [];
-            if (previousStudy) {
-                for (let index = 0; index < previousStudy.posts.length; ++index) {
-                    const post = previousStudy.posts[index];
-                    if (!isOfType(post.content, "string")) {
-                        imagePathsToDelete.push(StudyImage.getPath(
-                            study.id, post.id, post.content.toMetadata()
-                        ));
-                    }
-                }
-                for (let index = 0; index < previousStudy.sources.length; ++index) {
-                    const source = study.sources[index];
-                    imagePathsToDelete.push(StudyImage.getPath(
-                        study.id, source.id, source.avatar.toMetadata()
-                    ));
-                }
-            }
-
+            const imagePathsToDelete = (previousStudy ? previousStudy.getAllStoragePaths() : []);
 
             // Collect all images to upload.
             const images = {};

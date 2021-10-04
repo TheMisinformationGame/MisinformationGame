@@ -356,6 +356,29 @@ export class Study {
         return randDigits(this.completionCodeDigits);
     }
 
+    /**
+     * Returns a list of all the paths to assets related
+     * to this study that are stored in Firebase Storage.
+     */
+    getAllStoragePaths() {
+        const paths = [];
+        for (let index = 0; index < this.posts.length; ++index) {
+            const post = this.posts[index];
+            if (!isOfType(post.content, "string")) {
+                paths.push(StudyImage.getPath(
+                    this.id, post.id, post.content.toMetadata()
+                ));
+            }
+        }
+        for (let index = 0; index < this.sources.length; ++index) {
+            const source = this.sources[index];
+            paths.push(StudyImage.getPath(
+                this.id, source.id, source.avatar.toMetadata()
+            ));
+        }
+        return paths;
+    }
+
     static sourcesToJSON(sources) {
         const sourcesJSON = [];
         for (let index = 0; index < sources.length; ++index) {
