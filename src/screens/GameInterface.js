@@ -14,6 +14,7 @@ import {ContinueButton} from "../components/ContinueButton";
 import {ErrorLabel} from "../components/StatusLabel"
 import {CredibilityLabel} from "../components/CredibilityLabel"
 import {ActiveGameScreen} from "./ActiveGameScreen";
+import {ConditionalLink} from "../components/ConditionalLink";
 
 
 class Source extends Component {
@@ -64,17 +65,25 @@ class Comment extends Component {
 
 class ReactButton extends Component {
     render() {
+        const reaction = this.props.reaction;
+        const selectionExists = (this.props.selected !== null);
+        const selected = (reaction === this.props.selected);
         return (
-            <div id={this.props.reaction}
+            <div id={reaction}
+                 title={this.props.title}
                  className={
-                     "group h-12 w-16 pt-1.5 px-2 sm:px-3 md:px-4 rounded text-center " +
-                     "fill-current transition duration-100 hover:bg-gray-100 " +
-                     (this.props.enabled ? "text-gray-700 cursor-pointer " : "text-gray-500 ") +
+                     " group h-12 w-16 pt-1.5 px-2 sm:px-3 md:px-4 rounded text-center " +
+                     " fill-current transition duration-100 " +
+                     (selected ? " bg-gray-100 " : " hover:bg-gray-100 ") +
+                     (this.props.enabled ? " cursor-pointer " : "") +
+                     (this.props.enabled && (selected || !selectionExists) ?
+                         (selected ? " text-blue-700 " : " text-gray-700 ")
+                         : " text-gray-500 ") +
                      (this.props.className || "")}
                  style={{fontSize: (this.props.fontSize || "2.5rem")}}
                  onClick={() => {
                     if (this.props.enabled) {
-                        this.props.onReact(this.props.reaction);
+                        this.props.onReact(reaction);
                     }
                  }}>
 
@@ -93,33 +102,33 @@ class ReactionsRow extends Component {
     render() {
         const onReact = this.props.onReact;
         const enabled = this.props.enabled;
+        const selected = this.props.selectedReaction;
         return (
             <div className="text-lg flex flex-row p-2">
                 <div className="flex flex-grow">
-                    <ReactButton reaction="like" onReact={onReact} enabled={enabled}
+                    <ReactButton reaction="like" selected={selected} onReact={onReact} enabled={enabled}
                                  childClassName="transform -translate-y-0.5 -translate-x-1"
-                                 >
+                                 title="Like">
                         <ThumbUpIcon/></ReactButton>
-                    <ReactButton reaction="dislike" onReact={onReact} enabled={enabled}
+                    <ReactButton reaction="dislike" selected={selected} onReact={onReact} enabled={enabled}
                                  childClassName="transform -translate-y-0.5 -translate-x-1"
-                                 >
+                                 title="Dislike">
                         <ThumbDownIcon/></ReactButton>
-                    <ReactButton reaction="share" onReact={onReact} enabled={enabled}
+                    <ReactButton reaction="share" selected={selected} onReact={onReact} enabled={enabled}
                                  fontSize="3.25rem"
                                  className="transform flip-x"
                                  childClassName="transform -translate-y-2.5 -translate-x-3"
-                                 >
+                                 title="Share">
                         <ReplyIcon/></ReactButton>
-                    <ReactButton reaction="flag" onReact={onReact} enabled={enabled}
+                    <ReactButton reaction="flag" selected={selected} onReact={onReact} enabled={enabled}
                                  fontSize="2.6rem"
                                  childClassName="transform -translate-y-1 -translate-x-1"
-                                 >
+                                 title="Flag">
                         <FlagIcon/></ReactButton>
                 </div>
 
-                <ReactButton reaction="skip" onReact={onReact} enabled={enabled} className="w-30"
-                             fontSize="1.25rem" childClassName="transform translate-y-1"
-                             >
+                <ReactButton reaction="skip" selected={selected} onReact={onReact} enabled={enabled}
+                             className="w-30" fontSize="1.25rem" childClassName="transform translate-y-1">
                     <p>Skip Post</p>
                 </ReactButton>
             </div>
@@ -169,7 +178,8 @@ class PostComponent extends Component {
 
                     {/* The reactions to the post. */}
                     <hr />
-                    <ReactionsRow onReact={this.props.onReact} enabled={this.props.enableReactions} />
+                    <ReactionsRow onReact={this.props.onReact} enabled={this.props.enableReactions}
+                                  selectedReaction={this.props.selectedReaction} />
                 </div>
 
                 {/* The comments on the post. */}
@@ -202,6 +212,7 @@ class GameFinished extends Component {
 class ParticipantProgress extends Component {
     render() {
         const participant = this.props.participant;
+        const nextPostEnabled = this.props.nextPostEnabled;
         return (
             <div className="fixed w-full md:max-w-xl bottom-0 left-1/2 transform -translate-x-1/2
                                     shadow-2xl md:border-l-2 md:border-r-2 md:border-opacity-0">
@@ -219,6 +230,19 @@ class ParticipantProgress extends Component {
                         <CredibilityLabel credibility={participant.credibility}
                                           className={"transform translate-y-2" /* There has to be a better way... */} />
                     </p>
+
+                    <div onClick={this.props.onNextPost}
+                         title={nextPostEnabled ? "" :
+                             "You must react to the post before you can continue to the next post"}
+                         className={
+                             " mt-3 px-3 py-2 rounded-md text-white select-none " +
+                             (nextPostEnabled ? " cursor-pointer " : "") +
+                             (nextPostEnabled ?
+                                 " bg-blue-500 active:bg-blue-600 hover:bg-blue-600 " : " bg-gray-400 ")
+                         }>
+
+                        Continue to Next Post
+                    </div>
                 </div>
             </div>
         );
@@ -232,9 +256,18 @@ export class GameScreen extends ActiveGameScreen {
             ...this.defaultState,
             error: null,
             reactionsAllowed: false,
+            selectedReaction: null,
             dismissedPrompt: false
         };
         this.state = this.defaultState;
+    }
+
+    onClickReaction(reaction) {
+        // If the selected reaction is clicked, toggle it off.
+        if (this.state.selectedReaction === reaction) {
+            reaction = null;
+        }
+        this.setState({...this.state, selectedReaction: reaction})
     }
 
     updateGameState(game, error, setDismissedPrompt) {
@@ -242,7 +275,8 @@ export class GameScreen extends ActiveGameScreen {
             ...this.state,
             state: (game && !game.isFinished() ? game.getCurrentState() : null),
             error: error,
-            reactionsAllowed: (!this.state.dismissedPrompt && !game)
+            reactionsAllowed: (!this.state.dismissedPrompt && !game),
+            selectedReaction: null
         };
         if (setDismissedPrompt) {
             state.dismissedPrompt = true;
@@ -287,8 +321,9 @@ export class GameScreen extends ActiveGameScreen {
                         {/* Post, reactions, and comments. */}
                         {state && !error &&
                             <PostComponent state={state}
-                                           onReact={r => this.onUserReact(r, game)}
-                                           enableReactions={this.state.reactionsAllowed} />}
+                                           onReact={r => this.onClickReaction(r)}
+                                           enableReactions={this.state.reactionsAllowed}
+                                           selectedReaction={this.state.selectedReaction} />}
 
                         {/* If the game is finished, display a game completed prompt. */}
                         {game && game.isFinished() &&
@@ -303,7 +338,15 @@ export class GameScreen extends ActiveGameScreen {
                     </div>
 
                     {/* Progress. */}
-                    {participant && !error && <ParticipantProgress participant={participant} />}
+                    {participant && !error &&
+                        <ParticipantProgress participant={participant}
+                                             nextPostEnabled={this.state.selectedReaction !== null}
+                                             onNextPost={() => {
+                                                 const reaction = this.state.selectedReaction;
+                                                 if (reaction) {
+                                                     this.onUserReact(reaction, game);
+                                                 }
+                                             }} />}
                 </div>
             </>
         );
