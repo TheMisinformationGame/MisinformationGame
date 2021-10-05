@@ -54,10 +54,11 @@ class Source extends Component {
 class Comment extends Component {
     render() {
         return (
-            <div className={"flex flex-col p-1 px-2 mb-1 bg-white shadow" +
+            <div className={"flex flex-col p-1 pl-3 pr-2 mb-1 bg-white shadow" +
                             (this.props.className || "")}>
-                <Source source={this.props.source} small={true} />
-                <p className="w-full">{this.props.message}</p>
+
+                <p className="w-full underline text-gray-700">{this.props.sourceName}:</p>
+                <p className="w-full text-lg ml-1">{this.props.message}</p>
             </div>
         );
     }
@@ -135,9 +136,9 @@ class PostComponent extends Component {
         const commentComponents = [];
         for (let index = 0; index < post.comments.length; ++index) {
             const comment = post.comments[index];
-            const source = state.findSource(comment.sourceID);
             commentComponents.push(
-                <Comment source={source} message={comment.message} key={source.source.id} />
+                <Comment sourceName={comment.sourceName} message={comment.message}
+                         key={index + "." + comment.sourceName} />
             );
         }
 

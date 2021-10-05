@@ -16,9 +16,14 @@ class GameIntroductionScreen extends SimpleActiveStudyScreen {
         throw new Error("Implement getTarget(study)");
     }
 
+    getContinueDelaySeconds(study) {
+        throw new Error("Implement getContinueDelaySeconds(study)");
+    }
+
     renderWithStudy(study) {
         const content = this.getContent(study);
         const target = this.getTarget(study);
+        const delay = this.getContinueDelaySeconds(study);
 
         // If this page is empty, redirect them to the next page.
         if (content.trim().length === 0) {
@@ -34,7 +39,7 @@ class GameIntroductionScreen extends SimpleActiveStudyScreen {
                 <div className="p-10">
                     <p dangerouslySetInnerHTML={{__html: content}} />
                 </div>
-                <ContinueBanner to={target} condition={true} delay={study.introDelaySeconds} />
+                <ContinueBanner to={target} condition={true} delay={delay} />
             </div>
         );
     }
@@ -48,6 +53,10 @@ export class GamePreIntroduction extends GameIntroductionScreen {
     getTarget(study) {
         return "/game/" + study.id + "/rules";
     }
+
+    getContinueDelaySeconds(study) {
+        return study.preIntroDelaySeconds;
+    }
 }
 
 export class GamePostIntroduction extends GameIntroductionScreen {
@@ -57,5 +66,9 @@ export class GamePostIntroduction extends GameIntroductionScreen {
 
     getTarget(study) {
         return "/game/" + study.id;
+    }
+
+    getContinueDelaySeconds(study) {
+        return study.postIntroDelaySeconds;
     }
 }

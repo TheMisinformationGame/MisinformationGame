@@ -1,4 +1,3 @@
-import gameImage from "./game-mockup.png"
 import reactionOptions from "./reaction-options.png"
 import progressView from "./progress-view.png"
 import "../App.css"
@@ -19,6 +18,7 @@ export class GameRules extends SimpleActiveStudyScreen {
 
     renderWithStudy(study) {
         const target = "/game/" + study.id + "/post-intro";
+        const continueDelaySeconds = 5;
         return (
             <div>
                 <div className="m-1 bg-white p-10">
@@ -37,8 +37,6 @@ export class GameRules extends SimpleActiveStudyScreen {
 
                     <img className="border-2 border-black rounded-md" src={reactionOptions} alt="Example of what the game will look like" />
 
-                    {/* <br /> */}
-
                     <p className="leading-5 my-4">Your <b><i>follower count</i></b> is the number of other users following you on this network. </p>
                     <p className="leading-5 my-4">Your <b><i>credibility rating</i></b> is an indication of how credible you are percieved to be. </p>
 
@@ -51,7 +49,7 @@ export class GameRules extends SimpleActiveStudyScreen {
                     </p> */}
                 </div>
 
-                <ContinueBanner to={target} condition={true} delay={study.introDelaySeconds} />
+                <ContinueBanner to={target} condition={true} delay={continueDelaySeconds} />
             </div>
         );
     }

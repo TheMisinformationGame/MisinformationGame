@@ -561,11 +561,6 @@ export class Game {
         if (!isOfType(post.content, "string")) {
             manager.getStudyImage(this.study, post.id, post.content);
         }
-        for (let index = 0; index < post.comments.length; ++index) {
-            const commentSource = state.findSource(post.comments[index].sourceID).source;
-            manager.getStudyImage(this.study, commentSource.id, commentSource.avatar);
-
-        }
     }
 
     /**

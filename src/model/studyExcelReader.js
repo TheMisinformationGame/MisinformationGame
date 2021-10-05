@@ -57,17 +57,23 @@ const V1 = {
     name: new WorkbookLoc("Name", "General", "D4", ExcelString),
     description: new WorkbookLoc("Description", "General", "D5", ExcelString),
     prompt: new WorkbookLoc("Prompt", "General", "D6", ExcelString),
-    length: new WorkbookLoc("Length of Game", "General", "D7", ExcelNumber),
+    promptDelaySeconds: new WorkbookLoc("Prompt Continue Delay (Seconds)", "General", "D7", ExcelNumber),
     requireIdentification: new WorkbookLoc("Require Participant Identification", "General", "D8", ExcelBoolean),
-    introDelaySeconds: new WorkbookLoc("Introduction Continue Delay (Seconds)", "General", "D9", ExcelNumber),
+    length: new WorkbookLoc("Length of Game", "General", "D9", ExcelNumber),
     reactDelaySeconds: new WorkbookLoc("Reaction Delay (Seconds)", "General", "D10", ExcelNumber),
     genCompletionCode: new WorkbookLoc("Generate Completion Code", "General", "D11", ExcelBoolean),
     completionCodeDigits: new WorkbookLoc("Completion Code Digits", "General", "D12", ExcelNumber),
 
     pages: {
-        preIntro: new WorkbookLoc("Introduction before Game Rules", "Pages", "B6", ExcelString),
-        postIntro: new WorkbookLoc("Introduction after Game Rules", "Pages", "B21", ExcelString),
-        debrief: new WorkbookLoc("Debrief", "Pages", "B36", ExcelString),
+        preIntro: new WorkbookLoc("Introduction before Game Rules", "Pages", "B4", ExcelString),
+        preIntroDelaySeconds: new WorkbookLoc(
+            "Introduction before Game Rules Continue Delay (Seconds)", "Pages", "D3", ExcelNumber
+        ),
+        postIntro: new WorkbookLoc("Introduction after Game Rules", "Pages", "B19", ExcelString),
+        postIntroDelaySeconds: new WorkbookLoc(
+            "Introduction after Game Rules Continue Delay (Seconds)", "Pages", "D18", ExcelNumber
+        ),
+        debrief: new WorkbookLoc("Debrief", "Pages", "B33", ExcelString),
     },
 
     sourcePostSelection: {
@@ -152,7 +158,7 @@ const V1 = {
         },
         comment: {
             valueColumns: "OPQ",
-            sourceID: new WorkbookColumn("Comment Source ID", "Posts", "O", ExcelString),
+            sourceName: new WorkbookColumn("Comment Source Name", "Posts", "O", ExcelString),
             message: new WorkbookColumn("Comment Message", "Posts", "P", ExcelString),
             likes: new WorkbookColumn("Comment Likes", "Posts", "Q", ExcelNumber)
         },
@@ -330,9 +336,9 @@ function readV1Comments(workbook, firstRow) {
             continue;
 
         comments.push(new PostComment(
-            readCell(workbook, V1.post.comment.sourceID.row(row)),
+            readCell(workbook, V1.post.comment.sourceName.row(row)),
             readCell(workbook, V1.post.comment.message.row(row)),
-            readCell(workbook, V1.post.comment.likes.row(row))
+            readCellWithDefault(workbook, V1.post.comment.likes.row(row), 0)
         ));
     }
     return comments;
@@ -448,14 +454,16 @@ function readV1Study(workbook) {
             -1, // lastModifiedTime
             false, // enabled
             readCell(workbook, V1.prompt),
-            readCell(workbook, V1.length),
+            readCell(workbook, V1.promptDelaySeconds),
             readCell(workbook, V1.requireIdentification),
-            readCell(workbook, V1.introDelaySeconds),
+            readCell(workbook, V1.length),
             readCell(workbook, V1.reactDelaySeconds),
             readCell(workbook, V1.genCompletionCode),
-            readCell(workbook, V1.completionCodeDigits),
+            readCellWithDefault(workbook, V1.completionCodeDigits, 4),
             readCellWithDefault(workbook, V1.pages.preIntro, ""),
+            readCellWithDefault(workbook, V1.pages.preIntroDelaySeconds, 0),
             readCellWithDefault(workbook, V1.pages.postIntro, ""),
+            readCellWithDefault(workbook, V1.pages.postIntroDelaySeconds, 0),
             readCell(workbook, V1.pages.debrief),
             readV1SourcePostSelectionMethod(workbook),
             sources, posts

@@ -65,30 +65,38 @@ export class Source {
  * A comment that a source made on a post.
  */
 export class PostComment {
-    sourceID; // String
+    sourceName; // String
     message; // String
     likes; // Number
 
-    constructor(sourceID, message, likes) {
-        doTypeCheck(sourceID, "string", "Comment's Source ID");
+    constructor(sourceName, message, likes) {
+        doTypeCheck(sourceName, "string", "Comment's Source Name");
         doTypeCheck(message, "string", "Comment's Message");
         doTypeCheck(likes, "number", "Comment Likes");
-        this.sourceID = sourceID;
+        this.sourceName = sourceName;
         this.message = message;
         this.likes = likes;
     }
 
     toJSON() {
         return {
-            "sourceID": this.sourceID,
+            "sourceName": this.sourceName,
             "message": this.message,
             "likes": this.likes
         };
     }
 
     static fromJSON(json) {
+        const sourceID = json["sourceID"];
+        let sourceName;
+        if (sourceID === undefined) {
+            sourceName = json["sourceName"];
+        } else {
+            // Older studies use an ID instead.
+            sourceName = sourceID;
+        }
         return new PostComment(
-            json["sourceID"], json["message"], json["likes"]
+            sourceName, json["message"], json["likes"]
         );
     }
 }
@@ -255,15 +263,17 @@ export class Study {
     enabled; // Boolean
 
     prompt; // String
+    promptDelaySeconds; // Number
     length; // Number
     requireIdentification; // Boolean
-    introDelaySeconds; // Number
     reactDelaySeconds; // Number
     genCompletionCode; // Boolean
     completionCodeDigits; // Number
 
     preIntro; // HTML String
+    preIntroDelaySeconds; // Number
     postIntro; // HTML String
+    postIntroDelaySeconds; // Number
     debrief; // HTML String
 
     sourcePostSelectionMethod; // SourcePostSelectionMethod
@@ -272,11 +282,12 @@ export class Study {
 
     constructor(
             id, name, description, lastModifiedTime, enabled,
-            prompt, length, requireIdentification,
-            introDelaySeconds, reactDelaySeconds,
+            prompt, promptDelaySeconds, requireIdentification,
+            length, reactDelaySeconds,
             genCompletionCode, completionCodeDigits,
-            preIntro, postIntro, debrief,
-            sourcePostSelectionMethod,
+            preIntro, preIntroDelaySeconds,
+            postIntro, postIntroDelaySeconds,
+            debrief, sourcePostSelectionMethod,
             sources, posts) {
 
         doTypeCheck(id, "string", "Study ID");
@@ -286,15 +297,17 @@ export class Study {
         doNullableTypeCheck(enabled, "boolean", "Whether the study is enabled");
 
         doTypeCheck(prompt, "string", "Study Prompt");
+        doTypeCheck(promptDelaySeconds, "number", "Study Prompt Continue Delay");
         doTypeCheck(length, "number", "Study Length");
         doTypeCheck(requireIdentification, "boolean", "Whether the study requires identification");
-        doTypeCheck(introDelaySeconds, "number", "Study Introduction Continue Delay");
         doTypeCheck(reactDelaySeconds, "number", "Study Reaction Delay");
         doTypeCheck(genCompletionCode, "boolean", "Whether the study generates a completion code");
         doTypeCheck(completionCodeDigits, "number", "Study Completion Code Digits");
 
         doTypeCheck(preIntro, "string", "Study Introduction before Game Rules");
+        doTypeCheck(preIntroDelaySeconds, "number", "Study Introduction before Game Rules Continue Delay");
         doTypeCheck(postIntro, "string", "Study Introduction after Game Rules");
+        doTypeCheck(postIntroDelaySeconds, "number", "Study Introduction after Game Rules Continue Delay");
         doTypeCheck(debrief, "string", "Study Debrief");
 
         doTypeCheck(sourcePostSelectionMethod, SourcePostSelectionMethod, "Study Source/Post Selection Method");
@@ -308,15 +321,17 @@ export class Study {
         this.enabled = enabled || false;
 
         this.prompt = prompt;
-        this.length = length;
+        this.promptDelaySeconds = promptDelaySeconds;
         this.requireIdentification = requireIdentification;
-        this.introDelaySeconds = introDelaySeconds;
+        this.length = length;
         this.reactDelaySeconds = reactDelaySeconds;
         this.genCompletionCode = genCompletionCode;
         this.completionCodeDigits = completionCodeDigits;
 
         this.preIntro = preIntro;
+        this.preIntroDelaySeconds = preIntroDelaySeconds;
         this.postIntro = postIntro;
+        this.postIntroDelaySeconds = postIntroDelaySeconds;
         this.debrief = debrief;
 
         this.sourcePostSelectionMethod = sourcePostSelectionMethod;
@@ -326,11 +341,15 @@ export class Study {
 
     /**
      * Updates the last modified time to now.
+     * This does not update the database.
      */
     updateLastModifiedTime() {
         this.lastModifiedTime = Math.round(new Date().getTime() / 1000);
     }
 
+    /**
+     * Finds the source with ID {@param sourceID}.
+     */
     getSource(sourceID) {
         for (let index = 0; index < this.sources.length; ++index) {
             const source = this.sources[index];
@@ -340,6 +359,9 @@ export class Study {
         throw new Error("Unknown source ID " + sourceID);
     }
 
+    /**
+     * Finds the post with ID {@param postID}.
+     */
     getPost(postID) {
         for (let index = 0; index < this.posts.length; ++index) {
             const post = this.posts[index];
@@ -424,14 +446,16 @@ export class Study {
             "lastModifiedTime": this.lastModifiedTime,
             "enabled": this.enabled,
             "prompt": this.prompt,
-            "length": this.length,
+            "promptDelaySeconds": this.promptDelaySeconds,
             "requireIdentification": this.requireIdentification,
-            "introDelaySeconds": this.introDelaySeconds,
+            "length": this.length,
             "reactDelaySeconds": this.reactDelaySeconds,
             "genCompletionCode": this.genCompletionCode,
             "completionCodeDigits": this.completionCodeDigits,
             "preIntro": this.preIntro,
+            "preIntroDelaySeconds": this.preIntroDelaySeconds,
             "postIntro": this.postIntro,
+            "postIntroDelaySeconds": this.postIntroDelaySeconds,
             "debrief": this.debrief,
             "sourcePostSelectionMethod": this.sourcePostSelectionMethod.toJSON(),
             "sources": Study.sourcesToJSON(this.sources),
@@ -440,13 +464,29 @@ export class Study {
     }
 
     static fromJSON(id, json) {
+        const introDelay = json["introDelaySeconds"];
+        let promptDelay, preIntroDelay, postIntroDelay;
+        if (introDelay === undefined) {
+            promptDelay = json["promptDelaySeconds"];
+            preIntroDelay = json["preIntroDelaySeconds"];
+            postIntroDelay = json["postIntroDelaySeconds"];
+        } else {
+            // Older studies have one universal introDelay instead of specific delays.
+            promptDelay = introDelay;
+            preIntroDelay = introDelay;
+            postIntroDelay = introDelay;
+        }
+
         return new Study(
             id, json["name"], json["description"],
             json["lastModifiedTime"], json["enabled"],
-            json["prompt"], json["length"], json["requireIdentification"],
-            json["introDelaySeconds"], json["reactDelaySeconds"],
+            json["prompt"], promptDelay,
+            json["requireIdentification"],
+            json["length"], json["reactDelaySeconds"],
             json["genCompletionCode"], json["completionCodeDigits"],
-            json["preIntro"], json["postIntro"], json["debrief"],
+            json["preIntro"], preIntroDelay,
+            json["postIntro"], postIntroDelay,
+            json["debrief"],
             SourcePostSelectionMethod.fromJSON(json["sourcePostSelectionMethod"]),
             Study.sourcesFromJSON(json["sources"]),
             Study.postsFromJSON(json["posts"])
