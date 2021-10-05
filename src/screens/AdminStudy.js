@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
-import '../App.css'
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';

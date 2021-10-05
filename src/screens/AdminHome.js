@@ -1,5 +1,4 @@
 import {Component} from 'react';
-import '../App.css';
 import {getDataManager} from "../model/manager";
 import {Link} from "react-router-dom";
 import StudyUpload from "../components/StudyUpload";

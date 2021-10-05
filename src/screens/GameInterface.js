@@ -1,4 +1,3 @@
-import "../App.css"
 import React from 'react';
 import {Component} from "react";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';

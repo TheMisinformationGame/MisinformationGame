@@ -1,4 +1,3 @@
-import "../App.css"
 import {SimpleActiveStudyScreen} from "./ActiveStudyScreen";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 

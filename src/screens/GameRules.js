@@ -1,6 +1,5 @@
 import reactionOptions from "./reaction-options.png"
 import progressView from "./progress-view.png"
-import "../App.css"
 import {ContinueBanner} from "../components/ContinueButton";
 import {SimpleActiveStudyScreen} from "./ActiveStudyScreen";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';

@@ -1,4 +1,3 @@
-import "../App.css"
 import {ContinueBanner} from "../components/ContinueButton";
 import {SimpleActiveStudyScreen} from "./ActiveStudyScreen";
 

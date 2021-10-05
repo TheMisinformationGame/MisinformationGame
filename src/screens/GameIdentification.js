@@ -1,5 +1,4 @@
 import {ErrorLabel} from '../components/StatusLabel';
-import "../App.css"
 import {getDataManager} from "../model/manager";
 import {ActiveStudyScreen} from "./ActiveStudyScreen";
 import {ContinueButton} from "../components/ContinueButton"
