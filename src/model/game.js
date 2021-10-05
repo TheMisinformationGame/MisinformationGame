@@ -448,26 +448,42 @@ export class GameState {
  */
 export class GameParticipant {
     reactions; // String[]
+    firstInteractTimesMS; // Number[]
+    lastInteractTimesMS; // Number[]
     credibility; // Number
     followers; // Number
     credibilityHistory; // Number[]
     followerHistory; // Number[]
 
-    constructor(credibility, followers, reactions, credibilityHistory, followerHistory) {
+    constructor(credibility, followers, reactions,
+                firstInteractTimesMS, lastInteractTimesMS,
+                credibilityHistory, followerHistory) {
+
         doTypeCheck(credibility, "number", "Participant's Credibility");
         doTypeCheck(followers, "number", "Participant's Followers");
         doNullableTypeCheck(reactions, Array, "Participant's Reactions to Posts");
+        doNullableTypeCheck(firstInteractTimesMS, Array, "Participant's Reactions to Posts");
+        doNullableTypeCheck(lastInteractTimesMS, Array, "Participant's Reactions to Posts");
         doNullableTypeCheck(credibilityHistory, Array, "Participant's Credibility History");
         doNullableTypeCheck(followerHistory, Array, "Participant's Follower History");
         this.credibility = credibility;
         this.followers = followers;
         this.reactions = reactions || [];
+        this.firstInteractTimesMS = firstInteractTimesMS || [];
+        this.lastInteractTimesMS = lastInteractTimesMS || [];
         this.credibilityHistory = credibilityHistory || [];
         this.followerHistory = followerHistory || [];
     }
 
-    addReaction(reaction, credibilityChange, followersChange) {
+    addReaction(reaction, credibilityChange, followersChange, firstInteractMS, lastInteractMS) {
+        doTypeCheck(reaction, "string", "Participant's Reaction");
+        doTypeCheck(credibilityChange, "number", "Participant's Credibility Change after Reaction");
+        doTypeCheck(followersChange, "number", "Participant's Followers Change after Reaction");
+        doTypeCheck(firstInteractMS, "number", "Time it took for the participant to first interact");
+        doTypeCheck(lastInteractMS, "number", "Time it took for the participant to move to next post");
         this.reactions.push(reaction);
+        this.firstInteractTimesMS.push(firstInteractMS);
+        this.lastInteractTimesMS.push(lastInteractMS);
         this.credibilityHistory.push(this.credibility);
         this.followerHistory.push(this.followers);
         this.credibility = adjustCredibility(this.credibility, credibilityChange);
@@ -479,6 +495,8 @@ export class GameParticipant {
             "credibility": this.credibility,
             "followers": this.followers,
             "reactions": this.reactions,
+            "firstInteractTimesMS": this.firstInteractTimesMS,
+            "lastInteractTimesMS": this.lastInteractTimesMS,
             "credibilityHistory": this.credibilityHistory,
             "followerHistory": this.followerHistory
         };
@@ -489,6 +507,8 @@ export class GameParticipant {
             json["credibility"],
             json["followers"],
             json["reactions"],
+            json["firstInteractTimesMS"],
+            json["lastInteractTimesMS"],
             json["credibilityHistory"],
             json["followerHistory"]
         );
@@ -570,19 +590,24 @@ export class Game {
      *
      * @param reaction can be one of "like", "dislike",
      *                 "share", "flag", or "skip".
+     * @param firstInteractMS the time it took the user to first interact
+     *                        with the post, in milliseconds.
+     * @param lastInteractMS the time it took the user to continue to the
+     *                       next post, in milliseconds.
      */
-    advanceState(reaction) {
+    advanceState(reaction, firstInteractMS, lastInteractMS) {
         if (!["like", "dislike", "share", "flag", "skip"].includes(reaction))
             throw new Error("Unknown reaction " + reaction);
 
         if (reaction === "skip") {
-            this.participant.addReaction(reaction, 0, 0);
+            this.participant.addReaction(reaction, 0, 0, firstInteractMS, lastInteractMS);
         } else {
             const post = this.getCurrentState().currentPost.post;
             this.participant.addReaction(
                 reaction,
                 post.changesToCredibility[reaction].sample(),
-                post.changesToFollowers[reaction].sample()
+                post.changesToFollowers[reaction].sample(),
+                firstInteractMS, lastInteractMS
             );
             /**
              * BELOW CONSTRUCTS THE REACTION OBJECT TO BE SENT AT THE END OF THE STUDY

@@ -257,9 +257,17 @@ export class GameScreen extends ActiveGameScreen {
             error: null,
             reactionsAllowed: false,
             selectedReaction: null,
-            dismissedPrompt: false
+            dismissedPrompt: false,
+
+            postShowTime: null,
+            firstInteractTime: null
         };
         this.state = this.defaultState;
+    }
+
+    onPromptContinue() {
+        // Dismiss the prompt and disable the reactions for a brief period of time.
+        this.updateGameState(this.state.game, this.state.error, true);
     }
 
     onClickReaction(reaction) {
@@ -267,7 +275,21 @@ export class GameScreen extends ActiveGameScreen {
         if (this.state.selectedReaction === reaction) {
             reaction = null;
         }
-        this.setState({...this.state, selectedReaction: reaction})
+
+        const state = {...this.state, selectedReaction: reaction};
+        if (state.firstInteractTime === null) {
+            state.firstInteractTime = Date.now();
+        }
+        this.setState(state);
+    }
+
+    onUserReact(reaction, game) {
+        const postShowTime = this.state.postShowTime;
+        const firstInteractMS = this.state.firstInteractTime - postShowTime;
+        const lastInteractMS = Date.now() - postShowTime;
+
+        game.advanceState(reaction, firstInteractMS, lastInteractMS);
+        this.updateGameState(game, null);
     }
 
     updateGameState(game, error, setDismissedPrompt) {
@@ -276,7 +298,9 @@ export class GameScreen extends ActiveGameScreen {
             state: (game && !game.isFinished() ? game.getCurrentState() : null),
             error: error,
             reactionsAllowed: (!this.state.dismissedPrompt && !game),
-            selectedReaction: null
+            selectedReaction: null,
+            postShowTime: Date.now(),
+            firstInteractTime: null
         };
         if (setDismissedPrompt) {
             state.dismissedPrompt = true;
@@ -289,16 +313,6 @@ export class GameScreen extends ActiveGameScreen {
                 this.setStateIfMounted({...this.state, reactionsAllowed: true});
             }, game.study.reactDelaySeconds * 1000);
         }
-    }
-
-    onPromptContinue() {
-        // Dismiss the prompt and disable the reactions for a brief period of time.
-        this.updateGameState(this.state.game, this.state.error, true);
-    }
-
-    onUserReact(reaction, game) {
-        game.advanceState(reaction);
-        this.updateGameState(game, null);
     }
 
     renderWithStudyAndGame(study, game) {
