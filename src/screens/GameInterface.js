@@ -10,11 +10,10 @@ import {getDataManager} from "../model/manager";
 import {isOfType} from "../utils/types";
 import {PromiseImage} from "../components/PromiseImage";
 import {GamePrompt} from "./GamePrompt";
-import {ActiveStudyScreen} from "./ActiveStudyScreen";
 import {ContinueButton} from "../components/ContinueButton";
 import {ErrorLabel} from "../components/StatusLabel"
 import {CredibilityLabel} from "../components/CredibilityLabel"
-import { gatherAllReactions } from "../model/game";
+import {ActiveGameScreen} from "./ActiveGameScreen";
 
 
 class Source extends Component {
@@ -56,7 +55,7 @@ class Comment extends Component {
             <div className={"flex flex-col p-1 pl-3 pr-2 mb-1 bg-white shadow" +
                             (this.props.className || "")}>
 
-                <p className="w-full underline text-gray-700">{this.props.sourceName}:</p>
+                <p className="w-full underline text-gray-700">{this.props.sourceName}</p>
                 <p className="w-full text-lg ml-1">{this.props.message}</p>
             </div>
         );
@@ -226,35 +225,22 @@ class ParticipantProgress extends Component {
     }
 }
 
-export class GameScreen extends ActiveStudyScreen {
+export class GameScreen extends ActiveGameScreen {
     constructor(props) {
         super(props);
-        this.state = {
-            game: null,
-            state: null,
-            participant: null,
+        this.defaultState = {
+            ...this.defaultState,
             error: null,
             reactionsAllowed: false,
             dismissedPrompt: false
         };
+        this.state = this.defaultState;
     }
-
-    componentDidMount() {
-        super.componentDidMount();
-        getDataManager().getActiveGame().then(game => {
-            this.updateGameState(game, null);
-        }).catch((err) => {
-            console.error(err);
-            this.updateGameState(null, err.message);
-        });
-    };
 
     updateGameState(game, error, setDismissedPrompt) {
         const state = {
             ...this.state,
-            game: game,
             state: (game && !game.isFinished() ? game.getCurrentState() : null),
-            participant: (game ? game.participant : null),
             error: error,
             reactionsAllowed: (!this.state.dismissedPrompt && !game)
         };
@@ -264,9 +250,9 @@ export class GameScreen extends ActiveStudyScreen {
 
         this.setStateIfMounted(state);
         if ((this.state.dismissedPrompt || setDismissedPrompt) && game) {
+            game.preloadNextState();
             setTimeout(() => {
                 this.setStateIfMounted({...this.state, reactionsAllowed: true});
-                game.preloadNextState();
             }, game.study.reactDelaySeconds * 1000);
         }
     }
@@ -276,21 +262,15 @@ export class GameScreen extends ActiveStudyScreen {
         this.updateGameState(this.state.game, this.state.error, true);
     }
 
-    onUserReact(reaction) {
-        getDataManager().getActiveGame().then(game => {
-            game.advanceState(reaction);
-            this.updateGameState(game, null);
-        });
+    onUserReact(reaction, game) {
+        game.advanceState(reaction);
+        this.updateGameState(game, null);
     }
 
-    render() {
-        // We have to use min-height: 100vh, as the Tailwind min-h-full doesn't work :(
-        const fullHeightStyle = {minHeight: "100vh"};
-
-        const state = this.state.state;
-        const game = this.state.game;
+    renderWithStudyAndGame(study, game) {
+        const state = game.isFinished() ? null : game.getCurrentState();
+        const participant = game.participant;
         const displayPrompt = state && !this.state.dismissedPrompt;
-        const participant = this.state.participant;
         const error = this.state.error;
         return (
             <>
@@ -298,16 +278,16 @@ export class GameScreen extends ActiveStudyScreen {
                     <GamePrompt study={state.study} onClick={() => this.onPromptContinue()} />}
 
                 <div className={"w-full bg-gray-100 " + (displayPrompt ? "filter blur" : "")}
-                     style={fullHeightStyle}>
+                     style={{minHeight: "100vh"}}>
 
                     <div className="w-full md:max-w-xl ml-auto mr-auto bg-gray-200
                                     md:border-l-2 md:border-r-2 md:border-gray-700 shadow-2xl"
-                         style={fullHeightStyle}>
+                         style={{minHeight: "100vh"}}>
 
                         {/* Post, reactions, and comments. */}
                         {state && !error &&
                             <PostComponent state={state}
-                                           onReact={r => this.onUserReact(r)}
+                                           onReact={r => this.onUserReact(r, game)}
                                            enableReactions={this.state.reactionsAllowed} />}
 
                         {/* If the game is finished, display a game completed prompt. */}

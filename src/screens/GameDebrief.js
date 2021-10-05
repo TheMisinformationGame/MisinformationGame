@@ -57,7 +57,6 @@ export class GameDebrief extends SimpleActiveStudyScreen {
 
                     <ContentCopyIcon  />
                 </button>
-                <p className="leading-5 mt-4">This is your completion code, please copy and paste it into your Mechanical Turks response as proof of completion.</p>
             </div>
         );
     }

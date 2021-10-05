@@ -75,16 +75,16 @@ export class SimpleActiveStudyScreen extends ActiveStudyScreen {
      * This method or the renderWithStudy method must be overridden in sub-classes.
      */
     render() {
-        if (this.state.studyLoading) {
-            return (
-                <ProgressLabel className="text-2xl m-2"
-                               value="The study is loading..." />
-            );
-        }
         if (this.state.studyLoadError) {
             return (
                 <ErrorLabel className="text-2xl m-2"
                             value={this.state.studyLoadError} />
+            );
+        }
+        if (this.state.studyLoading) {
+            return (
+                <ProgressLabel className="text-2xl m-2"
+                               value="The study is loading..." />
             );
         }
 
