@@ -82,7 +82,7 @@ export function uploadImagesToStorage(imageDict, progressFn) {
 export function postResults(object, studyID, participantID){
     let resultsCol = db.collection("Results");
     let studyDoc = resultsCol.doc(studyID);
-    studyDoc.collection(participantID).doc("Reactions").set(object).then((data) => {
+    studyDoc.collection(participantID.toString()).doc("Reactions").set(object).then((data) => {
         console.log("Results uploaded!");
     }).catch((error) => {
         console.log(error)

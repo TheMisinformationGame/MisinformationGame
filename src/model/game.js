@@ -6,6 +6,7 @@ import {BrokenStudy, Post, Source, Study} from "./study";
 import {selectFilteredRandomElement, selectFilteredWeightedRandomElement} from "../utils/random";
 import {odiff} from "../utils/odiff";
 import {getDataManager} from "./manager";
+import { postResults } from "../database/postToDB";
 
 
 /**
@@ -607,8 +608,16 @@ export class Game {
             let PostID = post.id;
             //add new attribute to the reaction object
             //this.REACT_OBJECT.addReaction(PostID, metadata);
-
+            
             //TO DO: have a function which figures out when it wants to post the intermediary data 
+            const WHEN_TO_SAVE = [Math.floor( this.study.posts.length/3 ),      //save 1/3 in
+                                  Math.floor( 2*(this.study.posts.length/3) ),  //save 2/3 in
+                                  this.study.posts.length]                      //save at end
+            if(PostOrder in WHEN_TO_SAVE){
+                postResults(this.toJSON(), 
+                            this.study.id,
+                            1)
+            }
 
         }
     }
