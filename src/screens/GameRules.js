@@ -24,14 +24,14 @@ export class GameRules extends SimpleActiveStudyScreen {
                 <div className="m-1 bg-white p-10">
                     <h2 className="align-middle text-4xl mb-4">How to participate</h2>
                     <p className="leading-5 mb-4">
-                    You will be shown a series of posts, which you are encouraged to interact with. You start with 0 <i>followers</i>, and a default <i>credibility rating</i> of 50. These may change as you interact with the posts.</p>
+                    You will be shown a series of posts, which you are encouraged to interact with. To begin with you will have a number of followers, and a credibility rating. These may change as you continue interacting with the posts.</p>
                     <p className="leading-5 mb-4">
                     When you see a post, there are the following options: </p>
                     <ul className="list-none list-inside">
                         <li className="leading-5 mb-4"><ThumbUpIcon /> The <b><i>like</i></b> button indicates that you like the content of this post.</li>
                         <li className="leading-5 mb-4"><ThumbDownIcon /> The <b><i>dislike</i></b> button indicates that you dislike the content of this post.</li>
                         <li className="leading-5 mb-4"><ReplyIcon /> The <b><i>share</i></b> button will show this post to your followers.</li>
-                        <li className="leading-5 mb-4"><FlagIcon /> The <b><i>flag</i></b> button will report this post. Use this for rulebreaking or dangerious posts.</li>
+                        <li className="leading-5 mb-4"><FlagIcon /> The <b><i>flag</i></b> button will report this post. Use this for rulebreaking or dangerous posts.</li>
                         <li className="leading-5 mb-4"> The <b><i>skip post </i></b> button will take you straight to the next post.</li>
                     </ul>
 
