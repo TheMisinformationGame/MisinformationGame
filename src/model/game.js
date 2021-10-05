@@ -593,32 +593,23 @@ export class Game {
              * BELOW CONSTRUCTS THE REACTION OBJECT TO BE SENT AT THE END OF THE STUDY
              */
             //construct the data payloads
-            const sourceDir = this.getCurrentState().currentSource;
-            let sourceInfo = [sourceDir.source.id, sourceDir.credibility, sourceDir.followers];
             const participantDir = this.participant;
-            let GameData = [post.changesToCredibility[reaction].sample(),
-                            post.changesToFollowers[reaction].sample(),
-                            participantDir.credibilityHistory[-1],
-                            participantDir.followerHistory[-1],
-                            participantDir.credibility,
-                            participantDir.followers];
-            let PostOrder = participantDir.reactions.length + 1;
-            let reactionTime = 1000; //temp code
-            let metadata = [PostOrder, sourceInfo, reaction, GameData, reactionTime];
-            let PostID = post.id;
+            const PostOrder = participantDir.reactions.length;
+            const NUM_POSTS = this.study.posts.length;
             //add new attribute to the reaction object
-            //this.REACT_OBJECT.addReaction(PostID, metadata);
             
-            //TO DO: have a function which figures out when it wants to post the intermediary data 
-            const WHEN_TO_SAVE = [Math.floor( this.study.posts.length/3 ),      //save 1/3 in
-                                  Math.floor( 2*(this.study.posts.length/3) ),  //save 2/3 in
-                                  this.study.posts.length]                      //save at end
-            if(PostOrder in WHEN_TO_SAVE){
+            //function which figures out when it wants to post the intermediary data 
+            const WHEN_TO_SAVE = [Math.floor( NUM_POSTS/3 ),      //save 1/3 in
+                                  Math.floor( 2*(NUM_POSTS/3) ),  //save 2/3 in
+                                  NUM_POSTS]                      //save at end
+            
+            //save data
+            if(WHEN_TO_SAVE.includes(PostOrder)){
+                console.log(PostOrder);
                 postResults(this.toJSON(), 
                             this.study.id,
                             1)
             }
-
         }
     }
 
