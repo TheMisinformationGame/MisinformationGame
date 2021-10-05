@@ -80,9 +80,10 @@ export function uploadImagesToStorage(imageDict, progressFn) {
 
 //send the object which contains all of the reactions to the post
 export function postResults(object, studyID, participantID){
-    let resultsCol = db.collection("Results");
-    let studyDoc = resultsCol.doc(studyID);
-    studyDoc.collection(participantID.toString()).doc("Reactions").set(object).then((data) => {
+    let studyCol = db.collection("Studies");
+    let studyDoc = studyCol.doc(studyID);
+    let resultsCol = studyDoc.collection("Results")
+    resultsCol.doc(participantID.toString()).set(object).then((data) => {
         console.log("Results uploaded!");
     }).catch((error) => {
         console.log(error)
