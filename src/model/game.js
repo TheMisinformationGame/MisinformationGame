@@ -596,7 +596,6 @@ export class Game {
             const participantDir = this.participant;
             const PostOrder = participantDir.reactions.length;
             const NUM_POSTS = this.study.posts.length;
-            //add new attribute to the reaction object
             
             //function which figures out when it wants to post the intermediary data 
             const WHEN_TO_SAVE = [Math.floor( NUM_POSTS/3 ),      //save 1/3 in
