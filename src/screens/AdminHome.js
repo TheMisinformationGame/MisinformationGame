@@ -128,7 +128,7 @@ class AdminPage extends MountAwareComponent {
                 {/* The navigation bar. */}
                 <div className="flex items-stretch justify-between w-full bg-white shadow">
                     <Link to="/" className="font-bold text-xl p-3">
-                        Misinformation Game
+                        The Misinformation Game
                     </Link>
                     <div className="bg-blue-400 p-3 text-xl text-white font-medium
                                     hover:bg-blue-500 cursor-pointer select-none"

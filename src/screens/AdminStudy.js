@@ -380,7 +380,7 @@ export class AdminStudyPage extends SimpleActiveStudyScreen {
                 {/* The navigation bar. */}
                 <div className="flex items-stretch justify-between w-full bg-white shadow">
                     <Link to="/" className="font-bold text-xl p-3">
-                        Misinformation Game
+                        The Misinformation Game
                     </Link>
                 </div>
 
@@ -395,6 +395,10 @@ export class AdminStudyPage extends SimpleActiveStudyScreen {
                         <CloseIcon className="text-gray-600 hover:text-gray-800" fontSize="large"/>
                     </Link>
                 </div>
+
+                {/* A margin on the div above doesn't make the height of the enclosing div increase,
+                    but we can just fake it with a div with a height of the margin we want. */}
+                <div className="h-3" />
             </div>
         );
     }
