@@ -72,7 +72,7 @@ class ReactButton extends Component {
             <div id={reaction}
                  title={this.props.title}
                  className={
-                     " group h-12 w-16 pt-1.5 px-2 sm:px-3 md:px-4 rounded text-center " +
+                     " group h-12 w-16 pt-1.5 px-1 sm:px-3 md:px-4 rounded text-center " +
                      " fill-current transition duration-100 " +
                      (selected ? " bg-gray-100 " : " hover:bg-gray-100 ") +
                      (this.props.enabled ? " cursor-pointer " : "") +
@@ -108,22 +108,21 @@ class ReactionsRow extends Component {
                 <div className="flex flex-grow">
                     <ReactButton reaction="like" selected={selected} onReact={onReact} enabled={enabled}
                                  childClassName="transform -translate-y-0.5 -translate-x-1"
-                                 title="Like">
+                                 title="Like" className="mr-1">
                         <ThumbUpIcon/></ReactButton>
                     <ReactButton reaction="dislike" selected={selected} onReact={onReact} enabled={enabled}
                                  childClassName="transform -translate-y-0.5 -translate-x-1"
-                                 title="Dislike">
+                                 title="Dislike" className="mr-1">
                         <ThumbDownIcon/></ReactButton>
                     <ReactButton reaction="share" selected={selected} onReact={onReact} enabled={enabled}
-                                 fontSize="3.25rem"
-                                 className="transform flip-x"
+                                 fontSize="3.25rem" className="mr-1 transform flip-x"
                                  childClassName="transform -translate-y-2.5 -translate-x-3"
                                  title="Share">
                         <ReplyIcon/></ReactButton>
                     <ReactButton reaction="flag" selected={selected} onReact={onReact} enabled={enabled}
                                  fontSize="2.6rem"
                                  childClassName="transform -translate-y-1 -translate-x-1"
-                                 title="Flag">
+                                 title="Flag" className="mr-1">
                         <FlagIcon/></ReactButton>
                 </div>
 
