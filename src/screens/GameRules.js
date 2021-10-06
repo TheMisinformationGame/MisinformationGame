@@ -21,6 +21,8 @@ export class GameRules extends ActiveGameScreen {
         const stage = game.getCurrentStage();
         if (stage === "identification")
             return (<Redirect to={"/game/" + study.id + "/id" + window.location.search} />);
+        if (stage === "debrief")
+            return (<Redirect to={"/game/" + study.id + "/debrief" + window.location.search} />);
 
         const target = "/game/" + study.id + "/post-intro" + window.location.search;
         const continueDelaySeconds = 15;

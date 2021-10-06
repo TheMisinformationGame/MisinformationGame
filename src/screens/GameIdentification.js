@@ -2,6 +2,8 @@ import {ErrorLabel} from '../components/StatusLabel';
 import {getDataManager} from "../model/manager";
 import {ContinueButton} from "../components/ContinueButton"
 import {ActiveGameScreen} from "./ActiveGameScreen";
+import {Redirect} from "react-router-dom";
+import React from "react";
 
 
 export class GameIdentification extends ActiveGameScreen {
@@ -72,6 +74,9 @@ export class GameIdentification extends ActiveGameScreen {
     }
 
     renderWithStudyAndGame(study, game) {
+        if (game.getCurrentStage() === "debrief")
+            return (<Redirect to={"/game/" + study.id + "/debrief" + window.location.search} />);
+
         const target = "/game/" + study.id + "/pre-intro" + window.location.search;
         return (
             <div className="w-full bg-gray-100" style={{minHeight: "100vh"}}>

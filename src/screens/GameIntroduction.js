@@ -25,6 +25,8 @@ class GameIntroductionScreen extends ActiveGameScreen {
         const stage = game.getCurrentStage();
         if (stage === "identification")
             return (<Redirect to={"/game/" + study.id + "/id" + window.location.search} />);
+        if (stage === "debrief")
+            return (<Redirect to={"/game/" + study.id + "/debrief" + window.location.search} />);
 
         const content = this.getContent(study);
         const target = this.getTarget(study) + window.location.search;

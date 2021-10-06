@@ -422,6 +422,8 @@ export class Game {
     getCurrentStage() {
         if (!this.participant.participantID && this.study.requireIdentification)
             return "identification";
+        if (this.isFinished())
+            return "debrief";
         if (this.dismissedPrompt)
             return "game";
         return "introduction";
