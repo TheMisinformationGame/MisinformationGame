@@ -382,18 +382,19 @@ export class Game {
     dismissedPrompt; // Boolean
     completionCode; // String
 
-    constructor(sessionID, study, states, participant, dismissedPrompt) {
+    constructor(sessionID, study, states, participant, dismissedPrompt, completionCode) {
         doTypeCheck(sessionID, "string", "Game Session ID")
         doTypeCheck(study, Study, "Game Study");
         doTypeCheck(states, Array, "Game States");
         doTypeCheck(participant, GameParticipant, "Game Participant");
         doTypeCheck(dismissedPrompt, "boolean", "Whether the prompt has been dismissed");
+        doNullableTypeCheck(completionCode, "string", "Game Completion Code");
         this.sessionID = sessionID;
         this.study = study;
         this.states = states;
         this.participant = participant;
         this.dismissedPrompt = dismissedPrompt;
-        this.completionCode = null;
+        this.completionCode = completionCode;
     }
 
     /**
@@ -498,11 +499,16 @@ export class Game {
             );
         }
 
+        // Generate a completion code when the game is finished.
+        if (this.isFinished()) {
+            this.completionCode = this.study.generateRandomCompletionCode();
+        }
+
         // Allows us to restore the game if the user refreshes the page.
         this.saveLocally();
 
+        // Allows us to create the results for this game.
         if (this.isFinished()) {
-            this.completionCode = this.study.generateRandomCompletionCode();
             this.saveToDatabase();
         }
     }

@@ -1,7 +1,8 @@
 import {SimpleActiveStudyScreen} from "./ActiveStudyScreen";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import {ActiveGameScreen} from "./ActiveGameScreen";
 
-export class GameDebrief extends SimpleActiveStudyScreen {
+export class GameDebrief extends ActiveGameScreen {
     constructor(props) {
         super(props);
         this.state = {
@@ -10,12 +11,7 @@ export class GameDebrief extends SimpleActiveStudyScreen {
         }
     }
 
-    renderWithStudy(study) {
-        // TODO : This should get the currently active game and make sure that it is completed.
-        //        Then, it should generate a new completion code for the game if one hasn't
-        //        been generated already. Then, we should make sure to save the participant's
-        //        progress to the database before we show them the debriefing page.
-
+    renderWithStudyAndGame(study, game) {
         const hidden = this.state.hidden;
         let completionCode;
         if (hidden) {
@@ -24,7 +20,7 @@ export class GameDebrief extends SimpleActiveStudyScreen {
                 completionCode += "*";
             }
         } else {
-            completionCode = study.generateRandomCompletionCode();
+            completionCode = game.completionCode;
         }
 
         return (
