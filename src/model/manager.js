@@ -13,6 +13,7 @@ class DataManager {
         this.allStudiesPromiseGenerator = null;
         this.studyPromiseGenerators = {};
         this.activeGameStudyID = null;
+        this.sessionID = null;
         this.activeGamePromiseGenerator = null;
         this.imagePromiseGenerators = {};
         this.updateListeners = [];
@@ -63,11 +64,24 @@ class DataManager {
     }
 
     /**
-     * Returns the ID of the currently active study,
-     * or else throws an error if no study is active.
+     * Returns the ID of the currently active study, or else null.
      */
     getActiveStudyID() {
         return this.activeGameStudyID;
+    }
+
+    /**
+     * Sets the ID of the current game session.
+     */
+    setSessionID(sessionID) {
+        this.sessionID = sessionID;
+    }
+
+    /**
+     * Returns the ID of the current session, or else null.
+     */
+    getSessionID() {
+        return this.sessionID;
     }
 
     /**
@@ -173,8 +187,9 @@ class DataManager {
     /**
      * Returns a Promise to read or create the currently active game.
      */
-    readActiveGame(studyID) {
+    readActiveGame(studyID, sessionID) {
         this.activeGameStudyID = studyID;
+        this.sessionID = sessionID;
 
         // If there is no active study.
         if (!studyID) {
@@ -182,13 +197,37 @@ class DataManager {
             return this.activeGamePromiseGenerator();
         }
 
-        // TODO : Save this in the browser local storage.
         const gamePromise = this.getStudy(studyID).then((study) => {
             // The active game changed while we were loading this game.
             if (studyID !== this.activeGameStudyID)
                 return;
 
-            const game = Game.createNew(study);
+            // Try to load the game session from local storage.
+            let game = null;
+            if (typeof localStorage !== "undefined" && sessionID) {
+                const gameJSON = localStorage.getItem("game");
+                if (gameJSON) {
+                    try {
+                        game = Game.fromJSON(JSON.parse(gameJSON));
+                    } catch (err) {
+                        console.error(err);
+                        // We don't report this to the user, but
+                        // instead just carry on with a new game.
+                    }
+
+                    // If the session ID is different, don't use the saved game.
+                    if (game && game.sessionID !== sessionID) {
+                        game = null;
+                    }
+                }
+            }
+
+            // We could not reload an already active game, create a new one!
+            if (!game) {
+                game = Game.createNew(study);
+            }
+
+            this.sessionID = game.sessionID;
             this.activeGamePromiseGenerator = () => Promise.resolve(game);
             return game;
         }).catch((err) => {
@@ -216,8 +255,9 @@ class DataManager {
      */
     getActiveGame() {
         const studyID = this.getActiveStudyID();
+        const sessionID = this.getSessionID();
         if (this.activeGameStudyID !== studyID || this.activeGamePromiseGenerator === null)
-            return this.readActiveGame(studyID);
+            return this.readActiveGame(studyID, sessionID);
 
         return this.activeGamePromiseGenerator();
     }

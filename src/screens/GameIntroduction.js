@@ -1,8 +1,8 @@
 import {ContinueBanner} from "../components/ContinueButton";
-import {SimpleActiveStudyScreen} from "./ActiveStudyScreen";
+import {ActiveGameScreen} from "./ActiveGameScreen";
 
 
-class GameIntroductionScreen extends SimpleActiveStudyScreen {
+class GameIntroductionScreen extends ActiveGameScreen {
     constructor(props) {
         super(props, true);
     }
@@ -19,9 +19,9 @@ class GameIntroductionScreen extends SimpleActiveStudyScreen {
         throw new Error("Implement getContinueDelaySeconds(study)");
     }
 
-    renderWithStudy(study) {
+    renderWithStudyAndGame(study, game) {
         const content = this.getContent(study);
-        const target = this.getTarget(study);
+        const target = this.getTarget(study) + window.location.search;
         const delay = this.getContinueDelaySeconds(study);
 
         // If this page is empty, redirect them to the next page.

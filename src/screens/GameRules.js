@@ -1,22 +1,22 @@
 import reactionOptions from "./reaction-options.png"
 import progressView from "./progress-view.png"
 import {ContinueBanner} from "../components/ContinueButton";
-import {SimpleActiveStudyScreen} from "./ActiveStudyScreen";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ReplyIcon from '@mui/icons-material/Reply';
 import FlagIcon from '@material-ui/icons/Flag';
+import {ActiveGameScreen} from "./ActiveGameScreen";
 
 /**
  * The page that is shown to explain the rules of the game to participants.
  */
-export class GameRules extends SimpleActiveStudyScreen {
+export class GameRules extends ActiveGameScreen {
     constructor(props) {
         super(props, true);
     }
 
-    renderWithStudy(study) {
-        const target = "/game/" + study.id + "/post-intro";
+    renderWithStudyAndGame(study, game) {
+        const target = "/game/" + study.id + "/post-intro" + window.location.search;
         const continueDelaySeconds = 15;
         return (
             <div>

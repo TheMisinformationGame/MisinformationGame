@@ -1,10 +1,10 @@
 import {ErrorLabel} from '../components/StatusLabel';
 import {getDataManager} from "../model/manager";
-import {ActiveStudyScreen} from "./ActiveStudyScreen";
 import {ContinueButton} from "../components/ContinueButton"
+import {ActiveGameScreen} from "./ActiveGameScreen";
 
 
-export class GameIdentification extends ActiveStudyScreen {
+export class GameIdentification extends ActiveGameScreen {
     constructor(props) {
         super(props);
         this.state = {
@@ -65,8 +65,8 @@ export class GameIdentification extends ActiveStudyScreen {
         }
     }
 
-    render() {
-        const target = "/game/" + getDataManager().getActiveStudyID() + "/pre-intro";
+    renderWithStudyAndGame(study, game) {
+        const target = "/game/" + study.id + "/pre-intro" + window.location.search;
         return (
             <div className="w-full bg-gray-100" style={{minHeight: "100vh"}}>
                 <div className="bg-white rounded-xl shadow-xl border border-gray-400

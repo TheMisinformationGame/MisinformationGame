@@ -10,6 +10,10 @@ import {ErrorLabel, ProgressLabel} from "../components/StatusLabel";
 export class ActiveGameScreen extends ActiveStudyScreen {
     constructor(props) {
         super(props);
+
+        // Get the session ID from the URL.
+        getDataManager().setSessionID(new URLSearchParams(window.location.search).get("s"));
+
         this.defaultState = {
             study: null,
             studyLoading: true,
@@ -32,8 +36,16 @@ export class ActiveGameScreen extends ActiveStudyScreen {
     }
 
     reloadActiveGame() {
-        getDataManager().getActiveGame().then((game) => {
+        const manager = getDataManager();
+        manager.getActiveGame().then((game) => {
             this.setStateIfMounted({...this.state, game: game, gameLoading: false});
+
+            const sessionID = manager.getSessionID();
+            const queryParams = new URLSearchParams(window.location.search);
+            if (queryParams.get("s") !== sessionID) {
+                queryParams.set("s", sessionID);
+                this.props.history.replace(window.location.pathname + "?" + queryParams);
+            }
         }).catch(err => {
             console.error(err);
             this.setStateIfMounted({...this.state, gameLoadError: err.message, gameLoading: false});

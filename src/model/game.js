@@ -7,6 +7,7 @@ import {selectFilteredRandomElement, selectFilteredWeightedRandomElement} from "
 import {odiff} from "../utils/odiff";
 import {getDataManager} from "./manager";
 import { postResults } from "../database/postToDB";
+import {generateUID} from "../utils/uid";
 
 
 /**
@@ -24,156 +25,6 @@ function adjustCredibility(current, change) {
 function adjustFollowers(current, change) {
     return Math.max(0, current + change);
 }
-
-
-/**
- * collect the reaction meta data
-*/
-export class reactionInfo{
-    PostOrder; //int  //can act as a react id
-    SourceID; //string
-    SourceFollowers; //int
-    SourceCredibility; //int
-    ParticipantReaction; //string
-    ChangesToCredibility; //int
-    ChangesToFollowers; //int
-    BeforeCredibility; //int
-    BeforeFollowers; //int
-    AfterCredibility; //int
-    AfterFollowers; //int
-    ReactionTime; //int
-
-    constructor(PostOrder,  SourceID, SourceFollowers, SourceCredibility,
-                ParticipantReaction, ChangesToCredibility, ChangesToFollowers, BeforeCredibility,
-                BeforeFollowers, AfterCredibility, AfterFollowers, ReactionTime){ 
-        doTypeCheck(PostOrder, 'number', "Order of Post");   
-        doTypeCheck(SourceID, 'string', "What source");            
-        doTypeCheck(SourceFollowers, 'number', "# of followers for Source");            
-        doTypeCheck(SourceCredibility, 'number', "Source credibility #");            
-        doTypeCheck(ParticipantReaction, 'string', "The reaction chosen");            
-        doTypeCheck(ChangesToCredibility, 'number', "How the reaction chosen changed credibility");            
-        doTypeCheck(ChangesToFollowers, 'number', "How the reaction chosen changed followers");            
-        doTypeCheck(BeforeCredibility, 'number', "Credibility before reaction");            
-        doTypeCheck(BeforeFollowers, 'number', "Followers before reaction");            
-        doTypeCheck(AfterCredibility, 'number', "Credibility after reaction");
-        doTypeCheck(AfterFollowers, 'number', "Followers after reaction");
-        doTypeCheck(ReactionTime, 'number', "ms of react time");
-        this.PostOrder = PostOrder;
-        this.SourceID = SourceID;
-        this.SourceFollowers =  SourceFollowers;
-        this.SourceCredibility =  SourceCredibility;
-        this.ParticipantReaction = ParticipantReaction;
-        this.ChangesToCredibility = ChangesToCredibility;
-        this.ChangesToFollowers = ChangesToFollowers;
-        this.BeforeCredibility =  BeforeCredibility;
-        this.BeforeFollowers = BeforeFollowers;
-        this.AfterCredibility = AfterCredibility;
-        this.AfterFollowers = AfterFollowers;
-        this.ReactionTime =  ReactionTime;
-    };
-
-    newReact(PostOrder, SourceInfo, Reaction, GameData, ReactionTime){
-        //decompose the parsed data
-        let SourceID = SourceInfo[0];
-        let SourceFollowers = SourceInfo[1]
-        let SourceCredibility = SourceInfo[2];
-        let ParticipantReaction = Reaction;
-        let ChangesToCredibility = GameData[0];
-        let ChangesToFollowers = GameData[1];
-        let BeforeCredibility = GameData[2];
-        let BeforeFollowers = GameData[3] 
-        let AfterCredibility = GameData[4];
-        let AfterFollowers = GameData[5]
-
-        return new reactionInfo(PostOrder, SourceID, SourceFollowers, SourceCredibility,
-            ParticipantReaction, ChangesToCredibility, ChangesToFollowers, BeforeCredibility,
-            BeforeFollowers, AfterCredibility, AfterFollowers, ReactionTime)
-    };
-
-    toJSON() {
-        return {
-            "PostOrder" : this.PostOrder,
-            "SourceID" : this.SourceID,
-            "SourceFollowers" : this.SourceFollowers,
-            "SourceCredibility" : this.SourceCredibility,
-            "ParticipantReaction" : this.ParticipantReaction,
-            "ChangesToCredibility" : this.ChangesToCredibility,
-            "ChangesToFollowers" : this.ChangesToFollowers,
-            "BeforeCredibility" : this.BeforeCredibility,
-            "AfterCredibility" : this.AfterCredibility,
-            "AfterFollowers" : this.AfterFollowers,
-            "ReactionTime" : this.ReactionTime
-        };
-    }
-    
-};
-
-/**
- * Create post document which contains the metadata
- * NOTE: THIS WILL IN THEORY CREATE A NEW FIELD IN THE REACTIONS DOCUMENT
- */
-export class postDocument{
-    PostID;
-    PostReaction; //reactionInfo []
-
-    constructor(PostID, PostReaction){
-        doTypeCheck(PostID, 'string', "What Post");            
-        doTypeCheck(PostReaction, reactionInfo, "reaction metadata");        
-        this.PostID = PostID;
-        this.PostReaction = PostReaction;    
-    };
-
-    toJSON(PostID){
-        return{
-            PostID : this.PostReaction.toJSON()
-        }
-    };
-
-    newDocument(PostID, MetaDataArray ){
-        //code here for readability
-        let PostOrder = MetaDataArray[0];
-        let SourceInfo = MetaDataArray[1];
-        let Reaction = MetaDataArray[2];
-        let GameData = MetaDataArray[3];
-        let ReactionTime = MetaDataArray[4];
-        return new postDocument(PostID, reactionInfo.newReact(PostOrder, SourceInfo, Reaction, GameData, ReactionTime ))
-    }
-};
-
-/**
- * We will post this. This allows us to post 1 document with all the reactions
- * NOTE: THE IDEA IS THAT ONCE WE UPLOAD THIS INTO THE FIREBASE THAT THERE IS 1 DOC 
- *       WITH n FIELDS. WHERE n = PostID.
- */
-export class gatherAllReactions{
-    reactions; //postDocument []
-
-    constructor(reactions){
-        doTypeCheck(reactions, Array, "Reaction MetaData to particular post");
-        this.reactions = reactions;
-    }
-
-    /*
-    toJSON(postID){
-        return{ 
-            "reaction" : this.reaction.toJSON(postID)
-        }
-    }
-    */
-
-    //add new reaction to the object
-    addReaction(PostID, PostMetaData){
-        this.reactions.push(postDocument.newDocument(PostID, PostMetaData))
-    }
-
-    //create new object 
-    createReactionObject(){
-        return new gatherAllReactions
-    }
-};
-
-
-
 
 /**
  * A source in the game with known credibility and followers.
@@ -447,6 +298,7 @@ export class GameState {
  * of a participant throughout the game.
  */
 export class GameParticipant {
+    participantID; // String, or null
     reactions; // String[]
     firstInteractTimesMS; // Number[]
     lastInteractTimesMS; // Number[]
@@ -455,10 +307,11 @@ export class GameParticipant {
     credibilityHistory; // Number[]
     followerHistory; // Number[]
 
-    constructor(credibility, followers, reactions,
+    constructor(participantID, credibility, followers, reactions,
                 firstInteractTimesMS, lastInteractTimesMS,
                 credibilityHistory, followerHistory) {
 
+        doNullableTypeCheck(participantID, "string", "Participant's ID");
         doTypeCheck(credibility, "number", "Participant's Credibility");
         doTypeCheck(followers, "number", "Participant's Followers");
         doNullableTypeCheck(reactions, Array, "Participant's Reactions to Posts");
@@ -466,6 +319,7 @@ export class GameParticipant {
         doNullableTypeCheck(lastInteractTimesMS, Array, "Participant's Reactions to Posts");
         doNullableTypeCheck(credibilityHistory, Array, "Participant's Credibility History");
         doNullableTypeCheck(followerHistory, Array, "Participant's Follower History");
+        this.participantID = participantID;
         this.credibility = credibility;
         this.followers = followers;
         this.reactions = reactions || [];
@@ -492,6 +346,7 @@ export class GameParticipant {
 
     toJSON() {
         return {
+            "participantID": this.participantID,
             "credibility": this.credibility,
             "followers": this.followers,
             "reactions": this.reactions,
@@ -504,6 +359,7 @@ export class GameParticipant {
 
     static fromJSON(json) {
         return new GameParticipant(
+            json["participantID"],
             json["credibility"],
             json["followers"],
             json["reactions"],
@@ -519,23 +375,41 @@ export class GameParticipant {
  * Provides the logic for running a game.
  */
 export class Game {
+    sessionID; // String
     study; // Study
     states; // GameState[]
     participant; // GameParticipant
-    dismissedPrompt; // boolean
-    //REACT_OBJECT; //gatherAllReactions 
+    dismissedPrompt; // Boolean
+    completionCode; // String
 
-    constructor(study, states, participant, dismissedPrompt, /*REACT_OBJECT*/) {
+    constructor(sessionID, study, states, participant, dismissedPrompt) {
+        doTypeCheck(sessionID, "string", "Game Session ID")
         doTypeCheck(study, Study, "Game Study");
         doTypeCheck(states, Array, "Game States");
         doTypeCheck(participant, GameParticipant, "Game Participant");
         doTypeCheck(dismissedPrompt, "boolean", "Whether the prompt has been dismissed");
-        //doTypeCheck(REACT_OBJECT, gatherAllReactions, "Object of results being gathered in ideal format")
+        this.sessionID = sessionID;
         this.study = study;
         this.states = states;
         this.participant = participant;
         this.dismissedPrompt = dismissedPrompt;
-        //this.REACT_OBJECT = REACT_OBJECT;
+        this.completionCode = null;
+    }
+
+    /**
+     * Saves this game to local storage.
+     */
+    saveLocally() {
+        if (typeof localStorage === "undefined")
+            return;
+        localStorage.setItem("game", JSON.stringify(this.toJSON()));
+    }
+
+    /**
+     * Saves this game to the database.
+     */
+    saveToDatabase() {
+        postResults(this.toJSON(), this.study.id, 1);
     }
 
     isFinished() {
@@ -609,26 +483,14 @@ export class Game {
                 post.changesToFollowers[reaction].sample(),
                 firstInteractMS, lastInteractMS
             );
-            /**
-             * BELOW CONSTRUCTS THE REACTION OBJECT TO BE SENT AT THE END OF THE STUDY
-             */
-            //construct the data payloads
-            const participantDir = this.participant;
-            const PostOrder = participantDir.reactions.length;
-            const NUM_POSTS = this.study.posts.length;
-            
-            //function which figures out when it wants to post the intermediary data 
-            const WHEN_TO_SAVE = [Math.floor( NUM_POSTS/3 ),      //save 1/3 in
-                                  Math.floor( 2*(NUM_POSTS/3) ),  //save 2/3 in
-                                  NUM_POSTS]                      //save at end
-            
-            //save data
-            if(WHEN_TO_SAVE.includes(PostOrder)){
-                console.log(PostOrder);
-                postResults(this.toJSON(), 
-                            this.study.id,
-                            1)
-            }
+        }
+
+        // Allows us to restore the game if the user refreshes the page.
+        this.saveLocally();
+
+        if (this.isFinished()) {
+            this.completionCode = this.study.generateRandomCompletionCode();
+            this.saveToDatabase();
         }
     }
 
@@ -723,11 +585,13 @@ export class Game {
 
     toJSON() {
         return {
+            "sessionID": this.sessionID,
             "studyID": this.study.id,
             "study": this.study.toJSON(),
             "states": Game.statesToJSON(this.states),
             "participant": this.participant.toJSON(),
-            "dismissedPrompt": this.dismissedPrompt
+            "dismissedPrompt": this.dismissedPrompt,
+            "completionCode": this.completionCode
         };
     }
 
@@ -735,10 +599,12 @@ export class Game {
         const studyID = json["studyID"];
         const study = Study.fromJSON(studyID, json["study"]);
         return new Game(
+            json["sessionID"],
             study,
             Game.statesFromJSON(json["states"], study),
             GameParticipant.fromJSON(json["participant"]),
-            json["dismissedPrompt"]
+            json["dismissedPrompt"],
+            json["completionCode"]
         );
     }
 
@@ -750,8 +616,11 @@ export class Game {
             throw new Error("The study is broken: " + study.error);
 
         doTypeCheck(study, Study, "Game Study");
-        const game = new Game(study, [], new GameParticipant(50, 0), false);
+        const sessionID = generateUID();
+        const participant = new GameParticipant(null, 50, 0);
+        const game = new Game(sessionID, study, [], participant, false);
         game.calculateAllStates();
+        game.saveLocally();
         return game;
     }
 }

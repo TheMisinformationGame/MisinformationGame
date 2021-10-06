@@ -192,7 +192,7 @@ class PostComponent extends Component {
 
 class GameFinished extends Component {
     render() {
-        const target = "/game/" + getDataManager().getActiveStudyID() + "/debrief";
+        const target = "/game/" + getDataManager().getActiveStudyID() + "/debrief" + window.location.search;
         return (
             <div className="flex justify-center items-center">
                 <div className="bg-white shadow">
