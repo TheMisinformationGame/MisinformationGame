@@ -8,6 +8,7 @@ import {
     WorkbookColumn,
     WorkbookLoc
 } from "../utils/excel";
+const XLSX = require("exceljs");
 
 export function constructWorkbook(studyID, object){
     var results_workbook = XLSX.utils.book_new();
@@ -38,9 +39,40 @@ export function constructWorkbook(studyID, object){
      * Write the Results page
      */
 
+    results_workbook.SheetNames.push("Results");
+    //iterate through each document in the collection
+    for(let docNum = 0; docNum < totalDocLen; i++ ){
+        //loop through each response
+        for(let i = 0; i < object.state.length; i++){
+            //get the information to be populated
+
+
+        }
+    };
+
+
     /**
      * Export the work book
      */
 
-    
+
+};
+
+async function sendWorkbook(workbook, response, fileName){
+    response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+
+     await workbook.XLSX.write(response);
+
+    response.end();
+}
+
+//get the results object from firestore
+export function getResultsObject(studyID){
+    db.collection("studies").doc(studyID).collection("Results").get().then((querySnapshot) => {
+
+    }).catch((error) =>{
+        console.log("Error getting results data for study: " + studyID);
+        console.log(error);
+    });
 }
