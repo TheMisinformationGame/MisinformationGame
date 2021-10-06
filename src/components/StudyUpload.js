@@ -7,7 +7,7 @@ import xlsxHelp from "./help-export-to-xlsx.png"
 import {Game, getGameChangesToAndFromJSON} from "../model/game";
 import {doTypeCheck, isOfType} from "../utils/types";
 import {uploadImagesToStorage, uploadStudyConfiguration} from "../database/postToDB";
-import {generateUID} from "../utils/uuid";
+import {generateUID} from "../utils/uid";
 import {StudyImage} from "../model/images";
 import {MountAwareComponent} from "./MountAwareComponent";
 import {Dialog} from "./Dialog";

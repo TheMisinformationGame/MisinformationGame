@@ -1,4 +1,4 @@
-import {generateUID} from "./uuid";
+import {generateUID} from "./uid";
 
 test("that the UIDs generated are unique", (done) => {
     const uids = [];

@@ -1,5 +1,5 @@
 /**
- * A UUID generation function adapted from https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid.
+ * A UID generation function adapted from https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid.
  *
  * Note: This function does NOT generate valid UUIDs. It generates 16-character
  * unique IDs for use in our URLs, as full UUIDS would be too cumbersome. The
