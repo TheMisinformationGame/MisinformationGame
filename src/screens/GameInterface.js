@@ -15,6 +15,7 @@ import {ErrorLabel} from "../components/StatusLabel"
 import {CredibilityLabel} from "../components/CredibilityLabel"
 import {ActiveGameScreen} from "./ActiveGameScreen";
 import {ConditionalLink} from "../components/ConditionalLink";
+import {Redirect} from "react-router-dom";
 
 
 class Source extends Component {
@@ -303,6 +304,7 @@ export class GameScreen extends ActiveGameScreen {
         };
         if (setDismissedPrompt) {
             state.dismissedPrompt = true;
+            game.dismissedPrompt = true;
         }
 
         this.setStateIfMounted(state);
@@ -315,6 +317,10 @@ export class GameScreen extends ActiveGameScreen {
     }
 
     renderWithStudyAndGame(study, game) {
+        const stage = game.getCurrentStage();
+        if (stage === "identification")
+            return (<Redirect to={"/game/" + study.id + "/id" + window.location.search} />);
+
         const state = game.isFinished() ? null : game.getCurrentState();
         const participant = game.participant;
         const displayPrompt = state && !this.state.dismissedPrompt;

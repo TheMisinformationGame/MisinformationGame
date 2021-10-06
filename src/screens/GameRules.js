@@ -6,6 +6,8 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ReplyIcon from '@mui/icons-material/Reply';
 import FlagIcon from '@material-ui/icons/Flag';
 import {ActiveGameScreen} from "./ActiveGameScreen";
+import {Redirect} from "react-router-dom";
+import React from "react";
 
 /**
  * The page that is shown to explain the rules of the game to participants.
@@ -16,6 +18,10 @@ export class GameRules extends ActiveGameScreen {
     }
 
     renderWithStudyAndGame(study, game) {
+        const stage = game.getCurrentStage();
+        if (stage === "identification")
+            return (<Redirect to={"/game/" + study.id + "/id" + window.location.search} />);
+
         const target = "/game/" + study.id + "/post-intro" + window.location.search;
         const continueDelaySeconds = 15;
         return (

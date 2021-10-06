@@ -159,7 +159,6 @@ class DataManager {
      * call {@link DataManager#getStudy()} to get a study promise.
      */
     readStudy(studyID) {
-        console.log("Reading study " + studyID + "...");
         const studyPromise = readStudySettings(studyID).then((study) => {
             this.studyPromiseGenerators[studyID] = () => Promise.resolve(study);
             this.postStudyUpdateEvent(study);

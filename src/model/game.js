@@ -416,6 +416,17 @@ export class Game {
         return this.participant.reactions.length >= this.study.length;
     }
 
+    /**
+     * Returns the stage of the game that the user should be shown right now.
+     */
+    getCurrentStage() {
+        if (!this.participant.participantID && this.study.requireIdentification)
+            return "identification";
+        if (this.dismissedPrompt)
+            return "game";
+        return "introduction";
+    }
+
     getCurrentState() {
         if (this.isFinished())
             throw new Error("The game has been finished!");

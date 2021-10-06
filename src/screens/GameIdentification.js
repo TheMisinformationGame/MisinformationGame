@@ -65,6 +65,12 @@ export class GameIdentification extends ActiveGameScreen {
         }
     }
 
+    updateID(game, id) {
+        game.participant.participantID = id;
+        game.saveLocally();
+        this.setState({...this.state, value: id});
+    }
+
     renderWithStudyAndGame(study, game) {
         const target = "/game/" + study.id + "/pre-intro" + window.location.search;
         return (
@@ -77,7 +83,7 @@ export class GameIdentification extends ActiveGameScreen {
                     <input className="px-3 py-2 border border-gray-400 rounded-md justify-self-center bg-gray-100"
                            placeholder="ID Number"
                            value={this.state.value}
-                           onChange={e => this.setState({...this.state, value: e.target.value})}
+                           onChange={e => this.updateID(game, e.target.value)}
                            onKeyDown={e => this.handleKeyDown(e)}
                            onKeyUp={e => this.handleKeyUp(e, target)}>
                     </input>

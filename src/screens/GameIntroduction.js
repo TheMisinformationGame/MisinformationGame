@@ -1,5 +1,7 @@
 import {ContinueBanner} from "../components/ContinueButton";
 import {ActiveGameScreen} from "./ActiveGameScreen";
+import {Redirect} from "react-router-dom";
+import React from "react";
 
 
 class GameIntroductionScreen extends ActiveGameScreen {
@@ -20,6 +22,10 @@ class GameIntroductionScreen extends ActiveGameScreen {
     }
 
     renderWithStudyAndGame(study, game) {
+        const stage = game.getCurrentStage();
+        if (stage === "identification")
+            return (<Redirect to={"/game/" + study.id + "/id" + window.location.search} />);
+
         const content = this.getContent(study);
         const target = this.getTarget(study) + window.location.search;
         const delay = this.getContinueDelaySeconds(study);

@@ -12,7 +12,10 @@ export class ActiveGameScreen extends ActiveStudyScreen {
         super(props);
 
         // Get the session ID from the URL.
-        getDataManager().setSessionID(new URLSearchParams(window.location.search).get("s"));
+        const sessionID = new URLSearchParams(window.location.search).get("s");
+        if (sessionID) {
+            getDataManager().setSessionID(sessionID);
+        }
 
         this.defaultState = {
             study: null,
@@ -35,17 +38,21 @@ export class ActiveGameScreen extends ActiveStudyScreen {
         };
     }
 
-    reloadActiveGame() {
-        const manager = getDataManager();
-        manager.getActiveGame().then((game) => {
-            this.setStateIfMounted({...this.state, game: game, gameLoading: false});
-
-            const sessionID = manager.getSessionID();
+    updateQueryParams() {
+        setTimeout(() => {
+            const sessionID = getDataManager().getSessionID();
             const queryParams = new URLSearchParams(window.location.search);
             if (queryParams.get("s") !== sessionID) {
                 queryParams.set("s", sessionID);
                 this.props.history.replace(window.location.pathname + "?" + queryParams);
             }
+        }, 50);
+    }
+
+    reloadActiveGame() {
+        getDataManager().getActiveGame().then((game) => {
+            this.setStateIfMounted({...this.state, game: game, gameLoading: false});
+            this.updateQueryParams();
         }).catch(err => {
             console.error(err);
             this.setStateIfMounted({...this.state, gameLoadError: err.message, gameLoading: false});
@@ -102,6 +109,8 @@ export class ActiveGameScreen extends ActiveStudyScreen {
         if (!game)
             return <ErrorLabel className="text-2xl m-2" value="The game did not load correctly." />;
 
+        // Just in case
+        this.updateQueryParams();
         return this.renderWithStudyAndGame(study, game);
     }
 }
