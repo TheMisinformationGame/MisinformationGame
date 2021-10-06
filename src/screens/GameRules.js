@@ -36,7 +36,7 @@ export class GameRules extends SimpleActiveStudyScreen {
                     </ul>
 
                     <p className="leading-5 my-4">You will also be able to track your progress in terms of your follower count and credibility rating:</p>
-                    <img className="rounded-md max-w-xs my-8" src={progressView} alt="Example of what the game will look like" />
+                    <img className="rounded-md max-w-xs my-8" src={progressView} alt="Follower count and credibility rating" />
 
                     <p className="leading-5 my-4">Your <b><i>follower count</i></b> is the number of other users following you on this network.</p>
                     <p className="leading-5 my-4">Your <b><i>credibility rating</i></b> is an indication of how credible you are perceived to be.</p>
