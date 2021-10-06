@@ -72,14 +72,11 @@ async function sendWorkbook(workbook, response, fileName){
 //get the results object from firestore
 export function getResultsObject(studyID){
     db.collection("studies").doc(studyID).collection("Results").get().then((querySnapshot) => {
-        const TOTAL_NUM_PARTICIPANTS = 0;
-        const FULL_DATA = function(){
-
-            querySnapshot.array.forEach(doc => {
-                TOTAL_NUM_PARTICIPANTS = TOTAL_NUM_PARTICIPANTS + 1;
-
-            });
-        };
+        const FULL_DATA = [];
+        querySnapshot.forEach(doc => {
+            let docJSON = Game.fromJSON(doc);
+            FULL_DATA.push(docJSON);
+        });
         constructWorkbook(studyID, FULL_DATA);
     }).catch((error) =>{
         console.log("Error getting results data for study: " + studyID);
