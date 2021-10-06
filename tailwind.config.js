@@ -4,7 +4,6 @@ module.exports = {
   theme: {
     extend: {
       width: {
-        "30": "7.5rem",
         "xl": "36rem"
       },
       boxShadow: {

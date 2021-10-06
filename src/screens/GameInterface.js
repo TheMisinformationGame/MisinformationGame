@@ -74,7 +74,7 @@ class ReactButton extends Component {
                  className={
                      " group h-12 w-16 pt-1.5 px-1 sm:px-3 md:px-4 rounded text-center " +
                      " fill-current transition duration-100 " +
-                     (selected ? " bg-gray-100 " : " hover:bg-gray-100 ") +
+                     (selected ? " bg-gray-100 font-semibold " : " hover:bg-gray-100 ") +
                      (this.props.enabled ? " cursor-pointer " : "") +
                      (this.props.enabled && (selected || !selectionExists) ?
                          (selected ? " text-blue-700 " : " text-gray-700 ")
@@ -127,7 +127,7 @@ class ReactionsRow extends Component {
                 </div>
 
                 <ReactButton reaction="skip" selected={selected} onReact={onReact} enabled={enabled}
-                             className="w-30" fontSize="1.25rem" childClassName="transform translate-y-1">
+                             className="w-32" fontSize="1.25rem" childClassName="transform translate-y-1">
                     <p>Skip Post</p>
                 </ReactButton>
             </div>
