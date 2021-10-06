@@ -39,15 +39,25 @@ export function constructWorkbook(studyID, object){
     /**
      * Write the Results page
      */
-
     results_workbook.SheetNames.push("Results");
-    //iterate through each document in the collection
-    for(let docNum = 0; docNum < totalDocLen; i++ ){
+    const ALL_ROWS = [];      //array where all construct rows will get pushed
+    const TOTAL_DOCS = object.length;
+
+    //iterate through each document in the collection and then iterate through each response
+    //each response is a row in the sheet
+    for(let docNum = 0; docNum < TOTAL_DOCS; i++ ){
+        let doc = Object[docNum];
         //loop through each response
-        for(let i = 0; i < object.state.length; i++){
+        let NUM_RESPONSES = doc.state.length;
+        for(let i = 0; i < NUM_RESPONSES; i++){
+
             //get the information to be populated
-
-
+            let participantID = i;                  //TEMP CODE. NEED TO PARSE ID SOMEHOW
+            let studyID = studyID;
+            let postOrder = i;
+            let postID = doc.states[i].currentPost.postID;
+            let postLikes = 9999999999;            //TEMP CODE. NOT STORED
+            let
         }
     };
 
@@ -83,8 +93,3 @@ export function getResultsObject(studyID){
         console.log(error);
     });
 };
-
-//Class for all of the results in the studies
-export class AllResults{
-
-}
