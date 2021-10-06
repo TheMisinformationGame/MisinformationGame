@@ -8,6 +8,7 @@ import {
     WorkbookColumn,
     WorkbookLoc
 } from "../utils/excel";
+import {Game} from "../model/game";
 const XLSX = require("exceljs");
 
 export function constructWorkbook(studyID, object){
@@ -58,6 +59,7 @@ export function constructWorkbook(studyID, object){
 
 };
 
+//send the workbook to the client
 async function sendWorkbook(workbook, response, fileName){
     response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
@@ -70,9 +72,22 @@ async function sendWorkbook(workbook, response, fileName){
 //get the results object from firestore
 export function getResultsObject(studyID){
     db.collection("studies").doc(studyID).collection("Results").get().then((querySnapshot) => {
+        const TOTAL_NUM_PARTICIPANTS = 0;
+        const FULL_DATA = function(){
 
+            querySnapshot.array.forEach(doc => {
+                TOTAL_NUM_PARTICIPANTS = TOTAL_NUM_PARTICIPANTS + 1;
+
+            });
+        };
+        constructWorkbook(studyID, FULL_DATA);
     }).catch((error) =>{
         console.log("Error getting results data for study: " + studyID);
         console.log(error);
     });
+};
+
+//Class for all of the results in the studies
+export class AllResults{
+
 }
