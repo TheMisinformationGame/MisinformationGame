@@ -195,14 +195,12 @@ class GameFinished extends Component {
     render() {
         const target = "/game/" + getDataManager().getActiveStudyID() + "/debrief" + window.location.search;
         return (
-            <div className="flex justify-center items-center">
-                <div className="bg-white shadow">
-                    <div className="grid space-y-2 px-10 py-4 max-w-full text-center
-                                    fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                        <p className="text-xl"> Congratulations! You have completed the study. </p>
-                        {/* TODO Possibly put the debrief message here? or  */}
-                        <ContinueButton to={target} condition={true} />
-                    </div>
+            <div className="w-full bg-white shadow items-center">
+                <div className="px-10 py-8 max-w-full text-center">
+                    <p className="block text-xl mb-4">
+                        Congratulations! You have completed the study.
+                    </p>
+                    <ContinueButton className="block w-full" to={target} condition={true} />
                 </div>
             </div>
         )
@@ -223,23 +221,23 @@ class ParticipantProgress extends Component {
                 <div className="p-2 px-4 pb-3
                                 border-t border-gray-400 md:border-none">
 
-                    <p className="text-xl font-bold mb-1">
+                    <p className="text-xl font-semibold mb-2">
                         Your Progress
                     </p>
                     <p className="text-xl">
                         <SupervisedUserCircleIcon className="align-bottom mr-1" />
-                        <span className="text-lg">
+                        <span className="inline-block text-lg w-24 transform -translate-y-0.5">
                             {Math.round(participant.followers) === 1 ? "Follower" : "Followers"}:
                         </span>
-                        <span>&nbsp;{Math.round(participant.followers)}&nbsp;</span>
+                        <span className="font-semibold">&nbsp;{Math.round(participant.followers)}&nbsp;</span>
                     </p>
                     <p className="text-xl">
                         <CheckCircleIcon className="align-bottom mr-1" />
-                        <span className="text-lg">
+                        <span className="inline-block text-lg w-24">
                             Credibility:
                         </span>
                         <CredibilityLabel credibility={participant.credibility}
-                                          className={"transform translate-y-2" /* There has to be a better way... */} />
+                                          className={"transform translate-y-2"} />
                     </p>
 
                     <div onClick={this.props.onNextPost}
@@ -252,7 +250,7 @@ class ParticipantProgress extends Component {
                                  " bg-blue-500 active:bg-blue-600 hover:bg-blue-600 " : " bg-gray-400 ")
                          }>
 
-                        Continue to Next Post
+                        {this.props.nextPostText}
                     </div>
                 </div>
             </div>
@@ -336,6 +334,8 @@ export class GameScreen extends ActiveGameScreen {
         const participant = game.participant;
         const displayPrompt = state && !this.state.dismissedPrompt;
         const error = this.state.error;
+        const finished = game.isFinished();
+        const nextPostEnabled = (this.state.selectedReaction !== null);
         return (
             <>
                 {displayPrompt &&
@@ -351,13 +351,20 @@ export class GameScreen extends ActiveGameScreen {
                     {/* Progress. */}
                     {participant && !error &&
                         <ParticipantProgress participant={participant}
-                                             nextPostEnabled={this.state.selectedReaction !== null}
+                                             nextPostEnabled={nextPostEnabled}
                                              onNextPost={() => {
                                                  const reaction = this.state.selectedReaction;
                                                  if (reaction) {
                                                      this.onUserReact(reaction, game);
                                                  }
-                                             }} />}
+                                             }}
+                                             nextPostText={
+                                                 finished ?
+                                                     "The study is complete!" :
+                                                 nextPostEnabled ?
+                                                     "Continue to Next Post" :
+                                                     "React to the post to continue"
+                                             } />}
 
                     {/* Space in the middle. */}
                     <div className="flex-1 max-w-mini" />
@@ -375,8 +382,7 @@ export class GameScreen extends ActiveGameScreen {
                                        selectedReaction={this.state.selectedReaction} />}
 
                         {/* If the game is finished, display a game completed prompt. */}
-                        {game && game.isFinished() &&
-                            <GameFinished />}
+                        {finished && <GameFinished />}
 
                         {/* If there is an error, display it here. */}
                         {error && <ErrorLabel value={error} />}
