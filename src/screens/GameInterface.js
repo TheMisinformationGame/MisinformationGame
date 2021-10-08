@@ -6,6 +6,8 @@ import ReplyIcon from '@mui/icons-material/Reply';
 import FlagIcon from '@material-ui/icons/Flag';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {getDataManager} from "../model/manager";
 import {isOfType} from "../utils/types";
 import {PromiseImage} from "../components/PromiseImage";
@@ -14,7 +16,6 @@ import {ContinueButton} from "../components/ContinueButton";
 import {ErrorLabel} from "../components/StatusLabel"
 import {CredibilityLabel} from "../components/CredibilityLabel"
 import {ActiveGameScreen} from "./ActiveGameScreen";
-import {ConditionalLink} from "../components/ConditionalLink";
 import {Redirect} from "react-router-dom";
 
 
@@ -207,6 +208,27 @@ class GameFinished extends Component {
     }
 }
 
+class ChangeLabel extends Component {
+    render() {
+        if (!this.props.change)
+            return null;
+
+        let icon, change, colour;
+        if (this.props.change > 0) {
+            icon = <ArrowDropUpIcon className="mr-1.5" />
+            change = "+" + this.props.change;
+            colour = "#006be2";
+        } else {
+            icon = <ArrowDropDownIcon className="mr-1.5" />
+            change = this.props.change;
+            colour = "#961818";
+        }
+        return (<span className={"font-semibold " + (this.props.className || "")} style={{color: colour}}>
+            {icon} {change}
+        </span>);
+    }
+}
+
 class ParticipantProgress extends Component {
     render() {
         const participant = this.props.participant;
@@ -229,7 +251,10 @@ class ParticipantProgress extends Component {
                         <span className="inline-block text-lg w-24 transform -translate-y-0.5">
                             {Math.round(participant.followers) === 1 ? "Follower" : "Followers"}:
                         </span>
-                        <span className="font-semibold">&nbsp;{Math.round(participant.followers)}&nbsp;</span>
+                        <span className="font-semibold">
+                            &nbsp;{Math.round(participant.followers)}&nbsp;
+                        </span>
+                        <ChangeLabel change={this.props.followerChange} />
                     </p>
                     <p className="text-xl">
                         <CheckCircleIcon className="align-bottom mr-1" />
@@ -237,7 +262,8 @@ class ParticipantProgress extends Component {
                             Credibility:
                         </span>
                         <CredibilityLabel credibility={participant.credibility}
-                                          className={"transform translate-y-2"} />
+                                          className="transform translate-y-2" />
+                        <ChangeLabel change={this.props.credibilityChange} />
                     </p>
 
                     <div onClick={this.props.onNextPost}
@@ -263,15 +289,28 @@ export class GameScreen extends ActiveGameScreen {
         super(props);
         this.defaultState = {
             ...this.defaultState,
+            currentState: null,
+
             error: null,
             reactionsAllowed: false,
             selectedReaction: null,
             dismissedPrompt: false,
 
+            followerChange: null,
+            credibilityChange: null,
+            inputEnabled: true,
+
             postShowTime: null,
             firstInteractTime: null
         };
         this.state = this.defaultState;
+    }
+
+    afterGameLoaded(game) {
+        super.afterGameLoaded(game);
+        setTimeout(() => {
+            this.updateGameState(game, null);
+        });
     }
 
     onPromptContinue() {
@@ -297,19 +336,43 @@ export class GameScreen extends ActiveGameScreen {
         const firstInteractMS = this.state.firstInteractTime - postShowTime;
         const lastInteractMS = Date.now() - postShowTime;
 
+        const beforeFollowers = Math.round(game.participant.followers);
+        const beforeCredibility = Math.round(game.participant.credibility);
         game.advanceState(reaction, firstInteractMS, lastInteractMS);
-        this.updateGameState(game, null);
+
+        const followerChange = Math.round(game.participant.followers) - beforeFollowers;
+        const credibilityChange = Math.round(game.participant.credibility) - beforeCredibility;
+
+        // If there is a change, show it to the user for 2 seconds.
+        if (followerChange !== 0 || credibilityChange !== 0) {
+            this.setState({
+                ...this.state,
+                followerChange: followerChange,
+                credibilityChange: credibilityChange,
+                inputEnabled: false
+            });
+            setTimeout(() => {
+                this.updateGameState(game, null);
+            }, 1500);
+        } else {
+            this.updateGameState(game, null);
+        }
     }
 
     updateGameState(game, error, setDismissedPrompt) {
         const state = {
             ...this.state,
-            state: (game && !game.isFinished() ? game.getCurrentState() : null),
+            currentState: (game && !game.isFinished() ? game.getCurrentState() : null),
+
             error: error,
             reactionsAllowed: (!this.state.dismissedPrompt && !game),
             selectedReaction: null,
             postShowTime: Date.now(),
-            firstInteractTime: null
+            firstInteractTime: null,
+
+            followerChange: null,
+            credibilityChange: null,
+            inputEnabled: true,
         };
         if (setDismissedPrompt) {
             state.dismissedPrompt = true;
@@ -330,7 +393,7 @@ export class GameScreen extends ActiveGameScreen {
         if (stage === "identification")
             return (<Redirect to={"/game/" + study.id + "/id" + window.location.search} />);
 
-        const state = game.isFinished() ? null : game.getCurrentState();
+        const state = this.state.currentState;
         const participant = game.participant;
         const displayPrompt = state && !this.state.dismissedPrompt;
         const error = this.state.error;
@@ -338,7 +401,7 @@ export class GameScreen extends ActiveGameScreen {
         const nextPostEnabled = (this.state.selectedReaction !== null);
         return (
             <>
-                {displayPrompt &&
+                {displayPrompt && state &&
                     <GamePrompt study={state.study} onClick={() => this.onPromptContinue()} />}
 
                 <div className={"flex flex-row items-start w-full bg-gray-100 " +
@@ -350,21 +413,24 @@ export class GameScreen extends ActiveGameScreen {
 
                     {/* Progress. */}
                     {participant && !error &&
-                        <ParticipantProgress participant={participant}
-                                             nextPostEnabled={nextPostEnabled}
-                                             onNextPost={() => {
-                                                 const reaction = this.state.selectedReaction;
-                                                 if (reaction) {
-                                                     this.onUserReact(reaction, game);
-                                                 }
-                                             }}
-                                             nextPostText={
-                                                 finished ?
-                                                     "The study is complete!" :
-                                                 nextPostEnabled ?
-                                                     "Continue to Next Post" :
-                                                     "React to the post to continue"
-                                             } />}
+                        <ParticipantProgress
+                            participant={participant}
+                            nextPostEnabled={nextPostEnabled && this.state.inputEnabled}
+                            onNextPost={() => {
+                                const reaction = this.state.selectedReaction;
+                                if (reaction) {
+                                    this.onUserReact(reaction, game);
+                                }
+                            }}
+                            nextPostText={
+                                finished ?
+                                    "The study is complete!" :
+                                nextPostEnabled ?
+                                    "Continue to Next Post" :
+                                    "React to the post to continue"
+                            }
+                            followerChange={this.state.followerChange}
+                            credibilityChange={this.state.credibilityChange}/>}
 
                     {/* Space in the middle. */}
                     <div className="flex-1 max-w-mini" />
@@ -376,13 +442,14 @@ export class GameScreen extends ActiveGameScreen {
 
                         {/* Post, reactions, and comments. */}
                         {state && !error &&
-                        <PostComponent state={state}
-                                       onReact={r => this.onClickReaction(r)}
-                                       enableReactions={this.state.reactionsAllowed}
-                                       selectedReaction={this.state.selectedReaction} />}
+                            <PostComponent
+                                state={state}
+                                onReact={r => this.onClickReaction(r)}
+                                enableReactions={this.state.reactionsAllowed && this.state.inputEnabled}
+                                selectedReaction={this.state.selectedReaction} />}
 
                         {/* If the game is finished, display a game completed prompt. */}
-                        {finished && <GameFinished />}
+                        {!state && finished && <GameFinished />}
 
                         {/* If there is an error, display it here. */}
                         {error && <ErrorLabel value={error} />}

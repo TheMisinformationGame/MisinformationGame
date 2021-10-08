@@ -49,10 +49,17 @@ export class ActiveGameScreen extends ActiveStudyScreen {
         }, 50);
     }
 
+    /**
+     * Overwrite this to run code once the game loads.
+     */
+    afterGameLoaded(game) {
+        this.updateQueryParams();
+    }
+
     reloadActiveGame() {
         getDataManager().getActiveGame().then((game) => {
             this.setStateIfMounted({...this.state, game: game, gameLoading: false});
-            this.updateQueryParams();
+            this.afterGameLoaded(game);
         }).catch(err => {
             console.error(err);
             this.setStateIfMounted({...this.state, gameLoadError: err.message, gameLoading: false});
