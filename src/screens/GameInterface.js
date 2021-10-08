@@ -233,6 +233,9 @@ class ParticipantProgress extends Component {
     render() {
         const participant = this.props.participant;
         const nextPostEnabled = this.props.nextPostEnabled;
+
+        const followers = (this.props.overrideFollowers || participant.followers);
+        const credibility = (this.props.overrideCredibility || participant.credibility);
         return (
             <div className="fixed md:static w-full md:max-w-xs md:mt-2 lg:mt-5
                             bottom-0 md:bottom-auto md:top-0 left-1/2 md:left-0
@@ -249,10 +252,10 @@ class ParticipantProgress extends Component {
                     <p className="text-xl">
                         <SupervisedUserCircleIcon className="align-bottom mr-1" />
                         <span className="inline-block text-lg w-24 transform -translate-y-0.5">
-                            {Math.round(participant.followers) === 1 ? "Follower" : "Followers"}:
+                            Followers:
                         </span>
                         <span className="font-semibold">
-                            &nbsp;{Math.round(participant.followers)}&nbsp;
+                            &nbsp;{Math.round(followers)}&nbsp;
                         </span>
                         <ChangeLabel change={this.props.followerChange} />
                     </p>
@@ -261,7 +264,7 @@ class ParticipantProgress extends Component {
                         <span className="inline-block text-lg w-24">
                             Credibility:
                         </span>
-                        <CredibilityLabel credibility={participant.credibility}
+                        <CredibilityLabel credibility={credibility}
                                           className="transform translate-y-2" />
                         <ChangeLabel change={this.props.credibilityChange} />
                     </p>
@@ -296,6 +299,8 @@ export class GameScreen extends ActiveGameScreen {
             selectedReaction: null,
             dismissedPrompt: false,
 
+            overrideFollowers: null,
+            overrideCredibility: null,
             followerChange: null,
             credibilityChange: null,
             inputEnabled: true,
@@ -343,20 +348,62 @@ export class GameScreen extends ActiveGameScreen {
         const followerChange = Math.round(game.participant.followers) - beforeFollowers;
         const credibilityChange = Math.round(game.participant.credibility) - beforeCredibility;
 
-        // If there is a change, show it to the user for 2 seconds.
-        if (followerChange !== 0 || credibilityChange !== 0) {
-            this.setState({
-                ...this.state,
-                followerChange: followerChange,
-                credibilityChange: credibilityChange,
-                inputEnabled: false
-            });
-            setTimeout(() => {
-                this.updateGameState(game, null);
-            }, 1500);
-        } else {
+        // If there is no change, skip any animation.
+        if (followerChange === 0 && credibilityChange === 0) {
             this.updateGameState(game, null);
+            return;
         }
+
+        const animateTimeMS = 500;
+        const remainTimeMS = 1000;
+
+        // Show the change in followers and credibility.
+        this.setState({
+            ...this.state,
+            overrideFollowers: beforeFollowers,
+            overrideCredibility: beforeCredibility,
+            followerChange: followerChange,
+            credibilityChange: credibilityChange,
+            inputEnabled: false
+        });
+
+        function roundInDir(value, direction) {
+            if (direction < 0)
+                return Math.floor(value);
+            if (direction > 0)
+                return Math.ceil(value);
+            return Math.round(value);
+        }
+
+        // Animate the followers and credibility changing.
+        const maxStages = 20;
+        let lastFollowers = beforeFollowers;
+        let lastCredibility = beforeCredibility;
+        for (let stage = 1; stage <= maxStages; ++stage) {
+            const ratio = stage / maxStages;
+            const followers = roundInDir(beforeFollowers + followerChange * ratio, followerChange);
+            const credibility = roundInDir(beforeCredibility + credibilityChange * ratio, credibilityChange);
+
+            if (followers !== lastFollowers || credibility !== lastCredibility) {
+                lastFollowers = followers;
+                lastCredibility = credibility;
+                setTimeout(() => {
+                    this.setStateIfMounted({
+                        ...this.state,
+                        overrideFollowers: followers,
+                        overrideCredibility: credibility,
+                        followerChange: followerChange,
+                        credibilityChange: credibilityChange,
+                        inputEnabled: false
+                    });
+                }, stage * animateTimeMS / maxStages);
+            }
+        }
+
+        // The final timeout to change to the next post.
+        setTimeout(() => {
+            this.updateGameState(game, null);
+        }, animateTimeMS + remainTimeMS);
     }
 
     updateGameState(game, error, setDismissedPrompt) {
@@ -370,6 +417,8 @@ export class GameScreen extends ActiveGameScreen {
             postShowTime: Date.now(),
             firstInteractTime: null,
 
+            overrideFollowers: null,
+            overrideCredibility: null,
             followerChange: null,
             credibilityChange: null,
             inputEnabled: true,
@@ -415,6 +464,8 @@ export class GameScreen extends ActiveGameScreen {
                     {participant && !error &&
                         <ParticipantProgress
                             participant={participant}
+                            overrideFollowers={this.state.overrideFollowers}
+                            overrideCredibility={this.state.overrideCredibility}
                             nextPostEnabled={nextPostEnabled && this.state.inputEnabled}
                             onNextPost={() => {
                                 const reaction = this.state.selectedReaction;
