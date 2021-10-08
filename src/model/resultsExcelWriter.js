@@ -9,15 +9,24 @@ import {
     WorkbookLoc
 } from "../utils/excel";
 import {Game} from "../model/game";
+import { db } from "../database/firebase"
+import { SaveAltSharp } from "@material-ui/icons";
+import FileSaver from 'file-saver';
+
 const excel = require("exceljs");
 
+
+
 export function constructWorkbook(studyID, object){
+    console.log("Constructing Workbook");
     const RESULTS_WORKBOOK = new excel.Workbook();
+    const object2 = object[0];
 
     /**
      * Write the home page content
      * [DL] will like to add more information in the future
      */ 
+    console.log("constructing cover page");
     const COVER_WS = RESULTS_WORKBOOK.addWorksheet("Cover Page");
     
     COVER_WS.columns = [
@@ -27,65 +36,66 @@ export function constructWorkbook(studyID, object){
     ];
 
     COVER_WS.addRow([
-        object.study.study.id,
-        object.study.study.description,
-        Date.Now().toString()
+        object2.study.id,
+        object2.study.description,
+        Date.now().toString()
     ]);
 
     
     /**
      * Write the Results page
      */
+    console.log('constructing results');
     const RESULTS_WS = RESULTS_WORKBOOK.addWorksheet("Results");
     const ALL_ROWS = [];      //array where all construct rows will get pushed
     const TOTAL_DOCS = object.length;
     
-    RESULTS_WORKBOOK.columns = [
-        {header = "participantID", key: "participantID"},
-        {header = "sessionID", key: "sessionID"},
-        {header = "studyID", key: "studyID"},
-        {header = "postOrder", key: "postOrder"},
-        {header = "postID", key: "postID"},
-        {header = "postLikes", key: "postLikes"},
-        {header = "sourceID", key: "sourceID"},
-        {header = "sourceFollowers", key: "sourceFollowers"},
-        {header = "sourceCredibility", key: "sourceCredibility"},
-        {header = "reaction", key: "reaction"},
-        {header = "credibilityChange", key: "credibilityChange"},
-        {header = "followerChange", key: "followerChange"},
-        {header = "beforeCredibility", key: "beforeCredibility"},
-        {header = "afterCredibility", key: "afterCredibility"},
-        {header = "beforeFollowers", key: "beforeFollowers"},
-        {header = "afterFollowers", key: "afterFollowers"},
-        {header = "responseTime", key: "responseTime"}
+    RESULTS_WS.columns = [
+        {header : "participantID", key: "participantID"},
+        {header : "sessionID", key: "sessionID"},
+        {header : "studyID", key: "studyID"},
+        {header : "postOrder", key: "postOrder"},
+        {header : "postID", key: "postID"},
+        {header : "postLikes", key: "postLikes"},
+        {header : "sourceID", key: "sourceID"},
+        {header : "sourceFollowers", key: "sourceFollowers"},
+        {header : "sourceCredibility", key: "sourceCredibility"},
+        {header : "reaction", key: "reaction"},
+        {header : "credibilityChange", key: "credibilityChange"},
+        {header : "followerChange", key: "followerChange"},
+        {header : "beforeCredibility", key: "beforeCredibility"},
+        {header : "afterCredibility", key: "afterCredibility"},
+        {header : "beforeFollowers", key: "beforeFollowers"},
+        {header : "afterFollowers", key: "afterFollowers"},
+        {header : "responseTime", key: "responseTime"}
     ];
 
-
+    console.log("constructing results rows");
     //iterate through each document in the collection and then iterate through each response
     //each response is a row in the sheet
-    for(let docNum = 0; docNum < TOTAL_DOCS; i++ ){
-        let doc = Object[docNum];                   //this is the game object
+    for(let docNum = 0; docNum < TOTAL_DOCS; docNum++ ){
+        let doc = object[docNum];                   //this is the game object
         //loop through each response
-        let NUM_RESPONSES = doc.state.length;
+        let NUM_RESPONSES = doc.states.length;
         for(let i = 0; i < NUM_RESPONSES; i++){
             //get the information to be populated
             let participantID = doc.participant.participantID;                 
             let sessionID = doc.sessionID;
-            let studyID = studyID;
+            let studyID = doc.study.id;
             let postOrder = i;
-            let postID = doc.states[i].currentPost.postID;
-            let postLikes = 9999999999;            //TEMP CODE. NOT STORED
+            let postID = doc.states[i].currentPost.post.id;
+            let postLikes = "N/A";            //TEMP CODE. NOT STORED
             let sourceID = doc.states[i].currentSource.source.id;
-            let sourceFollowers = doc.states[i].currentSource.followers;
-            let sourceCredibility = doc.states[i].currentSource.credibility;
+            let sourceFollowers = Math.floor(doc.states[i].currentSource.followers);
+            let sourceCredibility = Math.floor(doc.states[i].currentSource.credibility);
             let reaction = doc.participant.reactions[i];
-            let credibilityChange = doc.states[i].currentPost.post.changesToCredibility;
-            let followerChange = doc.states[i].currentPost.post.changesToFollowers;
-            let beforeCredibility = doc.participant.credibilityHistory[i-1];
-            let afterCredibility = doc.participant.credibilityHistory[i];
-            let beforeFollowers = doc.participant.followerHistory[i-1];
-            let afterFollowers = doc.participant.followerHistory[i-1];
-            let responseTime = 99999999999;         //Temp code not yet stored
+            let beforeCredibility = Math.floor(doc.participant.credibilityHistory[i-1]);
+            let afterCredibility = Math.floor(doc.participant.credibilityHistory[i]);
+            let beforeFollowers = Math.floor(doc.participant.followerHistory[i-1]);
+            let afterFollowers = Math.floor(doc.participant.followerHistory[i]);
+            let credibilityChange = Math.floor(afterCredibility - beforeCredibility);
+            let followerChange = Math.floor(afterFollowers - beforeFollowers);
+            let responseTime = "N/A";         //Temp code not yet stored
             //construct the row
             let row = [
                 participantID, sessionID, studyID, postOrder, postID, postLikes, sourceID, 
@@ -96,18 +106,18 @@ export function constructWorkbook(studyID, object){
             ALL_ROWS.push(row);
         }
     };
-    RESULTS_WS.addRows(ALL_ROWS);
+    console.log("Add rows to worksheet");
+    ALL_ROWS.forEach((row) =>{
+        RESULTS_WS.addRow(row)
+    });
+
+
     /**
      * Export the work book
      */
-    RESULTS_WORKBOOK
-        .xlsx
-        .writeFile(studyID.toString() + "_" + Date.Now().toString()+".xlsx")
-        .then(()=> {
-            console.log("Worksheet Downloaed")
-        }).catch((err)=>{
-            console.log(err)
-        });
+    console.log("workbook ready");
+
+    download();
 };
 
 //send the workbook to the client
@@ -122,16 +132,33 @@ async function sendWorkbook(workbook, response, fileName){
 
 //get the results object from firestore
 //need to refactor in the getFromDB file
-export function getResultsObject(studyID){
-    db.collection("studies").doc(studyID).collection("Results").get().then((querySnapshot) => {
-        const FULL_DATA = [];
-        querySnapshot.forEach(doc => {
-            let docJSON = Game.fromJSON(doc);
-            FULL_DATA.push(docJSON);
-        });
-        constructWorkbook(studyID, FULL_DATA);
-    }).catch((error) =>{
+export async function getResultsObject(studyID){
+    try{
+        
+        const FULL_DATA = async ()  => {
+            var array_data = []
+            const DATA = await db.collection("Studies").doc(studyID).collection("Results").get();
+            for(let doc of DATA.docs){
+                let docJSON = Game.fromJSON(doc.data());
+                array_data.push(docJSON);
+            };
+            return(array_data)
+        }
+        constructWorkbook(studyID, await FULL_DATA());
+    } catch(err){
         console.log("Error getting results data for study: " + studyID);
-        console.log(error);
-    });
+        console.log(err);
+    }
+};
+
+const download = async () => {
+    try{
+        const buffer = await RESULTS_WORKBOOK.xlsx.writeBuffer();
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const blob= new Blob([buffer], {type: fileType});
+        FileSaver(blob, studyID.toString() + "_" + Date.now().toString()+".xlsx");
+        console.log("Worksheet Downloaed")
+    } catch(err) {
+    console.log(err)
+    }
 };

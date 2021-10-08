@@ -11,6 +11,8 @@ import {GamePreIntroduction, GamePostIntroduction} from "./screens/GameIntroduct
 import {GameRules} from "./screens/GameRules";
 import {GameDebrief} from "./screens/GameDebrief";
 import ErrorScreen from "./screens/Error";
+//test code
+import {constructWorkbook, getResultsObject} from "./model/resultsExcelWriter";
 
 ReactDOM.render(
   <React.StrictMode>

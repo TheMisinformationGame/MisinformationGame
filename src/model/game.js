@@ -410,7 +410,7 @@ export class Game {
      * Saves this game to the database.
      */
     saveToDatabase() {
-        postResults(this.toJSON(), this.study.id, 1);
+        postResults(this.toJSON(), this.study.id, this.participant.sessionID);
     }
 
     isFinished() {
