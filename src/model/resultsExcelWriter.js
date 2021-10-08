@@ -117,6 +117,19 @@ export function constructWorkbook(studyID, object){
      */
     console.log("workbook ready");
 
+    const download = async () => {
+        try{
+            const buffer = await RESULTS_WORKBOOK.xlsx.writeBuffer();
+            const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+            const blob= new Blob([buffer]);
+            FileSaver(blob, "results.xlsx");
+            console.log("Worksheet Downloaed")
+        } catch(err) {
+        console.log(err)
+        }
+    };
+    
+
     download();
 };
 
@@ -151,14 +164,3 @@ export async function getResultsObject(studyID){
     }
 };
 
-const download = async () => {
-    try{
-        const buffer = await RESULTS_WORKBOOK.xlsx.writeBuffer();
-        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-        const blob= new Blob([buffer], {type: fileType});
-        FileSaver(blob, studyID.toString() + "_" + Date.now().toString()+".xlsx");
-        console.log("Worksheet Downloaed")
-    } catch(err) {
-    console.log(err)
-    }
-};
