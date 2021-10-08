@@ -49,12 +49,9 @@ export class GameRules extends ActiveGameScreen {
                     <p className="leading-5 my-4">Your <b><i>follower count</i></b> is the number of other users following you on this network.</p>
                     <p className="leading-5 my-4">Your <b><i>credibility rating</i></b> is an indication of how credible you are perceived to be.</p>
 
-                    {/* <p className="leading-5 mb-4">Each time you react to a post you will likely increase or decrease your followers and credibility. Your followers count represents the number of people following you. The credibility percentage records how credibile you are perceved to be.
-
-                    When you look at the post itself you will see that there are users in the top left of both posts and comments. These users have credibilty next to their name and the user who posted the top post will also have a number of followers displayed. Keep these numbers in mind when deciding how to react to a post.
-
-
-                    </p> */}
+                    <p className="leading-5 mb-4">
+                        To move on to the next post, you have to select one reaction to the post and before pressing <p className="font-mono">Continue to next post</p>
+                    </p>
                 </div>
 
                 <ContinueBanner to={target} condition={true} delay={continueDelaySeconds} />
