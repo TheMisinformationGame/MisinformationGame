@@ -105,7 +105,7 @@ class ReactionsRow extends Component {
         const enabled = this.props.enabled;
         const selected = this.props.selectedReaction;
         return (
-            <div className="text-lg flex flex-row p-2">
+            <div className="text-lg flex flex-wrap flex-row p-2">
                 <div className="flex flex-grow">
                     <ReactButton reaction="like" selected={selected} onReact={onReact} enabled={enabled}
                                  childClassName="transform -translate-y-0.5 -translate-x-1"
@@ -117,7 +117,7 @@ class ReactionsRow extends Component {
                         <ThumbDownIcon/></ReactButton>
                     <ReactButton reaction="share" selected={selected} onReact={onReact} enabled={enabled}
                                  fontSize="3.25rem" className="mr-1 transform flip-x"
-                                 childClassName="transform -translate-y-2.5 -translate-x-3"
+                                 childClassName="transform -translate-y-2.5 -translate-x-0.5 md:-translate-x-3"
                                  title="Share">
                         <ReplyIcon/></ReactButton>
                     <ReactButton reaction="flag" selected={selected} onReact={onReact} enabled={enabled}
@@ -214,19 +214,30 @@ class ParticipantProgress extends Component {
         const participant = this.props.participant;
         const nextPostEnabled = this.props.nextPostEnabled;
         return (
-            <div className="fixed w-full md:max-w-xl bottom-0 left-1/2 transform -translate-x-1/2
-                                    shadow-2xl md:border-l-2 md:border-r-2 md:border-opacity-0">
-                <div className="p-2 px-4 pb-3 bg-white border-t border-gray-400">
+            <div className="fixed md:static w-full md:max-w-xs md:mt-2 lg:mt-5
+                            bottom-0 md:bottom-auto md:top-0 left-1/2 md:left-0
+                            transform -translate-x-1/2 md:translate-x-0
+                            z-10 md:rounded-xl bg-white shadow-2xl md:shadow-xl
+                            md:border md:border-gray-400">
+
+                <div className="p-2 px-4 pb-3
+                                border-t border-gray-400 md:border-none">
+
                     <p className="text-xl font-bold mb-1">
                         Your Progress
                     </p>
                     <p className="text-xl">
                         <SupervisedUserCircleIcon className="align-bottom mr-1" />
+                        <span className="text-lg">
+                            {Math.round(participant.followers) === 1 ? "Follower" : "Followers"}:
+                        </span>
                         <span>&nbsp;{Math.round(participant.followers)}&nbsp;</span>
-                        {Math.round(participant.followers) === 1 ? "Follower" : "Followers"}
-
-                        <CheckCircleIcon className="align-bottom ml-6 mr-1" />
-                        Credibility:
+                    </p>
+                    <p className="text-xl">
+                        <CheckCircleIcon className="align-bottom mr-1" />
+                        <span className="text-lg">
+                            Credibility:
+                        </span>
                         <CredibilityLabel credibility={participant.credibility}
                                           className={"transform translate-y-2" /* There has to be a better way... */} />
                     </p>
@@ -330,31 +341,12 @@ export class GameScreen extends ActiveGameScreen {
                 {displayPrompt &&
                     <GamePrompt study={state.study} onClick={() => this.onPromptContinue()} />}
 
-                <div className={"w-full bg-gray-100 " + (displayPrompt ? "filter blur" : "")}
+                <div className={"flex flex-row items-start w-full bg-gray-100 " +
+                                (displayPrompt ? " filter blur " : "")}
                      style={{minHeight: "100vh"}}>
 
-                    <div className="w-full md:max-w-xl ml-auto mr-auto bg-gray-200
-                                    md:border-l-2 md:border-r-2 md:border-gray-700 shadow-2xl"
-                         style={{minHeight: "100vh"}}>
-
-                        {/* Post, reactions, and comments. */}
-                        {state && !error &&
-                            <PostComponent state={state}
-                                           onReact={r => this.onClickReaction(r)}
-                                           enableReactions={this.state.reactionsAllowed}
-                                           selectedReaction={this.state.selectedReaction} />}
-
-                        {/* If the game is finished, display a game completed prompt. */}
-                        {game && game.isFinished() &&
-                            <GameFinished />
-                        }
-
-                        {/* If there is an error, display it here. */}
-                        {error && <ErrorLabel value={error} />}
-
-                        {/* Used for reserving space below reactions and progress. */}
-                        <div className="h-40" />
-                    </div>
+                    {/* Space to the left. */}
+                    <div className="flex-1" />
 
                     {/* Progress. */}
                     {participant && !error &&
@@ -366,6 +358,36 @@ export class GameScreen extends ActiveGameScreen {
                                                      this.onUserReact(reaction, game);
                                                  }
                                              }} />}
+
+                    {/* Space in the middle. */}
+                    <div className="flex-1 max-w-mini" />
+
+                    {/* */}
+                    <div className="bg-gray-200 w-full md:max-w-xl
+                                    md:border-l-2 md:border-r-2 md:border-gray-700 shadow-2xl"
+                         style={{minHeight: "100vh"}}>
+
+                        {/* Post, reactions, and comments. */}
+                        {state && !error &&
+                        <PostComponent state={state}
+                                       onReact={r => this.onClickReaction(r)}
+                                       enableReactions={this.state.reactionsAllowed}
+                                       selectedReaction={this.state.selectedReaction} />}
+
+                        {/* If the game is finished, display a game completed prompt. */}
+                        {game && game.isFinished() &&
+                            <GameFinished />}
+
+                        {/* If there is an error, display it here. */}
+                        {error && <ErrorLabel value={error} />}
+
+                        {/* Used for reserving space below reactions and progress. */}
+                        <div className="h-56 md:h-8" />
+                    </div>
+
+                    {/* Space to the right. */}
+                    <div className="flex-1" />
+                    <div className="flex-1" />
                 </div>
             </>
         );

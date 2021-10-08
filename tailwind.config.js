@@ -6,6 +6,9 @@ module.exports = {
       width: {
         "xl": "36rem"
       },
+      maxWidth: {
+        "mini": "1.5rem"
+      },
       boxShadow: {
         'up': '0 10px 20px 5px rgba(0, 0, 0, 0.3)',
       }
