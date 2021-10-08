@@ -33,9 +33,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-
-
-
-console.log("run");
-getResultsObject("1632891323584")
