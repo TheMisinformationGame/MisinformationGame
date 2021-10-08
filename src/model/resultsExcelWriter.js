@@ -46,18 +46,28 @@ export function constructWorkbook(studyID, object){
     //iterate through each document in the collection and then iterate through each response
     //each response is a row in the sheet
     for(let docNum = 0; docNum < TOTAL_DOCS; i++ ){
-        let doc = Object[docNum];
+        let doc = Object[docNum];                   //this is the game object
         //loop through each response
         let NUM_RESPONSES = doc.state.length;
         for(let i = 0; i < NUM_RESPONSES; i++){
 
             //get the information to be populated
-            let participantID = i;                  //TEMP CODE. NEED TO PARSE ID SOMEHOW
+            let participantID = doc.participant.participantID;                 
+            let sessionID = doc.sessionID;
             let studyID = studyID;
             let postOrder = i;
             let postID = doc.states[i].currentPost.postID;
             let postLikes = 9999999999;            //TEMP CODE. NOT STORED
-            let
+            let sourceID = doc.states[i].currentSource.source.id;
+            let sourceFollowers = doc.states[i].currentSource.followers;
+            let sourceCredibility = doc.states[i].currentSource.credibility;
+            let reaction = doc.participant.reactions[i];
+            let credibilityChange = doc.states[i].currentPost.post.changesToCredibility;
+            let followerChange = doc.states[i].currentPost.post.changesToFollowers;
+            let beforeCredibility = doc.participant.credibilityHistory[i-1]
+            let afterCredibility = doc.participant.credibilityHistory[i]
+            let beforeFollowers = doc.participant.followerHistory[i-1]
+            let beforeFollowers = doc.participant.followerHistory[i-1]
         }
     };
 
