@@ -9,39 +9,57 @@ import {
     WorkbookLoc
 } from "../utils/excel";
 import {Game} from "../model/game";
-const XLSX = require("exceljs");
+const excel = require("exceljs");
 
 export function constructWorkbook(studyID, object){
-    var results_workbook = XLSX.utils.book_new();
-
-    results_workbook.Props = {
-        Title: object.study.study.id + " Results Workbook",
-        Subject: object.study.study.description,
-        OutputDate: new Date.now()
-    };
+    const RESULTS_WORKBOOK = new excel.Workbook();
 
     /**
      * Write the home page content
+     * [DL] will like to add more information in the future
      */ 
-    results_workbook.SheetNames.push("Cover Page");
-    var home_row1 = ["Study", object.study.study.id];
-    var home_row2 = ['Description', object.study.study.description];
-    var home_row3 = ['Date Outputted', Date.Now().toString()]; 
+    const COVER_WS = RESULTS_WORKBOOK.addWorksheet("Cover Page");
     
-    var home_content = XLSX.utils.aoa_to_sheet([
-        home_row1, 
-        home_row2, 
-        home_row3
+    COVER_WS.columns = [
+        {header : "Study", key : "studyCol"},
+        {header : "Description", key : "desc"},
+        {header : "Date Outputted", key : "date"}
+    ];
+
+    COVER_WS.addRow([
+        object.study.study.id,
+        object.study.study.description,
+        Date.Now().toString()
     ]);
 
-    results_workbook.Sheets["Cover Page"] = home_content
     
     /**
      * Write the Results page
      */
-    results_workbook.SheetNames.push("Results");
+    const RESULTS_WS = RESULTS_WORKBOOK.addWorksheet("Results");
     const ALL_ROWS = [];      //array where all construct rows will get pushed
     const TOTAL_DOCS = object.length;
+    
+    RESULTS_WORKBOOK.columns = [
+        {header = "participantID", key: "participantID"},
+        {header = "sessionID", key: "sessionID"},
+        {header = "studyID", key: "studyID"},
+        {header = "postOrder", key: "postOrder"},
+        {header = "postID", key: "postID"},
+        {header = "postLikes", key: "postLikes"},
+        {header = "sourceID", key: "sourceID"},
+        {header = "sourceFollowers", key: "sourceFollowers"},
+        {header = "sourceCredibility", key: "sourceCredibility"},
+        {header = "reaction", key: "reaction"},
+        {header = "credibilityChange", key: "credibilityChange"},
+        {header = "followerChange", key: "followerChange"},
+        {header = "beforeCredibility", key: "beforeCredibility"},
+        {header = "afterCredibility", key: "afterCredibility"},
+        {header = "beforeFollowers", key: "beforeFollowers"},
+        {header = "afterFollowers", key: "afterFollowers"},
+        {header = "responseTime", key: "responseTime"}
+    ];
+
 
     //iterate through each document in the collection and then iterate through each response
     //each response is a row in the sheet
@@ -50,7 +68,6 @@ export function constructWorkbook(studyID, object){
         //loop through each response
         let NUM_RESPONSES = doc.state.length;
         for(let i = 0; i < NUM_RESPONSES; i++){
-
             //get the information to be populated
             let participantID = doc.participant.participantID;                 
             let sessionID = doc.sessionID;
@@ -64,19 +81,33 @@ export function constructWorkbook(studyID, object){
             let reaction = doc.participant.reactions[i];
             let credibilityChange = doc.states[i].currentPost.post.changesToCredibility;
             let followerChange = doc.states[i].currentPost.post.changesToFollowers;
-            let beforeCredibility = doc.participant.credibilityHistory[i-1]
-            let afterCredibility = doc.participant.credibilityHistory[i]
-            let beforeFollowers = doc.participant.followerHistory[i-1]
-            let beforeFollowers = doc.participant.followerHistory[i-1]
+            let beforeCredibility = doc.participant.credibilityHistory[i-1];
+            let afterCredibility = doc.participant.credibilityHistory[i];
+            let beforeFollowers = doc.participant.followerHistory[i-1];
+            let afterFollowers = doc.participant.followerHistory[i-1];
+            let responseTime = 99999999999;         //Temp code not yet stored
+            //construct the row
+            let row = [
+                participantID, sessionID, studyID, postOrder, postID, postLikes, sourceID, 
+                sourceFollowers, sourceCredibility, reaction, credibilityChange, followerChange,
+                beforeCredibility, afterCredibility, beforeFollowers, afterFollowers, responseTime
+            ];
+            //push the constructed row to the ALL_ROWS 
+            ALL_ROWS.push(row);
         }
     };
-
-
+    RESULTS_WS.addRows(ALL_ROWS);
     /**
      * Export the work book
      */
-
-
+    RESULTS_WORKBOOK
+        .xlsx
+        .writeFile(studyID.toString() + "_" + Date.Now().toString()+".xlsx")
+        .then(()=> {
+            console.log("Worksheet Downloaed")
+        }).catch((err)=>{
+            console.log(err)
+        });
 };
 
 //send the workbook to the client
@@ -90,6 +121,7 @@ async function sendWorkbook(workbook, response, fileName){
 }
 
 //get the results object from firestore
+//need to refactor in the getFromDB file
 export function getResultsObject(studyID){
     db.collection("studies").doc(studyID).collection("Results").get().then((querySnapshot) => {
         const FULL_DATA = [];
