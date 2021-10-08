@@ -444,14 +444,14 @@ export class GameScreen extends ActiveGameScreen {
 
         const state = this.state.currentState;
         const participant = game.participant;
-        const displayPrompt = state && !this.state.dismissedPrompt;
+        const displayPrompt = !this.state.dismissedPrompt;
         const error = this.state.error;
         const finished = game.isFinished();
         const nextPostEnabled = (this.state.selectedReaction !== null);
         return (
             <>
-                {displayPrompt && state &&
-                    <GamePrompt study={state.study} onClick={() => this.onPromptContinue()} />}
+                {displayPrompt &&
+                    <GamePrompt study={study} onClick={() => this.onPromptContinue()} />}
 
                 <div className={"flex flex-row items-start w-full bg-gray-100 " +
                                 (displayPrompt ? " filter blur " : "")}
