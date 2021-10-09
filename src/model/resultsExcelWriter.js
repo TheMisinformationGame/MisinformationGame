@@ -156,5 +156,6 @@ export async function downloadResults(study) {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"
     });
     FileSaver.saveAs(blob, "results.xlsx");
+    return problems;
 }
 

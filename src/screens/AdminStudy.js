@@ -51,7 +51,7 @@ class AdminStudy extends MountAwareComponent {
     }
 
     hideConfirmation() {
-        this.setState({...this.defaultState});
+        this.setStateIfMounted({...this.defaultState});
     }
 
     hideProgress() {
@@ -62,12 +62,12 @@ class AdminStudy extends MountAwareComponent {
                 progress: Status.success("The deletion of this study has been cancelled.")
             });
         } else {
-            this.setState({...this.defaultState});
+            this.setStateIfMounted({...this.defaultState});
         }
     }
 
     hideStudyUpdate() {
-        this.setState({...this.defaultState});
+        this.setStateIfMounted({...this.defaultState});
     }
 
     showError(errorTitle, errorMessage) {
@@ -79,13 +79,38 @@ class AdminStudy extends MountAwareComponent {
     }
 
     downloadResults(study) {
-        // TODO : Progress bar that lets you cancel
-        //        downloads.
-        downloadResults(study).then(() => {
-            console.log("downloaded");
-        }).catch((err) => {
-            console.error(err);
+        this.setState({
+            ...this.defaultState,
+            progressTitle: "Downloading results...",
+            progress: Status.progress("The results of this study are downloading...")
         });
+        setTimeout(() => {
+            downloadResults(study).then(() => {
+                // Successfully downloaded!
+                this.setStateIfMounted({
+                    ...this.defaultState,
+                    progressTitle: "Results downloaded",
+                    progress: Status.success([
+                        "Results downloaded!",
+                        <p className="mt-4 text-lg">
+                            There should be a dialog open where you can select where
+                            you wish to save the results spreadsheet.
+                        </p>
+                    ])
+                });
+            }).catch((error) => {
+                // There was an error downloading the results...
+                console.error(error);
+                this.setStateIfMounted({
+                    ...this.defaultState,
+                    progressTitle: "Error downloading results",
+                    progress: Status.error([
+                        <b>There was an error:</b>,
+                        error.message
+                    ])
+                });
+            });
+        }, 50);
     }
 
     updateStudy(study) {
