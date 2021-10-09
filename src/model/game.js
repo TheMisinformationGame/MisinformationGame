@@ -527,6 +527,7 @@ export class Game {
         // Generate a completion code when the game is finished.
         if (this.isFinished()) {
             this.completionCode = this.study.generateRandomCompletionCode();
+            this.endTime = getUnixEpochTimeSeconds();
         }
 
         // Allows us to restore the game if the user refreshes the page.
@@ -534,7 +535,6 @@ export class Game {
 
         // Allows us to create the results for this game.
         if (this.isFinished()) {
-            this.endTime = getUnixEpochTimeSeconds();
             this.saveToDatabase();
         }
     }
