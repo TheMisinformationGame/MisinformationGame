@@ -110,7 +110,7 @@ function constructWorkbook(study, results, problems) {
         participantWorksheet.addRow({
             participantID: game.participant.participantID,
             sessionID: game.sessionID,
-            completionCode: game.completionCode,
+            completionCode: game.completionCode || "",
             gameStartTime: formatUTCDate(startTime),
             gameEndTime: formatUTCDate(endTime),
             studyModTime: formatUTCDate(studyModTime)

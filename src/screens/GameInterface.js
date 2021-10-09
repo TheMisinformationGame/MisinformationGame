@@ -13,10 +13,11 @@ import {isOfType} from "../utils/types";
 import {PromiseImage} from "../components/PromiseImage";
 import {GamePrompt} from "./GamePrompt";
 import {ContinueButton} from "../components/ContinueButton";
-import {ErrorLabel} from "../components/StatusLabel"
+import {ErrorLabel, ProgressLabel} from "../components/StatusLabel"
 import {CredibilityLabel} from "../components/CredibilityLabel"
 import {ActiveGameScreen} from "./ActiveGameScreen";
 import {Redirect} from "react-router-dom";
+import {MountAwareComponent} from "../components/MountAwareComponent";
 
 
 class Source extends Component {
@@ -192,16 +193,78 @@ class PostComponent extends Component {
     }
 }
 
-class GameFinished extends Component {
+class GameFinished extends MountAwareComponent {
+    constructor(props) {
+        super(props);
+        this.defaultState = {
+            saving: true,
+            saved: false,
+            error: null
+        };
+        this.state = this.defaultState;
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+        this.updateSaveStateFromGame()
+    }
+
+    updateSaveStateFromGame() {
+        const game = this.props.game;
+        let promise = game.getSaveToDatabasePromise();
+        if (!promise) {
+            promise = game.saveToDatabase();
+        }
+
+        this.setState({...this.defaultState});
+        promise.then(() => {
+            this.setStateIfMounted({
+                saving: false,
+                saved: true,
+                error: null
+            });
+        }).catch(error => {
+            console.error(error);
+            this.setStateIfMounted({
+                saving: false,
+                saved: false,
+                error: error.message
+            });
+        });
+    }
+
+    retry() {
+        const game = this.props.game;
+        game.saveToDatabase();
+        this.updateSaveStateFromGame();
+    }
+
     render() {
-        const target = "/game/" + getDataManager().getActiveStudyID() + "/debrief" + window.location.search;
+        const study = this.props.study;
+        const target = "/game/" + study.id + "/debrief" + window.location.search;
         return (
             <div className="w-full bg-white shadow items-center">
                 <div className="px-10 py-8 max-w-full text-center">
                     <p className="block text-xl mb-4">
                         Congratulations! You have completed the study.
                     </p>
-                    <ContinueButton className="block w-full" to={target} condition={true} />
+
+                    {/* Allow the user to continue if their results have been saved. */}
+                    {this.state.saved && <ContinueButton className="block w-full" to={target} condition={true} />}
+
+                    {/* If the results are being saved, show a progress wheel. */}
+                    {this.state.saving && <ProgressLabel value="Your results are being saved..." />}
+
+                    {/* If there was an error saving their results, show the error, and ask them to try again. */}
+                    {this.state.error && <>
+                        <ErrorLabel value={[<b>There was an error saving your results:</b>, this.state.error]} />
+                        <div onClick={() => this.retry()}
+                             className="mt-3 px-3 py-2 rounded-md text-white select-none
+                                        cursor-pointer bg-blue-500 active:bg-blue-600 hover:bg-blue-600 ">
+
+                            Try Again
+                        </div>
+                    </>}
                 </div>
             </div>
         )
@@ -500,7 +563,7 @@ export class GameScreen extends ActiveGameScreen {
                                 selectedReaction={this.state.selectedReaction} />}
 
                         {/* If the game is finished, display a game completed prompt. */}
-                        {!state && finished && <GameFinished />}
+                        {!state && finished && <GameFinished study={study} game={game} />}
 
                         {/* If there is an error, display it here. */}
                         {error && <ErrorLabel value={error} />}

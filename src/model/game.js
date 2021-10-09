@@ -385,6 +385,8 @@ export class Game {
     dismissedPrompt; // Boolean
     completionCode; // String
 
+    saveResultsToDatabasePromise; // Promise, not saved
+
     constructor(sessionID, study, startTime, endTime, states, participant, dismissedPrompt, completionCode) {
         doTypeCheck(sessionID, "string", "Game Session ID")
         doTypeCheck(study, Study, "Game Study");
@@ -402,6 +404,8 @@ export class Game {
         this.participant = participant;
         this.dismissedPrompt = dismissedPrompt;
         this.completionCode = completionCode;
+
+        this.saveResultsToDatabasePromise = null;
     }
 
     /**
@@ -417,8 +421,18 @@ export class Game {
      * Saves this game to the database.
      */
     saveToDatabase() {
-        // TODO : Show progress, allow re-try if it failed.
-        postResults(this.study, this);
+        this.saveResultsToDatabasePromise = postResults(this.study, this);
+        return this.saveResultsToDatabasePromise;
+    }
+
+    /**
+     * After the game is finished, the results will automatically be
+     * saved to the database. Once this upload has started, this
+     * Promise will be populated to keep track of the progress of
+     * that upload.
+     */
+    getSaveToDatabasePromise() {
+        return this.saveResultsToDatabasePromise;
     }
 
     isFinished() {
