@@ -435,6 +435,9 @@ export class Game {
         return this.saveResultsToDatabasePromise;
     }
 
+    /**
+     * Returns whether there are no more posts to show to the participant.
+     */
     isFinished() {
         return this.participant.reactions.length >= this.study.length;
     }

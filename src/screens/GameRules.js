@@ -1,5 +1,4 @@
 import reactionOptions from "./reaction-options.png"
-import progressView from "./progress-view.png"
 import {ContinueBanner} from "../components/ContinueButton";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
@@ -8,6 +7,7 @@ import FlagIcon from '@material-ui/icons/Flag';
 import {ActiveGameScreen} from "./ActiveGameScreen";
 import {Redirect} from "react-router-dom";
 import React from "react";
+import {ParticipantProgress} from "../components/ParticipantProgress";
 
 /**
  * The page that is shown to explain the rules of the game to participants.
@@ -28,29 +28,73 @@ export class GameRules extends ActiveGameScreen {
         const continueDelaySeconds = 15;
         return (
             <div>
-                <div className="m-1 bg-white p-10">
-                    <h2 className="align-middle text-4xl mb-4">How to participate</h2>
+                <div className="m-1 bg-white p-10 max-w-4xl ml-auto mr-auto">
+                    <h2 className="align-middle text-4xl mb-4">How to Participate</h2>
                     <p className="leading-5 mb-4">
-                    You will be shown a series of posts, which you are encouraged to interact with. To begin with, you will have a certain number of followers, and a credibility rating. These may change dynamically as you continue interacting with the posts.</p>
-                    <p className="leading-5 mb-4">
-                    When you see a post, there are the following options: </p>
-                    <img className="rounded-md max-w-xs my-8" src={reactionOptions} alt="Row of icons: Like, Dislike, Share, Flag, Skip" />
+                        You will be shown a series of posts, which you are encouraged to interact with.
+                        To begin with, you will start with 0 followers and a credibility rating of 50.
+                        As you interact with posts, these values may change based upon your interactions.
+                    </p>
+                    <p className="leading-5 my-4 mt-6">
+                        When you are shown a post, you may choose one of the following reactions:
+                    </p>
+                    <img className="w-full max-w-xs mt-4 mb-6 rounded-md shadow border border-gray-400"
+                         src={reactionOptions}
+                         alt="Row of icons: Like, Dislike, Share, Flag, Skip" />
+
                     <ul className="list-none list-inside mt-4">
-                        <li className="leading-5 mb-4"><ThumbUpIcon /> The <b><i>like</i></b> button will indicate to others that you like the content of this post.</li>
-                        <li className="leading-5 mb-4"><ThumbDownIcon /> The <b><i>dislike</i></b> button will indicate to others that you dislike the content of this post.</li>
-                        <li className="leading-5 mb-4"><ReplyIcon /> The <b><i>share</i></b> button will show this post to your followers.</li>
-                        <li className="leading-5 mb-4"><FlagIcon /> The <b><i>flag</i></b> button will report this post as harmful or misleading.</li>
-                        <li className="leading-5 mb-4"> The <b><i>skip post </i></b> button will take you straight to the next post.</li>
+                        <li className="leading-5 mb-4">
+                            <ThumbUpIcon className="text-gray-700 mr-2" />
+                            The <b><i>like</i></b> button will indicate to others that you like
+                            the content of this post.
+                        </li>
+                        <li className="leading-5 mb-4">
+                            <ThumbDownIcon className="text-gray-700 mr-2" />
+                            The <b><i>dislike</i></b> button will indicate to others that you dislike
+                            the content of this post.
+                        </li>
+                        <li className="leading-5 mb-4">
+                            <span className="inline-block transform scale-125">
+                                <ReplyIcon className="text-gray-700 mr-2 transform flip-x" />
+                            </span>
+                            The <b><i>share</i></b> button will show this post to your followers.
+                        </li>
+                        <li className="leading-5 mb-4">
+                            <FlagIcon className="text-gray-700 mr-2" />
+                            The <b><i>flag</i></b> button will report this post as harmful or misleading.
+                        </li>
+                        <li className="leading-5 mb-4">
+                            The <b><i>skip post </i></b> button will allow you to not interact with the post at all.
+                        </li>
                     </ul>
 
-                    <p className="leading-5 my-4">You will also be able to track your progress in terms of your follower count and credibility rating:</p>
-                    <img className="rounded-md max-w-xs my-8" src={progressView} alt="Follower count and credibility rating" />
+                    <p className="leading-5 mb-4 mt-6">
+                        To move on to the next post, you must first select to like, dislike, share, flag,
+                        or skip the post, which can be done underneath the content of the post. Once you
+                        have reacted to the post, you will be able to press the
+                        <b>&nbsp;Continue to Next Post&nbsp;</b>
+                        button underneath <b>Your Progress</b>.
+                    </p>
 
-                    <p className="leading-5 my-4">Your <b><i>follower count</i></b> is the number of other users following you on this network.</p>
-                    <p className="leading-5 my-4">Your <b><i>credibility rating</i></b> is an indication of how credible you are perceived to be.</p>
+                    <p className="leading-5 mb-4 mt-6">
+                        Your own followers and credibility rating will also be shown under
+                        <b>&nbsp;Your Progress</b>,
+                    </p>
+                    <ParticipantProgress
+                        overrideName="Example"
+                        overrideFollowers={13}
+                        overrideCredibility={56}
+                        nextPostText="Continue to Next Post"
+                        onNextPost={() => {}}
+                        nextPostEnabled={true}/>
 
-                    <p className="leading-5 mb-4">
-                        To move on to the next post, you have to select one reaction to the post and before pressing <p className="font-mono">Continue to next post</p>
+                    <p className="leading-5 my-4">
+                        Your <b><i>follower count</i></b> is the number of other users
+                        following you on this network.
+                    </p>
+                    <p className="leading-5 my-4">
+                        Your <b><i>credibility rating</i></b> is an indication of how
+                        credible you are perceived to be.
                     </p>
                 </div>
 
