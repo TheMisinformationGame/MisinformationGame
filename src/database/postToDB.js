@@ -79,11 +79,15 @@ export function uploadImagesToStorage(imageDict, progressFn) {
 }
 
 //send the object which contains all of the reactions to the post
-export function postResults(object, studyID, participantID){
+
+/**
+ * Save the game results {@param game} to the results of study {@param study}.
+ */
+export function postResults(study, game) {
     let studyCol = db.collection("Studies");
-    let studyDoc = studyCol.doc(studyID);
+    let studyDoc = studyCol.doc(study.id);
     let resultsCol = studyDoc.collection("Results");
-    resultsCol.doc(participantID.toString()).set(object).then((data) => {
+    resultsCol.doc(game.sessionID).set(game.toJSON()).then(() => {
         console.log("Results uploaded!");
     }).catch((error) => {
         console.log(error)

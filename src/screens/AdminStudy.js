@@ -17,6 +17,8 @@ import {MountAwareComponent} from "../components/MountAwareComponent";
 import {getDataManager} from "../model/manager";
 import StudyUpload from "../components/StudyUpload";
 import {deleteStudy} from "../database/deleteFromDB";
+import {downloadResults} from "../model/resultsExcelWriter";
+import {createDateFromUnixEpochTimeSeconds} from "../utils/time";
 
 
 class AdminStudyActionButton extends Component {
@@ -77,8 +79,13 @@ class AdminStudy extends MountAwareComponent {
     }
 
     downloadResults(study) {
-        // TODO
-        console.log("Download Results Clicked");
+        // TODO : Progress bar that lets you cancel
+        //        downloads.
+        downloadResults(study).then(() => {
+            console.log("downloaded");
+        }).catch((err) => {
+            console.error(err);
+        });
     }
 
     updateStudy(study) {
@@ -198,7 +205,7 @@ class AdminStudy extends MountAwareComponent {
 
     render() {
         const study = this.props.study;
-        const modifiedTime = new Date(study.lastModifiedTime * 1000);
+        const modifiedTime = createDateFromUnixEpochTimeSeconds(study.lastModifiedTime);
 
         const isBroken = isOfType(study, BrokenStudy);
         let target = null;

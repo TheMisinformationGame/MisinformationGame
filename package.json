@@ -23,8 +23,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "tailwind": "^4.0.0",
-    "web-vitals": "^1.1.2",
-    "xlsx": "^0.17.2"
+    "web-vitals": "^1.1.2"
   },
   "scripts": {
     "start": "craco start",

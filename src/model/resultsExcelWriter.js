@@ -1,166 +1,160 @@
-import {
-    areCellsBlank,
-    ExcelBoolean,
-    ExcelImage, ExcelLimit,
-    ExcelNumber, ExcelPercentage,
-    ExcelString, ExcelTextOrImage, isCellBlank,
-    readCell, readCellWithDefault,
-    WorkbookColumn,
-    WorkbookLoc
-} from "../utils/excel";
-import {Game} from "../model/game";
-import { db } from "../database/firebase"
-import { SaveAltSharp } from "@material-ui/icons";
 import FileSaver from 'file-saver';
+import {readAllCompletedStudyResults} from "../database/getFromDB";
+import {createDateFromUnixEpochTimeSeconds, formatUTCDate} from "../utils/time";
 
 const excel = require("exceljs");
 
 
-
-export function constructWorkbook(studyID, object){
-    console.log("Constructing Workbook");
-    const RESULTS_WORKBOOK = new excel.Workbook();
-    const object2 = object[0];
-
-    /**
-     * Write the home page content
-     * [DL] will like to add more information in the future
-     */ 
-    console.log("constructing cover page");
-    const COVER_WS = RESULTS_WORKBOOK.addWorksheet("Cover Page");
-    
-    COVER_WS.columns = [
-        {header : "Study", key : "studyCol"},
-        {header : "Description", key : "desc"},
-        {header : "Date Outputted", key : "date"}
-    ];
-
-    COVER_WS.addRow([
-        object2.study.id,
-        object2.study.description,
-        Date.now().toString()
-    ]);
-
-    
-    /**
-     * Write the Results page
-     */
-    console.log('constructing results');
-    const RESULTS_WS = RESULTS_WORKBOOK.addWorksheet("Results");
-    const ALL_ROWS = [];      //array where all construct rows will get pushed
-    const TOTAL_DOCS = object.length;
-    
-    RESULTS_WS.columns = [
-        {header : "participantID", key: "participantID"},
-        {header : "sessionID", key: "sessionID"},
-        {header : "studyID", key: "studyID"},
-        {header : "postOrder", key: "postOrder"},
-        {header : "postID", key: "postID"},
-        {header : "postLikes", key: "postLikes"},
-        {header : "sourceID", key: "sourceID"},
-        {header : "sourceFollowers", key: "sourceFollowers"},
-        {header : "sourceCredibility", key: "sourceCredibility"},
-        {header : "reaction", key: "reaction"},
-        {header : "credibilityChange", key: "credibilityChange"},
-        {header : "followerChange", key: "followerChange"},
-        {header : "beforeCredibility", key: "beforeCredibility"},
-        {header : "afterCredibility", key: "afterCredibility"},
-        {header : "beforeFollowers", key: "beforeFollowers"},
-        {header : "afterFollowers", key: "afterFollowers"},
-        {header : "responseTime", key: "responseTime"}
-    ];
-
-    console.log("constructing results rows");
-    //iterate through each document in the collection and then iterate through each response
-    //each response is a row in the sheet
-    for(let docNum = 0; docNum < TOTAL_DOCS; docNum++ ){
-        let doc = object[docNum];                   //this is the game object
-        //loop through each response
-        let NUM_RESPONSES = doc.states.length;
-        for(let i = 0; i < NUM_RESPONSES; i++){
-            //get the information to be populated
-            let participantID = doc.participant.participantID;                 
-            let sessionID = doc.sessionID;
-            let studyID = doc.study.id;
-            let postOrder = i;
-            let postID = doc.states[i].currentPost.post.id;
-            let postLikes = "N/A";            //TEMP CODE. NOT STORED
-            let sourceID = doc.states[i].currentSource.source.id;
-            let sourceFollowers = Math.floor(doc.states[i].currentSource.followers);
-            let sourceCredibility = Math.floor(doc.states[i].currentSource.credibility);
-            let reaction = doc.participant.reactions[i];
-            let beforeCredibility = Math.floor(doc.participant.credibilityHistory[i-1]);
-            let afterCredibility = Math.floor(doc.participant.credibilityHistory[i]);
-            let beforeFollowers = Math.floor(doc.participant.followerHistory[i-1]);
-            let afterFollowers = Math.floor(doc.participant.followerHistory[i]);
-            let credibilityChange = Math.floor(afterCredibility - beforeCredibility);
-            let followerChange = Math.floor(afterFollowers - beforeFollowers);
-            let responseTime = "N/A";         //Temp code not yet stored
-            //construct the row
-            let row = [
-                participantID, sessionID, studyID, postOrder, postID, postLikes, sourceID, 
-                sourceFollowers, sourceCredibility, reaction, credibilityChange, followerChange,
-                beforeCredibility, afterCredibility, beforeFollowers, afterFollowers, responseTime
-            ];
-            //push the constructed row to the ALL_ROWS 
-            ALL_ROWS.push(row);
-        }
-    };
-    console.log("Add rows to worksheet");
-    ALL_ROWS.forEach((row) =>{
-        RESULTS_WS.addRow(row)
-    });
-
-
-    /**
-     * Export the work book
-     */
-    console.log("workbook ready");
-
-    const download = async () => {
-        try{
-            const buffer = await RESULTS_WORKBOOK.xlsx.writeBuffer();
-            const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-            const blob= new Blob([buffer]);
-            FileSaver(blob, "results.xlsx");
-            console.log("Worksheet Downloaed")
-        } catch(err) {
-        console.log(err)
-        }
-    };
-    
-
-    download();
-};
-
-//send the workbook to the client
-async function sendWorkbook(workbook, response, fileName){
-    response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-
-     await workbook.XLSX.write(response);
-
-    response.end();
+/**
+ * Makes the header row bold.
+ */
+function styleWorksheetHeader(worksheet) {
+    for (let index = 0; index < worksheet.columns.length; ++index) {
+        const columnLetters = worksheet.getColumn(index + 1).letter;
+        const cell = worksheet.getCell(columnLetters + "1");
+        cell.font = {
+            name: "Arial",
+            family: 2,
+            size: 12,
+            bold: true
+        };
+    }
 }
 
-//get the results object from firestore
-//need to refactor in the getFromDB file
-export async function getResultsObject(studyID){
-    try{
-        
-        const FULL_DATA = async ()  => {
-            var array_data = []
-            const DATA = await db.collection("Studies").doc(studyID).collection("Results").get();
-            for(let doc of DATA.docs){
-                let docJSON = Game.fromJSON(doc.data());
-                array_data.push(docJSON);
-            };
-            return(array_data)
+/**
+ * Creates the workbook to store the results into.
+ */
+function constructWorkbook(study, results, problems) {
+    const workbook = new excel.Workbook();
+
+    // Write the metadata about the study.
+    const coverWorksheet = workbook.addWorksheet("Overview");
+    coverWorksheet.columns = [
+        {header : "Study ID", key : "studyId", width: 24},
+        {header : "Study Name", key : "studyName", width: 32},
+        {header : "Participants", key : "participants", width: 18},
+        {header : "Results Download Time (UTC)", key : "date", width: 34}
+    ];
+    coverWorksheet.addRow({
+        studyId: study.id,
+        studyName: study.name,
+        participants: results.length + Object.keys(problems).length,
+        date: formatUTCDate(new Date())
+    });
+    coverWorksheet.getCell("C2").alignment = {vertical: "top", horizontal: "left"};
+    styleWorksheetHeader(coverWorksheet);
+
+    // We store all participant reactions into one results worksheet.
+    const resultsWorksheet = workbook.addWorksheet("Results");
+    resultsWorksheet.columns = [
+        {header: "Session ID", key: "sessionID", width: 24},
+        {header: "Participant ID", key: "participantID", width: 24},
+        {header: "Post Order", key: "postOrder", width: 16},
+        {header: "Post ID", key: "postID", width: 12},
+        {header: "Source ID", key: "sourceID", width: 14},
+        {header: "Source Followers", key: "sourceFollowers", width: 22},
+        {header: "Source Credibility", key: "sourceCredibility", width: 22},
+        {header: "Participant Credibility", key: "credibility", width: 26},
+        {header: "Participant Followers", key: "followers", width: 26},
+        {header: "Reaction", key: "reaction", width: 12},
+        {header: "First Time to Interact (MS)", key: "firstInteractTime", width: 32},
+        {header: "Last Time to Interact (MS)", key: "lastInteractTime", width: 32},
+        {header: "Credibility Change", key: "credibilityChange", width: 22},
+        {header: "Follower Change", key: "followerChange", width: 22}
+    ];
+    for(let index = 0; index < results.length; index++) {
+        const game = results[index];
+        const participant = game.participant;
+
+        for (let stateIndex = 0; stateIndex < game.states.length; stateIndex++) {
+            const state = game.states[stateIndex];
+            const beforeCredibility = Math.round(participant.credibilityHistory[stateIndex]);
+            const afterCredibility = Math.round(participant.credibilityHistory[stateIndex + 1]);
+            const beforeFollowers = Math.round(participant.followerHistory[stateIndex]);
+            const afterFollowers = Math.round(participant.followerHistory[stateIndex + 1]);
+            resultsWorksheet.addRow({
+                sessionID: game.sessionID,
+                participantID: participant.participantID || "",
+                postOrder: stateIndex + 1,
+                postID: state.currentPost.post.id,
+                sourceID: state.currentSource.source.id,
+                sourceFollowers: Math.round(state.currentSource.followers),
+                sourceCredibility: Math.round(state.currentSource.credibility),
+                credibility: Math.round(participant.credibilityHistory[stateIndex]),
+                followers: Math.round(participant.followerHistory[stateIndex]),
+                reaction: participant.reactions[stateIndex],
+                firstInteractTime: participant.firstInteractTimesMS[stateIndex],
+                lastInteractTime: participant.lastInteractTimesMS[stateIndex],
+                credibilityChange: afterCredibility - beforeCredibility,
+                followerChange: afterFollowers - beforeFollowers
+            });
         }
-        constructWorkbook(studyID, await FULL_DATA());
-    } catch(err){
-        console.log("Error getting results data for study: " + studyID);
-        console.log(err);
     }
-};
+    styleWorksheetHeader(resultsWorksheet);
+
+    // We store participant metadata in another sheet.
+    const participantWorksheet = workbook.addWorksheet("Participants");
+    participantWorksheet.columns = [
+        {header: "Session ID", key: "sessionID", width: 24},
+        {header: "Participant ID", key: "participantID", width: 24},
+        {header: "Completion Code", key: "completionCode", width: 24},
+        {header: "Game Start Time (UTC)", key: "gameStartTime", width: 30},
+        {header: "Game Finish Time (UTC)", key: "gameEndTime", width: 30},
+        {header: "Study Modification Time (UTC)", key: "studyModTime", width: 36},
+    ];
+    for(let index = 0; index < results.length; index++) {
+        const game = results[index];
+        const startTime = createDateFromUnixEpochTimeSeconds(game.startTime);
+        const endTime = createDateFromUnixEpochTimeSeconds(game.endTime);
+        const studyModTime = createDateFromUnixEpochTimeSeconds(game.study.lastModifiedTime);
+        participantWorksheet.addRow({
+            participantID: game.participant.participantID,
+            sessionID: game.sessionID,
+            completionCode: game.completionCode,
+            gameStartTime: formatUTCDate(startTime),
+            gameEndTime: formatUTCDate(endTime),
+            studyModTime: formatUTCDate(studyModTime)
+        });
+    }
+    styleWorksheetHeader(participantWorksheet);
+
+    // If there were problems loading any results, report them.
+    if (Object.keys(problems).length > 0) {
+        const problemsWorksheet = workbook.addWorksheet("Problems");
+        problemsWorksheet.columns = [
+            {header: "Session ID", key: "sessionID", width: 24},
+            {header: "Participant ID", key: "participantID", width: 24},
+            {header: "Error", key: "error", width: 48},
+        ];
+        for (let sessionID in problems) {
+            if (!problems.hasOwnProperty(sessionID))
+                continue;
+
+            const problem = problems[sessionID];
+            problemsWorksheet.addRow({
+                sessionID: sessionID,
+                participantID: problem.participantID || "",
+                error: problem.error
+            });
+        }
+        styleWorksheetHeader(problemsWorksheet);
+    }
+    return workbook;
+}
+
+/**
+ * Downloads the results of the study {@param study}
+ * into a results spreadsheet.
+ */
+export async function downloadResults(study) {
+    const problems = {};
+    const results = await readAllCompletedStudyResults(study.id, problems);
+    const workbook = constructWorkbook(study, results, problems);
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"
+    });
+    FileSaver.saveAs(blob, "results.xlsx");
+}
 

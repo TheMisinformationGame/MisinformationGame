@@ -4,6 +4,7 @@ import {TruncatedNormalDistribution} from "./math";
 import {StudyImage, StudyImageMetadata} from "./images";
 import {randDigits} from "../utils/random";
 import {odiff} from "../utils/odiff";
+import {getUnixEpochTimeSeconds} from "../utils/time";
 
 
 /**
@@ -259,7 +260,7 @@ export class Study {
     id; // String
     name; // String
     description; // String
-    lastModifiedTime; // Number, UNIX Epoch Time in Seconds
+    lastModifiedTime; // Number (UNIX Epoch Time in Seconds)
     enabled; // Boolean
 
     prompt; // String
@@ -344,7 +345,7 @@ export class Study {
      * This does not update the database.
      */
     updateLastModifiedTime() {
-        this.lastModifiedTime = Math.round(new Date().getTime() / 1000);
+        this.lastModifiedTime = getUnixEpochTimeSeconds();
     }
 
     /**

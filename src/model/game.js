@@ -8,6 +8,7 @@ import {odiff} from "../utils/odiff";
 import {getDataManager} from "./manager";
 import { postResults } from "../database/postToDB";
 import {generateUID} from "../utils/uid";
+import {getUnixEpochTimeSeconds} from "../utils/time";
 
 
 /**
@@ -325,8 +326,8 @@ export class GameParticipant {
         this.reactions = reactions || [];
         this.firstInteractTimesMS = firstInteractTimesMS || [];
         this.lastInteractTimesMS = lastInteractTimesMS || [];
-        this.credibilityHistory = credibilityHistory || [];
-        this.followerHistory = followerHistory || [];
+        this.credibilityHistory = credibilityHistory || [credibility];
+        this.followerHistory = followerHistory || [followers];
     }
 
     addReaction(reaction, credibilityChange, followersChange, firstInteractMS, lastInteractMS) {
@@ -377,20 +378,26 @@ export class GameParticipant {
 export class Game {
     sessionID; // String
     study; // Study
+    startTime; // Number (UNIX Epoch Time in Seconds)
+    endTime; // Number (UNIX Epoch Time in Seconds), or null
     states; // GameState[]
     participant; // GameParticipant
     dismissedPrompt; // Boolean
     completionCode; // String
 
-    constructor(sessionID, study, states, participant, dismissedPrompt, completionCode) {
+    constructor(sessionID, study, startTime, endTime, states, participant, dismissedPrompt, completionCode) {
         doTypeCheck(sessionID, "string", "Game Session ID")
         doTypeCheck(study, Study, "Game Study");
+        doTypeCheck(startTime, "number", "Game Start Time");
+        doNullableTypeCheck(endTime, "number", "Game End Time");
         doTypeCheck(states, Array, "Game States");
         doTypeCheck(participant, GameParticipant, "Game Participant");
         doTypeCheck(dismissedPrompt, "boolean", "Whether the prompt has been dismissed");
         doNullableTypeCheck(completionCode, "string", "Game Completion Code");
         this.sessionID = sessionID;
         this.study = study;
+        this.startTime = startTime;
+        this.endTime = endTime || null;
         this.states = states;
         this.participant = participant;
         this.dismissedPrompt = dismissedPrompt;
@@ -410,7 +417,8 @@ export class Game {
      * Saves this game to the database.
      */
     saveToDatabase() {
-        postResults(this.toJSON(), this.study.id, this.participant.sessionID);
+        // TODO : Show progress, allow re-try if it failed.
+        postResults(this.study, this);
     }
 
     isFinished() {
@@ -509,6 +517,7 @@ export class Game {
 
         // Allows us to create the results for this game.
         if (this.isFinished()) {
+            this.endTime = getUnixEpochTimeSeconds();
             this.saveToDatabase();
         }
     }
@@ -607,6 +616,8 @@ export class Game {
             "sessionID": this.sessionID,
             "studyID": this.study.id,
             "study": this.study.toJSON(),
+            "startTime": this.startTime,
+            "endTime": this.endTime,
             "states": Game.statesToJSON(this.states),
             "participant": this.participant.toJSON(),
             "dismissedPrompt": this.dismissedPrompt,
@@ -620,6 +631,8 @@ export class Game {
         return new Game(
             json["sessionID"],
             study,
+            json["startTime"],
+            json["endTime"],
             Game.statesFromJSON(json["states"], study),
             GameParticipant.fromJSON(json["participant"]),
             json["dismissedPrompt"],
@@ -637,7 +650,7 @@ export class Game {
         doTypeCheck(study, Study, "Game Study");
         const sessionID = generateUID();
         const participant = new GameParticipant(null, 50, 0);
-        const game = new Game(sessionID, study, [], participant, false);
+        const game = new Game(sessionID, study, getUnixEpochTimeSeconds(), null, [], participant, false);
         game.calculateAllStates();
         game.saveLocally();
         return game;
