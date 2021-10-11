@@ -1,13 +1,12 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    match /Studies/{study}/{image} {
-      allow read: if get(/databases/$(database)/documents/Studies/$(study)).data.enabled
-                     || (request.auth != null
-                         && request.auth.uid == get(/databases/$(database)/documents/Studies/$(study)).data.authorID);
+    match /Admins/{user}/Studies/{study}/{image} {
+      // I don't know a way to require the studies to be enabled.
+      allow read: if true;
 
-      allow write: if request.auth != null
-                      && request.auth.uid == get(/databases/$(database)/documents/Studies/$(study)).data.authorID;
+      // I don't know a way to require users to be administrators.
+      allow write: if request.auth != null && request.auth.uid == user;
     }
   }
 }

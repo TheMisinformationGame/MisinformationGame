@@ -258,6 +258,8 @@ export class BrokenStudy {
  */
 export class Study {
     id; // String
+    authorID; // String
+    authorName; // String
     name; // String
     description; // String
     lastModifiedTime; // Number (UNIX Epoch Time in Seconds)
@@ -282,7 +284,8 @@ export class Study {
     posts; // Post[]
 
     constructor(
-            id, name, description, lastModifiedTime, enabled,
+            id, authorID, authorName,
+            name, description, lastModifiedTime, enabled,
             prompt, promptDelaySeconds, requireIdentification,
             length, reactDelaySeconds,
             genCompletionCode, completionCodeDigits,
@@ -292,6 +295,9 @@ export class Study {
             sources, posts) {
 
         doTypeCheck(id, "string", "Study ID");
+        doTypeCheck(authorID, "string", "Study Author's ID");
+        doTypeCheck(authorName, "string", "Study Author's Name");
+        doTypeCheck(name, "string", "Study Name");
         doTypeCheck(name, "string", "Study Name");
         doTypeCheck(description, "string", "Study Description");
         doNullableTypeCheck(lastModifiedTime, "number", "The last time the study was modified");
@@ -316,6 +322,8 @@ export class Study {
         doTypeCheck(posts, Array, "Study Posts");
 
         this.id = id;
+        this.authorID = authorID;
+        this.authorName = authorName;
         this.name = name;
         this.description = description;
         this.lastModifiedTime = lastModifiedTime || 0;
@@ -389,14 +397,14 @@ export class Study {
             const post = this.posts[index];
             if (!isOfType(post.content, "string")) {
                 paths.push(StudyImage.getPath(
-                    this.id, post.id, post.content.toMetadata()
+                    this, post.id, post.content.toMetadata()
                 ));
             }
         }
         for (let index = 0; index < this.sources.length; ++index) {
             const source = this.sources[index];
             paths.push(StudyImage.getPath(
-                this.id, source.id, source.avatar.toMetadata()
+                this, source.id, source.avatar.toMetadata()
             ));
         }
         return paths;
@@ -443,6 +451,8 @@ export class Study {
     toJSON() {
         return {
             "name": this.name,
+            "authorID": this.authorID,
+            "authorName": this.authorName,
             "description": this.description,
             "lastModifiedTime": this.lastModifiedTime,
             "enabled": this.enabled,
@@ -479,7 +489,8 @@ export class Study {
         }
 
         return new Study(
-            id, json["name"], json["description"],
+            id, json["authorID"], json["authorName"],
+            json["name"], json["description"],
             json["lastModifiedTime"], json["enabled"],
             json["prompt"], promptDelay,
             json["requireIdentification"],

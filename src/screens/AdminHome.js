@@ -1,12 +1,13 @@
 import {Component} from 'react';
 import {getDataManager} from "../model/manager";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import StudyUpload from "../components/StudyUpload";
 import {ErrorLabel, ProgressLabel} from "../components/StatusLabel";
 import UploadIcon from '@mui/icons-material/Upload';
 import {isOfType} from "../utils/types";
 import {BrokenStudy} from "../model/study";
 import {MountAwareComponent} from "../components/MountAwareComponent";
+import {auth} from "../database/firebase";
 
 
 class StudySummary extends Component {
@@ -71,19 +72,39 @@ class AdminPage extends MountAwareComponent {
     constructor(props) {
         super(props);
         this.state = {
+            isAdmin: null,
             studies: null,
+            error: null,
             showUpload: false
         };
     }
 
     componentDidMount() {
         super.componentDidMount();
-        getDataManager().getAllStudies().then((studies) => {
+
+        const handleError = error => {
             this.setStateIfMounted({
-                studies: studies,
-                showUpload: this.state.showUpload
+                ...this.state,
+                error: error.message
             });
-        });
+        };
+
+        const manager = getDataManager();
+        manager.getIsAdmin().then(isAdmin => {
+            this.setStateIfMounted({
+                ...this.state,
+                isAdmin: isAdmin
+            });
+            if (!isAdmin)
+                return;
+
+            manager.getAllStudies().then((studies) => {
+                this.setStateIfMounted({
+                    ...this.state,
+                    studies: studies
+                });
+            }).catch(handleError);
+        }).catch(handleError);
     }
 
     showStudyUpload() {
@@ -111,9 +132,13 @@ class AdminPage extends MountAwareComponent {
     }
 
     render() {
+        if (!auth.currentUser)
+            return (<Redirect to="/sign-in" />);
+
+        const isAdmin = this.state.isAdmin;
+        const readIsAdmin = this.state.isAdmin !== null;
         const studies = this.state.studies || [];
         const readStudies = this.state.studies !== null;
-        const noStudies = readStudies && studies.length === 0;
 
         const studyComponents = [];
         for (let index = 0; index < studies.length; ++index) {
@@ -126,38 +151,62 @@ class AdminPage extends MountAwareComponent {
         return (
             <div className="min-h-screen w-full bg-gray-100" >
                 {/* The navigation bar. */}
-                <div className="flex items-stretch justify-between w-full bg-white shadow">
+                <div className="flex items-center justify-between w-full bg-white shadow">
                     <Link to="/" className="font-bold text-xl p-3">
                         The Misinformation Game
                     </Link>
-                    <div className="bg-blue-400 p-3 text-xl text-white font-medium
-                                    hover:bg-blue-500 cursor-pointer select-none"
-                         onClick={() => this.showStudyUpload()}>
 
-                        <UploadIcon className="mr-1" />
-                        Upload Study
+                    <div className="text-right px-2 py-1">
+                        <span className="inline-block text-right text-lg">
+                            {auth.currentUser.displayName}
+                        </span>
+                        <Link to="/sign-out" className="inline-block ml-2 text-base font-medium hover:text-blue-800
+                                                        text-blue-600 cursor-pointer select-none">
+
+                            (Sign Out)
+                        </Link>
+                        <span className="block text-right text-sm text-gray-600">
+                            {auth.currentUser.uid}
+                        </span>
                     </div>
                 </div>
 
                 <div className="w-full p-10">
+                    {!isAdmin && readIsAdmin &&
+                        <div>
+                            <ErrorLabel value={[
+                                <b>You are not registered as an admin.</b>,
+                                <span>
+                                    You will not able to access the admin console until you are
+                                    granted admin privileges.
+                                </span>,
+                                <span>
+                                    Please contact your IT support to get them to configure your
+                                    admin privileges. When you contact them, make sure you include
+                                    your user ID, {auth.currentUser.uid}.
+                                </span>
+                            ]} />
+
+                            <p className="pt-8">
+                                Documentation on how to grant admin privileges can be found in the&nbsp;
+                                <a href="https://github.com/deanlawyw/CITS3200-Project/wiki"
+                                   className="underline text-purple-600 hover:text-purple-900">
+
+                                    Misinformation Game wiki
+                                </a>
+                                &nbsp;on GitHub.
+                            </p>
+                        </div>}
+
                     {/* The studies. */}
-                    {readStudies && !noStudies &&
-                    <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-10">
-                        {studyComponents}
-                        <UploadStudyButton onClick={() => this.showStudyUpload()}/>
-                    </div>}
+                    {isAdmin && readStudies &&
+                        <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-10">
+                            {studyComponents}
+                            <UploadStudyButton onClick={() => this.showStudyUpload()}/>
+                        </div>}
 
                     {/* Label saying that the studies are loading. */}
-                    {noStudies &&
-                        <ErrorLabel value={[
-                            "No studies were found.",
-                            "You can upload a study using the ",
-                            <b>Upload Study</b>,
-                            "button in the top-right of this page."
-                        ]} />}
-
-                    {/* Label saying that the studies are loading. */}
-                    {!readStudies &&
+                    {(!readIsAdmin || isAdmin) && !readStudies &&
                         <ProgressLabel value="Loading studies..." />}
                 </div>
 

@@ -6,7 +6,7 @@ service cloud.firestore {
     }
 
     match /Studies/{study} {
-      allow read: if resource.data.enabled == true
+      allow read: if resource == null || resource.data.enabled == true
                      || (request.auth != null && request.auth.uid == resource.data.authorID);
 
       allow write: if request.auth != null

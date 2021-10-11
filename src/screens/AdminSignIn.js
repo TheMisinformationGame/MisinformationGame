@@ -3,6 +3,7 @@ import {auth, authProvider} from "../database/firebase";
 import StatusLabel, {Status} from "../components/StatusLabel";
 import {Redirect} from "react-router-dom";
 import {Button} from "../components/Button";
+import {getDataManager} from "../model/manager";
 
 
 export class AdminSignIn extends MountAwareComponent {
@@ -14,7 +15,27 @@ export class AdminSignIn extends MountAwareComponent {
             signedIn: false,
             status: null
         };
+        this.onAuthStateChange = (user) => {
+            if (!user)
+                return;
+
+            this.setStateIfMounted({
+                signingIn: false,
+                signedIn: true,
+                status: Status.success("Successfully signed in.")
+            });
+        };
     };
+
+    componentDidMount() {
+        super.componentDidMount();
+        getDataManager().addAuthChangeListener(this.onAuthStateChange);
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        getDataManager().removeAuthChangeListener(this.onAuthStateChange);
+    }
 
     signIn() {
         this.setStateIfMounted({
@@ -26,8 +47,8 @@ export class AdminSignIn extends MountAwareComponent {
         auth.signInWithPopup(authProvider).then(result => {
             this.setStateIfMounted({
                 signingIn: false,
-                signedIn: true,
-                status: Status.success("Successfully signed in.")
+                signedIn: false,
+                status: Status.progress("You are being signed in...")
             });
         }).catch(error => {
             this.setStateIfMounted({

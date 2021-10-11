@@ -56,6 +56,7 @@ export function uploadImagesToStorage(imageDict, progressFn) {
                     }
                 }
             }).catch((error) => {
+                console.log("Error uploading " + path);
                 try {
                     console.error(error);
                     progress.errored = true;
@@ -70,7 +71,12 @@ export function uploadImagesToStorage(imageDict, progressFn) {
             tasks.push(task);
             progress.started += 1;
         }
-        if (progress.uploaded === progress.started) {
+
+        // On the localhost Firebase storage emulator, the requests randomly
+        // never call the then() of their Promise. Therefore, we just ignore them.
+        if (window.location.hostname === "localhost") {
+            resolve();
+        } else if (progress.uploaded === progress.started) {
             resolve();
         } else {
             progress.allStarted = true;

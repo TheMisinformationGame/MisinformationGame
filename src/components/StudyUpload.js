@@ -13,6 +13,7 @@ import {MountAwareComponent} from "./MountAwareComponent";
 import {Dialog} from "./Dialog";
 import {removeByValue} from "../utils/arrays";
 import {deletePathsFromStorage} from "../database/deleteFromDB";
+import {auth} from "../database/firebase";
 
 const Excel = require('exceljs');
 
@@ -88,7 +89,7 @@ export class StudyUploadForm extends MountAwareComponent {
                 const post = study.posts[index];
                 if (!isOfType(post.content, "string")) {
                     const path = StudyImage.getPath(
-                        study.id, post.id, post.content.toMetadata()
+                        study, post.id, post.content.toMetadata()
                     );
                     images[path] = post.content;
                     removeByValue(imagePathsToDelete, path);
@@ -97,7 +98,7 @@ export class StudyUploadForm extends MountAwareComponent {
             for (let index = 0; index < study.sources.length; ++index) {
                 const source = study.sources[index];
                 const path = StudyImage.getPath(
-                    study.id, source.id, source.avatar.toMetadata()
+                    study, source.id, source.avatar.toMetadata()
                 );
                 images[path] = source.avatar;
                 removeByValue(imagePathsToDelete, path);
@@ -225,6 +226,11 @@ export class StudyUploadForm extends MountAwareComponent {
      * @param onComplete the function to be called with the study once it has been successfully read.
      */
     readXLSX(buffer, updateStatusFn, onComplete) {
+        if (!auth.currentUser)
+            throw new Error("User is not authenticated");
+
+        const authorID = auth.currentUser.uid;
+        const authorName = auth.currentUser.displayName;
         new Excel.Workbook().xlsx
             .load(buffer)
             .then((workbook) => {
@@ -236,8 +242,12 @@ export class StudyUploadForm extends MountAwareComponent {
                         // If updating a study, use its ID, or else generate a new one.
                         if (previousStudy) {
                             study.id = previousStudy.id;
+                            study.authorID = previousStudy.authorID;
+                            study.authorName = previousStudy.authorName;
                         } else {
                             study.id = generateUID();
+                            study.authorID = authorID;
+                            study.authorName = authorName;
                         }
                         study.updateLastModifiedTime();
 

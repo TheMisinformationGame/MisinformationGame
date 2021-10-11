@@ -63,8 +63,8 @@ export class StudyImage {
     /**
      * Returns the path to this image in storage.
      */
-    static getPath(studyID, imageID, imageMetadata) {
-        return studyID + "/" + imageID + "." + imageMetadata.type;
+    static getPath(study, imageID, imageMetadata) {
+        return "/Admins/" + study.authorID + "/Studies/" + study.id + "/" + imageID + "." + imageMetadata.type;
     }
 
     /**

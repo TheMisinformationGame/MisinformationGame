@@ -1,15 +1,17 @@
-import {readAllStudies, readStudyImage, readStudySettings} from "../database/getFromDB";
+import {readAllStudies, readIsAdmin, readStudyImage, readStudySettings} from "../database/getFromDB";
 import {Game} from "./game";
 import {doTypeCheck, isOfType} from "../utils/types";
 import {BrokenStudy, Study} from "./study";
 import {StudyImage, StudyImageMetadata} from "./images";
 import {removeByValue} from "../utils/arrays";
+import {auth} from "../database/firebase";
 
 /**
  * This class manages the data required for the games.
  */
 class DataManager {
     constructor() {
+        this.isAdminPromiseGenerator = null;
         this.allStudiesPromiseGenerator = null;
         this.studyPromiseGenerators = {};
         this.activeGameStudyID = null;
@@ -17,6 +19,13 @@ class DataManager {
         this.activeGamePromiseGenerator = null;
         this.imagePromiseGenerators = {};
         this.updateListeners = [];
+        this.authChangeListeners = [];
+
+        auth.onAuthStateChanged((user) => {
+            this.isAdminPromiseGenerator = null;
+            this.clearCachedStudies();
+            this.postAuthChangeEvent(user);
+        });
     }
 
     /**
@@ -44,6 +53,42 @@ class DataManager {
         for (let index = 0; index < this.updateListeners.length; ++index) {
             try {
                 this.updateListeners[index](study);
+            } catch (err) {
+                if (firstError) {
+                    console.error(err);
+                } else {
+                    firstError = err;
+                }
+            }
+        }
+        if (firstError)
+            throw firstError;
+    }
+
+    /**
+     * Adds the listener {@param listener} to be called
+     * whenever the authentication of the user changes.
+     */
+    addAuthChangeListener(listener) {
+        this.authChangeListeners.push(listener);
+    }
+
+    /**
+     * Stops the listener {@param listener} from listening
+     * to updates about the authentication of the user.
+     */
+    removeAuthChangeListener(listener) {
+        removeByValue(this.authChangeListeners, listener);
+    }
+
+    /**
+     * Notifies all listeners that the authentication of the user has changed.
+     */
+    postAuthChangeEvent(user) {
+        let firstError = null;
+        for (let index = 0; index < this.authChangeListeners.length; ++index) {
+            try {
+                this.authChangeListeners[index](user);
             } catch (err) {
                 if (firstError) {
                     console.error(err);
@@ -100,6 +145,35 @@ class DataManager {
     cacheStudy(study) {
         this.studyPromiseGenerators[study.id] = () => Promise.resolve(study);
         this.postStudyUpdateEvent(study);
+    }
+
+    /**
+     * Reads whether the current user is an admin.
+     */
+    readIsAdmin() {
+        if (!auth.currentUser) {
+            this.isAdminPromiseGenerator = () => Promise.resolve(false);
+            return this.isAdminPromiseGenerator();
+        }
+
+        const isAdminPromise = readIsAdmin().then(isAdmin => {
+            this.isAdminPromiseGenerator = () => Promise.resolve(isAdmin);
+            return isAdmin;
+        }).catch(error => {
+            this.isAdminPromiseGenerator = () => Promise.reject(error);
+        });
+        this.isAdminPromiseGenerator = () => isAdminPromise;
+        return isAdminPromise;
+    }
+
+    /**
+     * Gets a Promise to whether the current user is an admin.
+     */
+    getIsAdmin() {
+        if (this.isAdminPromiseGenerator === null)
+            return this.readIsAdmin();
+
+        return this.isAdminPromiseGenerator();
     }
 
     /**
@@ -290,7 +364,7 @@ class DataManager {
             return imageMetadata;
 
         doTypeCheck(imageMetadata, StudyImageMetadata, "Image Metadata");
-        const path = StudyImage.getPath(study.id, imageID, imageMetadata);
+        const path = StudyImage.getPath(study, imageID, imageMetadata);
         if (!this.imagePromiseGenerators[path])
             return this.readStudyImage(path);
 

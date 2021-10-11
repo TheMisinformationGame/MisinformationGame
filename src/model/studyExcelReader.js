@@ -448,7 +448,9 @@ function readV1Study(workbook) {
         const sources = sourcesAndPosts[0];
         const posts = sourcesAndPosts[1];
         const study = new Study(
-            "unknown",
+            "unknown", // id
+            "unknown", // authorID
+            "unknown", // authorName
             readCell(workbook, V1.name),
             readCell(workbook, V1.description),
             -1, // lastModifiedTime

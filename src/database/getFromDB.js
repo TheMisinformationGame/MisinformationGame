@@ -3,7 +3,7 @@
  * the Firestore Database, and from Firebase Storage.
  */
 
-import {db, storage} from "./firebase";
+import {auth, db, storage} from "./firebase";
 import {BrokenStudy, Study} from "../model/study";
 import {StudyImage} from "../model/images";
 import {Game} from "../model/game";
@@ -27,11 +27,21 @@ function studyOrBrokenFromJson(studyID, json) {
  * to be read from the database.
  */
 export async function readStudySettings(studyID) {
-    const snapshot = await db.collection('Studies').doc(studyID).get();
-    if (!snapshot.exists)
-        throw new Error("Could not find the study with ID " + studyID);
-
-    return studyOrBrokenFromJson(studyID, snapshot.data());
+    return new Promise((resolve, reject) => {
+        db.collection('Studies').doc(studyID).get().then(snapshot => {
+            if (!snapshot.exists) {
+                reject(new Error("Could not find the study with ID " + studyID));
+                return;
+            }
+            resolve(studyOrBrokenFromJson(studyID, snapshot.data()));
+        }).catch(error => {
+            if (error.code === "permission-denied") {
+                reject(new Error("This study has been disabled."));
+                return;
+            }
+            reject(error);
+        })
+    });
 }
 
 /**
@@ -40,8 +50,23 @@ export async function readStudySettings(studyID) {
  *        becomes really large, this will become very costly.
  */
 export async function readAllStudies() {
-    const snapshot = await db.collection('Studies').get();
+    if (!auth.currentUser)
+        throw new Error("User is not authenticated");
+
+    const snapshot = await db.collection('Studies')
+                             .where("authorID", "==", auth.currentUser.uid).get();
     return snapshot.docs.map((doc) => studyOrBrokenFromJson(doc.id, doc.data()));
+}
+
+/**
+ * Returns a Promise with whether the current user is an admin.
+ */
+export async function readIsAdmin() {
+    if (!auth.currentUser)
+        throw new Error("User is not authenticated");
+
+    const snapshot = await db.collection("Admins").doc(auth.currentUser.uid).get();
+    return snapshot.exists;
 }
 
 function getStudyImagePathType(path) {
@@ -89,8 +114,12 @@ export async function readStudyImage(path) {
  * results will be added to the map {@param problems}.
  */
 export async function readAllCompletedStudyResults(studyID, problems) {
+    if (!auth.currentUser)
+        throw new Error("User is not authenticated");
+
     const games = [];
-    const snapshot = await db.collection("Studies").doc(studyID).collection("Results").get();
+    const snapshot = await db.collection("Studies").doc(studyID)
+                             .collection("Results").get();
     for(let index = 0; index < snapshot.docs.length; ++index) {
         const doc = snapshot.docs[index];
         const json = doc.data();

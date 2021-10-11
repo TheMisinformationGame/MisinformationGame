@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -19,6 +19,7 @@ import StudyUpload from "../components/StudyUpload";
 import {deleteStudy} from "../database/deleteFromDB";
 import {downloadResults} from "../model/resultsExcelWriter";
 import {createDateFromUnixEpochTimeSeconds} from "../utils/time";
+import {auth} from "../database/firebase";
 
 
 class AdminStudyActionButton extends Component {
@@ -229,6 +230,9 @@ class AdminStudy extends MountAwareComponent {
     }
 
     render() {
+        if (!auth.currentUser)
+            return (<Redirect to="/sign-in" />);
+
         const study = this.props.study;
         const modifiedTime = createDateFromUnixEpochTimeSeconds(study.lastModifiedTime);
 
