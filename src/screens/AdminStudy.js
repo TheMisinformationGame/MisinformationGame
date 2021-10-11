@@ -259,7 +259,7 @@ class AdminStudy extends MountAwareComponent {
                         <b>URL:&nbsp;</b>
                         <Link to={target}
                               className="text-blue-500 hover:text-blue-700 underline">
-                            {window.location.host + "/study/" + study.id + "/id"}
+                            {window.location.host + target}
                         </Link>
                     </p>
                     <p className="mt-2">
