@@ -607,7 +607,7 @@ export class Game {
         }
 
         // Create the new state.
-        const newState = new GameState(this.study, newSource, newPost, nextSources, nextPosts);
+        const newState = new GameState(this.study, selectedSource, selectedPost, nextSources, nextPosts);
         this.states.push(newState);
         return newState;
     }
