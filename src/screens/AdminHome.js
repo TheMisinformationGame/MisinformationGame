@@ -30,7 +30,8 @@ class StudySummary extends Component {
 
         return (
             <div className={"rounded-xl border p-3 bg-white shadow " +
-                            (study.enabled ? "border-green-600" : "border-gray-400")}>
+                            (study.enabled ? "border-green-600" : "border-gray-400")}
+                 style={{minHeight: "8rem"}}>
 
                 {study.enabled &&
                     <span className="inline-block w-3.5 h-3.5 mr-2 bg-green-500 rounded-full"
