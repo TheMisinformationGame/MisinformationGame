@@ -95,11 +95,9 @@ export function convertRichTextToHTML(richText, themeColours) {
             if (lineIndex > 0) {
                 html += "<br/>";
             }
-            if (lines[lineIndex].length > 0) {
-                html += "<span style=\"" + css + "\">"
-                html += lines[lineIndex];
-                html += "</span>";
-            }
+            html += "<span style=\"" + css + "\">"
+            html += lines[lineIndex];
+            html += "</span>";
         }
     }
     return html;
