@@ -4,17 +4,17 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ReplyIcon from '@mui/icons-material/Reply';
 import FlagIcon from '@material-ui/icons/Flag';
-import {getDataManager} from "../model/manager";
-import {isOfType} from "../utils/types";
-import {PromiseImage} from "../components/PromiseImage";
+import {getDataManager} from "../../model/manager";
+import {isOfType} from "../../utils/types";
+import {PromiseImage} from "../../components/PromiseImage";
 import {GamePrompt} from "./GamePrompt";
-import {ContinueButton} from "../components/ContinueButton";
-import {ErrorLabel, ProgressLabel} from "../components/StatusLabel"
-import {CredibilityLabel} from "../components/CredibilityLabel"
+import {ContinueButton} from "../../components/ContinueButton";
+import {ErrorLabel, ProgressLabel} from "../../components/StatusLabel"
+import {CredibilityLabel} from "../../components/CredibilityLabel"
 import {ActiveGameScreen} from "./ActiveGameScreen";
 import {Redirect} from "react-router-dom";
-import {MountAwareComponent} from "../components/MountAwareComponent";
-import {ParticipantProgress} from "../components/ParticipantProgress";
+import {MountAwareComponent} from "../../components/MountAwareComponent";
+import {ParticipantProgress} from "../../components/ParticipantProgress";
 
 
 class Source extends Component {

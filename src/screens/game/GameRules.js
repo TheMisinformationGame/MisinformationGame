@@ -1,5 +1,5 @@
-import reactionOptions from "./reaction-options.png"
-import {ContinueBanner} from "../components/ContinueButton";
+import reactionOptions from "../reaction-options.png"
+import {ContinueBanner} from "../../components/ContinueButton";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ReplyIcon from '@mui/icons-material/Reply';
@@ -7,8 +7,8 @@ import FlagIcon from '@material-ui/icons/Flag';
 import {ActiveGameScreen} from "./ActiveGameScreen";
 import {Redirect} from "react-router-dom";
 import React from "react";
-import {ParticipantProgress} from "../components/ParticipantProgress";
-import {CredibilityLabel} from "../components/CredibilityLabel";
+import {ParticipantProgress} from "../../components/ParticipantProgress";
+import {CredibilityLabel} from "../../components/CredibilityLabel";
 
 /**
  * The page that is shown to explain the rules of the game to participants.

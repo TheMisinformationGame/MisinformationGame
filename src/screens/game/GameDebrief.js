@@ -1,4 +1,4 @@
-import {SimpleActiveStudyScreen} from "./ActiveStudyScreen";
+import {SimpleActiveStudyScreen} from "../ActiveStudyScreen";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {ActiveGameScreen} from "./ActiveGameScreen";
 

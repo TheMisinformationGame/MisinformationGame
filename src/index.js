@@ -5,18 +5,22 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Home from "./screens/Home";
 import AdminHome from "./screens/AdminHome";
 import {AdminStudyPage} from "./screens/AdminStudy";
-import {GameScreen} from "./screens/GameInterface";
-import {GameIdentification} from "./screens/GameIdentification";
-import {GamePreIntroduction, GamePostIntroduction} from "./screens/GameIntroduction";
-import {GameRules} from "./screens/GameRules";
-import {GameDebrief} from "./screens/GameDebrief";
+import {GameScreen} from "./screens/game/GameInterface";
+import {GameIdentification} from "./screens/game/GameIdentification";
+import {GamePreIntroduction, GamePostIntroduction} from "./screens/game/GameIntroduction";
+import {GameRules} from "./screens/game/GameRules";
+import {GameDebrief} from "./screens/game/GameDebrief";
 import ErrorScreen from "./screens/Error";
+import {AdminSignIn} from "./screens/AdminSignIn";
+import {AdminSignOut} from "./screens/AdminSignOut";
 
 ReactDOM.render(
   <React.StrictMode>
       <BrowserRouter>
           <Switch>
               <Route exact path="/" component={Home} />
+              <Route exact path="/sign-in" component={AdminSignIn} />
+              <Route exact path="/sign-out" component={AdminSignOut} />
               <Route exact path="/admin" component={AdminHome} />
               <Route exact path="/admin/:studyID" component={AdminStudyPage} />
               <Route exact path="/study/:studyID/id" component={GameIdentification} />

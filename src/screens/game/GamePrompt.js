@@ -1,4 +1,4 @@
-import {ContinueBanner} from "../components/ContinueButton";
+import {ContinueBanner} from "../../components/ContinueButton";
 import {Component} from "react";
 
 

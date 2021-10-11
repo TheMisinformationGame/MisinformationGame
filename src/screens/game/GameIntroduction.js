@@ -1,4 +1,4 @@
-import {ContinueBanner} from "../components/ContinueButton";
+import {ContinueBanner} from "../../components/ContinueButton";
 import {ActiveGameScreen} from "./ActiveGameScreen";
 import {Redirect} from "react-router-dom";
 import React from "react";

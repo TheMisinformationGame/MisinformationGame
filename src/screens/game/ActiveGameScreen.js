@@ -1,6 +1,6 @@
-import {ActiveStudyScreen} from "./ActiveStudyScreen";
-import {getDataManager} from "../model/manager";
-import {ErrorLabel, ProgressLabel} from "../components/StatusLabel";
+import {ActiveStudyScreen} from "../ActiveStudyScreen";
+import {getDataManager} from "../../model/manager";
+import {ErrorLabel, ProgressLabel} from "../../components/StatusLabel";
 
 /**
  * Automatically sets the active study, and retrieves

@@ -289,7 +289,7 @@ class AdminStudy extends MountAwareComponent {
                 </p>
 
                 {!isBroken && <>
-                    {/* Disable Study Button. */}
+                    {/* Disable Study Button.js. */}
                     {study.enabled && <>
                         <AdminStudyActionButton className="bg-yellow-300 hover:bg-yellow-400"
                                                 onClick={() => this.disableStudy(study)}>
@@ -319,7 +319,7 @@ class AdminStudy extends MountAwareComponent {
                         </ConfirmationDialog>
                     </>}
 
-                    {/* Enable Study Button. */}
+                    {/* Enable Study Button.js. */}
                     {!study.enabled && <>
                         <AdminStudyActionButton className="bg-green-400 hover:bg-green-500"
                                                 onClick={() => this.enableStudy(study)}>
@@ -345,7 +345,7 @@ class AdminStudy extends MountAwareComponent {
                     </>}
                 </>}
 
-                {/* Download Results Button. */}
+                {/* Download Results Button.js. */}
                 <AdminStudyActionButton className="bg-purple-400 hover:bg-purple-500"
                                         onClick={() => this.downloadResults(study)}>
 
@@ -353,7 +353,7 @@ class AdminStudy extends MountAwareComponent {
                     Download Results
                 </AdminStudyActionButton>
 
-                {/* Update Study Button. */}
+                {/* Update Study Button.js. */}
                 <AdminStudyActionButton className="bg-blue-400 hover:bg-blue-500"
                                         onClick={() => this.updateStudy(study)}>
 
@@ -361,7 +361,7 @@ class AdminStudy extends MountAwareComponent {
                     Update Study
                 </AdminStudyActionButton>
 
-                {/* Delete Study Button. */}
+                {/* Delete Study Button.js. */}
                 <AdminStudyActionButton className="bg-red-400 hover:bg-red-500"
                                         onClick={() => this.deleteStudy(study)}>
 
