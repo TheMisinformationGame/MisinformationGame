@@ -50,7 +50,7 @@ export class ParticipantProgress extends Component {
                     "p-2 px-4 pb-3 " + (fancyPositioning ? "border-t border-gray-400 md:border-none" : "")}>
 
                     <p className="text-xl font-semibold mb-2">
-                        {this.props.overrideName || "Your"} Progress
+                        Your Progress
                     </p>
                     <p className="text-xl">
                         <SupervisedUserCircleIcon className="align-bottom mr-1" />

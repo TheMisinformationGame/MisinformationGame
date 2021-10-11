@@ -8,6 +8,7 @@ import {ActiveGameScreen} from "./ActiveGameScreen";
 import {Redirect} from "react-router-dom";
 import React from "react";
 import {ParticipantProgress} from "../components/ParticipantProgress";
+import {CredibilityLabel} from "../components/CredibilityLabel";
 
 /**
  * The page that is shown to explain the rules of the game to participants.
@@ -25,7 +26,7 @@ export class GameRules extends ActiveGameScreen {
             return (<Redirect to={"/game/" + study.id + "/debrief" + window.location.search} />);
 
         const target = "/game/" + study.id + "/post-intro" + window.location.search;
-        const continueDelaySeconds = 15;
+        const continueDelaySeconds = 20;
         return (
             <div>
                 <div className="m-1 bg-white p-10 max-w-4xl ml-auto mr-auto">
@@ -81,12 +82,11 @@ export class GameRules extends ActiveGameScreen {
                         <b>&nbsp;Your Progress</b>,
                     </p>
                     <ParticipantProgress
-                        overrideName="Example"
                         overrideFollowers={13}
                         overrideCredibility={56}
                         nextPostText="Continue to Next Post"
                         onNextPost={() => {}}
-                        nextPostEnabled={true}/>
+                        nextPostEnabled={false}/>
 
                     <p className="leading-5 my-4">
                         Your <b><i>follower count</i></b> is the number of other users
@@ -94,7 +94,16 @@ export class GameRules extends ActiveGameScreen {
                     </p>
                     <p className="leading-5 my-4">
                         Your <b><i>credibility rating</i></b> is an indication of how
-                        credible you are perceived to be.
+                        credible you are perceived to be on a scale from 0 to 100.
+                        Credibility ratings will also be colour coded
+                        from <span className="font-semibold"
+                                   style={{color: CredibilityLabel.getCredibilityColour(5)}}>
+                            dark red
+                        </span> for the 0-10 range
+                        to <span className="font-semibold"
+                                 style={{color: CredibilityLabel.getCredibilityColour(95)}}>
+                            dark blue
+                        </span> for the 90-100 range.
                     </p>
                 </div>
 
