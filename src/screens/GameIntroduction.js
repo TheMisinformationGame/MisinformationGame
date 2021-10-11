@@ -24,9 +24,9 @@ class GameIntroductionScreen extends ActiveGameScreen {
     renderWithStudyAndGame(study, game) {
         const stage = game.getCurrentStage();
         if (stage === "identification")
-            return (<Redirect to={"/game/" + study.id + "/id" + window.location.search} />);
+            return (<Redirect to={"/study/" + study.id + "/id" + window.location.search} />);
         if (stage === "debrief")
-            return (<Redirect to={"/game/" + study.id + "/debrief" + window.location.search} />);
+            return (<Redirect to={"/study/" + study.id + "/debrief" + window.location.search} />);
 
         const content = this.getContent(study);
         const target = this.getTarget(study) + window.location.search;
@@ -58,7 +58,7 @@ export class GamePreIntroduction extends GameIntroductionScreen {
     }
 
     getTarget(study) {
-        return "/game/" + study.id + "/rules";
+        return "/study/" + study.id + "/rules";
     }
 
     getContinueDelaySeconds(study) {
@@ -72,7 +72,7 @@ export class GamePostIntroduction extends GameIntroductionScreen {
     }
 
     getTarget(study) {
-        return "/game/" + study.id;
+        return "/study/" + study.id + "/feed";
     }
 
     getContinueDelaySeconds(study) {

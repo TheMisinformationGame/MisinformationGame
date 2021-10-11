@@ -11,8 +11,6 @@ import {GamePreIntroduction, GamePostIntroduction} from "./screens/GameIntroduct
 import {GameRules} from "./screens/GameRules";
 import {GameDebrief} from "./screens/GameDebrief";
 import ErrorScreen from "./screens/Error";
-//test code
-import {constructWorkbook, getResultsObject} from "./model/resultsExcelWriter";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -21,12 +19,12 @@ ReactDOM.render(
               <Route exact path="/" component={Home} />
               <Route exact path="/admin" component={AdminHome} />
               <Route exact path="/admin/:studyID" component={AdminStudyPage} />
-              <Route exact path="/game/:studyID" component={GameScreen} />
-              <Route exact path="/game/:studyID/id" component={GameIdentification} />
-              <Route exact path="/game/:studyID/pre-intro" component={GamePreIntroduction} />
-              <Route exact path="/game/:studyID/rules" component={GameRules} />
-              <Route exact path="/game/:studyID/post-intro" component={GamePostIntroduction} />
-              <Route exact path="/game/:studyID/debrief" component={GameDebrief} />
+              <Route exact path="/study/:studyID/id" component={GameIdentification} />
+              <Route exact path="/study/:studyID" component={GamePreIntroduction} />
+              <Route exact path="/study/:studyID/rules" component={GameRules} />
+              <Route exact path="/study/:studyID/post-intro" component={GamePostIntroduction} />
+              <Route exact path="/study/:studyID/feed" component={GameScreen} />
+              <Route exact path="/study/:studyID/debrief" component={GameDebrief} />
               <Route component={ErrorScreen} />
           </Switch>
       </BrowserRouter>

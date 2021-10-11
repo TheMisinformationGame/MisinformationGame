@@ -73,7 +73,7 @@ export class ParticipantProgress extends Component {
                     </p>
 
                     <div onClick={this.props.onNextPost}
-                         title={nextPostEnabled ? "" :
+                         title={nextPostEnabled || this.props.hideTooltip ? "" :
                              "You must react to the post before you can continue to the next post"}
                          className={
                              " mt-3 px-3 py-2 rounded-md text-white select-none " +

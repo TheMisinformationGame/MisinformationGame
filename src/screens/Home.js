@@ -29,7 +29,7 @@ function Home() {
 
                     <h2 className="text-4xl mb-4 mt-8">Other Resources</h2>
                     <p className="text-lg mb-2 mt-4">
-                        <Link to="/game/1632891323584/id" name="Game"
+                        <Link to="/study/1632891323584" name="Game"
                               className="text-xl underline text-purple-600 hover:text-purple-900">
                             Example Game
                         </Link>:

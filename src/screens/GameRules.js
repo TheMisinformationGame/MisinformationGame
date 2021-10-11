@@ -21,11 +21,11 @@ export class GameRules extends ActiveGameScreen {
     renderWithStudyAndGame(study, game) {
         const stage = game.getCurrentStage();
         if (stage === "identification")
-            return (<Redirect to={"/game/" + study.id + "/id" + window.location.search} />);
+            return (<Redirect to={"/study/" + study.id + "/id" + window.location.search} />);
         if (stage === "debrief")
-            return (<Redirect to={"/game/" + study.id + "/debrief" + window.location.search} />);
+            return (<Redirect to={"/study/" + study.id + "/debrief" + window.location.search} />);
 
-        const target = "/game/" + study.id + "/post-intro" + window.location.search;
+        const target = "/study/" + study.id + "/post-intro" + window.location.search;
         const continueDelaySeconds = 20;
         return (
             <div>
@@ -84,6 +84,7 @@ export class GameRules extends ActiveGameScreen {
                     <ParticipantProgress
                         overrideFollowers={13}
                         overrideCredibility={56}
+                        hideTooltip={true}
                         nextPostText="Continue to Next Post"
                         onNextPost={() => {}}
                         nextPostEnabled={false}/>

@@ -89,14 +89,14 @@ export class GameIdentification extends ActiveGameScreen {
 
     renderWithStudyAndGame(study, game) {
         if (game.getCurrentStage() === "debrief")
-            return (<Redirect to={"/game/" + study.id + "/debrief" + window.location.search} />);
+            return (<Redirect to={"/study/" + study.id + "/debrief" + window.location.search} />);
 
-        const target = "/game/" + study.id + "/pre-intro" + window.location.search;
+        const target = "/study/" + study.id + window.location.search;
         return (
             <div className="w-full bg-gray-100" style={{minHeight: "100vh"}}>
                 <div className="bg-white rounded-xl shadow-xl border border-gray-400
-                                  grid space-y-2 px-10 py-4 max-w-full
-                                  fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                grid space-y-2 px-10 py-4 max-w-full
+                                fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 
                     <p className="font-bold">Enter your access ID:</p>
                     <input className="px-3 py-2 border border-gray-400 rounded-md justify-self-center bg-gray-100"

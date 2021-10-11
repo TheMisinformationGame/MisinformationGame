@@ -235,7 +235,7 @@ class AdminStudy extends MountAwareComponent {
         const isBroken = isOfType(study, BrokenStudy);
         let target = null;
         if (!isBroken) {
-            target = "/game/" + study.id + "/pre-intro";
+            target = "/study/" + study.id;
         }
 
         return (
@@ -255,7 +255,7 @@ class AdminStudy extends MountAwareComponent {
                         <b>URL:&nbsp;</b>
                         <Link to={target}
                               className="text-blue-500 hover:text-blue-700 underline">
-                            {window.location.host + "/game/" + study.id + "/id"}
+                            {window.location.host + "/study/" + study.id + "/id"}
                         </Link>
                     </p>
                     <p className="mt-2">

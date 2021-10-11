@@ -238,7 +238,7 @@ class GameFinished extends MountAwareComponent {
 
     render() {
         const study = this.props.study;
-        const target = "/game/" + study.id + "/debrief" + window.location.search;
+        const target = "/study/" + study.id + "/debrief" + window.location.search;
         return (
             <div className="w-full bg-white shadow items-center">
                 <div className="px-10 py-8 max-w-full text-center">
@@ -421,7 +421,7 @@ export class GameScreen extends ActiveGameScreen {
     renderWithStudyAndGame(study, game) {
         const stage = game.getCurrentStage();
         if (stage === "identification")
-            return (<Redirect to={"/game/" + study.id + "/id" + window.location.search} />);
+            return (<Redirect to={"/study/" + study.id + "/id" + window.location.search} />);
 
         const state = this.state.currentState;
         const participant = game.participant;
