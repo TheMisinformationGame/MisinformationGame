@@ -18,8 +18,22 @@ export class GameIdentification extends ActiveGameScreen {
         };
     };
 
+    afterGameLoaded(game) {
+        super.afterGameLoaded(game);
+        if (!game.participant.participantID)
+            return;
+
+        setTimeout(() => {
+            this.setStateIfMounted({
+                ...this.state,
+                value: game.participant.participantID
+            });
+        });
+    }
+
     componentDidMount() {
         super.componentDidMount();
+
         // Preload the study.
         getDataManager().getActiveStudy().catch(err => {
             console.error(err);

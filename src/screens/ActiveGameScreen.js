@@ -38,22 +38,31 @@ export class ActiveGameScreen extends ActiveStudyScreen {
         };
     }
 
-    updateQueryParams() {
-        setTimeout(() => {
-            const sessionID = getDataManager().getSessionID();
-            const queryParams = new URLSearchParams(window.location.search);
-            if (queryParams.get("s") !== sessionID) {
-                queryParams.set("s", sessionID);
-                this.props.history.replace(window.location.pathname + "?" + queryParams);
-            }
-        }, 50);
+    updateQueryParams(game) {
+        const sessionID = getDataManager().getSessionID();
+        const queryParams = new URLSearchParams(window.location.search);
+
+        let changed = false;
+        if (queryParams.get("s") !== sessionID) {
+            queryParams.set("s", sessionID);
+            changed = true;
+        }
+        if (queryParams.has("id") && queryParams.get("id") !== game.participant.participantID) {
+            game.participant.participantID = queryParams.get("id");
+            queryParams.delete("id");
+            changed = true;
+        }
+
+        if (changed) {
+            this.props.history.replace(window.location.pathname + "?" + queryParams);
+        }
     }
 
     /**
      * Overwrite this to run code once the game loads.
      */
     afterGameLoaded(game) {
-        this.updateQueryParams();
+        this.updateQueryParams(game);
     }
 
     reloadActiveGame() {
@@ -117,7 +126,7 @@ export class ActiveGameScreen extends ActiveStudyScreen {
             return <ErrorLabel className="text-2xl m-2" value="The game did not load correctly." />;
 
         // Just in case
-        this.updateQueryParams();
+        this.updateQueryParams(game);
         return this.renderWithStudyAndGame(study, game);
     }
 }

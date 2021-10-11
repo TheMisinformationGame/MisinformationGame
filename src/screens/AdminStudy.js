@@ -235,7 +235,7 @@ class AdminStudy extends MountAwareComponent {
         const isBroken = isOfType(study, BrokenStudy);
         let target = null;
         if (!isBroken) {
-            target = "/game/" + study.id + (study.requireIdentification ? "/id" : "/pre-intro");
+            target = "/game/" + study.id + "/pre-intro";
         }
 
         return (
