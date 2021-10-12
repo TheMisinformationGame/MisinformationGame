@@ -1,8 +1,4 @@
 {
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  },
   "hosting": {
     "public": "build",
     "ignore": [
@@ -17,8 +13,12 @@
       }
     ]
   },
+  "firestore": {
+    "rules": "src-configs/firestore.rules",
+    "indexes": "src-configs/firestore.indexes.json"
+  },
   "storage": {
-    "rules": "storage.rules"
+    "rules": "src-configs/storage.rules"
   },
   "emulators": {
     "auth": {

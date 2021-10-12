@@ -1,6 +1,7 @@
 {
   "name": "misinformation-game",
-  "version": "0.1.0",
+  "version": "1.0",
+  "author": "Paddy Lamont",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.2.0",
