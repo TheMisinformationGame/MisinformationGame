@@ -6,7 +6,7 @@ built as part of the CITS3200 unit at UWA, in collaboration with
 Assoc/Prof Ullrich Ecker.
 
 ### Example Game
-![Example Game](docs/example-game.png)
+![Example Game](docs/screenshots/example-game.png)
 
 ### Features
 
@@ -41,15 +41,15 @@ the application,
 
 # Screenshots
 **Admin Dashboard:**
-![Example Admin Dashboard](docs/example-admin-dashboard.png)
+![Example Admin Dashboard](docs/screenshots/example-admin-dashboard.png)
 
 **Admin Study View:**
-![Example Admin Study View](docs/example-admin-study.png)
+![Example Admin Study View](docs/screenshots/example-admin-study.png)
 
 **Configurable prompt shown to participants before they
 start a study:**
-![Example Study Prompt](docs/example-prompt.png)
+![Example Study Prompt](docs/screenshots/example-prompt.png)
 
 **Configurable debriefing given to participants after
 they complete their study:**
-![Example Study Debriefing](docs/example-debriefing.png)
+![Example Study Debriefing](docs/screenshots/example-debriefing.png)
