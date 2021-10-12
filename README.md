@@ -1,37 +1,55 @@
 # The Misinformation Game
-The misinformation game is a social media simulator built to test
-the spread of misinformation through social media. This game is
-currently being built as the project of group 41 of the UWA
-CITS3200 unit in semester two 2021, in collaboration with
+
+The Misinformation Game is a social media simulator built to test
+the spread of misinformation through social media. This game was
+built as part of the CITS3200 unit at UWA, in collaboration with
 Assoc/Prof Ullrich Ecker.
 
-You can read more about the design of this project in
-[docs/DESIGN.md](docs/DESIGN.md).
+### Example Game
+![Example Game](docs/example-game.png)
+
+### Features
+
+- Social media simulator with dynamically updating followers and
+  credibility based upon participant's interactions with posts.
+- Several options for the dynamic selection of sources and posts
+  to show to participants.
+- Configurable prompt to be shown to participants before they
+  begin participating in a study.
+- Configurable introduction and debriefing screens to be shown
+  to participants before and after they complete a study.
+- Ability to generate completion codes for participants that
+  they can use to prove they completed the study.
+- Participants can access the study from desktop, tablet,
+  or mobile devices.
+- Rich recording of participant's interactions throughout
+  their game, to allow analysis of their behavior.
+- Security to restrict access to the results of studies, and to
+  stop unauthorised users from uploading their own studies.
+- Ability to completely delete old studies and their results to
+  ensure privacy of participants is maintained.
 
 # System Architecture
 
-The following diagram gives an overview of our system architecture
-by displaying the data flows through the application.
+The Misinformation Game was built using
+[Google Firebase](https://firebase.google.com/) to provide
+its hosting and backend. The following diagram gives an overview
+of our system architecture by displaying the data flows through
+the application,
 
 ![Data Flows](docs/data-flows.png)
 
-# Getting Started with Create React App
+# Screenshots
+**Admin Dashboard:**
+![Example Admin Dashboard](docs/example-admin-dashboard.png)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Admin Study View:**
+![Example Admin Study View](docs/example-admin-study.png)
 
-## Available Scripts
+**Configurable prompt shown to participants before they
+start a study:**
+![Example Study Prompt](docs/example-prompt.png)
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Configurable debriefing given to participants after
+they complete their study:**
+![Example Study Debriefing](docs/example-debriefing.png)
