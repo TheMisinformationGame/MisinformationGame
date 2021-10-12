@@ -29,17 +29,17 @@ Assoc/Prof Ullrich Ecker.
 - Ability to completely delete old studies and their results to
   ensure privacy of participants is maintained.
 
-# System Architecture
+# 🛠️ Documentation
+How the game works, the system architecture of The
+Misinformation Game, and guides to use it to conduct studies
+can all be found under
+[/docs](docs).
 
-The Misinformation Game was built using
-[Google Firebase](https://firebase.google.com/) to provide
-its hosting and backend. The following diagram gives an overview
-of our system architecture by displaying the data flows through
-the application,
+# 📝 License
+The Misinformation Game is licensed under the
+[CC BY 4.0 License](https://creativecommons.org/licenses/by/4.0/).
 
-![Data Flows](docs/data-flows.png)
-
-# Screenshots
+# 🖥️ Screenshots
 **Admin Dashboard:**
 ![Example Admin Dashboard](docs/screenshots/example-admin-dashboard.png)
 
