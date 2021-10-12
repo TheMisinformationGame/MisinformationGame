@@ -2,8 +2,10 @@
 
 The Misinformation Game is a social media simulator built to test
 the spread of misinformation through social media. This game was
-built as part of the CITS3200 unit at UWA, in collaboration with
-Assoc/Prof Ullrich Ecker.
+built as part of the CITS3200 unit at UWA by Paddy Lamont,
+in collaboration with Assoc/Prof Ullrich Ecker, and with help
+from team members Dean Law Yim Wan, Xiyu Gao, Danny Marwick,
+Andrew Pilkington, and Yunhui Rao.
 
 ### Example Game
 ![Example Game](docs/screenshots/example-game.png)
@@ -37,7 +39,7 @@ can all be found under
 
 # 📝 License
 The Misinformation Game is licensed under the
-[CC BY 4.0 License](https://creativecommons.org/licenses/by/4.0/).
+[CC BY 4.0 License](LICENSE.txt).
 
 # 🖥️ Screenshots
 **Admin Dashboard:**
