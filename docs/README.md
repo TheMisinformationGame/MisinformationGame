@@ -8,6 +8,11 @@ A guide on how to deploy The Misinformation Game for
 running your own studies is described in the
 [Deployment.md](Deployment.md) document.
 
+## Registering Administrators
+A guide on registering administrators for The Misinformation
+Game can be found in the
+[Administrators.md](Administrators.md) document.
+
 ## Study Configuration
 The method of creating studies is described in the
 [StudyConfiguration.md](StudyConfiguration.md) document.
