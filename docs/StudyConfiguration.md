@@ -1,2 +1,3 @@
 # Creating your own studies
-To be completed.
+Studies in The Misinformation Game are configured through the
+use of Google Sheets spreadsheets. 
