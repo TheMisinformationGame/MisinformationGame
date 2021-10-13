@@ -1,3 +1,5 @@
+<img src="docs/logo.png" height="200" alt="The logo of The Misinformation Game"/>
+
 # The Misinformation Game
 
 The Misinformation Game is a social media simulator built to test
