@@ -14,9 +14,7 @@ project, and install its dependencies,
 ```shell
 cd [path/to/download/project/into]
 git clone https://github.com/TheMisinformationGame/MisinformationGame
-cd CITS3200-Project
-npm install
-sudo npm install -g firebase-tools
+cd MisinformationGame
 ```
 In the above commands, replace `[path/to/download/project/into]`
 with a path to where you want the source code of the project
@@ -124,28 +122,153 @@ only need to replace the lines that look like the code
 snippet above, and you should not edit anything else in
 the file.
 
-### 2.4. Deploy the source code to your Firebase project
-In the terminal, you should now run the following command
-to sign-in your Firebase account,
+### 2.4. Deploy your Firebase project
+The Misinformation Game has the helper script
+[deploy.sh](/deploy.sh) to help deploying your
+Firebase project. It can be run using the following
+command from within the MisinformationGame directory,
 ```shell
-firebase login
+./deploy.sh
 ```
 
-You should now be able to link to your Firebase app
-using the following command, which will ask you to
-select a Firebase project to use,
-```shell
-firebase use
-```
+This script will take you through several steps to
+install dependencies, initialise your project, and
+deploy it to your live website.
 
-Once you have selected your Firebase project, you
-can then run the following commands to build and
-deploy the website,
-```shell
-npm run build
-firebase deploy
-```
+#### 2.4.1. Installing Dependencies
 
+```
+==========================
+Installing dependencies...
+==========================
+```
+This step may take some time to install all the
+dependencies of The Misinformation Game using
+NPM.
+
+#### 2.4.2. Installing Firebase
+```
+=============================================================
+Installing Firebase, you may be prompted for your password...
+=============================================================
+```
+Firebase requires some more permissions to be
+installed, and therefore this step may ask you
+for your password.
+
+#### 2.4.3. Installing Google Cloud SDK
+```
+==================================
+Installing the Google Cloud SDK...
+==================================
+```
+This step will download and install the Google Cloud
+SDK that will later be used to configure the CORS
+settings for the storage of images in the app.
+
+If you don't have Python 3 installed, you may be
+prompted for your password so that it can be
+installed.
+
+#### 2.4.4. Connect to Firebase
+```
+=========================================================
+Connecting to Firebase, you may be prompted to sign in...
+=========================================================
+```
+This step will prompt you to log in to your Firebase
+account, so that the Firebase project you created can
+be accessed.
+
+You may also be prompted to allow Firebase to collect
+CLI usage and error reporting information. You can just
+press enter to accept it, or you could type `n` and enter
+to deny this analytics collection.
+
+#### 2.4.5. Select Firebase Project
+```
+=================================================================
+Please select the Firebase project you would like to deploy to...
+=================================================================
+```
+This step will ask you to select the Firebase project
+you created, so that we can deploy the website to the
+project.
+
+#### 2.4.6. Building the Application
+```
+echo "==========================="
+echo "Building the application..."
+echo "==========================="
+```
+This step will build the application so that it can be
+deployed. This step may take some time.
+
+#### 2.4.7. Deploying to Firebase
+```
+========================================
+Deploying the application to Firebase...
+========================================
+```
+This step will deploy your application to your
+Firebase project! After this step, you will be able
+to access your website from its .web.app domain.
+However, the game will not function correctly as
+the website will not be able to load the avatars
+of sources, or the images for posts.
+
+#### 2.4.8. Initialise Google Cloud
+```
+============================
+Initialising Google Cloud...
+============================
+```
+This step will ask you to initialise the Google
+Cloud SDK to point to your account and project.
+You will be prompted for several inputs through
+this process.
+
+**Step 1:** You will first be asked whether you
+would like to log in. Press enter to state that
+you would like to log in.
+
+**Step 2:** A browser should be opened where
+you can log in to the same account you use
+for your Firebase console. If your browser is
+not automatically opened, there should be a URL
+in the terminal that you can copy into a
+web-browser.
+
+**Copying from Terminal Warning:** Be careful
+about typing Cmd-C or Ctrl-C in Terminal, as this will
+quit the script. Instead, often Terminals use
+Cmd-Shift-C or Ctrl-Shift-C instead to copy values.
+
+**Step 3:** You will next be asked to pick a cloud
+project to use. Enter the number in square brackets
+next to the name of your Firebase project.
+
+#### 2.4.9. Uploading the CORS settings
+```
+===============================================
+Setting up the CORS settings for the website...
+===============================================
+```
+This step will update the CORS settings of your
+website so that the images for sources and posts
+can be loaded. You will be prompted for your
+project's .appspot.com domain. This domain is the
+same as your .web.app domain, just with a different
+extension. For example, for the example website for
+this project, misinformation-game.web.app, you would
+have to enter misinformation-game.appspot.com.
+
+#### 2.4.10. Complete!
+```
+======================
+Successfully Deployed!
+======================
+```
 Your Firebase project should now be hosted at the URL
 you set up in step 1!
 

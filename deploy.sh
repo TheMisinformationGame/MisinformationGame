@@ -50,7 +50,7 @@ echo " "
 echo "============================"
 echo "Initialising Google Cloud..."
 echo "============================"
-.GoogleCloud/google-cloud-sdk/bin/gcloud init --console-only --skip-diagnostics || exit
+.GoogleCloud/google-cloud-sdk/bin/gcloud init --skip-diagnostics || exit
 
 echo " "
 echo "==============================================="
@@ -66,5 +66,5 @@ echo "======================"
 echo "Successfully Deployed!"
 echo "======================"
 echo " "
-echo "You should not be able to access your game at your project .web.app domain"
+echo "You should now be able to access your game at your project .web.app domain! (e.g. misinformation-game.web.app)"
 echo " "
