@@ -7,4 +7,4 @@ its hosting and backend. The following diagram gives an overview
 of our system architecture by displaying the data flows through
 the application,
 
-![Data Flows](data-flows.png)
+![Data Flows](diagrams/data-flows.png)

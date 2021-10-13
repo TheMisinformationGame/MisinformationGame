@@ -21,8 +21,7 @@ const firebaseConfig = {
     projectId: "misinformation-game-group-41",
     storageBucket: "misinformation-game-group-41.appspot.com",
     messagingSenderId: "714489298376",
-    appId: "1:714489298376:web:04331863fdd6a4a2d914fd",
-    measurementId: "G-JZZ7VFM2J6"
+    appId: "1:714489298376:web:04331863fdd6a4a2d914fd"
 };
 
 
