@@ -29,7 +29,7 @@ function Home() {
 
                     <h2 className="text-4xl mb-4 mt-8">Other Resources</h2>
                     <p className="text-lg mb-2 mt-4">
-                        <Link to="/study/soxbyjzyow2u43vo" name="Game"
+                        <Link to="/study/axsvxt37ctac6ltr" name="Game"
                               className="text-xl underline text-purple-600 hover:text-purple-900">
                             Example Game
                         </Link>:
@@ -45,7 +45,7 @@ function Home() {
                     </p>
                     <p className="text-lg mb-2">
                         <a className="text-xl underline text-purple-600 hover:text-purple-900"
-                           href="https://github.com/deanlawyw/CITS3200-Project/wiki">
+                           href="https://github.com/TheMisinformationGame/MisinformationGame/blob/main/docs/README.md">
 
                             Documentation
                         </a>:
@@ -53,7 +53,7 @@ function Home() {
                     </p>
                     <p className="text-lg mb-2">
                         <a className="text-xl underline text-purple-600 hover:text-purple-900"
-                           href="https://github.com/deanlawyw/CITS3200-Project">
+                           href="https://github.com/TheMisinformationGame/MisinformationGame">
 
                             GitHub
                         </a>:

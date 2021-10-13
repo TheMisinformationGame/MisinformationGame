@@ -163,25 +163,25 @@ This screen allows users to identify themselves by entering an
 identification number that will be saved in their results CSV.
 This page can be enabled or disabled for each study.
 
-<img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/original-design/user-identification-mockup.png" height="320" />
+<img src="user-identification-mockup.png" height="320" />
 
 ### Help / Introduction Screen Mockup
 This screen is used to introduce the study, and teach users how to
 participate and interact with the game.
 
-<img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/original-design/help-mockup.png" height="320" />
+<img src="help-mockup.png" height="320" />
 
 ### Prompt Screen Mockup
 This screen is used to present the researcher's prompt to the users
 participating in the study.
 
-<img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/original-design/prompt-mockup.png" height="320" />
+<img src="prompt-mockup.png" height="320" />
 
 ### Game Screen Mockup
 This screen is where users are able to actually participate in the
 social media game and view their progress.
 
-<img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/original-design/game-mockup.png" height="320" />
+<img src="game-mockup.png" height="320" />
 
 ### Admin Dashboard Mockup
 This screen allows researchers to view all studies that have been
@@ -189,14 +189,14 @@ uploaded, along with some information about each of them. It also
 allows them to upload a new study, and go to a page with more
 information about each study.
 
-<img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/original-design/admin-dashboard-mockup.png" height="320" />
+<img src="admin-dashboard-mockup.png" height="320" />
 
 ### Admin Study Screen Mockup
 This screen presents the information about the selected study, and
 allows researchers to download all results from the participants in
 the study.
 
-<img src="https://github.com/deanlawyw/CITS3200-Project/blob/main/docs/original-design/admin-study-mockup.png" height="320" />
+<img src="admin-study-mockup.png" height="320" />
 
 
 # 🖥️ Technical Considerations

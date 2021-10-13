@@ -16,12 +16,12 @@
  * -> Config ('npm' is selected by default)
  */
 const firebaseConfig = {
-    apiKey: "AIzaSyBwvE41mT2mEf-GHPdZn9NUKtIFGT2nJn8",
-    authDomain: "misinformation-game-group-41.firebaseapp.com",
-    projectId: "misinformation-game-group-41",
-    storageBucket: "misinformation-game-group-41.appspot.com",
-    messagingSenderId: "714489298376",
-    appId: "1:714489298376:web:04331863fdd6a4a2d914fd"
+    apiKey: "AIzaSyDbBqOrit6Kj3FUsmI3i3AOOu27PLtkwTM",
+    authDomain: "misinformation-game.firebaseapp.com",
+    projectId: "misinformation-game",
+    storageBucket: "misinformation-game.appspot.com",
+    messagingSenderId: "780788861427",
+    appId: "1:780788861427:web:7f9b2b20c50e9b38cf6a86"
 };
 
 

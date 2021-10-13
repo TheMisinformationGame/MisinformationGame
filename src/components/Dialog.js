@@ -36,13 +36,14 @@ export class Dialog extends MountAwareComponent {
                 <div className="fixed left-0 top-0 w-full h-full z-40 bg-black opacity-60"
                      onClick={this.props.onHide} />
 
-                {/* Place study upload form above grayed-out background. */}
+                {/* Place dialog above grayed-out background. */}
                 <div className="fixed left-0 top-0 w-full h-full overflow-y-scroll z-50
                                 flex flex-row justify-center items-start"
                      onClick={this.props.onHide}>
 
+                    {/* The dialog itself. */}
                     <div className="relative flex flex-col m-8 px-4 py-4 shadow
-                                    rounded-md bg-white w-xl"
+                                    w-full max-w-xl rounded-md bg-white w-xl"
                          onClick={(event) => event.stopPropagation()}>
 
                         {/* Title in top-left. */}

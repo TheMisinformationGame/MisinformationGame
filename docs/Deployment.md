@@ -13,7 +13,7 @@ following commands to download the source code of this
 project, and install its dependencies,
 ```shell
 cd [path/to/download/project/into]
-git clone https://github.com/deanlawyw/CITS3200-Project
+git clone https://github.com/TheMisinformationGame/MisinformationGame
 cd CITS3200-Project
 npm install
 sudo npm install -g firebase-tools

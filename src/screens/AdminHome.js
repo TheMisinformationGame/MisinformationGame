@@ -190,10 +190,10 @@ class AdminPage extends MountAwareComponent {
 
                             <p className="pt-8">
                                 Documentation on how to grant admin privileges can be found in the&nbsp;
-                                <a href="https://github.com/deanlawyw/CITS3200-Project/wiki"
+                                <a href="https://github.com/TheMisinformationGame/MisinformationGame/blob/main/docs/Administrators.md"
                                    className="underline text-purple-600 hover:text-purple-900">
 
-                                    Misinformation Game wiki
+                                    Misinformation Game Documentation
                                 </a>
                                 &nbsp;on GitHub.
                             </p>
