@@ -7,6 +7,11 @@ Dean Law Yim Wan, Xiyu Gao, Danny Marwick, Andrew Pilkington,
 and Yunhui Rao, in collaboration with Assoc/Prof Ullrich Ecker.
 
 ### Example Game
+If you would like to test playing through a study created using
+The Misinformation Game, you can access an example game at
+https://misinformation-game.web.app/study/axsvxt37ctac6ltr.
+You can enter any ID to access the example game.
+
 ![Example Game](docs/screenshots/example-game.png)
 
 ### Features
