@@ -27,6 +27,11 @@ The results that are generated after participants have
 interacted with a study are described in the
 [Results.md](Results.md) document.
 
+## Development Environment
+Setting up the development environment to work on The
+Misinformation Game is described in the
+[Development.md](Development.md) document.
+
 ## System Architecture
 The system architecture of how The Misinformation Game
 functions is described in the

@@ -21,21 +21,21 @@
     "rules": "src/config/storage.rules"
   },
   "emulators": {
+    "ui": {
+      "enabled": true,
+      "port": 9000
+    },
     "auth": {
       "port": 9099
-    },
-    "firestore": {
-      "port": 8080
-    },
-    "hosting": {
-      "port": 5000
     },
     "storage": {
       "port": 9199
     },
-    "ui": {
-      "enabled": true,
-      "port": 4000
+    "firestore": {
+      "port": 9299
+    },
+    "hosting": {
+      "port": 9399
     }
   }
 }

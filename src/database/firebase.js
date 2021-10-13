@@ -15,7 +15,7 @@ export const authProvider = new firebase.auth.GoogleAuthProvider();
 
 // If we're on localhost, then use the local emulator instead of the production database.
 if (window.location.hostname === "localhost") {
-    db.useEmulator("localhost", 8080);
+    auth.useEmulator("http://localhost:9099", { disableWarnings: true });
     storage.useEmulator("localhost", 9199);
-    auth.useEmulator("http://localhost:9099");
+    db.useEmulator("localhost", 9299);
 }
