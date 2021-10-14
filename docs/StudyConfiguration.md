@@ -102,7 +102,6 @@ will help when reading the rest of the configuration
 spreadsheet.
 
 
----------------
 ## 📄 Overview Sheet
 The Overview sheet provides a summary of all the settings
 that have been entered. It also collates all the errors
@@ -150,7 +149,6 @@ a false post in this case. This could lead to a false post
 being shown, even if the true post percentage is 100%.
 
 
----------------
 ## 📄 General Sheet
 The General sheet is the best place to start when creating
 a study. It contains all the general settings of
@@ -208,7 +206,6 @@ if the number of digits is set to 4, then numbers between
 1000 and 9999 will be generated.
 
 
----------------
 ## 📄 Pages Sheet
 The pages sheet allows you to edit the content of the
 introductions and debriefing that the users may be
@@ -252,7 +249,6 @@ completed the study. This page is not optional.
 <img src="screenshots/example-debriefing-no-border.png" alt="Example debriefing page" height="140" />
 
 
----------------
 ## 📄 Source & Post Selection Sheet
 The Source & Post Selection sheet allows you to edit the
 method that is used to select the source/post pairs that
@@ -325,7 +321,6 @@ bottom. You must define the same number of source/post
 pairs here as the length of the study.
 
 
----------------
 ## 📄 Sources Sheet
 The Sources sheet allows you to add all the sources that
 can be shown to participants during your study. Each source
@@ -430,7 +425,6 @@ chance of it choosing a true post to show instead of a
 false post.
 
 
----------------
 ## 📄 Posts Sheet
 The Posts sheet allows you to add all the posts that could
 be shown to participants during their games. Each post can
