@@ -141,8 +141,8 @@ const V1 = {
         content: new WorkbookColumn("Content", "Posts", "E", ExcelTextOrImage),
         isTrue: new WorkbookColumn("Is True", "Posts", "F", ExcelBoolean),
         changesToFollowers: {
-            min: -1e9,
-            max: 1e9,
+            min: -1e9, // Effectively unlimited
+            max: 1e9,  // Effectively unlimited
             like: new WorkbookColumn("Follower Change from Likes", "Posts", "G", ExcelNumber),
             dislike: new WorkbookColumn("Follower Change from Dislikes", "Posts", "H", ExcelNumber),
             share: new WorkbookColumn("Follower Change from Shares", "Posts", "I", ExcelNumber),

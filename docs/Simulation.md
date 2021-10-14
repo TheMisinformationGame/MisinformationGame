@@ -45,7 +45,7 @@ Sources are chosen randomly, and their choice is weighted
 by their maximum number of posts. Therefore, if a source
 has a maximum of 10 posts, it will be 10x as likely to be
 chosen as a source that has a maximum of 1 post. Sources
-that have no maximum number of posts will be weighted with
+that have an unlimited number of posts will be weighted with
 the mean max posts of all sources with a maximum. Once a
 source has been shown with its maximum number of posts,
 it cannot be chosen again.
