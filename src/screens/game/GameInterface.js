@@ -26,7 +26,10 @@ class Source extends Component {
             <div className={"flex " + (this.props.className || "")}>
                 <div className={"mr-2 " + (small ? "h-8" : "h-12")}>
                     <PromiseImage className="h-full"
-                                  imageClassName="rounded-full shadow"
+                                  imageClassName={
+                                      "rounded-full object-cover shadow " +
+                                      (small ? "h-8 w-8" : "h-12 w-12")
+                                  }
                                   loadingSpinner={small ? "small" : ""}
                                   image={getDataManager().getStudyImage(
                             source.study, source.source.id, source.source.avatar
