@@ -9,40 +9,40 @@ Excel.** It is built specifically for use in Google Sheets,
 and uses functionality that is not available in Microsoft
 Excel.
 
-## Table of Contents
-* [1. ✏ Create a new Spreadsheet](#1---create-a-new-spreadsheet)
-    + [Method 1: Copy the Template](#method-1--copy-the-template)
-    + [Method 2: Upload the Template](#method-2--upload-the-template)
-* [2. 📜 Enter your study settings into the Spreadsheet](#2----enter-your-study-settings-into-the-spreadsheet)
-    + [📄 About Sheet](#---about-sheet)
-    + [📄 Overview Sheet](#---overview-sheet)
+# Table of Contents
+* [1. ✏ Create a new Spreadsheet](#1--create-a-new-spreadsheet)
+    + [Method 1: Copy the Template](#method-1-copy-the-template)
+    + [Method 2: Upload the Template](#method-2-upload-the-template)
+* [2. 📜 Enter your study settings into the Spreadsheet](#2--enter-your-study-settings-into-the-spreadsheet)
+    + [📄 About Sheet](#-about-sheet)
+    + [📄 Overview Sheet](#-overview-sheet)
         - [Status](#status)
         - [Opened in Google Sheets](#opened-in-google-sheets)
         - [General Settings](#general-settings)
         - [Sources](#sources)
         - [Posts](#posts)
-    + [📄 General Sheet](#---general-sheet)
-    + [📄 Pages Sheet](#---pages-sheet)
+    + [📄 General Sheet](#-general-sheet)
+    + [📄 Pages Sheet](#-pages-sheet)
         - [Formatting](#formatting)
         - [Introduction before game rules](#introduction-before-game-rules)
         - [Introduction after game rules](#introduction-after-game-rules)
         - [Debriefing](#debriefing)
-    + [📄 Source & Post Selection Sheet](#---source---post-selection-sheet)
+    + [📄 Source & Post Selection Sheet](#-source--post-selection-sheet)
         - [Selecting a Method](#selecting-a-method)
-        - [Method 1: Overall-Ratio](#method-1--overall-ratio)
-        - [Method 2: Source-Ratios](#method-2--source-ratios)
-        - [Method 3: Credibility](#method-3--credibility)
-        - [Method 4: Pre-Defined](#method-4--pre-defined)
-    + [📄 Sources Sheet](#---sources-sheet)
+        - [Method 1: Overall-Ratio](#method-1-overall-ratio)
+        - [Method 2: Source-Ratios](#method-2-source-ratios)
+        - [Method 3: Credibility](#method-3-credibility)
+        - [Method 4: Pre-Defined](#method-4-pre-defined)
+    + [📄 Sources Sheet](#-sources-sheet)
         - [Default Source Values](#default-source-values)
         - [Sources Table](#sources-table)
-    + [📄 Posts Sheet](#---posts-sheet)
+    + [📄 Posts Sheet](#-posts-sheet)
         - [Default Post Values](#default-post-values)
         - [Posts Table](#posts-table)
-* [3. 📤 Uploading your Study](#3----uploading-your-study)
+* [3. 📤 Uploading your Study](#3--uploading-your-study)
 
 
-## 1. ✏ Create a new Spreadsheet
+# 1. ✏ Create a new Spreadsheet
 Before you can start configuring your study, you will first
 need to create a new spreadsheet for the study in Google
 Sheets. You can create a new spreadsheet by either copying
@@ -50,14 +50,14 @@ the Study Template spreadsheet that is already on Google
 Sheets, or by uploading the Study Template document from
 this directory.
 
-### Method 1: Copy the Template
+## Method 1: Copy the Template
 You can access the Study Template spreadsheet on Google Sheets
 [here](https://docs.google.com/spreadsheets/d/1JP_3kHtcJC6m4PzwyTixMb8R0gu76tRIbdGcffGsTu0/edit?usp=sharing).
 After you have loaded the template spreadsheet, you can select
 **File** -> **Make a copy** to clone the spreadsheet so that
 you can make changes.
 
-### Method 2: Upload the Template
+## Method 2: Upload the Template
 If you are not able to access the study template from the URL
 in section 1.1, you can also upload
 [StudyTemplate.xlsx](StudyTemplate.xlsx) to your Google Sheets.
@@ -80,7 +80,7 @@ in section 1.1, you can also upload
 Your spreadsheet should now contain everything you need
 to create a new study.
 
-## 2. 📜 Enter your study settings into the Spreadsheet
+# 2. 📜 Enter your study settings into the Spreadsheet
 The configuration spreadsheet may look intimidating at
 first glance, and so this section will try to break
 down the configuration spreadsheet sheet-by-sheet.
@@ -90,7 +90,7 @@ however you are free to jump back and forth as you
 configure your study.
 
 
-### 📄 About Sheet
+## 📄 About Sheet
 The About sheet gives an overview of the structure of
 the spreadsheet, with a short description of each sheet in
 the spreadsheet. It also contains a legend for what the
@@ -103,20 +103,20 @@ spreadsheet.
 
 
 ---------------
-### 📄 Overview Sheet
+## 📄 Overview Sheet
 The Overview sheet provides a summary of all the settings
 that have been entered. It also collates all the errors
 between all the sheets into one place, so that you can
 easily identify if there are any errors in your
 configuration.
 
-#### Status
+### Status
 The status of the spreadsheet gives an indication of
 whether there are any errors in the spreadsheet. If
 there are any errors in any of the sheets, an error
 will be shown here.
 
-#### Opened in Google Sheets
+### Opened in Google Sheets
 This attempts to detect whether the spreadsheet was
 opened in Google Sheets, and will error if it can
 detect that it was opened in Microsoft Excel. This
@@ -124,19 +124,19 @@ detection uses a bug when converting between Google
 Sheets and Microsoft Excel, and it therefore may not
 be 100% accurate.
 
-#### General Settings
+### General Settings
 This section gives an overview of the general settings
 of your study, as well as their validity in the top-left.
 The **Pages** value will show the exact order of pages
 that participants will be shown when they participate
 in your study.
 
-#### Sources
+### Sources
 This will show the validity of all sources, as well as
 the number of sources that have been included in the
 _Sources_ sheet.
 
-#### Posts
+### Posts
 This will show the validity of all posts, as well as the
 number of true and false posts that have been included
 in the _Posts_ sheet.
@@ -151,7 +151,7 @@ being shown, even if the true post percentage is 100%.
 
 
 ---------------
-### 📄 General Sheet
+## 📄 General Sheet
 The General sheet is the best place to start when creating
 a study. It contains all the general settings of
 the study including its name, description, and length.
@@ -209,14 +209,14 @@ if the number of digits is set to 4, then numbers between
 
 
 ---------------
-### 📄 Pages Sheet
+## 📄 Pages Sheet
 The pages sheet allows you to edit the content of the
 introductions and debriefing that the users may be
 shown. It also allows you to edit the amount of time
 that participants should be prevented from continuing
 past these pages.
 
-#### Formatting
+### Formatting
 These page values can be formatted to include **bold**,
 _italic_, larger text, smaller text, coloured text, or
 any other formatting that is available in Google Sheets.
@@ -230,7 +230,7 @@ then you can also include HTML markup in these pages
 that will be included in the pages that participants
 are shown.
 
-#### Introduction before game rules
+### Introduction before game rules
 This page will be shown to participants after they have
 identified themselves, and before they are shown the
 rules of the game. This page is _optional_, if you do
@@ -238,14 +238,14 @@ not wish to show participants an introduction before
 they are shown the game rules, then leave this page
 blank.
 
-#### Introduction after game rules
+### Introduction after game rules
 This page will be shown to participants after they have
 been shown the rules of the game. This page is _optional_,
 if you do not wish to show participants an introduction
 after they are shown the game rules, then leave this page
 blank.
 
-#### Debriefing
+### Debriefing
 This page will be shown to participants after they have
 completed the study. This page is not optional.
 
@@ -253,7 +253,7 @@ completed the study. This page is not optional.
 
 
 ---------------
-### 📄 Source & Post Selection Sheet
+## 📄 Source & Post Selection Sheet
 The Source & Post Selection sheet allows you to edit the
 method that is used to select the source/post pairs that
 will be shown to participants in their games. There are
@@ -265,7 +265,7 @@ exact method that is used to select source/post pairs
 using each method, then check out the
 [Simulation Documentation](Simulation.md).
 
-#### Selecting a Method
+### Selecting a Method
 The **Source & Post Selection Method** value at the top of
 this sheet should be changed to the name of the method that
 you want to use. This should be one of _Overall-Ratio_,
@@ -274,7 +274,7 @@ have entered your desired source/post selection method, the
 settings for all the other selection methods will be
 disabled.
 
-#### Method 1: Overall-Ratio
+### Method 1: Overall-Ratio
 Sources will be selected randomly, and the associated
 post will be chosen to match an overall ratio of
 true:false posts.
@@ -282,13 +282,13 @@ true:false posts.
 The **True Post Percentage** value can be set underneath
 the **Overall-Ratio Settings** section below.
 
-#### Method 2: Source-Ratios
+### Method 2: Source-Ratios
 Sources will be selected randomly, and the associated
 post will be chosen to match a true:false ratio defined
 for that specific source (as defined in the Sources
 tab: **True Post Percentage**).
 
-#### Method 3: Credibility
+### Method 3: Credibility
 Sources will be selected randomly, and then a true:false
 ratio to use to sample the associated post will be
 calculated from the credibility of the source. The
@@ -309,7 +309,7 @@ Source's credibility. It is the **m** value in the equation
 True Post Percentage when a Source's credibility is zero.
 It is the **c** value in the equation **y = mx + c**.
 
-#### Method 4: Pre-Defined
+### Method 4: Pre-Defined
 The exact order of source/post pairs to be shown to
 participants is defined, with no randomness at all.
 The exact order to use for this method can be
@@ -326,7 +326,7 @@ pairs here as the length of the study.
 
 
 ---------------
-### 📄 Sources Sheet
+## 📄 Sources Sheet
 The Sources sheet allows you to add all the sources that
 can be shown to participants during your study. Each source
 contains several settings to define their appearance and
@@ -337,7 +337,7 @@ the settings that can be defined for each source. To
 the right there is also a widget that can be used to
 preview the settings for your sources.
 
-#### Default Source Values
+### Default Source Values
 This section defines defaults for a lot of the common
 columns for sources. If one of these values is not included
 for a source, the defaults here will be used instead.
@@ -362,7 +362,7 @@ selected outside 5 standard deviations of the mean is
 tiny (0.00006%), and therefore this should not affect
 the shape of the distributions noticeably.
 
-#### Sources Table
+### Sources Table
 The table below the Default Source Values is where you can
 add all of your sources. Each row in this table represents
 one source. The **ID**, **Name**, and **Avatar** of each
@@ -431,7 +431,7 @@ false post.
 
 
 ---------------
-### 📄 Posts Sheet
+## 📄 Posts Sheet
 The Posts sheet allows you to add all the posts that could
 be shown to participants during their games. Each post can
 only be shown to a participant once, and will never be
@@ -442,7 +442,7 @@ the settings that can be defined for each post. To
 the right there is also a table to display the total
 number of true and false posts that you have entered.
 
-#### Default Post Values
+### Default Post Values
 This section defines separate post defaults for true posts
 and false posts. This is done so that consistent behavior
 can be configured for true posts increasing your credibility
@@ -451,7 +451,7 @@ is desired). The default values allow you to specify Normal
 distributions for the changes to participant's followers and
 credibility after they Like, Dislike, Share, or Flag a post.
 
-#### Posts Table
+### Posts Table
 The table below the Default Post Values allows you to enter
 all the posts that may be shown to participants during your
 study. Each row in the table represents one post. The
@@ -527,7 +527,7 @@ there are plans to add likes to posts and comments,
 however this feature is not fully implemented yet.
 
 
-## 3. 📤 Uploading your Study
+# 3. 📤 Uploading your Study
 Once you have completed configuring your study, I recommend
 you first check the **Overview** sheet to make sure that
 everything looks correct, and doesn't contain any errors.
