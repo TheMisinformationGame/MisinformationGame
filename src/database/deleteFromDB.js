@@ -1,5 +1,5 @@
 import {db, storageRef} from "./firebase";
-import {BrokenStudy, Study} from "../model/study";
+import {BrokenStudy} from "../model/study";
 
 /**
  * Deletes the file at {@param path} from storage.
@@ -75,6 +75,12 @@ export function deleteStudy(study) {
         let paths = (study instanceof BrokenStudy ? [] : study.getAllStoragePaths());
         deletePathsFromStorage(paths).then(() => {
             deleteStudyConfiguration(study).then(resolve).catch(reject);
-        }).catch(reject);
+        }).catch(error => {
+            // Just print the error and continue...
+            // This might leave hanging images in
+            // the database, but oh well.
+            console.error(error);
+            deleteStudyConfiguration(study).then(resolve).catch(reject);
+        });
     });
 }

@@ -3,27 +3,28 @@
 echo "=========================="
 echo "Installing dependencies..."
 echo "=========================="
-npm install || exit
+npm install || { echo "Installing dependencies failed!" ; exit 1; }
 
 echo " "
 echo "============================================================="
 echo "Installing Firebase, you may be prompted for your password..."
 echo "============================================================="
-sudo npm install -g firebase-tools || exit
+npm install firebase-tools || { echo "Installing Firebase failed!" ; exit 1; }
 
 echo " "
 echo "=================================="
 echo "Installing the Google Cloud SDK..."
 echo "=================================="
-mkdir .GoogleCloud
-curl https://sdk.cloud.google.com > .GoogleCloud/install.sh
-bash .GoogleCloud/install.sh --disable-prompts --install-dir=.GoogleCloud
+rm -rf .GoogleCloud || { echo "Unable to remove old .GoogleCloud installation!" ; exit 1; }
+mkdir .GoogleCloud || { echo "Unable to create .GoogleCloud directory to install Google Cloud into!" ; exit 1; }
+curl https://sdk.cloud.google.com > .GoogleCloud/install.sh || { echo "Unable to download Google Cloud install script!" ; exit 1; }
+bash .GoogleCloud/install.sh --disable-prompts --install-dir=.GoogleCloud || { echo "Unable to install Google Cloud!" ; exit 1; }
 
 echo " "
 echo "========================================================="
 echo "Connecting to Firebase, you may be prompted to sign in..."
 echo "========================================================="
-firebase login || exit
+npx firebase login || { echo "Signing you into Firebase failed!" ; exit 1; }
 
 echo " "
 echo "================================================================="
@@ -32,25 +33,25 @@ echo "================================================================="
 echo " "
 echo "When prompted for an alias, enter 'main'."
 echo " "
-firebase use --add || exit
+npx firebase use --add || { echo "Connecting to your Firebase project failed!" ; exit 1; }
 
 echo " "
 echo "==========================="
 echo "Building the application..."
 echo "==========================="
-npm run build || exit
+npm run build || { echo "Building the application failed!" ; exit 1; }
 
 echo " "
 echo "========================================"
 echo "Deploying the application to Firebase..."
 echo "========================================"
-firebase deploy || exit
+npx firebase deploy || { echo "Deploying to Firebase failed!" ; exit 1; }
 
 echo " "
 echo "============================"
 echo "Initialising Google Cloud..."
 echo "============================"
-.GoogleCloud/google-cloud-sdk/bin/gcloud init --skip-diagnostics || exit
+.GoogleCloud/google-cloud-sdk/bin/gcloud init --skip-diagnostics || { echo "Initialising Google Cloud failed!" ; exit 1; }
 
 echo " "
 echo "==============================================="
@@ -59,7 +60,7 @@ echo "==============================================="
 echo " "
 echo "Please enter the URL of your project as a .appspot.com domain (e.g. misinformation-game.appspot.com):"
 read -r URL || exit
-.GoogleCloud/google-cloud-sdk/bin/gsutil cors set src/config/cors.json "gs://$URL" || exit
+.GoogleCloud/google-cloud-sdk/bin/gsutil cors set src/config/cors.json "gs://$URL" || { echo "Uploading CORS settings failed!" ; exit 1; }
 
 echo " "
 echo "======================"

@@ -28,10 +28,9 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "CI=false INLINE_RUNTIME_CHUNK=false craco build",
-    "deploy": "CI=false craco build && firebase deploy",
-    "test": "craco test",
-    "eject": "react-scripts eject"
+    "build": "craco build",
+    "ci-build": "CI=false INLINE_RUNTIME_CHUNK=false craco build",
+    "test": "craco test"
   },
   "eslintConfig": {
     "extends": [
@@ -53,7 +52,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^9.8.6",
-    "firebase-tools": "^9.16.5",
+    "firebase-tools": "^9.20.0",
     "postcss": "^7.0.36",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
   },

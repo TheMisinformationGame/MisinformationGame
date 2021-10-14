@@ -228,23 +228,29 @@ Cloud SDK to point to your account and project.
 You will be prompted for several inputs through
 this process.
 
-**Step 1:** You will first be asked whether you
-would like to log in. Press enter to state that
-you would like to log in.
+**Step 1:** You may be asked to pick a configuration
+to use. If you are asked, then select the option to
+`Re-initialize this coniguration`.
 
-**Step 2:** A browser should be opened where
+**Step 2:** You will be asked whether you
+would like to log in. If you are already signed in,
+you may select your account. Otherwise, press
+enter to state that you would like to log in.
+
+**Step 3:** If you were not already signed in,
+a browser should be opened where
 you can log in to the same account you use
 for your Firebase console. If your browser is
 not automatically opened, there should be a URL
 in the terminal that you can copy into a
 web-browser.
 
-**Copying from Terminal Warning:** Be careful
+_Copying from Terminal Warning:_ Be careful
 about typing Cmd-C or Ctrl-C in Terminal, as this will
 quit the script. Instead, often Terminals use
 Cmd-Shift-C or Ctrl-Shift-C instead to copy values.
 
-**Step 3:** You will next be asked to pick a cloud
+**Step 4:** You will next be asked to pick a cloud
 project to use. Enter the number in square brackets
 next to the name of your Firebase project.
 
