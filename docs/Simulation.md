@@ -29,13 +29,14 @@ credibility may rise to 100 or fall to zero.
 
 ## 🧮 Source/Post Pair Selection
 The source/post pair selection dictates what posts participants
-will be shown, when, and from which source. All the source/post pairs
-are pre-generated when a participant starts the study. The participant's
-interactions with the posts have no impact on the subsequent
-sources and posts that will be shown to them.
+will be shown, when, and from which source. All the source/post
+pairs are pre-generated when a participant starts the study. The
+participant's interactions with the posts have no impact on the
+subsequent sources and posts that will be shown to them.
 
-The game can be configured such that some sources can be associated with 
-many posts, however each post will only ever be shown once to a participant.
+The game can be configured such that some sources can be
+associated with many posts, however each post will only ever
+be shown once to a participant.
 
 ### Source Selection
 The source to be shown is always chosen first for all
@@ -55,18 +56,23 @@ When using the **Overall-Ratio** source/post selection method,
 posts will be chosen to target an overall percentage of true 
 and false posts to be shown to the user. For example,
 if you use an overall true-post percentage of 60%, then it
-will attempt to sample 60% true posts, and 40% false posts.
-This is achieved by randomly selecting whether to show a true
-or a false post based upon the true-post percentage. [hm, if you are sampling based on the true-post percentage, you are not sampling randomly, but probabilistically, right] Therefore, it is technically possible that a participant 
-is shown many false posts even if the true-post percentage is 
-high due to random chance. [I don't understand this - what do you mean by "many posts"? Do you mean that sampling is probabilistic, i.e. that if you only show 10 posts, you may end up with 7 false posts and 3 true posts, whereas it will better approximate the target levels with larger samples? Or does it work such that if you sample 10 posts, if it were by chance to select 4 false posts initially (i.e. when you hit the quota), it would then sample 6 true ones (assuming there is a sufficient number of true posts available). Please clarify.]
+will have a 60% chance of selecting a true post, and a
+40% chance of selecting a false post. This is achieved by
+probabilistically selecting whether to show a true or a false
+post before the post itself is selected. If it is chosen
+that a true post should be displayed, it will then select
+a true post randomly from the pool of all true posts that
+have not yet been shown. Similarly, if it is chosen that
+a false post should be displayed, it will select a false
+post randomly from the pool of all false posts that
+have not yet been shown.
 
 However, if there are no remaining true posts, or no remaining
 false posts, then the selection method will have to choose
 from whatever posts are remaining. For example, if your study
 has a length of 10 and includes 20 false posts but only
 5 true posts, it is not possible that the game could ever
-show more than 50% true posts to the participant. Every time
+show more than 50% true posts to the participant. After
 it has shown 5 true posts to the participant, it will only
 be able to show false posts from then on.
 
@@ -101,4 +107,9 @@ The **Pre-Defined** source/post selection method allows
 specification of an exact order of sources and posts to
 be shown to participants. Every participant is always
 shown the exact same set of source/post pairs that is
-pre-defined in the configuration spreadsheet. [good to have this spelled out. One feature that would be important to add (not necessarily now but at some point) is to have a specified set of source/post pairs but presented in a random order.]
+pre-defined in the configuration spreadsheet.
+
+In the future it is planned to add support for also
+randomising the order of the pre-defined source/post pairs.
+However, for now they will be shown in the exact same order
+for each participant.
