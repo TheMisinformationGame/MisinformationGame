@@ -9,6 +9,39 @@ Excel.** It is built specifically for use in Google Sheets,
 and uses functionality that is not available in Microsoft
 Excel.
 
+## Table of Contents
+* [1. ✏ Create a new Spreadsheet](#1---create-a-new-spreadsheet)
+    + [Method 1: Copy the Template](#method-1--copy-the-template)
+    + [Method 2: Upload the Template](#method-2--upload-the-template)
+* [2. 📜 Enter your study settings into the Spreadsheet](#2----enter-your-study-settings-into-the-spreadsheet)
+    + [📄 About Sheet](#---about-sheet)
+    + [📄 Overview Sheet](#---overview-sheet)
+        - [Status](#status)
+        - [Opened in Google Sheets](#opened-in-google-sheets)
+        - [General Settings](#general-settings)
+        - [Sources](#sources)
+        - [Posts](#posts)
+    + [📄 General Sheet](#---general-sheet)
+    + [📄 Pages Sheet](#---pages-sheet)
+        - [Formatting](#formatting)
+        - [Introduction before game rules](#introduction-before-game-rules)
+        - [Introduction after game rules](#introduction-after-game-rules)
+        - [Debriefing](#debriefing)
+    + [📄 Source & Post Selection Sheet](#---source---post-selection-sheet)
+        - [Selecting a Method](#selecting-a-method)
+        - [Method 1: Overall-Ratio](#method-1--overall-ratio)
+        - [Method 2: Source-Ratios](#method-2--source-ratios)
+        - [Method 3: Credibility](#method-3--credibility)
+        - [Method 4: Pre-Defined](#method-4--pre-defined)
+    + [📄 Sources Sheet](#---sources-sheet)
+        - [Default Source Values](#default-source-values)
+        - [Sources Table](#sources-table)
+    + [📄 Posts Sheet](#---posts-sheet)
+        - [Default Post Values](#default-post-values)
+        - [Posts Table](#posts-table)
+* [3. 📤 Uploading your Study](#3----uploading-your-study)
+
+
 ## 1. ✏ Create a new Spreadsheet
 Before you can start configuring your study, you will first
 need to create a new spreadsheet for the study in Google
