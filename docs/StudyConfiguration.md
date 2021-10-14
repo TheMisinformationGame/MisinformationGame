@@ -140,11 +140,13 @@ This will show the validity of all posts, as well as the
 number of true and false posts that have been included
 in the _Posts_ sheet.
 
-If there are less true or false posts than the length of
+If there are fewer true or false posts than the length of
 the study, a warning will be shown. This warning is shown
 as it is possible that the post selection will try to select
 a true post but fail due to having already shown all the
-true posts. The post selection will instead have to display
+true posts (depending on settings; see below and 
+[Simulation Documentation](Simulation.md) for details). 
+The post selection will instead have to display
 a false post in this case. This could lead to a false post
 being shown, even if the true post percentage is 100%.
 
@@ -208,17 +210,16 @@ if the number of digits is set to 4, then numbers between
 
 ## 📄 Pages Sheet
 The pages sheet allows you to edit the content of the
-introductions and debriefing that the users may be
-shown. It also allows you to edit the amount of time
-that participants should be prevented from continuing
-past these pages.
+instructions and debriefing that the users may be
+shown. It also allows you to edit the enforced delays 
+(with disabled continue button) on these pages.
 
 ### Formatting
 These page values can be formatted to include **bold**,
 _italic_, larger text, smaller text, coloured text, or
 any other formatting that is available in Google Sheets.
 This formatting will be converted to HTML to be shown to
-participants. To include newlines in this text, Google
+participants. To include new lines in this text, Google
 Sheets requires you to type _Alt + Enter_ instead of just
 Enter like most text editors.
 
@@ -230,17 +231,17 @@ are shown.
 ### Introduction before game rules
 This page will be shown to participants after they have
 identified themselves, and before they are shown the
-rules of the game. This page is _optional_, if you do
-not wish to show participants an introduction before
-they are shown the game rules, then leave this page
-blank.
+rules of the game. This page can be used for instructions. 
+It is _optional_, so if you do not wish to show participants 
+an introduction before they are shown the game rules, then 
+leave this page blank.
 
 ### Introduction after game rules
 This page will be shown to participants after they have
-been shown the rules of the game. This page is _optional_,
-if you do not wish to show participants an introduction
-after they are shown the game rules, then leave this page
-blank.
+been shown the rules of the game. This page can also be 
+used for instructions. It is _optional_, so if you do not 
+wish to show participants an introduction after they are 
+shown the game rules, then leave this page blank.
 
 ### Debriefing
 This page will be shown to participants after they have
@@ -256,15 +257,13 @@ will be shown to participants in their games. There are
 four options for source/post selection: **Overall-Ratio**,
 **Source-Ratios**, **Credibility**, and **Pre-Defined**.
 
-If you would like to read detailed explanations of the
-exact method that is used to select source/post pairs
-using each method, then check out the
-[Simulation Documentation](Simulation.md).
+For details on how source/post pairs are selected using 
+each method, check out [Simulation Documentation](Simulation.md).
 
 ### Selecting a Method
 The **Source & Post Selection Method** value at the top of
-this sheet should be changed to the name of the method that
-you want to use. This should be one of _Overall-Ratio_,
+this sheet should be changed manually to the name of the method 
+to be used. This should be one of _Overall-Ratio_,
 _Source-Ratios_, _Credibility_, or _Pre-Defined_. Once you
 have entered your desired source/post selection method, the
 settings for all the other selection methods will be
@@ -286,10 +285,10 @@ tab: **True Post Percentage**).
 
 ### Method 3: Credibility
 Sources will be selected randomly, and then a true:false
-ratio to use to sample the associated post will be
+ratio used to sample the associated post will be
 calculated from the credibility of the source. The
 relationship between the source's credibility and the
-true post percentage to be used is a linear relationship
+true-post percentage to be used is a linear relationship
 that can be defined under **Credibility Settings** below.
 
 The linear relationship is defined by defining the two
@@ -297,12 +296,12 @@ co-efficients **m** and **c** for the linear relationship
 **y = mx + c**.
 
 **Linear Slope:** The linear slope represents the increase
-in True Post Percentage for every unit increase in a
-Source's credibility. It is the **m** value in the equation
+in true-post Percentage for every unit increase in a
+source's credibility. It is the **m** value in the equation
 **y = mx + c**.
 
 **Linear Intercept:** The linear intercept represents the
-True Post Percentage when a Source's credibility is zero.
+true-post Percentage when a source's credibility is zero.
 It is the **c** value in the equation **y = mx + c**.
 
 ### Method 4: Pre-Defined
@@ -325,7 +324,7 @@ pairs here as the length of the study.
 The Sources sheet allows you to add all the sources that
 can be shown to participants during your study. Each source
 contains several settings to define their appearance and
-behavior.
+behaviour.
 
 The top of the sheet contains documentation about all
 the settings that can be defined for each source. To
@@ -337,34 +336,32 @@ This section defines defaults for a lot of the common
 columns for sources. If one of these values is not included
 for a source, the defaults here will be used instead.
 
-The Default Source Values also allow you to define Normal
-distributions for the initial followers and credibility of
-sources. This functionality is not provided on a per-source
-basis. The Normal distributions for the initial credibility
-and followers is configured by setting the mean and standard
-deviation of the distributions. These values are then used
-to sample the initial credibility and followers of sources
-when a new game is started.
+The Default Source Values also allow you to define normal
+distributions for the initial number of followers and 
+credibility scores of sources. This functionality is not 
+provided on a per-source basis. The normal distributions for 
+the initial credibility and followers is configured by setting 
+the mean and standard deviation of the distributions. These 
+values are then used to sample the initial credibility and 
+followers of sources when a new game is started.
 
 The sampling of initial credibility values is truncated to
 between 0 and 100 credibility. The sampling of initial
-follower values is also truncated so that the followers
-sampled is always greater than zero, and always within 5
-standard deviations of the mean. The 5 standard deviations
-value is used to avoid random huge deviations from the
-expected distribution. The chances of a value being
-selected outside 5 standard deviations of the mean is
-tiny (0.00006%), and therefore this should not affect
-the shape of the distributions noticeably.
+follower values is also truncated such that the values are 
+always greater than zero, and always within 5 SDs of the 
+mean. The 5 SD constraint is used to avoid random huge 
+deviations from the expected distribution. The chances of a 
+value being selected outside M +/- 5 SD is tiny (0.00006%), 
+and therefore this should not affect the shape of the 
+distributions noticeably.
 
 ### Sources Table
-The table below the Default Source Values is where you can
-add all of your sources. Each row in this table represents
-one source. The **ID**, **Name**, and **Avatar** of each
-source is required to be entered (the **ID** should be
-filled in for you already). The remaining settings are
-optional, and if they are omitted the default settings
-will be used instead.
+The table below the Default Source Values is where all sources 
+can be added. Each row in this table represents one source. 
+The **ID**, **Name**, and **Avatar** of each source is 
+required to be entered (the **ID** should be pre-filled
+already). The remaining settings are optional, and if they 
+are omitted the default settings are used instead.
 
 **ID:** The ID of each source is used to uniquely identify
 the source. This ID should be of the form `Sx` where x is
@@ -387,7 +384,7 @@ You must first select the cell where you want to insert
 the avatar image, and then select **Insert** -> **Image**
 -> **Image in cell**. If you do not use this procedure,
 then the application will not be able to find the image
-to use for the avatar.
+to use for the avatar. [I assume avatars are optional? Please clarify if they can be left blank.]
 
 <img src="screenshots/inserting-image.png" alt="How to insert an image" height="275"/>
 
@@ -400,16 +397,15 @@ of posts for this source.
 
 The Max Posts value is also used to weight the random
 selection of sources to be shown to participants. Sources
-with a higher Max Posts will have a higher chance to be
-selected than sources with a low Max Posts. Sources with
-a Max Posts of "Unlimited" will be weighted with the mean
-weighting of all sources with a Max Posts. Therefore, if
-you wish one post to show up more than others, but do not
-wish to limit the number of times other sources can be
-selected, you can use really high values of Max Posts as
-weighting values (e.g. a source with a Max Posts of 100
-will be selected 10x less than a source with a Max Posts
-of 1000).
+with a higher Max Posts value will have a higher chance of 
+being selected than sources with a low Max Posts value. 
+Sources with a Max Posts of "Unlimited" will be weighted 
+with the mean weighting of all sources with a Max Posts value.
+Therefore, if you wish one source to show up more than others, 
+but do not wish to limit the number of times other sources can 
+be selected, you can use high values of Max Posts (e.g. a 
+source with Max Posts = 100 will be selected 10x more than a 
+source with Max Posts = 10).
 
 **Initial Followers:** This value lets you set an exact
 follower number for this source to start with.
@@ -419,15 +415,15 @@ credibility number for this source to start with.
 
 **True Post Percentage:** When using the _Source-Ratios_
 source/post selection method, this value is used to define
-the percentage of true posts that this post should show.
-After this source is selected, this will be the percentage
-chance of it choosing a true post to show instead of a
-false post.
+the percentage of true posts that this source should show.
+After this source is selected, this will indicate the 
+probability of it posting a true post rather than a false 
+post.
 
 
 ## 📄 Posts Sheet
 The Posts sheet allows you to add all the posts that could
-be shown to participants during their games. Each post can
+be shown to participants during the game. Each post can
 only be shown to a participant once, and will never be
 repeated.
 
@@ -437,17 +433,18 @@ the right there is also a table to display the total
 number of true and false posts that you have entered.
 
 ### Default Post Values
-This section defines separate post defaults for true posts
-and false posts. This is done so that consistent behavior
-can be configured for true posts increasing your credibility
-and false posts decreasing your credibility (if that behavior
-is desired). The default values allow you to specify Normal
-distributions for the changes to participant's followers and
-credibility after they Like, Dislike, Share, or Flag a post.
+This section defines separate defaults for true posts and 
+false posts. This is done so that consistent behaviour can be 
+configured for true posts increasing credibility and false 
+posts decreasing credibility (if that behavior is desired). 
+The default values allow specification of normal
+distributions for the changes to participants' followers and
+credibility after they _like_, _dislike_, _share_, or _flag_ 
+a post.
 
 ### Posts Table
 The table below the Default Post Values allows you to enter
-all the posts that may be shown to participants during your
+all the posts that may be shown to participants during the
 study. Each row in the table represents one post. The
 **ID**, and the **Is True** columns are the only required
 columns for each post. However, one of **Headline**
@@ -461,8 +458,8 @@ used instead.
 the post. This ID should be of the form `Px` where x is
 an increasing integer (e.g. P1, P2, P3, etc...). This ID
 will be used in the results to refer to this specific post.
-In the template sheet, all the IDs are already filled in,
-and you should not have to edit them.
+In the template sheet, all the IDs are already pre-filled,
+and there should be no need to edit them.
 
 <img src="screenshots/example-post-headline-content.png" alt="Post with headline and content highlighted" height="250"/>
 
@@ -472,10 +469,10 @@ optional, and if it is not included then only the content
 of the post will be shown.
 
 **Content:** The content of the post is used to provide a
-more substantial piece of text, or an image, to a post. The
-content is optional, and if it is not included then only
-the headline of the post will be shown. The content can
-be either a piece of text _or_ an image, and it cannot
+more substantial piece of text, or an image. The content 
+is optional, and if it is not included then only the 
+headline of the post will be shown. The content can be 
+either a piece of text _or_ an image, but it cannot
 contain both.
 
 If an image is used, it must be inserted using the same
@@ -499,8 +496,8 @@ instead.
 
 **Changes to Credibility:** These settings allow you to
 set the exact change to a participant's credibility after
-they _like_, _dislike_, _share_, or _flag_ a post. If
-these values are left blank, the changes to a participant's
+they _like_, _dislike_, _share_, or _flag_ a specific post. 
+If these values are left blank, the changes to a participant's
 credibility will be sampled from the default distributions
 instead.
 
@@ -522,27 +519,25 @@ however this feature is not fully implemented yet.
 
 
 # 3. 📤 Uploading your Study
-Once you have completed configuring your study, I recommend
+Once you have completed configuring your study, it is recommended
 you first check the **Overview** sheet to make sure that
 everything looks correct, and doesn't contain any errors.
 
-Once you have done this, you can download your configuration
-spreadsheet as an XLSX file to upload to The Misinformation
-Game. This can be done by selecting **File** -> **Download**
--> **Microsoft Excel (.xlsx)**. The name suggests that this
-spreadsheet is only meant for Microsoft Excel, but .xlsx is
-a general-purpose spreadsheet file format.
+The configuration spreadsheet can then be downloaded as an .xlsx 
+file to upload to The Misinformation Game. This can be done by 
+selecting **File** -> **Download** -> **Microsoft Excel (.xlsx)**. 
+The name suggests that this spreadsheet is only meant for Microsoft 
+Excel, but .xlsx is a general-purpose spreadsheet file format.
 
 <img src="screenshots/exporting-configuration-spreadsheet.png" alt="How to export the configuration spreadsheet" height="250"/>
 
-Once you have downloaded your study configuration as a
+Once you have downloaded your study configuration as an
 .xlsx file, you can then upload it through The Misinformation
 Game admin dashboard by clicking the **Upload New Study**
-button. This will open a dialog where you can click
-**Upload Spreadsheet** to select the .xlsx file you just
-downloaded to upload.
+button. This will open a dialogue where you can click
+**Upload Spreadsheet** to select the .xlsx file to upload.
 
 If there are any errors that could be found with your study,
-then an error will be displayed in this dialog. Otherwise,
+then an error will be displayed in this dialogue. Otherwise,
 a success message will be displayed, and you will be redirected
 to the admin view of your new study.
