@@ -377,14 +377,31 @@ shown to participants when this source is used alongside
 a post.
 
 **Avatar:** The avatar of the source is an image that is
-displayed in a circle alongside the source. This image
+displayed in a circle alongside the source. The avatar
+image is _required_, and an error will be given if an
+avatar is not included for a source. The avatar image
 must be inserted into the spreadsheet using the
 **Insert** menu at the top of the page on Google Sheets.
 You must first select the cell where you want to insert
 the avatar image, and then select **Insert** -> **Image**
 -> **Image in cell**. If you do not use this procedure,
 then the application will not be able to find the image
-to use for the avatar. [I assume avatars are optional? Please clarify if they can be left blank. Also say something about file type and size]
+to use for the avatar.
+
+The avatar images support all standard image file types,
+however .png and .jpg images are recommended. If you wish
+to insert animated avatars into a game, then .gif files
+are also supported (However, they tend to have much higher
+file sizes than .png or .jpg images). Newer file types
+such as WEBP are supported on modern web-browsers, but
+they may not load correctly for participant's with older
+web-browsers. Additionally, it is good to refrain from
+uploading large images to reduce the amount of data that
+participants have to download. The avatars are only shown
+at small sizes, so any image size above 128 x 128 will be
+wasted. This corresponds to a file size of roughly 50 Kb,
+although with the compression of JPG and PNG they should be
+even smaller.
 
 <img src="screenshots/inserting-image.png" alt="How to insert an image" height="275"/>
 
@@ -483,7 +500,18 @@ Sheets. You must first select the cell where you want to
 insert the content image, and then select **Insert** ->
 **Image** -> **Image in cell**. If you do not use this
 procedure, then the application will not be able to find
-the image to use for the content. [please also say something here about file types and sizes, please]
+the image to use for the content.
+
+The content images support all standard image file types,
+however .png and .jpg images are recommended. Newer file
+types such as WEBP are supported on modern web-browsers,
+but they may not load correctly for participant's with
+older web-browsers. Additionally, it is good to refrain
+from uploading large images to reduce the amount of data
+that participants have to download. The content images
+will never be shown with a width above 1200 pixels.
+Therefore, for a typical content image, a file size of
+1 MB should be typical.
 
 <img src="screenshots/inserting-image.png" alt="How to insert an image" height="275"/>
 
@@ -534,10 +562,10 @@ Excel, but .xlsx is a general-purpose spreadsheet file format.
 Once you have downloaded your study configuration as an
 .xlsx file, you can then upload it through The Misinformation
 Game admin dashboard by clicking the **Upload New Study**
-button. This will open a dialogue where you can click
+button. This will open a window where you can click
 **Upload Spreadsheet** to select the .xlsx file to upload.
 
 If there are any errors that could be found with your study,
-then an error will be displayed in this dialogue. Otherwise,
+then an error will be displayed in this window. Otherwise,
 a success message will be displayed, and you will be redirected
 to the admin view of your new study.
