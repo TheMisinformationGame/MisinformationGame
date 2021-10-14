@@ -3,13 +3,7 @@
 echo "=========================="
 echo "Installing dependencies..."
 echo "=========================="
-npm install || { echo "Installing dependencies failed!" ; exit 1; }
-
-echo " "
-echo "============================================================="
-echo "Installing Firebase, you may be prompted for your password..."
-echo "============================================================="
-npm install firebase-tools || { echo "Installing Firebase failed!" ; exit 1; }
+npm ci || { echo "Installing dependencies failed!" ; exit 1; }
 
 echo " "
 echo "=================================="
@@ -59,7 +53,7 @@ echo "Setting up the CORS settings for the website..."
 echo "==============================================="
 echo " "
 echo "Please enter the URL of your project as a .appspot.com domain (e.g. misinformation-game.appspot.com):"
-read -r URL || exit
+read -r URL || exit 1
 .GoogleCloud/google-cloud-sdk/bin/gsutil cors set src/config/cors.json "gs://$URL" || { echo "Uploading CORS settings failed!" ; exit 1; }
 
 echo " "
