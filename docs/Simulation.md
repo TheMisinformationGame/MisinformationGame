@@ -65,7 +65,7 @@ a true post randomly from the pool of all true posts that
 have not yet been shown. Similarly, if it is chosen that
 a false post should be displayed, it will select a false
 post randomly from the pool of all false posts that
-have not yet been shown.
+have not yet been shown. 
 
 However, if there are no remaining true posts, or no remaining
 false posts, then the selection method will have to choose
@@ -75,6 +75,13 @@ has a length of 10 and includes 20 false posts but only
 show more than 50% true posts to the participant. After
 it has shown 5 true posts to the participant, it will only
 be able to show false posts from then on.
+
+Also note that due to the probabilistic sampling, it is 
+possible that the actual ratio of true and false posts 
+deviates from the target ratio, especially with small studies
+(e.g., with only 10 posts shown, even with a 60%:40% 
+true:false ratio, one could easily end up with only 3 true posts
+and 7 false posts, by chance). 
 
 ### Method 2: Source-Ratios
 When using the **Source-Ratios** source/post selection method,
@@ -97,8 +104,8 @@ selection method, as a source's credibility can decrease to 0
 or increase to 100 over the course of a game, if a source is 
 used to show many false / true posts. This may be accelerated 
 under **Credibility** selection due to a feedback cycle where 
-a high credibility causes a source to show more true
-posts, which increases credibility. Adjusting the relationship 
+a high credibility causes a source to show more true posts, 
+which increases credibility. Adjusting the relationship 
 between credibility and true-post percentage to be flatter can
 help alleviate this issue.
 
