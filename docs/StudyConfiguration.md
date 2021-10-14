@@ -47,10 +47,14 @@ in section 1.1, you can also upload
 Your spreadsheet should now contain everything you need
 to create a new study.
 
-## 2. 📜 Overview of the Spreadsheet
+## 2. 📜 Enter your study settings into the Spreadsheet
 The configuration spreadsheet may look intimidating at
 first glance, and so this section will try to break
-down what all the different sheets mean.
+down the configuration spreadsheet sheet-by-sheet.
+The sheets are roughly ordered in the same order as
+you may want to fill in the data for your study,
+however you are free to jump back and forth as you
+configure your study.
 
 
 ### 📄 About Sheet
