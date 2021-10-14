@@ -9,7 +9,7 @@ Excel.** It is built specifically for use in Google Sheets,
 and uses functionality that is not available in Microsoft
 Excel.
 
-## ✏️ Create a new Spreadsheet
+## 1. ✏ Create a new Spreadsheet
 Before you can start configuring your study, you will first
 need to create a new spreadsheet for the study in Google
 Sheets. You can create a new spreadsheet by either copying
@@ -47,7 +47,7 @@ in section 1.1, you can also upload
 Your spreadsheet should now contain everything you need
 to create a new study.
 
-## 📜 Overview of the Spreadsheet
+## 2. 📜 Overview of the Spreadsheet
 The configuration spreadsheet may look intimidating at
 first glance, and so this section will try to break
 down what all the different sheets mean.
@@ -490,7 +490,7 @@ there are plans to add likes to posts and comments,
 however this feature is not fully implemented yet.
 
 
-## 📤 Uploading your Study
+## 3. 📤 Uploading your Study
 Once you have completed configuring your study, I recommend
 you first check the **Overview** sheet to make sure that
 everything looks correct, and doesn't contain any errors.
