@@ -377,16 +377,16 @@ shown to participants when this source is used alongside
 a post.
 
 **Avatar:** The avatar of the source is an image that is
-displayed in a circle alongside the source. The avatar
-image is _required_, and an error will be given if an
-avatar is not included for a source. The avatar image
-must be inserted into the spreadsheet using the
-**Insert** menu at the top of the page on Google Sheets.
-You must first select the cell where you want to insert
-the avatar image, and then select **Insert** -> **Image**
--> **Image in cell**. If you do not use this procedure,
-then the application will not be able to find the image
-to use for the avatar.
+displayed in a circle alongside the source. If the avatar
+is not square, it will be cropped. The avatar image is
+_required_, and an error will be given if an avatar is
+not included for a source. The avatar image must be
+inserted into the spreadsheet using the **Insert** menu
+at the top of the page on Google Sheets. You must first
+select the cell where you want to insert the avatar image,
+and then select **Insert** -> **Image** -> **Image in cell**.
+If you do not use this procedure, then the application will
+not be able to find the image to use for the avatar.
 
 The avatar images support all standard image file types,
 however .png and .jpg images are recommended. If you wish
@@ -398,10 +398,10 @@ they may not load correctly for participant's with older
 web-browsers. Additionally, it is good to refrain from
 uploading large images to reduce the amount of data that
 participants have to download. The avatars are only shown
-at small sizes, so any image size above 128 x 128 will be
-wasted. This corresponds to a file size of roughly 50 Kb,
-although with the compression of JPG and PNG they should be
-even smaller.
+at small sizes, so any image above a size of 128 pixels by
+128 pixels will be wasted. This corresponds to a file size
+of roughly 50 Kb, although with the compression of JPG and
+PNG they should be even smaller.
 
 <img src="screenshots/inserting-image.png" alt="How to insert an image" height="275"/>
 

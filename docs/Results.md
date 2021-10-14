@@ -11,8 +11,8 @@ The results spreadsheet is split into three sheets:
    and when the results were downloaded.
 2) **Results:** This sheet contains all the reactions of
    participants to the posts that they were shown. It also
-   includes the number of followers and credibility score of 
-   the source that shared the post and the participant, as well 
+   includes the number of followers and the credibility score of 
+   the source that shared the post, and the participant, as well 
    as the time it took the participant to react to the post.
 3) **Participants:** This sheet contains a list of all the
    participants in the study, when they completed the study,
