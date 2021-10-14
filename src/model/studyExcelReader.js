@@ -296,7 +296,7 @@ function readV1Sources(workbook) {
                     avatar,
                     readCellWithDefault(workbook, V1.source.maxPosts.row(row), defaults.maxPosts),
                     followers, credibility,
-                    readCell(workbook, V1.source.truePostPercentage.row(row))
+                    readCellWithDefault(workbook, V1.source.truePostPercentage.row(row), 0.5)
                 );
             })
         );

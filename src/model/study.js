@@ -18,7 +18,7 @@ export class Source {
     maxPosts; // Number
     followers; // TruncatedNormalDistribution
     credibility; // TruncatedNormalDistribution
-    truePostPercentage; // null or Number
+    truePostPercentage; // null or a Number between 0 and 1
 
     constructor(id, name, avatar, maxPosts, followers, credibility, truePostPercentage) {
         doTypeCheck(id, "string", "Source ID");
