@@ -384,7 +384,7 @@ You must first select the cell where you want to insert
 the avatar image, and then select **Insert** -> **Image**
 -> **Image in cell**. If you do not use this procedure,
 then the application will not be able to find the image
-to use for the avatar. [I assume avatars are optional? Please clarify if they can be left blank.]
+to use for the avatar. [I assume avatars are optional? Please clarify if they can be left blank. Also say something about file type and size]
 
 <img src="screenshots/inserting-image.png" alt="How to insert an image" height="275"/>
 
@@ -483,7 +483,7 @@ Sheets. You must first select the cell where you want to
 insert the content image, and then select **Insert** ->
 **Image** -> **Image in cell**. If you do not use this
 procedure, then the application will not be able to find
-the image to use for the content.
+the image to use for the content. [please also say something here about file types and sizes, please]
 
 <img src="screenshots/inserting-image.png" alt="How to insert an image" height="275"/>
 
