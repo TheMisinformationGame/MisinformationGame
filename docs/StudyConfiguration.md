@@ -128,7 +128,7 @@ dashboard. This description is not shown to participants.
 before they start the study. An example prompt is shown
 below.
 
-![Example Prompt](screenshots/example-prompt.png)
+<img src="screenshots/example-prompt.png" alt="Example prompt" height="250"/>
 
 **Prompt Continue Delay (Seconds):** This value represents
 the number of seconds that the participant will have to
@@ -161,7 +161,7 @@ below their debriefing. The completion code is a random
 number that is not guaranteed to be unique for each
 participant.
 
-![Example Debriefing](screenshots/example-debriefing.png)
+<img src="screenshots/example-debriefing-no-border.png" alt="Example debriefing page" height="140" />
 
 **Completion Code Digits:** The number of digits that
 should be included in the completion code. For example,
@@ -209,7 +209,7 @@ blank.
 This page will be shown to participants after they have
 completed the study. This page is not optional.
 
-![Example Debriefing](screenshots/example-debriefing.png)
+<img src="screenshots/example-debriefing-no-border.png" alt="Example debriefing page" height="140" />
 
 
 ### Source & Post Selection Sheet
@@ -352,7 +352,7 @@ the avatar image, and then select **Insert** -> **Image**
 then the application will not be able to find the image
 to use for the avatar.
 
-<img src="screenshots/inserting-image.png" alt="How to insert an image" height="549"/>
+<img src="screenshots/inserting-image.png" alt="How to insert an image" height="275"/>
 
 **Max Posts:** The maximum posts for a source allows you
 to set a hard limit on the number of times a source is
@@ -427,7 +427,7 @@ will be used in the results to refer to this specific post.
 In the template sheet, all the IDs are already filled in,
 and you should not have to edit them.
 
-<img src="screenshots/example-post-headline-content.png" alt="Post with headline and content highlighted" height="495"/>
+<img src="screenshots/example-post-headline-content.png" alt="Post with headline and content highlighted" height="250"/>
 
 **Headline:** The headline of the post is used to provide
 a title above the content of the post. This headline is
@@ -451,7 +451,7 @@ insert the content image, and then select **Insert** ->
 procedure, then the application will not be able to find
 the image to use for the content.
 
-<img src="screenshots/inserting-image.png" alt="How to insert an image" height="549"/>
+<img src="screenshots/inserting-image.png" alt="How to insert an image" height="275"/>
 
 **Changes to Followers:** These settings allow you to
 set the exact change to a participant's followers after
@@ -471,7 +471,7 @@ instead.
 for each post. Each comment must include both a _Source Name_
 and a _Message_, which are described below.
 
-<img src="screenshots/example-comment.png" alt="Example comment in the game interface" height="123" />
+<img src="screenshots/example-comment.png" alt="Example comment in the game interface" height="100" />
 
 **Comment Source Name:** This value is the name to use as
 the source of the comment.
@@ -496,7 +496,7 @@ Game. This can be done by selecting **File** -> **Download**
 spreadsheet is only meant for Microsoft Excel, but .xlsx is
 a general-purpose spreadsheet file format.
 
-<img src="screenshots/exporting-configuration-spreadsheet.png" alt="How to export the configuration spreadsheet" height="500"/>
+<img src="screenshots/exporting-configuration-spreadsheet.png" alt="How to export the configuration spreadsheet" height="250"/>
 
 Once you have downloaded your study configuration as a
 .xlsx file, you can then upload it through The Misinformation
