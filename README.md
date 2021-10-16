@@ -3,7 +3,7 @@ The Misinformation Game is a social media simulator built to study
 the behavior of people when they interact with social media. This
 game was built as part of the CITS3200 unit at UWA by Paddy Lamont,
 Dean Law Yim Wan, Xiyu Gao, Danny Marwick, Andrew Pilkington,
-and Yunhui Rao, in collaboration with Assoc/Prof Ullrich Ecker.
+and Yunhui Rao, in collaboration with Professor Ullrich Ecker.
 
 ### Example Game
 If you would like to test playing through a study created using
@@ -15,8 +15,8 @@ You can enter any ID to access the example game.
 
 ### Features
 
-- Social media simulator with dynamically updating followers and
-  credibility based upon participant's interactions with posts.
+- Social media simulator with dynamically updating follower numbers and
+  credibility scores based on participants' interactions with posts.
 - Several options for the dynamic selection of sources and posts
   to show to participants.
 - Configurable prompt to be shown to participants before they
@@ -27,8 +27,7 @@ You can enter any ID to access the example game.
   they can use to prove they completed the study.
 - Participants can access the study from desktop, tablet,
   or mobile devices.
-- Rich recording of participant's interactions throughout
-  their game, to allow analysis of their behavior.
+- Rich recording of participants' interactions to allow analysis of their behavior.
 - Security to restrict access to the results of studies, and to
   stop unauthorised users from uploading their own studies.
 - Ability to completely delete old studies and their results to
