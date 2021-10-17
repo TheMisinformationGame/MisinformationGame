@@ -11,6 +11,12 @@ document. At the end of this guide, you will have
 your own website hosted at your own custom URL,
 (e.g. https://misinformation-game.web.app).
 
+### Updating your Installation
+A guide on how to update your own instance of The
+Misinformation Game to the newest version available
+can be found in the [Updating.md](Updating.md)
+document.
+
 ### Registering Administrators
 A guide on registering administrators, and a description
 of their privileges, can be found in the
