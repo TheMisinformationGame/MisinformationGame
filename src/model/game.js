@@ -339,10 +339,10 @@ export class GameParticipant {
         this.reactions.push(reaction);
         this.firstInteractTimesMS.push(firstInteractMS);
         this.lastInteractTimesMS.push(lastInteractMS);
-        this.credibilityHistory.push(this.credibility);
-        this.followerHistory.push(this.followers);
         this.credibility = adjustCredibility(this.credibility, credibilityChange);
         this.followers = adjustFollowers(this.followers, followersChange);
+        this.credibilityHistory.push(this.credibility);
+        this.followerHistory.push(this.followers);
     }
 
     toJSON() {
