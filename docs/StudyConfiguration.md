@@ -403,7 +403,7 @@ at small sizes, so any image above a size of 128 pixels by
 of roughly 50 Kb, although with the compression of JPG and
 PNG they should be even smaller.
 
-<img src="screenshots/inserting-image.png" alt="How to insert an image" height="275"/>
+<img src="diagrams/inserting-image.png" alt="How to insert an image" height="275"/>
 
 **Max Posts:** The maximum posts for a source allows you
 to set a hard limit on the number of times a source is
@@ -478,7 +478,7 @@ will be used in the results to refer to this specific post.
 In the template sheet, all the IDs are already pre-filled,
 and there should be no need to edit them.
 
-<img src="screenshots/example-post-headline-content.png" alt="Post with headline and content highlighted" height="250"/>
+<img src="diagrams/post-headline-content.png" alt="Post with headline and content highlighted" height="250"/>
 
 **Headline:** The headline of the post is used to provide
 a title above the content of the post. This headline is
@@ -513,7 +513,7 @@ will never be shown with a width above 1200 pixels.
 Therefore, for a typical content image, a file size of
 1 MB should be typical.
 
-<img src="screenshots/inserting-image.png" alt="How to insert an image" height="275"/>
+<img src="diagrams/inserting-image.png" alt="How to insert an image" height="275"/>
 
 **Changes to Followers:** These settings allow you to
 set the exact change to a participant's followers after
@@ -557,7 +557,7 @@ selecting **File** -> **Download** -> **Microsoft Excel (.xlsx)**.
 The name suggests that this spreadsheet is only meant for Microsoft 
 Excel, but .xlsx is a general-purpose spreadsheet file format.
 
-<img src="screenshots/exporting-configuration-spreadsheet.png" alt="How to export the configuration spreadsheet" height="250"/>
+<img src="diagrams/exporting-config-spreadsheet.png" alt="How to export the configuration spreadsheet" height="250"/>
 
 Once you have downloaded your study configuration as an
 .xlsx file, you can then upload it through The Misinformation
