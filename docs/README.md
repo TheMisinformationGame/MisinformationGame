@@ -60,7 +60,7 @@ this is the best place to start.
 ### System Architecture
 The system architecture of how The Misinformation Game
 functions is described in the
-[SystemArchitecture.md](SystemArchitecture.md) document.
+[SystemArchitecture.md](Technical.md) document.
 This includes an overview of the technologies used in
 the project, and the data-flows within the application.
 
