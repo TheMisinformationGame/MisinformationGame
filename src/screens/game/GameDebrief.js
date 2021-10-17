@@ -24,7 +24,7 @@ export class GameDebrief extends ActiveGameScreen {
         }
 
         return (
-            <div className="m-1 bg-white p-10 relative">
+            <div className="m-1 bg-white p-10 max-w-4xl ml-auto mr-auto">
                 <p className="leading-5" dangerouslySetInnerHTML={{__html: study.debrief}} />
 
                 <div className="mt-8">
@@ -37,22 +37,24 @@ export class GameDebrief extends ActiveGameScreen {
                     </label>
                 </div>
 
-                <div className="border border-black rounded-md
-                                inline-block p-2 w-96 mt-4
-                                text-center font-mono tracking-widest">
+                <div className="flex">
+                    <div className="border border-black rounded-md
+                                    inline-block p-2 w-96 mt-4
+                                    text-center font-mono tracking-widest">
 
-                    <p className={"leading-5 " + (hidden ? "select-none" : "select-all")}>
-                        {completionCode}
-                    </p>
+                        <p className={"leading-5 " + (hidden ? "select-none" : "select-all")}>
+                            {completionCode}
+                        </p>
+                    </div>
+                    <button className={"ml-1 p-2 rounded-lg " +
+                                    (hidden ? "text-gray-500 cursor-default" :
+                                                "hover:bg-gray-100 active:bg-gray-300")}
+                            title={hidden ? "Completion Code is Hidden" : "Copy Completion Code"}
+                            onClick={() => {navigator.clipboard.writeText(completionCode)}}>
+
+                        <ContentCopyIcon  />
+                    </button>
                 </div>
-                <button className={"ml-1 p-2 rounded-lg " +
-                                   (hidden ? "text-gray-500 cursor-default" :
-                                             "hover:bg-gray-100 active:bg-gray-300")}
-                        title={hidden ? "Completion Code is Hidden" : "Copy Completion Code"}
-                        onClick={() => {navigator.clipboard.writeText(completionCode)}}>
-
-                    <ContentCopyIcon  />
-                </button>
             </div>
         );
     }
