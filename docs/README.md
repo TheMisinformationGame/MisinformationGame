@@ -3,13 +3,13 @@ This directory contains several documents outlining the
 way that The Misinformation Game works, and how it can
 be used to conduct studies.
 
-### Deployment
-A guide on how to deploy The Misinformation Game into
-your own Firebase project for running your own studies
-is described in the [Deployment.md](Deployment.md) document.
-Deployment allows you to run your own website similar to
-https://misinformation-game.web.app where you can include
-your own studies.
+### Installation
+A guide on how to deploy your own instance of The
+Misinformation Game at your own custom URL is
+described in the [Installation.md](Installation.md)
+document. At the end of this guide, you will have
+your own website hosted at your own custom URL,
+(e.g. https://misinformation-game.web.app).
 
 ### Registering Administrators
 A guide on registering administrators, and a description

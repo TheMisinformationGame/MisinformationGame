@@ -70,10 +70,10 @@ function constructWorkbook(study, results, problems) {
 
         for (let stateIndex = 0; stateIndex < game.states.length; stateIndex++) {
             const state = game.states[stateIndex];
-            const beforeCredibility = Math.round(participant.credibilityHistory[stateIndex]);
-            const afterCredibility = Math.round(participant.credibilityHistory[stateIndex + 1]);
-            const beforeFollowers = Math.round(participant.followerHistory[stateIndex]);
-            const afterFollowers = Math.round(participant.followerHistory[stateIndex + 1]);
+            const beforeCredibility = Math.round(participant.credibilityHistory[stateIndex + 1]);
+            const afterCredibility = Math.round(participant.credibilityHistory[stateIndex + 2]);
+            const beforeFollowers = Math.round(participant.followerHistory[stateIndex + 1 ]);
+            const afterFollowers = Math.round(participant.followerHistory[stateIndex + 2]);
             resultsWorksheet.addRow({
                 sessionID: game.sessionID,
                 participantID: participant.participantID || "",
