@@ -57,12 +57,13 @@ Misinformation Game is described in the
 to program new features into The Misinformation Game,
 this is the best place to start.
 
-### System Architecture
-The system architecture of how The Misinformation Game
-functions is described in the
-[SystemArchitecture.md](Technical.md) document.
-This includes an overview of the technologies used in
-the project, and the data-flows within the application.
+### Technical Overview
+An overview of the technical considerations that were
+made to create The Misinformation Game are described
+in the [TechnicalOverview.md](TechnicalOverview.md)
+document. This includes an overview of the different
+technologies that are used in the project, as well as
+a diagram showing the main data-flows within the application.
 
 ### Original Design
 The original design that was made before The Misinformation
