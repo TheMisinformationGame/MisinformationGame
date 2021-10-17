@@ -66,11 +66,17 @@ as shown to the participant for this post.
 **Source Credibility:** The credibility of the source as
 shown to the participant for this post.
 
-**Participant Credibility:** The credibility of the
+**Participant Credibility Before:** The credibility of the
 participant before they reacted to this post.
 
-**Participant Followers:** The number of followers of the
+**Participant Followers Before:** The number of followers of the
 participant before they reacted to this post.
+
+**Participant Credibility After:** The credibility of the
+participant after they reacted to this post.
+
+**Participant Followers After:** The number of followers of the
+participant after they reacted to this post.
 
 **Reaction:** The reaction that the participant chose
 for this post. This can be one of `like`, `dislike`,

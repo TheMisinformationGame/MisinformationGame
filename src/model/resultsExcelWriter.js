@@ -54,10 +54,10 @@ function constructWorkbook(study, results, problems) {
         {header: "Source ID", key: "sourceID", width: 14},
         {header: "Source Followers", key: "sourceFollowers", width: 22},
         {header: "Source Credibility", key: "sourceCredibility", width: 22},
-        {header: "Before Participant Credibility", key: "beforeCredibility", width: 36},
-        {header: "Before Participant Followers", key: "beforeFollowers", width: 36},
-        {header: "After Participant Credibility", key: "afterCredibility", width: 36},
-        {header: "After Participant Followers", key: "afterFollowers", width: 36},
+        {header: "Participant Credibility Before", key: "beforeCredibility", width: 36},
+        {header: "Participant Followers Before", key: "beforeFollowers", width: 36},
+        {header: "Participant Credibility After", key: "afterCredibility", width: 36},
+        {header: "Participant Followers After", key: "afterFollowers", width: 36},
         {header: "Reaction", key: "reaction", width: 12},
         {header: "First Time to Interact (MS)", key: "firstInteractTime", width: 32},
         {header: "Last Time to Interact (MS)", key: "lastInteractTime", width: 32},
@@ -71,9 +71,9 @@ function constructWorkbook(study, results, problems) {
         for (let stateIndex = 0; stateIndex < game.states.length; stateIndex++) {
             const state = game.states[stateIndex];
             const beforeCredibility = Math.round(participant.credibilityHistory[stateIndex]);
-            const afterCredibility = Math.round(participant.credibility);
+            const afterCredibility = Math.round(participant.credibilityHistory[stateIndex + 1]);
             const beforeFollowers = Math.round(participant.followerHistory[stateIndex]);
-            const afterFollowers = Math.round(participant.credibility);
+            const afterFollowers = Math.round(participant.followerHistory[stateIndex + 1]);
             resultsWorksheet.addRow({
                 sessionID: game.sessionID,
                 participantID: participant.participantID || "",
