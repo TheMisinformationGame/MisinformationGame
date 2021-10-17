@@ -3,6 +3,13 @@ This directory contains several documents outlining the
 way that The Misinformation Game works, and how it can
 be used to conduct studies.
 
+### How to play The Misinformation Game
+A guide on how to participate in a study that is
+being run using The Misinformation Game is described
+in the [HowToPlay.md](HowToPlay.md) document. This
+page is adapted from the rules that participants
+will actually be shown.
+
 ### Installation
 A guide on how to deploy your own instance of The
 Misinformation Game at your own custom URL is

@@ -2,8 +2,12 @@
 
 **This is a copy of the page that will be shown to
 participants before they start participating in a study.**
-It only has some slight modifications to make the content
-readable within GitHub.
+
+This document has only slight modifications to make the content
+readable within GitHub. If you wish to view the actual
+rules page from the game, then try the
+[example game](https://misinformation-game.web.app/study/axsvxt37ctac6ltr)
+from https://misinformation-game.web.app.
 
 ## How to Participate
 
