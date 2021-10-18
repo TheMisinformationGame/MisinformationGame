@@ -10,7 +10,8 @@ import subprocess
 
 class Test(unittest.TestCase):
 
-    base_url = "https://misinformation-game-group-41.web.app"
+    # base_url = "https://misinformation-game-group-41.web.app"
+    play_url = "https://misinformation-game.web.app/study/axsvxt37ctac6ltr"
 
     def setUp(self) -> None:
 
@@ -27,7 +28,7 @@ class Test(unittest.TestCase):
                 self.driver = webdriver.Firefox(
                     os.path.join(path, "geckodriver"))
                 break
-        # subprocess.check_call("npm start", shell=True)
+        subprocess.check_call("npm start", shell=True)
 
     def testPages(self) -> None:
 
@@ -123,6 +124,40 @@ class Test(unittest.TestCase):
             print("Test of uploading incorrect study file passed!")
         except:
             print("Test of uploading incorrect study file failed!")
+
+    def testPlayGame(self) -> None:
+
+        self.driver.maximize_window()
+
+        self.driver.get(self.play_url)
+        time.sleep(5)
+
+        id_element = self.driver.find_element_by_xpath(
+            "//input[@class='px-3 py-2 border border-gray-400 rounded-md justify-self-center bg-gray-100']"
+        )
+        id_element.send_keys("testID")
+        time.sleep(2)
+
+        try:
+            continue_key = self.driver.find_element_by_xpath(
+                "//div[text()='Continue']"
+            )
+            continue_key.click()
+            time.sleep(5)
+            print("Successfully enter the game page")
+        except:
+            print("Fail to enter the game ID")
+
+        time.sleep(10)
+        try:
+            continue_key2 = self.driver.find_element_by_xpath(
+                "//a[text()='Continue']"
+            )
+            continue_key2.click()
+            time.sleep(5)
+            print("Successfully start the game")
+        except:
+            print("Fail to start the game")
 
     def testUploadCredibilitySettingsMissing(self) -> None:
 
