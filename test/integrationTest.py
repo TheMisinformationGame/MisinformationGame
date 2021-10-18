@@ -125,7 +125,7 @@ class Test(unittest.TestCase):
         except:
             print("Test of uploading incorrect study file failed!")
 
-    def testPlayGame(self) -> None:
+    def testPlayGameLike(self) -> None:
 
         self.driver.maximize_window()
 
@@ -144,7 +144,7 @@ class Test(unittest.TestCase):
             )
             continue_key.click()
             time.sleep(5)
-            print("Successfully enter the game page")
+            print("Successfully enter the game ID")
         except:
             print("Fail to enter the game ID")
 
@@ -155,9 +155,270 @@ class Test(unittest.TestCase):
             )
             continue_key2.click()
             time.sleep(5)
+            print("Successfully enter the info page")
+        except:
+            print("Fail to enter the info page")
+
+        time.sleep(10)
+        try:
+            continue_key3 = self.driver.find_element_by_xpath(
+                "//div[text()='Continue']"
+            )
+            continue_key3.click()
+            time.sleep(5)
             print("Successfully start the game")
         except:
             print("Fail to start the game")
+
+        time.sleep(5)
+        try:
+            like = self.driver.find_element_by_id("like")
+            like.click()
+            time.sleep(3)
+
+            next_post1 = self.driver.find_elements_by_xpath(
+                "//div[text()='Continue to Next Post']"
+            )
+            next_post1.click()
+            print("Successfully like the post")
+        except:
+            print("Fail to like the post")
+
+    def testPlayGameDisike(self) -> None:
+
+        self.driver.maximize_window()
+
+        self.driver.get(self.play_url)
+        time.sleep(5)
+
+        id_element = self.driver.find_element_by_xpath(
+            "//input[@class='px-3 py-2 border border-gray-400 rounded-md justify-self-center bg-gray-100']"
+        )
+        id_element.send_keys("testID")
+        time.sleep(2)
+
+        try:
+            continue_key = self.driver.find_element_by_xpath(
+                "//div[text()='Continue']"
+            )
+            continue_key.click()
+            time.sleep(5)
+            print("Successfully enter the game ID")
+        except:
+            print("Fail to enter the game ID")
+
+        time.sleep(10)
+        try:
+            continue_key2 = self.driver.find_element_by_xpath(
+                "//a[text()='Continue']"
+            )
+            continue_key2.click()
+            time.sleep(5)
+            print("Successfully enter the info page")
+        except:
+            print("Fail to enter the info page")
+
+        time.sleep(10)
+        try:
+            continue_key3 = self.driver.find_element_by_xpath(
+                "//div[text()='Continue']"
+            )
+            continue_key3.click()
+            time.sleep(5)
+            print("Successfully start the game")
+        except:
+            print("Fail to start the game")
+
+        time.sleep(5)
+        try:
+            dislike = self.driver.find_element_by_id("dislike")
+            dislike.click()
+            time.sleep(3)
+
+            next_post2 = self.driver.find_elements_by_xpath(
+                "//div[text()='Continue to Next Post']"
+            )
+            next_post2.click()
+            print("Successfully dislike the post")
+        except:
+            print("Fail to dislike the post")
+
+    def testPlayGameShare(self) -> None:
+
+        self.driver.maximize_window()
+
+        self.driver.get(self.play_url)
+        time.sleep(5)
+
+        id_element = self.driver.find_element_by_xpath(
+            "//input[@class='px-3 py-2 border border-gray-400 rounded-md justify-self-center bg-gray-100']"
+        )
+        id_element.send_keys("testID")
+        time.sleep(2)
+
+        try:
+            continue_key = self.driver.find_element_by_xpath(
+                "//div[text()='Continue']"
+            )
+            continue_key.click()
+            time.sleep(5)
+            print("Successfully enter the game ID")
+        except:
+            print("Fail to enter the game ID")
+
+        time.sleep(10)
+        try:
+            continue_key2 = self.driver.find_element_by_xpath(
+                "//a[text()='Continue']"
+            )
+            continue_key2.click()
+            time.sleep(5)
+            print("Successfully enter the info page")
+        except:
+            print("Fail to enter the info page")
+
+        time.sleep(10)
+        try:
+            continue_key3 = self.driver.find_element_by_xpath(
+                "//div[text()='Continue']"
+            )
+            continue_key3.click()
+            time.sleep(5)
+            print("Successfully start the game")
+        except:
+            print("Fail to start the game")
+
+        time.sleep(5)
+        try:
+            dislike = self.driver.find_element_by_id("share")
+            dislike.click()
+            time.sleep(3)
+
+            next_post2 = self.driver.find_elements_by_xpath(
+                "//div[text()='Continue to Next Post']"
+            )
+            next_post2.click()
+            print("Successfully share the post")
+        except:
+            print("Fail to share the post")
+
+    def testPlayGameFlag(self) -> None:
+
+        self.driver.maximize_window()
+
+        self.driver.get(self.play_url)
+        time.sleep(5)
+
+        id_element = self.driver.find_element_by_xpath(
+            "//input[@class='px-3 py-2 border border-gray-400 rounded-md justify-self-center bg-gray-100']"
+        )
+        id_element.send_keys("testID")
+        time.sleep(2)
+
+        try:
+            continue_key = self.driver.find_element_by_xpath(
+                "//div[text()='Continue']"
+            )
+            continue_key.click()
+            time.sleep(5)
+            print("Successfully enter the game ID")
+        except:
+            print("Fail to enter the game ID")
+
+        time.sleep(10)
+        try:
+            continue_key2 = self.driver.find_element_by_xpath(
+                "//a[text()='Continue']"
+            )
+            continue_key2.click()
+            time.sleep(5)
+            print("Successfully enter the info page")
+        except:
+            print("Fail to enter the info page")
+
+        time.sleep(10)
+        try:
+            continue_key3 = self.driver.find_element_by_xpath(
+                "//div[text()='Continue']"
+            )
+            continue_key3.click()
+            time.sleep(5)
+            print("Successfully start the game")
+        except:
+            print("Fail to start the game")
+
+        time.sleep(5)
+        try:
+            dislike = self.driver.find_element_by_id("flag")
+            dislike.click()
+            time.sleep(3)
+
+            next_post2 = self.driver.find_elements_by_xpath(
+                "//div[text()='Continue to Next Post']"
+            )
+            next_post2.click()
+            print("Successfully flag the post")
+        except:
+            print("Fail to flag the post")
+
+    def testPlayGameFlag(self) -> None:
+
+        self.driver.maximize_window()
+
+        self.driver.get(self.play_url)
+        time.sleep(5)
+
+        id_element = self.driver.find_element_by_xpath(
+            "//input[@class='px-3 py-2 border border-gray-400 rounded-md justify-self-center bg-gray-100']"
+        )
+        id_element.send_keys("testID")
+        time.sleep(2)
+
+        try:
+            continue_key = self.driver.find_element_by_xpath(
+                "//div[text()='Continue']"
+            )
+            continue_key.click()
+            time.sleep(5)
+            print("Successfully enter the game ID")
+        except:
+            print("Fail to enter the game ID")
+
+        time.sleep(10)
+        try:
+            continue_key2 = self.driver.find_element_by_xpath(
+                "//a[text()='Continue']"
+            )
+            continue_key2.click()
+            time.sleep(5)
+            print("Successfully enter the info page")
+        except:
+            print("Fail to enter the info page")
+
+        time.sleep(10)
+        try:
+            continue_key3 = self.driver.find_element_by_xpath(
+                "//div[text()='Continue']"
+            )
+            continue_key3.click()
+            time.sleep(5)
+            print("Successfully start the game")
+        except:
+            print("Fail to start the game")
+
+        time.sleep(5)
+        try:
+            dislike = self.driver.find_element_by_id("skip")
+            dislike.click()
+            time.sleep(3)
+
+            next_post2 = self.driver.find_elements_by_xpath(
+                "//div[text()='Continue to Next Post']"
+            )
+            next_post2.click()
+            print("Successfully skip the post")
+        except:
+            print("Fail to skip the post")
 
     def testUploadCredibilitySettingsMissing(self) -> None:
 
@@ -253,4 +514,9 @@ if __name__ == "__main__":
     # test.testUploadIncorrect()
     # test.testUploadCredibilitySettingsMissing()
     # test.testUploadOverallRatioSettingsMissing()
+    # test.testPlayGameLike()
+    # test.testPlayGameDislike()
+    # test.testPlayGameShare()
+    # test.testPlayGameSkip()
+    # test.testPlayGameFlag()
     test.UploadtestSheetMissing()
