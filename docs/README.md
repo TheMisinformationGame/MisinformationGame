@@ -75,7 +75,7 @@ a diagram showing the main data-flows within the application.
 ### Original Design
 The original design that was made before The Misinformation
 Game was developed can be found in
-[original-design/DESIGN.md](original-design/DESIGN.md).
+[original-design/README.md](original-design/README.md).
 This design is not representative of the current state of
 the application, however it was the starting point for
 this whole project and is therefore kept for posterity.
