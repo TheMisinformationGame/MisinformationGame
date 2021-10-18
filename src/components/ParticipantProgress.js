@@ -42,7 +42,7 @@ export class ParticipantProgress extends Component {
                     " bottom-0 md:bottom-auto md:top-0 left-1/2 md:left-0 " +
                     " transform -translate-x-1/2 md:translate-x-0 " +
                     " z-10 transform -translate-x-1/2 md:translate-x-0 " +
-                    " rounded-xl shadow-2xl md:shadow-xl md:border md:border-gray-400 "
+                    " md:rounded-xl shadow-2xl md:shadow-xl md:border md:border-gray-400 "
                     : /* Or, if we aren't on the game screen, then only a little. */
                     " static max-w-xs rounded-xl border border-gray-400 shadow ")}>
 
