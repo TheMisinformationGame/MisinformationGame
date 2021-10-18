@@ -43,7 +43,7 @@ Firebase Emulator Suite backend at https://localhost:9000.
 Every time you restart this emulator, all the data stored
 within it will be discarded.
 
-## 3. Run Development Website
+## 4. Run Development Website
 While the Firebase Emulator provides its own hosting of
 the website as well, using NPM to host the development
 website is better, as it will update your website
