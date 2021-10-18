@@ -22,6 +22,8 @@ You can create a new project by following the
 [Installation Guide](Installation.md). You do not
 have to follow the guide any further to setup the
 Firebase project, you just need one to exist.
+However, if you already have a production Firebase
+project, it is best to link to that project instead.
 
 You can then link to your Firebase project by
 running the following commands:
