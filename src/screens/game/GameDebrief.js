@@ -25,7 +25,7 @@ export class GameDebrief extends ActiveGameScreen {
 
         return (
             <div className="m-1 bg-white p-10 max-w-4xl ml-auto mr-auto">
-                <p className="leading-5" dangerouslySetInnerHTML={{__html: study.debrief}} />
+                <p className="leading-tight" dangerouslySetInnerHTML={{__html: study.debrief}} />
 
                 <div className="mt-8">
                     <input id="confirmation-checkbox" type="checkbox"
