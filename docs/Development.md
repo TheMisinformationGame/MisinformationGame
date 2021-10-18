@@ -14,12 +14,28 @@ sudo npm install -g firebase-tools
 npm run build
 ```
 
-## 2. Run Firebase Emulator
+## 2. Connect to a Firebase Project
+Firebase requires that you connect it to a Firebase
+project just to run the project locally for testing.
+You can create a new project by following the
+**2.1.1.Create Project** section of the
+[Installation Guide](Installation.md). You do not
+have to follow the guide any further to setup the
+Firebase project, you just need one to exist.
+
+You can then link to your Firebase project by
+running the following commands:
+```shell
+npx firebase login
+npx firebase use --add
+```
+
+## 3. Run Firebase Emulator
 The Firebase emulator will emulate the Firebase
 authentication, Firestore, and Firebase Storage for
 you. The emulator can be started by running the command,
 ```shell
-firebase emulators:start
+npx firebase emulators:start
 ```
 
 After you have run this command, you can access the
