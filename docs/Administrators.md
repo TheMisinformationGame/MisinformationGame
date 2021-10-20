@@ -66,9 +66,3 @@ and Value, press **Save**.
 The user should now be able to reload the admin dashboard, and
 the **You are not registered as an admin** error should
 be gone.
-
-## 3. Managing studies
-In the admin dashboard, you can view all the studies and see whether they are active or inactive.
-<img src="./screenshots/example-admin-dashboard.png">
-If you click on a study, you can see a few actions: you can enable/disable it (so that you can effectively authorise a user's instance with this particular study), you can download the results (more information about this download in [Results.md](./Results.md)), update the study (the spreadsheet will be opened for editing, more information in [StudyConfiguration.md](./StudyConfiguration.md)) or you can delete the study.
-<img src="./screenshots/example-admin-study.png">
