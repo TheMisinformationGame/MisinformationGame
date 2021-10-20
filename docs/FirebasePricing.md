@@ -7,7 +7,7 @@ Misinformation Game.
 ## Summary
 In summary, studies with many posts that contain images
 will likely run into the **Free Tier** usage limits.
-Therefore, as described under section 4, it is vital to
+Therefore, as described under _section 4_, it is vital to
 reduce the size of the images you use in your study. If
 you think you will come close to the usage limits, it
 will be best to upgrade your Firebase project to the
@@ -15,7 +15,8 @@ will be best to upgrade your Firebase project to the
 locked out of the game unexpectedly. You can also set
 [budget alerts](https://firebase.google.com/docs/projects/billing/avoid-surprise-bills#set-up-budget-alert-emails)
 under the Blaze Plan to ensure you are never charged
-more than a few dollars for your website.
+more than a few dollars for hosting your instance of
+The Misinformation Game.
 
 ## 1. How the pricing works
 Firebase separates the costs for each of its backend services.
