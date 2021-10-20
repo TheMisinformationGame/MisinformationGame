@@ -54,6 +54,14 @@ contained within the configuration spreadsheet, and
 a guide on how to upload your study to your deployment
 of The Misinformation Game.
 
+### Managing Studies
+After you have created and uploaded your studies to
+The Misinformation Game, you will also have to access
+the study to enable it, download its results, or even
+to delete it. The processes to perform each of these
+tasks is described in the
+[ManagingStudies.md](ManagingStudies.md) document.
+
 ### Simulation
 A description of the simulation that the participants
 interact with is described in the
