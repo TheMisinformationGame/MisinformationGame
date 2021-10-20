@@ -399,9 +399,8 @@ web-browsers. Additionally, it is good to refrain from
 uploading large images to reduce the amount of data that
 participants have to download. The avatars are only shown
 at small sizes, so any image above a size of 128 pixels by
-128 pixels will be wasted. This corresponds to a file size
-of roughly 50 Kb, although with the compression of JPG and
-PNG they should be even smaller.
+128 pixels will be wasted. This corresponds to a typical
+file size of below 20 Kb.
 
 <img src="diagrams/inserting-image.png" alt="How to insert an image" height="275"/>
 
@@ -509,9 +508,9 @@ but they may not load correctly for participant's with
 older web-browsers. Additionally, it is good to refrain
 from uploading large images to reduce the amount of data
 that participants have to download. The content images
-will never be shown with a width above 1200 pixels.
+will never be shown with a width above 600 pixels.
 Therefore, for a typical content image, a file size of
-1 MB should be typical.
+100KB should be typical.
 
 <img src="diagrams/inserting-image.png" alt="How to insert an image" height="275"/>
 
