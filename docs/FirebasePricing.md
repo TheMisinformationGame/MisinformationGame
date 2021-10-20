@@ -4,6 +4,19 @@ backend. This document analyses the pricing information
 of Firebase for hosting your own studies using The
 Misinformation Game.
 
+## Summary
+In summary, studies with many posts that contain images
+will likely run into the **Free Tier** usage limits.
+Therefore, as described under section 4, it is vital to
+reduce the size of the images you use in your study. If
+you think you will come close to the usage limits, it
+will be best to upgrade your Firebase project to the
+**Blaze Plan** to ensure that participants don't get
+locked out of the game unexpectedly. You can also set
+[budget alerts](https://firebase.google.com/docs/projects/billing/avoid-surprise-bills#set-up-budget-alert-emails)
+under the Blaze Plan to ensure you are never charged
+more than a few dollars for your website.
+
 ## 1. How the pricing works
 Firebase separates the costs for each of its backend services.
 The Misinformation Game makes use of its **Hosting**,
@@ -152,7 +165,7 @@ participants above this number, the **Paid Tier** of
 Cloud Storage will allow an additional 380 participants
 per $1 spent.
 
-## 4. A note about images in a study
+## 4. Reducing Image Sizes
 From the analysis above, it becomes clear that most of
 the cost of hosting studies using The Misinformation
 Game on Firebase is due to participants having to
@@ -193,5 +206,5 @@ compressed to 74KB.
 
 **Scaled-Down and Compressed Image, 800x500, 74KB:**
 
-<img src="diagrams/example-image-800x500-compressed.jpg" alt="Example image that is 800 x 500" width="600" />
+<img src="diagrams/example-image-800x500-compressed.jpg" alt="Example image that is 800 x 500 and compressed" width="600" />
 

@@ -24,6 +24,14 @@ Misinformation Game to the newest version available
 can be found in the [Updating.md](Updating.md)
 document.
 
+### Firebase Pricing
+Firebase offers a generous free tier for Firebase,
+however for studies with many images or many participants,
+this free tier may be exceeded. More information on
+the limits to the free tier, and the cost of hosting the
+website into the paid tier, can be found in the
+[FirebasePricing.md](FirebasePricing.md) document.
+
 ### Registering Administrators
 A guide on registering administrators, and a description
 of their privileges, can be found in the
