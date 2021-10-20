@@ -1,9 +1,8 @@
 # Firebase Pricing
-This application is hosted using firebase. This document
-analyses the pricing of Firebase for hosting this
-application in particular. More information regarding
-this in general can be found in Firebase's own
-[pricing reference](https://firebase.google.com/pricing).
+The Misinformation Game is hosted using Firebase as its
+backend. This document analyses the pricing information
+of Firebase for hosting your own studies using The
+Misinformation Game.
 
 ## 1. How the pricing works
 Firebase separates the costs for each of its backend services.
@@ -11,8 +10,8 @@ The Misinformation Game makes use of its **Hosting**,
 **Cloud Firestore**, and **Cloud Storage** services. All of
 these services are available under the free tier of Firebase,
 which they refer to as the **Spark Plan**. Firebase also
-offers a **Blaze Plan** for any use of their backend
-services above their free tier limits.
+offers a paid tier under their **Blaze Plan** for any use
+of their backend services above the free tier limits.
 
 ## 2. Firebase's Current Pricing
 At the time of writing this document, Firebase charges
@@ -20,6 +19,9 @@ the following amounts for its backend services when
 the website is hosted in Sydney. These values are likely
 to change between regions, and into the future, however
 they should hopefully give a good estimate for now.
+
+Up-to-date pricing can be found in Firebase's own
+[pricing reference](https://firebase.google.com/pricing).
 
 ### 2.1. Firebase Hosting
 Firebase Hosting is the backend service that sends
@@ -56,7 +58,7 @@ participants.
 |  Upload operations  |  20K/day  |  $0.05/10k  |
 |  Download operations  |  50K/day  |  $0.004/10k  |
 
-## 3. Pricing Estimates for an Example Study
+## 3. Pricing Estimates for Example Studies
 We can make pricing estimates for running a study by
 considering two different example studies. Each example
 study will contain 100 posts and 30 sources. We will
@@ -164,16 +166,18 @@ The two following images will be displayed very similarly
 to participants, however they have very different sizes.
 
 **Original Image, 1600x1000, 295KB:**
+
 <img src="diagrams/example-image-1600x1000.jpg" alt="Example image that is 1600 x 1000" width="600" />
 
 **Scaled-Down Image, 800x500, 88KB:**
+
 <img src="diagrams/example-image-800x500.jpg" alt="Example image that is 800 x 500" width="600" />
 
 As you can see above, the quality of both images appears
 to be similar, despite the fact that the second image is
-only 29% of the size. Therefore, to reduce the file size
-and increase the number of participants that can be
-supported under the free tier, down-scaling your post
+only 29% of the size of the first. Therefore, to reduce the
+file size and increase the number of participants that can
+be supported under the free tier, down-scaling your post
 images will be very important. The online tool
 [Simple Image Resizer](http://www.simpleimageresizer.com/)
 can be used to perform this down-scaling for you. When
@@ -188,5 +192,6 @@ their size even further. The image below is even further
 compressed to 74KB.
 
 **Scaled-Down and Compressed Image, 800x500, 74KB:**
+
 <img src="diagrams/example-image-800x500-compressed.jpg" alt="Example image that is 800 x 500" width="600" />
 
