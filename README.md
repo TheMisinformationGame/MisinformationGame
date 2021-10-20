@@ -36,8 +36,9 @@ You can enter any ID to access the example game.
 # 🛠️ Documentation
 How the game works, the system architecture of The
 Misinformation Game, and guides to use it to conduct studies
-can all be found under
-[/docs](docs).
+can all be found at https://themisinformationgame.github.io/.
+This documentation is also available under /docs in this
+repository.
 
 # 📝 License
 The Misinformation Game is licensed under the
