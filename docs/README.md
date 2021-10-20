@@ -18,6 +18,12 @@ document. At the end of this guide, you will have
 your own website hosted at your own custom URL,
 (e.g. https://misinformation-game.web.app).
 
+A walk-through of this guide that assumes less
+technical knowledge, but which may take longer
+for technical users, is also available in the
+[Installation_Walkthrough.pdf](Installation_Walkthrough.pdf)
+document.
+
 ### Updating your Installation
 A guide on how to update your own instance of The
 Misinformation Game to the newest version available
