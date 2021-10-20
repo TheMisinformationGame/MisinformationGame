@@ -1,7 +1,14 @@
 # Misinformation Game Documentation
-This directory contains several documents outlining the
-way that The Misinformation Game works, and how it can
-be used to conduct studies.
+This site contains the documentation for The Misinformation
+Game. This includes how The Misinformation Game works, and
+how it can be used to conduct studies.
+
+### Source Code
+The source code of The Misinformation Game can be found
+on Github, at
+[https://github.com/TheMisinformationGame/MisinformationGame](https://github.com/TheMisinformationGame/MisinformationGame).
+If you find any issues with the application, then please
+help us by submitting an issue there.
 
 ### How to play The Misinformation Game
 A guide on how to participate in a study that is
