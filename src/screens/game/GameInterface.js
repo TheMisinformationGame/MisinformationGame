@@ -157,9 +157,11 @@ class PostComponent extends Component {
                 <p className="text-lg font-normal p-2 pt-0" dangerouslySetInnerHTML={{__html: post.content}} />
             );
         } else {
-            postContent = (<PromiseImage image={
-                getDataManager().getStudyImage(state.study, post.id, post.content)
-            } />);
+            postContent = (<div className="flex justify-center bg-gray-200 max-h-60vh shadow-inner">
+                <PromiseImage image={
+                    getDataManager().getStudyImage(state.study, post.id, post.content)
+                } imageClassName="object-contain" style={{maxHeight: "50vh"}} />
+            </div>);
         }
 
         return (

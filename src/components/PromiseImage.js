@@ -70,6 +70,7 @@ export class PromiseImage extends Component {
         return (
             <img src={image.createImageSrc()}
                  className={(this.props.imageClassName || "") + " " + (this.props.className || "")}
+                 style={this.props.style}
                  alt="" />
         );
     }
