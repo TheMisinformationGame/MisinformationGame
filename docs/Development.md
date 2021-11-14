@@ -37,7 +37,7 @@ The Firebase emulator will emulate the Firebase
 authentication, Firestore, and Firebase Storage for
 you. The emulator can be started by running the command,
 ```shell
-npx firebase emulators:start
+npx firebase emulators:start --import="test/firebase-dev-environment"
 ```
 
 After you have run this command, you can access the

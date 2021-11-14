@@ -4,6 +4,13 @@ import Logo from "../logo.png";
 import {GithubCorner} from "../components/GithubCorner";
 
 function Home() {
+    let exampleGameURL = null;
+    if (window.location.hostname === "misinformation-game.web.app") {
+        exampleGameURL = "/study/axsvxt37ctac6ltr";
+    } else if (window.location.hostname === "localhost") {
+        exampleGameURL = "study/fmuff8o79teea8i8";
+    }
+
     return (
         <div className="text-center min-h-screen bg-gray-100">
             <GithubCorner />
@@ -40,9 +47,9 @@ function Home() {
                     <h2 className="text-4xl mb-4 mt-8">Other Resources</h2>
 
                     {/* The example game only exists on the example website. */}
-                    {window.location.hostname === "misinformation-game.web.app" &&
+                    {exampleGameURL !== null &&
                         <p className="text-lg mb-2 mt-4">
-                            <Link to="/study/axsvxt37ctac6ltr" name="Game"
+                            <Link to={exampleGameURL} name="Game"
                                   className="text-xl underline text-purple-600 hover:text-purple-900">
 
                                 Example Game
