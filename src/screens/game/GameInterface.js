@@ -55,12 +55,40 @@ class Source extends Component {
 
 class Comment extends Component {
     render() {
-        return (
-            <div className={"flex flex-col p-1 pl-3 pr-2 mb-1 bg-white shadow" +
-                            (this.props.className || "")}>
+        const onReact = this.props.onReact;
+        const enabled = this.props.enabled;
+        const selected = this.props.selectedReaction;
+        const reactComponents = [];
+        //temp
+        const comments_enabled_reacts = ['Likes', 'Dislikes'];
+        const react_counts = ['100', '200'];
 
-                <p className="w-full underline text-gray-700">{this.props.sourceName}</p>
-                <p className="w-full text-lg ml-1">{this.props.message}</p>
+
+        return (
+            <div className={"flex flex-col p-1 pr-2 mb-1 bg-white shadow" +
+                        (this.props.className || "")}>
+                <div class = "flex mb-4">
+                    <div class = "w-3/4">
+                        <p className="w-full underline text-gray-700">{this.props.sourceName}</p>
+                        <p className="w-full text-lg ml-1">{this.props.message}</p>
+                    </div>
+                    <div className = {"flex flex-row-reverse flex-grow flex-wrap p-1 pr-2 mb-1 bg-white w-1/4"}>
+                        <CommentReactButton reaction="dislike_comment" selected={selected} onReact={onReact} enabled={enabled} countNumber = {100}
+                                 childClassName="transform -translate-y-0.5 -translate-x-1"
+                                 title="Dislike" className="mr-1">
+                            <ThumbDownIcon/></CommentReactButton>
+                        <CommentReactButton reaction="like_comment" selected={selected} onReact={onReact} enabled={enabled} countNumber = {100}
+                                 childClassName="transform -translate-y-0.5 -translate-x-1"
+                                 title="Like" className="mr-1">
+                            <ThumbUpIcon/></CommentReactButton>
+                    </div>
+                </div>
+
+                <div className = {"flex flex-grow flex-row-reverse text-gray-500 text-xs"}>
+                    {reactComponents.reverse()}
+                </div>
+
+
             </div>
         );
     }
@@ -71,6 +99,7 @@ class ReactButton extends Component {
         const reaction = this.props.reaction;
         const selectionExists = (this.props.selected !== null);
         const selected = (reaction === this.props.selected);
+        const count = this.props.countNumber;
         return (
             <div id={reaction}
                  title={this.props.title}
@@ -82,7 +111,7 @@ class ReactButton extends Component {
                      (this.props.enabled && (selected || !selectionExists) ?
                          (selected ? " text-blue-700 " : " text-gray-700 ")
                          : " text-gray-500 ") +
-                     (this.props.className || "")}
+                     (this.props.className  || "")}
                  style={{fontSize: (this.props.fontSize || "2.5rem")}}
                  onClick={() => {
                     if (this.props.enabled) {
@@ -96,6 +125,48 @@ class ReactButton extends Component {
                         (this.props.childClassName || ""),
                     fontSize: "inherit"
                 })}
+                <p className = {"text-sm font-bold"} >
+                    {count}
+                </p>
+            </div>
+        );
+    }
+}
+
+class CommentReactButton extends Component {
+    render() {
+        const reaction = this.props.reaction;
+        const selectionExists = (this.props.selected !== null);
+        const selected = (reaction === this.props.selected);
+        const count = this.props.countNumber;
+        return (
+            <div id={reaction}
+                 title={this.props.title}
+                 className={
+                     " group h-11 w-13 pt-1.5 pb-0.5 px-1 sm:px-3 md:px-4 rounded text-center" +
+                     " fill-current transition duration-100 " +
+                     (selected ? " bg-gray-100 font-semibold " : " hover:bg-gray-100 ") +
+                     (this.props.enabled ? " cursor-pointer " : "") +
+                     (this.props.enabled && (selected || !selectionExists) ?
+                         (selected ? " text-blue-700 " : " text-gray-700 ")
+                         : " text-gray-500 ") +
+                     (this.props.className || "")}
+                 style={{fontSize: (this.props.fontSize || "1.75rem")}}
+                 onClick={() => {
+                    if (this.props.enabled) {
+                        this.props.onReact(reaction);
+                    }
+                 }}>
+
+                {React.cloneElement(this.props.children, {
+                    className: "fill-current "  +
+                        (this.props.enabled ? "transform group-hover:scale-110 " : "") +
+                        (this.props.childClassName || ""),
+                    fontSize: "inherit"
+                })}
+                <p className = {"text-sm font-bold"} >
+                    {count}
+                </p>
             </div>
         );
     }
@@ -107,24 +178,24 @@ class ReactionsRow extends Component {
         const enabled = this.props.enabled;
         const selected = this.props.selectedReaction;
         return (
-            <div className="text-lg flex flex-wrap flex-row p-2">
+            <div className="text-lg flex flex-wrap flex-row pt-2 pb-5">
                 <div className="flex flex-grow">
-                    <ReactButton reaction="like" selected={selected} onReact={onReact} enabled={enabled}
+                    <ReactButton reaction="like" selected={selected} onReact={onReact} enabled={enabled} countNumber = {100}
                                  childClassName="transform -translate-y-0.5 -translate-x-1"
                                  title="Like" className="mr-1">
                         <ThumbUpIcon/></ReactButton>
-                    <ReactButton reaction="dislike" selected={selected} onReact={onReact} enabled={enabled}
+                    <ReactButton reaction="dislike" selected={selected} onReact={onReact} enabled={enabled} countNumber = {100}
                                  childClassName="transform -translate-y-0.5 -translate-x-1"
                                  title="Dislike" className="mr-1">
                         <ThumbDownIcon/></ReactButton>
-                    <ReactButton reaction="share" selected={selected} onReact={onReact} enabled={enabled}
-                                 fontSize="3.25rem" className="mr-1 transform flip-x"
-                                 childClassName="transform -translate-y-2.5 -translate-x-0.5 md:-translate-x-3"
+                    <ReactButton reaction="share" selected={selected} onReact={onReact} enabled={enabled} countNumber = {100}
+                                 fontSize="3.25rem" className="mr-1 "
+                                 childClassName="transform -translate-y-2.5 -translate-x-0.5 md:-translate-x-3 flip-x"
                                  title="Share">
                         <ReplyIcon/></ReactButton>
-                    <ReactButton reaction="flag" selected={selected} onReact={onReact} enabled={enabled}
+                    <ReactButton reaction="flag" selected={selected} onReact={onReact} enabled={enabled} countNumber = {100}
                                  fontSize="2.6rem"
-                                 childClassName="transform -translate-y-1 -translate-x-1"
+                                 childClassName="transform -translate-y-1 -translate-x-1 "
                                  title="Flag" className="mr-1">
                         <FlagIcon/></ReactButton>
                 </div>
@@ -138,18 +209,48 @@ class ReactionsRow extends Component {
     }
 }
 
+class ReactCounter extends Component{
+    render() {
+        const react = this.props.react;
+        const count = this.props.count;
+
+        return (  
+        <div id={react} class = "pl-1 pr-2">
+            <p> {count} {react} </p>
+        </div>
+        )
+    };
+}
+
+
+
 class PostComponent extends Component {
     render() {
         const state = this.props.state;
         const post = state.currentPost.post;
         const commentComponents = [];
+        const reactComponents = [];
+
+        //temp
+        const enabled_reacts = ['Likes', 'Dislikes', 'Shares'];
+        const react_counts = ['100', '200', '30'];
+
         for (let index = 0; index < post.comments.length; ++index) {
             const comment = post.comments[index];
             commentComponents.push(
                 <Comment sourceName={comment.sourceName} message={comment.message}
-                         key={index + "." + comment.sourceName} />
+                         key={index + "." + comment.sourceName} onReact={this.props.onReact} enabled={this.props.enableReactions}
+                         selectedReaction={this.props.selectedReaction}/>
             );
-        }
+        };
+
+        for ( let index = 0; index < enabled_reacts.length; ++index){
+            var react = enabled_reacts[index];
+            var count = react_counts[index];
+            reactComponents.push(
+                <ReactCounter react = {react} count = {count}></ReactCounter>
+            );
+        };
 
         let postContent;
         if (isOfType(post.content, "string")) {
@@ -180,7 +281,7 @@ class PostComponent extends Component {
                         {postContent}
                     </div>
 
-                    {/* The reactions to the post. */}
+                    {/* The reactions to the post and their counts. */}
                     <hr />
                     <ReactionsRow onReact={this.props.onReact} enabled={this.props.enableReactions}
                                   selectedReaction={this.props.selectedReaction} />
