@@ -100,6 +100,13 @@ class ReactButton extends Component {
         const selectionExists = (this.props.selected !== null);
         const selected = (reaction === this.props.selected);
         const count = this.props.countNumber;
+
+        const paraStyle = {
+            marginTop : (this.props.marginTop || '0rem') ,
+            fontSize: '1rem',
+            fontWeight: 'bold'
+        }
+
         return (
             <div id={reaction}
                  title={this.props.title}
@@ -125,7 +132,7 @@ class ReactButton extends Component {
                         (this.props.childClassName || ""),
                     fontSize: "inherit"
                 })}
-                <p className = {"text-sm font-bold"} >
+                <p style = {paraStyle} >
                     {count}
                 </p>
             </div>
@@ -139,6 +146,13 @@ class CommentReactButton extends Component {
         const selectionExists = (this.props.selected !== null);
         const selected = (reaction === this.props.selected);
         const count = this.props.countNumber;
+
+        const paraStyle = {
+            marginTop : this.props.marginTop ,
+            fontSize: '1rem',
+            fontWeight: 'bold'
+        }
+
         return (
             <div id={reaction}
                  title={this.props.title}
@@ -164,7 +178,7 @@ class CommentReactButton extends Component {
                         (this.props.childClassName || ""),
                     fontSize: "inherit"
                 })}
-                <p className = {"text-sm font-bold"} >
+                <p style = {paraStyle} >
                     {count}
                 </p>
             </div>
@@ -189,12 +203,12 @@ class ReactionsRow extends Component {
                                  title="Dislike" className="mr-1">
                         <ThumbDownIcon/></ReactButton>
                     <ReactButton reaction="share" selected={selected} onReact={onReact} enabled={enabled} countNumber = {100}
-                                 fontSize="3.25rem" className="mr-1 "
+                                 fontSize="3.25rem" className="mr-1 " marginTop = "-0.8rem"
                                  childClassName="transform -translate-y-2.5 -translate-x-0.5 md:-translate-x-3 flip-x"
                                  title="Share">
                         <ReplyIcon/></ReactButton>
                     <ReactButton reaction="flag" selected={selected} onReact={onReact} enabled={enabled} countNumber = {100}
-                                 fontSize="2.6rem"
+                                 fontSize="2.6rem" marginTop = "-0.1rem"
                                  childClassName="transform -translate-y-1 -translate-x-1 "
                                  title="Flag" className="mr-1">
                         <FlagIcon/></ReactButton>
