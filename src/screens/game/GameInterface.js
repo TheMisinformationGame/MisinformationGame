@@ -68,17 +68,19 @@ class Comment extends Component {
             <div className={"flex flex-col p-1 pr-2 mb-1 bg-white shadow" +
                         (this.props.className || "")}>
                 <div class = "flex mb-4">
-                    <div class = "w-3/4">
+                    <div class = "w-3/5">
                         <p className="w-full underline text-gray-700">{this.props.sourceName}</p>
                         <p className="w-full text-lg ml-1">{this.props.message}</p>
                     </div>
-                    <div className = {"flex flex-row-reverse flex-grow flex-wrap p-1 pr-2 mb-1 bg-white w-1/4"}>
+                    <div className = {"flex flex-row-reverse flex-grow flex-wrap p-1 pr-2 mb-1 bg-white w-2/5"}>
                         <CommentReactButton reaction="dislike_comment" selected={selected} onReact={onReact} enabled={enabled} countNumber = {100}
-                                 childClassName="transform -translate-y-0.5 -translate-x-1"
+                                 childClassName="transform -translate-y-3 -translate-x-1"
+                                 marginRight = "0.7rem" marginTop = "-0.5rem"
                                  title="Dislike" className="mr-1">
                             <ThumbDownIcon/></CommentReactButton>
                         <CommentReactButton reaction="like_comment" selected={selected} onReact={onReact} enabled={enabled} countNumber = {100}
-                                 childClassName="transform -translate-y-0.5 -translate-x-1"
+                                 childClassName="transform -translate-y-3 -translate-x-1"
+                                 marginRight = "0.8rem" marginTop = "-0.5rem"
                                  title="Like" className="mr-1">
                             <ThumbUpIcon/></CommentReactButton>
                     </div>
@@ -89,6 +91,55 @@ class Comment extends Component {
                 </div>
 
 
+            </div>
+        );
+    }
+}
+
+
+class CommentReactButton extends Component {
+    render() {
+        const reaction = this.props.reaction;
+        const selectionExists = (this.props.selected !== null);
+        const selected = (reaction === this.props.selected);
+        const count = this.props.countNumber;
+
+        const paraStyle = {
+            marginTop : (this.props.marginTop || "0rem") ,
+            marginRight: (this.props.marginRight|| "0rem"),
+            fontSize: '0.95rem',
+            fontWeight: 'bold'
+        }
+
+        return (
+            <div id={reaction}
+                 title={this.props.title}
+                 className={
+                     " group h-11 w-13 pt-1.5 pb-0.5 px-1 sm:px-3 md:px-4 rounded text-center" +
+                     " fill-current transition duration-100 " +
+                     (selected ? " bg-gray-100 font-semibold " : " hover:bg-gray-100 ") +
+                     (this.props.enabled ? " cursor-pointer " : "") +
+                     (this.props.enabled && (selected || !selectionExists) ?
+                         (selected ? " text-blue-700 " : " text-gray-700 ")
+                         : " text-gray-500 ") +
+                     (this.props.className || "")}
+                 style={{fontSize: (this.props.fontSize || "2rem")}}
+                 onClick={() => {
+                    if (this.props.enabled) {
+                        this.props.onReact(reaction);
+                    }
+                 }}>
+
+                {React.cloneElement(this.props.children, {
+                    className: "fill-current "  + 
+                        (this.props.enabled ? "transform group-hover:scale-110 " : "") +
+                        (this.props.childClassName || "")
+                        ,
+                    fontSize: "inherit"
+                })}
+                <p style = {paraStyle} >
+                    {count}
+                </p>
             </div>
         );
     }
@@ -140,59 +191,13 @@ class ReactButton extends Component {
     }
 }
 
-class CommentReactButton extends Component {
-    render() {
-        const reaction = this.props.reaction;
-        const selectionExists = (this.props.selected !== null);
-        const selected = (reaction === this.props.selected);
-        const count = this.props.countNumber;
-
-        const paraStyle = {
-            marginTop : this.props.marginTop ,
-            fontSize: '1rem',
-            fontWeight: 'bold'
-        }
-
-        return (
-            <div id={reaction}
-                 title={this.props.title}
-                 className={
-                     " group h-11 w-13 pt-1.5 pb-0.5 px-1 sm:px-3 md:px-4 rounded text-center" +
-                     " fill-current transition duration-100 " +
-                     (selected ? " bg-gray-100 font-semibold " : " hover:bg-gray-100 ") +
-                     (this.props.enabled ? " cursor-pointer " : "") +
-                     (this.props.enabled && (selected || !selectionExists) ?
-                         (selected ? " text-blue-700 " : " text-gray-700 ")
-                         : " text-gray-500 ") +
-                     (this.props.className || "")}
-                 style={{fontSize: (this.props.fontSize || "1.75rem")}}
-                 onClick={() => {
-                    if (this.props.enabled) {
-                        this.props.onReact(reaction);
-                    }
-                 }}>
-
-                {React.cloneElement(this.props.children, {
-                    className: "fill-current "  +
-                        (this.props.enabled ? "transform group-hover:scale-110 " : "") +
-                        (this.props.childClassName || ""),
-                    fontSize: "inherit"
-                })}
-                <p style = {paraStyle} >
-                    {count}
-                </p>
-            </div>
-        );
-    }
-}
-
 class ReactionsRow extends Component {
     render() {
         const onReact = this.props.onReact;
         const enabled = this.props.enabled;
         const selected = this.props.selectedReaction;
         return (
-            <div className="text-lg flex flex-wrap flex-row pt-2 pb-5">
+            <div className="text-lg flex flex-wrap flex-row pt-2 pb-6">
                 <div className="flex flex-grow">
                     <ReactButton reaction="like" selected={selected} onReact={onReact} enabled={enabled} countNumber = {100}
                                  childClassName="transform -translate-y-0.5 -translate-x-1"
