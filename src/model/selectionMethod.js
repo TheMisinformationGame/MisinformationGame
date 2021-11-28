@@ -1,6 +1,7 @@
 import {doTypeCheck} from "../utils/types";
 import {LinearFunction} from "./math";
 import {GamePost, GameSource} from "./game";
+import {shuffleArray} from "../utils/arrays";
 
 
 /**
@@ -142,37 +143,50 @@ export class CredibilitySelectionMethod extends SourcePostSelectionMethod {
  * and posts is pre-defined and repeated the same for every participant.
  */
 export class PredefinedSelectionMethod extends SourcePostSelectionMethod {
-    order; // [Source ID, Post ID][]
+    randomiseOrder; // Boolean
+    order; // {sourceID: String, postID: String}[]
+    chosenOrder; // {sourceID: String, postID: String}[]
 
-    constructor(order) {
+    constructor(randomiseOrder, order) {
         super("Pre-Defined");
-        doTypeCheck(order, Array, "Pre-Defined Selection Method Source/Post Order");
+
+        doTypeCheck(randomiseOrder, "boolean", "Whether to randomise the order of the pre-defined source/post pairs")
+        doTypeCheck(order, Array, "Pre-Defined Selection Method Source/Post Pairs");
         if (order.length === 0)
             throw new Error("Empty pre-defined selection order");
 
+        this.randomiseOrder = randomiseOrder;
         this.order = order;
+
+        // If random, then shuffle the order.
+        this.chosenOrder = (randomiseOrder ? order.slice() : order);
+        if (randomiseOrder) {
+            shuffleArray(this.chosenOrder);
+        }
     }
 
     makeSelection(stateIndex, sources, posts) {
-        if (stateIndex < 0 || stateIndex >= this.order.length) {
+        if (stateIndex < 0 || stateIndex >= this.chosenOrder.length) {
             throw new Error(
-                "Pre-defined only has " + this.order.length + " pairs, " +
+                "Pre-defined only has " + this.chosenOrder.length + " pairs, " +
                 "but a " + (stateIndex + 1) + "th pair was expected."
             );
         }
-        const selection = this.order[stateIndex];
+        const selection = this.chosenOrder[stateIndex];
         return [selection.sourceID, selection.postID];
     }
 
     toJSON() {
         return {
             ...super.toJSON(),
+            "randomiseOrder": this.randomiseOrder,
             "order": this.order
         };
     }
 
     static fromJSON(json) {
         return new PredefinedSelectionMethod(
+            json["randomiseOrder"],
             json["order"]
         );
     }

@@ -8,7 +8,7 @@ function Home() {
     if (window.location.hostname === "misinformation-game.web.app") {
         exampleGameURL = "/study/axsvxt37ctac6ltr";
     } else if (window.location.hostname === "localhost") {
-        exampleGameURL = "study/fmuff8o79teea8i8";
+        exampleGameURL = "/study/2oxudh9xx8f74cgi";
     }
 
     return (
@@ -59,7 +59,7 @@ function Home() {
 
                     <p className="text-lg mb-2">
                         <a className="text-xl underline text-purple-600 hover:text-purple-900"
-                           href="https://docs.google.com/spreadsheets/d/1JP_3kHtcJC6m4PzwyTixMb8R0gu76tRIbdGcffGsTu0/edit#gid=5219285">
+                           href="https://docs.google.com/spreadsheets/d/1BeJ2krpg_lDG8dnq5n4Gqopin2NBhVbDyTDdsplbVUY">
 
                             Study Template
                         </a>:

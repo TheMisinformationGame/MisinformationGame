@@ -245,10 +245,14 @@ export class WorkbookError extends Error {}
  * throwing a WorkbookError if the worksheet does not exist.
  */
 function getWorksheet(workbook, worksheet) {
-    const worksheetValue = workbook.getWorksheet(worksheet);
-    if (worksheetValue === undefined)
-        throw new WorkbookError("The spreadsheet is missing the " + worksheet + " worksheet");
-
+    let worksheetValue = workbook.getWorksheet(worksheet);
+    if (worksheetValue === undefined) {
+        // The slash was getting removed from the sheet name,
+        // but I'm not convinced that behaviour can be trusted.
+        worksheetValue = workbook.getWorksheet(worksheet.replace("/", ""));
+        if (worksheetValue === undefined)
+            throw new WorkbookError("The spreadsheet is missing the " + worksheet + " worksheet");
+    }
     return worksheetValue;
 }
 

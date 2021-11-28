@@ -28,6 +28,7 @@
   },
   "scripts": {
     "start": "craco start",
+    "emulators": "npx firebase emulators:start --import=\"test/firebase-dev-environment\"",
     "build": "craco build",
     "ci-build": "CI=false INLINE_RUNTIME_CHUNK=false craco build",
     "test": "craco test"

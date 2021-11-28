@@ -52,7 +52,7 @@ this directory.
 
 ## Method 1: Copy the Template
 You can access the Study Template spreadsheet on Google Sheets
-[here](https://docs.google.com/spreadsheets/d/1JP_3kHtcJC6m4PzwyTixMb8R0gu76tRIbdGcffGsTu0/edit?usp=sharing).
+[here](https://docs.google.com/spreadsheets/d/1BeJ2krpg_lDG8dnq5n4Gqopin2NBhVbDyTDdsplbVUY).
 After you have loaded the template spreadsheet, you can select
 **File** -> **Make a copy** to clone the spreadsheet so that
 you can make changes.

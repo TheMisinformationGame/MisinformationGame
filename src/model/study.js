@@ -1,10 +1,11 @@
-import {doNonNullCheck, doNullableTypeCheck, doTypeCheck, isOfType} from "../utils/types";
+import {doEnumCheck, doNonNullCheck, doNullableTypeCheck, doTypeCheck, isOfType} from "../utils/types";
 import {SourcePostSelectionMethod} from "./selectionMethod";
 import {TruncatedNormalDistribution} from "./math";
 import {StudyImage, StudyImageMetadata} from "./images";
 import {randDigits} from "../utils/random";
 import {odiff} from "../utils/odiff";
 import {getUnixEpochTimeSeconds} from "../utils/time";
+import {ExcelBoolean, ExcelNumber, ExcelString, WorkbookLoc} from "../utils/excel";
 
 
 /**
@@ -106,37 +107,45 @@ export class PostComment {
  * Holds a number for every possible reaction to a post.
  */
 export class ReactionValues {
-    like; // TruncatedNormalDistribution
-    dislike; // TruncatedNormalDistribution
-    share; // TruncatedNormalDistribution
-    flag; // TruncatedNormalDistribution
+    like; // TruncatedNormalDistribution?
+    dislike; // TruncatedNormalDistribution?
+    share; // TruncatedNormalDistribution?
+    flag; // TruncatedNormalDistribution?
 
     constructor(like, dislike, share, flag) {
-        doTypeCheck(like, TruncatedNormalDistribution, "Reaction Value for a Like");
-        doTypeCheck(dislike, TruncatedNormalDistribution, "Reaction Value for a Dislike");
-        doTypeCheck(share, TruncatedNormalDistribution, "Reaction Value for a Share");
-        doTypeCheck(flag, TruncatedNormalDistribution, "Reaction Value for a Flag");
+        doNullableTypeCheck(like, TruncatedNormalDistribution, "Reaction Value for a Like");
+        doNullableTypeCheck(dislike, TruncatedNormalDistribution, "Reaction Value for a Dislike");
+        doNullableTypeCheck(share, TruncatedNormalDistribution, "Reaction Value for a Share");
+        doNullableTypeCheck(flag, TruncatedNormalDistribution, "Reaction Value for a Flag");
         this.like = like;
         this.dislike = dislike;
         this.share = share;
         this.flag = flag;
     }
 
+    static reactionToJSON(dist) {
+        return (dist !== null ? dist.toJSON() : null);
+    }
+
     toJSON() {
         return {
-            "like": this.like.toJSON(),
-            "dislike": this.dislike.toJSON(),
-            "share": this.share.toJSON(),
-            "flag": this.flag.toJSON()
+            "like": ReactionValues.reactionToJSON(this.like),
+            "dislike": ReactionValues.reactionToJSON(this.dislike),
+            "share": ReactionValues.reactionToJSON(this.share),
+            "flag": ReactionValues.reactionToJSON(this.flag)
         };
+    }
+
+    static reactionFromJSON(json) {
+        return (json !== null ? TruncatedNormalDistribution.fromJSON(json) : null);
     }
 
     static fromJSON(json) {
         return new ReactionValues(
-            TruncatedNormalDistribution.fromJSON(json["like"]),
-            TruncatedNormalDistribution.fromJSON(json["dislike"]),
-            TruncatedNormalDistribution.fromJSON(json["share"]),
-            TruncatedNormalDistribution.fromJSON(json["flag"])
+            ReactionValues.reactionFromJSON(json["like"]),
+            ReactionValues.reactionFromJSON(json["dislike"]),
+            ReactionValues.reactionFromJSON(json["share"]),
+            ReactionValues.reactionFromJSON(json["flag"])
         );
     }
 }
@@ -152,15 +161,17 @@ export class Post {
     isTrue; // Boolean
     changesToFollowers; // ReactionValues
     changesToCredibility; // ReactionValues
+    numberOfReactions; // ReactionValues
     comments; // PostComment[]
 
-    constructor(id, headline, content, isTrue, changesToFollowers, changesToCredibility, comments) {
+    constructor(id, headline, content, isTrue, changesToFollowers, changesToCredibility, numberOfReactions, comments) {
         doTypeCheck(id, "string", "Post ID");
         doTypeCheck(headline, "string", "Post Headline");
         doTypeCheck(content, [StudyImage, StudyImageMetadata, "string"], "Post Content");
         doTypeCheck(isTrue, "boolean", "Whether the post is true");
         doTypeCheck(changesToFollowers, ReactionValues, "Post's Change to Followers");
         doTypeCheck(changesToCredibility, ReactionValues, "Post's Change to Credibility");
+        doTypeCheck(numberOfReactions, ReactionValues, "Post's Number of Reactions");
         doTypeCheck(comments, Array, "Post's Comments");
         this.id = id;
         this.headline = headline;
@@ -168,6 +179,7 @@ export class Post {
         this.isTrue = isTrue;
         this.changesToFollowers = changesToFollowers;
         this.changesToCredibility = changesToCredibility;
+        this.numberOfReactions = numberOfReactions;
         this.comments = comments;
     }
 
@@ -199,6 +211,7 @@ export class Post {
             "isTrue": this.isTrue,
             "changesToFollowers": this.changesToFollowers.toJSON(),
             "changesToCredibility": this.changesToCredibility.toJSON(),
+            "numberOfReactions": this.numberOfReactions.toJSON(),
             "comments": Post.commentsToJSON(this.comments)
         };
     }
@@ -214,6 +227,7 @@ export class Post {
             content, json["isTrue"],
             ReactionValues.fromJSON(json["changesToFollowers"]),
             ReactionValues.fromJSON(json["changesToCredibility"]),
+            ReactionValues.fromJSON(json["numberOfReactions"]),
             Post.commentsFromJSON(json["comments"])
         );
     }
@@ -253,6 +267,7 @@ export class BrokenStudy {
     }
 }
 
+
 /**
  * Holds the entire specification of a study.
  */
@@ -268,8 +283,21 @@ export class Study {
     prompt; // String
     promptDelaySeconds; // Number
     length; // Number
-    requireIdentification; // Boolean
+
+    requireReactions; // Boolean
     reactDelaySeconds; // Number
+    requireComments; // Boolean
+    minimumCommentLength; // Number
+    requireIdentification; // Boolean
+
+    displayFollowers; // Boolean
+    displayCredibility; // Boolean
+    displayProgress; // Boolean
+    displayNumberOfReactions; // Boolean
+
+    postEnabledReactions; // {String: Boolean}
+    commentEnabledReactions; // {String: Boolean}
+
     genCompletionCode; // Boolean
     completionCodeDigits; // Number
 
@@ -283,11 +311,24 @@ export class Study {
     sources; // Source[]
     posts; // Post[]
 
+    /**
+     * This is a really long constructor, although it is only called
+     * twice (once from the excel reader, and once from the JSON reader).
+     * Additionally, all of the parameters are required. Therefore, this
+     * is simpler than a builder would be. Perhaps grouping the parameters
+     * into functional groups could assist in simplifying this, although
+     * that seems like a lot of work for little gain.
+     */
     constructor(
             id, authorID, authorName,
             name, description, lastModifiedTime, enabled,
-            prompt, promptDelaySeconds, requireIdentification,
-            length, reactDelaySeconds,
+            prompt, promptDelaySeconds, length,
+            requireReactions, reactDelaySeconds,
+            requireComments, minimumCommentLength,
+            requireIdentification,
+            displayFollowers, displayCredibility,
+            displayProgress, displayNumberOfReactions,
+            postEnabledReactions, commentEnabledReactions,
             genCompletionCode, completionCodeDigits,
             preIntro, preIntroDelaySeconds,
             postIntro, postIntroDelaySeconds,
@@ -298,7 +339,6 @@ export class Study {
         doTypeCheck(authorID, "string", "Study Author's ID");
         doTypeCheck(authorName, "string", "Study Author's Name");
         doTypeCheck(name, "string", "Study Name");
-        doTypeCheck(name, "string", "Study Name");
         doTypeCheck(description, "string", "Study Description");
         doNullableTypeCheck(lastModifiedTime, "number", "The last time the study was modified");
         doNullableTypeCheck(enabled, "boolean", "Whether the study is enabled");
@@ -306,8 +346,30 @@ export class Study {
         doTypeCheck(prompt, "string", "Study Prompt");
         doTypeCheck(promptDelaySeconds, "number", "Study Prompt Continue Delay");
         doTypeCheck(length, "number", "Study Length");
-        doTypeCheck(requireIdentification, "boolean", "Whether the study requires identification");
+
+        doTypeCheck(requireReactions, "boolean", "Whether the study requires reactions to posts");
         doTypeCheck(reactDelaySeconds, "number", "Study Reaction Delay");
+        doEnumCheck(
+            requireComments, ["Required", "Optional", "Disabled"],
+            "Whether comments are required, optional, or disabled"
+        );
+        doTypeCheck(minimumCommentLength, "number", "Minimum Comment Length");
+        doTypeCheck(requireIdentification, "boolean", "Whether the study requires identification");
+
+        doTypeCheck(displayFollowers, "boolean", "Whether to display followers");
+        doTypeCheck(displayCredibility, "boolean", "Whether to display credibility");
+        doTypeCheck(displayProgress, "boolean", "Whether to display progress");
+        doTypeCheck(displayNumberOfReactions, "boolean", "Whether to display number of reactions");
+
+        doTypeCheck(postEnabledReactions, "object", "The reactions enabled for posts");
+        doTypeCheck(postEnabledReactions["like"], "boolean", "Whether likes are enabled for posts");
+        doTypeCheck(postEnabledReactions["dislike"], "boolean", "Whether likes are enabled for posts");
+        doTypeCheck(postEnabledReactions["share"], "boolean", "Whether likes are enabled for posts");
+        doTypeCheck(postEnabledReactions["flag"], "boolean", "Whether likes are enabled for posts");
+        doTypeCheck(commentEnabledReactions, "object", "The reactions enabled for comments");
+        doTypeCheck(commentEnabledReactions["like"], "boolean", "Whether likes are enabled for comments");
+        doTypeCheck(commentEnabledReactions["dislike"], "boolean", "Whether likes are enabled for comments");
+
         doTypeCheck(genCompletionCode, "boolean", "Whether the study generates a completion code");
         doTypeCheck(completionCodeDigits, "number", "Study Completion Code Digits");
 
@@ -331,9 +393,22 @@ export class Study {
 
         this.prompt = prompt;
         this.promptDelaySeconds = promptDelaySeconds;
-        this.requireIdentification = requireIdentification;
         this.length = length;
+
+        this.requireReactions = requireReactions;
         this.reactDelaySeconds = reactDelaySeconds;
+        this.requireComments = requireComments;
+        this.minimumCommentLength = minimumCommentLength;
+        this.requireIdentification = requireIdentification;
+
+        this.displayFollowers = displayFollowers;
+        this.displayCredibility = displayCredibility;
+        this.displayProgress = displayProgress;
+        this.displayNumberOfReactions = displayNumberOfReactions;
+
+        this.postEnabledReactions = postEnabledReactions;
+        this.commentEnabledReactions = commentEnabledReactions;
+
         this.genCompletionCode = genCompletionCode;
         this.completionCodeDigits = completionCodeDigits;
 
@@ -450,17 +525,26 @@ export class Study {
      */
     toJSON() {
         return {
-            "name": this.name,
             "authorID": this.authorID,
             "authorName": this.authorName,
+            "name": this.name,
             "description": this.description,
             "lastModifiedTime": this.lastModifiedTime,
             "enabled": this.enabled,
             "prompt": this.prompt,
             "promptDelaySeconds": this.promptDelaySeconds,
-            "requireIdentification": this.requireIdentification,
             "length": this.length,
+            "requireReactions": this.requireReactions,
             "reactDelaySeconds": this.reactDelaySeconds,
+            "requireComments": this.requireComments,
+            "minimumCommentLength": this.minimumCommentLength,
+            "requireIdentification": this.requireIdentification,
+            "displayFollowers": this.displayFollowers,
+            "displayCredibility": this.displayCredibility,
+            "displayProgress": this.displayProgress,
+            "displayNumberOfReactions": this.displayNumberOfReactions,
+            "postEnabledReactions": this.postEnabledReactions,
+            "commentEnabledReactions": this.commentEnabledReactions,
             "genCompletionCode": this.genCompletionCode,
             "completionCodeDigits": this.completionCodeDigits,
             "preIntro": this.preIntro,
@@ -475,29 +559,21 @@ export class Study {
     }
 
     static fromJSON(id, json) {
-        const introDelay = json["introDelaySeconds"];
-        let promptDelay, preIntroDelay, postIntroDelay;
-        if (introDelay === undefined) {
-            promptDelay = json["promptDelaySeconds"];
-            preIntroDelay = json["preIntroDelaySeconds"];
-            postIntroDelay = json["postIntroDelaySeconds"];
-        } else {
-            // Older studies have one universal introDelay instead of specific delays.
-            promptDelay = introDelay;
-            preIntroDelay = introDelay;
-            postIntroDelay = introDelay;
-        }
-
         return new Study(
             id, json["authorID"], json["authorName"],
             json["name"], json["description"],
             json["lastModifiedTime"], json["enabled"],
-            json["prompt"], promptDelay,
+            json["prompt"], json["promptDelaySeconds"],
+            json["length"],
+            json["requireReactions"], json["reactDelaySeconds"],
+            json["requireComments"], json["minimumCommentLength"],
             json["requireIdentification"],
-            json["length"], json["reactDelaySeconds"],
+            json["displayFollowers"], json["displayCredibility"],
+            json["displayProgress"], json["displayNumberOfReactions"],
+            json["postEnabledReactions"], json["commentEnabledReactions"],
             json["genCompletionCode"], json["completionCodeDigits"],
-            json["preIntro"], preIntroDelay,
-            json["postIntro"], postIntroDelay,
+            json["preIntro"], json["preIntroDelaySeconds"],
+            json["postIntro"], json["postIntroDelaySeconds"],
             json["debrief"],
             SourcePostSelectionMethod.fromJSON(json["sourcePostSelectionMethod"]),
             Study.sourcesFromJSON(json["sources"]),

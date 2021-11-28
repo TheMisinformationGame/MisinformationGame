@@ -3,6 +3,21 @@ This site contains the documentation for The Misinformation
 Game. This includes how The Misinformation Game works, and
 how it can be used to conduct studies.
 
+### Table of Contents
+- [Source Code](#source-code)
+- [How to play The Misinformation Game](#how-to-play-the-misinformation-game)
+- [Installation](#installation)
+- [Updating your Installation](#updating-your-installation)
+- [Firebase Pricing](#firebase-pricing)
+- [Registering Administrators](#registering-administrators)
+- [Study Configuration](#study-configuration)
+- [Managing Studies](#managing-studies)
+- [Simulation](#simulation)
+- [Results](#results)
+- [Development Environment](#development-environment)
+- [Technical Overview](#technical-overview)
+- [Original Design](#original-design)
+
 ### Source Code
 The source code of The Misinformation Game can be found
 on Github, at
@@ -18,17 +33,18 @@ page is adapted from the rules that participants
 will actually be shown.
 
 ### Installation
-A guide on how to deploy your own instance of The
-Misinformation Game at your own custom URL is
-described in the [Installation.md](Installation.md)
+A guide for technical users on how to deploy your own
+instance of The Misinformation Game at your own custom
+URL is described in the
+[TechnicalInstallation.md](TechnicalInstallation.md)
 document. At the end of this guide, you will have
 your own website hosted at your own custom URL,
 (e.g. https://misinformation-game.web.app).
 
-A walk-through of this guide that assumes less
+A version of this guide that assumes less
 technical knowledge, but which may take longer
-for technical users, is also available in the
-[Installation_Walkthrough.pdf](Installation_Walkthrough.pdf)
+to complete for technical users, is also available in the
+[NonTechnicalInstallation.pdf](NonTechnicalInstallation.pdf)
 document.
 
 ### Updating your Installation

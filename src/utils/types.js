@@ -75,6 +75,23 @@ export function doTypeCheck(value, expectedType, valueName) {
 }
 
 /**
+ * Throws an error if {@param value} is not present in {@param expectedValuesArray}.
+ *
+ * @param valueName is the optional name to use to refer to the value in the error message.
+ */
+export function doEnumCheck(value, expectedValuesArray, valueName) {
+    doNonNullCheck(value, valueName);
+    doNonNullCheck(expectedValuesArray, "expectedValuesArray");
+    if (!expectedValuesArray.includes(value)) {
+        valueName = valueName || "Value";
+        throw new Error(
+            valueName + " should be one of [" + expectedValuesArray.join(", ") + "]" +
+            ", but instead it was " + value
+        );
+    }
+}
+
+/**
  * Throws an error if {@param value} if its not null, and not of a type matching
  * {@param expectedType}.
  *

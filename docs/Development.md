@@ -19,7 +19,7 @@ Firebase requires that you connect it to a Firebase
 project just to run the project locally for testing.
 You can create a new project by following the
 **2.1.1.Create Project** section of the
-[Installation Guide](Installation.md). You do not
+[Installation Guide](TechnicalInstallation.md). You do not
 have to follow the guide any further to setup the
 Firebase project, you just need one to exist.
 However, if you already have a production Firebase
@@ -32,12 +32,12 @@ npx firebase login
 npx firebase use --add
 ```
 
-## 3. Run Firebase Emulator
+## 3. Run Firebase Emulators
 The Firebase emulator will emulate the Firebase
 authentication, Firestore, and Firebase Storage for
 you. The emulator can be started by running the command,
 ```shell
-npx firebase emulators:start --import="test/firebase-dev-environment"
+npm run emulators
 ```
 
 After you have run this command, you can access the
