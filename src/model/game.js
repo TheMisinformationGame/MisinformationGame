@@ -127,14 +127,17 @@ export class GamePost {
     study; // Study
 
     post; // BasePost
-    shown; // boolean
+    numberOfReactions; // {String: Number}
+    shown; // Boolean
 
-    constructor(study, post, shown) {
+    constructor(study, post, numberOfReactions, shown) {
         doTypeCheck(study, Study, "Post's Study");
         doTypeCheck(post, Post, "Post's Metadata");
-        doNullableTypeCheck(shown, "boolean", "Whether the post has been shown")
+        doTypeCheck(numberOfReactions, "object", "Number of reactions for the post");
+        doNullableTypeCheck(shown, "boolean", "Whether the post has been shown");
         this.study = study;
         this.post = post;
+        this.numberOfReactions = numberOfReactions;
         this.shown = !!shown;
     }
 
@@ -142,7 +145,7 @@ export class GamePost {
      * Returns a new GamePost for this post after it has been shown.
      */
     adjustAfterShown() {
-        return new GamePost(this.study, this.post, true);
+        return new GamePost(this.study, this.post, this.numberOfReactions, true);
     }
 
     addUsedSources(usedSources) {
@@ -154,6 +157,7 @@ export class GamePost {
     toJSON() {
         return {
             "postID": this.post.id,
+            "numberOfReactions": this.numberOfReactions,
             "shown": this.shown
         };
     }
@@ -162,6 +166,7 @@ export class GamePost {
         return new GamePost(
             study,
             study.getPost(json["postID"]),
+            json["numberOfReactions"],
             json["shown"]
         );
     }
@@ -192,6 +197,28 @@ export class GamePost {
                 return post;
         }
         throw new Error("Could not find post with ID " + id);
+    }
+
+    /**
+     * Creates a new post for use in the game by sampling its
+     * number of reactions from the supplied distribution.
+     */
+    static sampleNewPost(study, post) {
+        doTypeCheck(study, Study, "Study")
+        doTypeCheck(post, Post, "Post");
+        const numberOfReactions = {};
+        if (study.displayNumberOfReactions) {
+            const reactions = ["like", "dislike", "share", "flag"];
+            for (let index = 0; index < reactions.length; ++index) {
+                const reaction = reactions[index];
+                const distribution = post.numberOfReactions[reaction];
+                if (!distribution)
+                    continue;
+
+                numberOfReactions[reaction] = distribution.sample();
+            }
+        }
+        return new GamePost(study, post, numberOfReactions, false);
     }
 }
 
@@ -577,7 +604,9 @@ export class Game {
                 );
             }
             for (let index = 0; index < this.study.posts.length; ++index) {
-                currentPosts.push(new GamePost(this.study, this.study.posts[index]));
+                currentPosts.push(
+                    GamePost.sampleNewPost(this.study, this.study.posts[index])
+                );
             }
         }
 
