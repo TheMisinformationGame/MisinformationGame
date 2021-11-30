@@ -376,7 +376,13 @@ function readV1Sources(workbook, study) {
         const credibility = readV1CredibilityDistribution(workbook, row, defaults);
 
         // Read and convert the avatar image to our own format.
-        const avatarPromise = StudyImage.fromExcelImage(readCell(workbook, V1.source.avatar.row(row)));
+        const avatarValue = readCellWithDefault(workbook, V1.source.avatar.row(row), null);
+        let avatarPromise;
+        if (avatarValue) {
+            avatarPromise = StudyImage.fromExcelImage(readCell(workbook, V1.source.avatar.row(row)));
+        } else {
+            avatarPromise = Promise.resolve(null);
+        }
 
         // If using the Source-Ratios selection method, then read the true-post percentage for each source.
         let truePostPercentage = -1;

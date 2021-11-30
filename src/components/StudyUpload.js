@@ -97,6 +97,9 @@ export class StudyUploadForm extends MountAwareComponent {
             }
             for (let index = 0; index < study.sources.length; ++index) {
                 const source = study.sources[index];
+                if (!source.avatar)
+                    continue;
+
                 const path = StudyImage.getPath(
                     study, source.id, source.avatar.toMetadata()
                 );

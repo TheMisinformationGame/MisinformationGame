@@ -25,15 +25,27 @@ class Source extends Component {
         return (
             <div className={"flex " + (this.props.className || "")}>
                 <div className={"mr-2 " + (small ? "h-8" : "h-12")}>
-                    <PromiseImage className="h-full"
-                                  imageClassName={
-                                      "rounded-full object-cover shadow " +
-                                      (small ? "h-8 w-8" : "h-12 w-12")
-                                  }
-                                  loadingSpinner={small ? "small" : ""}
-                                  image={getDataManager().getStudyImage(
-                            source.study, source.source.id, source.source.avatar
-                    )} />
+                    {source.source.avatar &&
+                        <PromiseImage className="h-full"
+                                      imageClassName={
+                                          "rounded-full object-cover shadow " +
+                                          (small ? "h-8 w-8" : "h-12 w-12")
+                                      }
+                                      loadingSpinner={small ? "small" : ""}
+                                      image={getDataManager().getStudyImage(
+                                          source.study, source.source.id, source.source.avatar
+                                      )} />}
+
+                    {!source.source.avatar &&
+                        <div className={
+                            "flex rounded-full object-cover shadow justify-center items-center text-2xl text-bold " +
+                            (small ? "h-8 w-8" : "h-12 w-12")
+                        }>
+                            <span>
+                                {source.source.name[0]}
+                            </span>
+                            {/* @Danny Marwick fill in avatar placeholder here */}
+                        </div>}
                 </div>
                 <div>
                     <div className="flex">
@@ -204,9 +216,8 @@ class ReactionsRow extends Component {
                 continue;
 
             buttons.push(
-                <ReactButton reaction={reaction}
-                             selected={selected}
-                             onReact={onReact}
+                <ReactButton reaction={reaction} key={reaction}
+                             selected={selected} onReact={onReact}
                              enabled={enabled}
                              reactionCount={post.numberOfReactions[reaction]}
                              childClassName="transform -translate-y-0.5 -translate-x-1"

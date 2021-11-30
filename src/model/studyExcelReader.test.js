@@ -58,3 +58,16 @@ test('load an example study', done => {
         done();
     });
 });
+
+test('load an example study with missing avatar images', done => {
+    loadTestStudy("ExampleStudy-MissingAvatars.xlsx", (err, study) => {
+        if (err) {
+            done(err);
+            return;
+        }
+        expect(study).toBeInstanceOf(Study);
+        expect(study.sources.length).toBeGreaterThan(0);
+        expect(study.posts.length).toBeGreaterThan(0);
+        done();
+    });
+});

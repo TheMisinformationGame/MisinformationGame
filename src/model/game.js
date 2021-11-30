@@ -517,7 +517,9 @@ export class Game {
         const post = state.currentPost.post;
 
         const manager = getDataManager();
-        manager.getStudyImage(this.study, source.id, source.avatar);
+        if (source.avatar) {
+            manager.getStudyImage(this.study, source.id, source.avatar);
+        }
         if (!isOfType(post.content, "string")) {
             manager.getStudyImage(this.study, post.id, post.content);
         }

@@ -5,7 +5,6 @@ import {StudyImage, StudyImageMetadata} from "./images";
 import {randDigits} from "../utils/random";
 import {odiff} from "../utils/odiff";
 import {getUnixEpochTimeSeconds} from "../utils/time";
-import {ExcelBoolean, ExcelNumber, ExcelString, WorkbookLoc} from "../utils/excel";
 
 
 /**
@@ -15,7 +14,7 @@ import {ExcelBoolean, ExcelNumber, ExcelString, WorkbookLoc} from "../utils/exce
 export class Source {
     id; // String
     name; // String
-    avatar; // Avatar
+    avatar; // Avatar?
     maxPosts; // Number
     followers; // TruncatedNormalDistribution
     credibility; // TruncatedNormalDistribution
@@ -23,7 +22,7 @@ export class Source {
 
     constructor(id, name, avatar, maxPosts, followers, credibility, truePostPercentage) {
         doTypeCheck(id, "string", "Source ID");
-        doTypeCheck(avatar, [StudyImage, StudyImageMetadata], "Source Avatar");
+        doNullableTypeCheck(avatar, [StudyImage, StudyImageMetadata], "Source Avatar");
         doTypeCheck(name, "string", "Source Name");
         doTypeCheck(maxPosts, "number", "Source Maximum Posts");
         doTypeCheck(followers, TruncatedNormalDistribution, "Source Initial Followers");
@@ -43,7 +42,7 @@ export class Source {
         return {
             "id": this.id,
             "name": this.name,
-            "avatar": this.avatar.toMetadata().toJSON(),
+            "avatar": (!this.avatar ? null : this.avatar.toMetadata().toJSON()),
             "maxPosts": this.maxPosts,
             "followers": this.followers.toJSON(),
             "credibility": this.credibility.toJSON(),
@@ -54,7 +53,7 @@ export class Source {
     static fromJSON(json) {
         return new Source(
             json["id"], json["name"],
-            StudyImageMetadata.fromJSON(json["avatar"]),
+            (!json["avatar"] ? null : StudyImageMetadata.fromJSON(json["avatar"])),
             json["maxPosts"],
             TruncatedNormalDistribution.fromJSON(json["followers"]),
             TruncatedNormalDistribution.fromJSON(json["credibility"]),
@@ -470,14 +469,18 @@ export class Study {
         const paths = [];
         for (let index = 0; index < this.posts.length; ++index) {
             const post = this.posts[index];
-            if (!isOfType(post.content, "string")) {
-                paths.push(StudyImage.getPath(
-                    this, post.id, post.content.toMetadata()
-                ));
-            }
+            if (isOfType(post.content, "string"))
+                continue;
+
+            paths.push(StudyImage.getPath(
+                this, post.id, post.content.toMetadata()
+            ));
         }
         for (let index = 0; index < this.sources.length; ++index) {
             const source = this.sources[index];
+            if (!source.avatar)
+                continue;
+
             paths.push(StudyImage.getPath(
                 this, source.id, source.avatar.toMetadata()
             ));
