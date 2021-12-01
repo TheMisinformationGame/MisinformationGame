@@ -71,6 +71,43 @@ class Comment extends Component {
         const enabled = this.props.enabled;
         const selected = this.props.selectedReaction;
         const likes = this.props.likeCounts;
+        const study = this.props.study;
+
+        var reactions = ["dislike", "like"];
+        var commentReactions = [];
+
+        const icons = {
+            "like": <ThumbUpIcon/>,
+            "dislike": <ThumbDownIcon/>,
+        };
+
+        const countsReact = {
+            "like": likes,
+            "dislike": 100
+        }
+
+        for (let index = 0; index < reactions.length; ++index) {
+            const reaction = reactions[index];
+            if (!study.commentEnabledReactions[reaction])
+                continue;
+
+            if(reaction == "like"){
+                var right = "0.8rem"
+            }else{
+                var right = "0.7rem"
+            }; 
+
+            commentReactions.push(
+                <CommentReactButton
+                    reaction={reaction + "_comment"} selected={selected} onReact={onReact} enabled={enabled} countNumber = {countsReact[reaction]}
+                    childClassName="transform -translate-y-3 -translate-x-1"
+                    marginRight = {right} marginTop = "-0.5rem"
+                    title={reaction} className="mr-1"
+                >
+                    {icons[reaction]}
+                </CommentReactButton>
+            )
+        };
 
         return (
             <div className={"flex flex-col p-1 pr-2 mb-1 bg-white shadow" +
@@ -81,16 +118,7 @@ class Comment extends Component {
                         <p className="w-full text-lg ml-1">{this.props.message}</p>
                     </div>
                     <div className = {"flex flex-row-reverse flex-grow flex-wrap p-1 pr-2 mb-1 bg-white w-2/5"}>
-                        <CommentReactButton reaction="dislike_comment" selected={selected} onReact={onReact} enabled={enabled} countNumber = {100}
-                                 childClassName="transform -translate-y-3 -translate-x-1"
-                                 marginRight = "0.7rem" marginTop = "-0.5rem"
-                                 title="Dislike" className="mr-1">
-                            <ThumbDownIcon/></CommentReactButton>
-                        <CommentReactButton reaction="like_comment" selected={selected} onReact={onReact} enabled={enabled} countNumber = {likes}
-                                 childClassName="transform -translate-y-3 -translate-x-1"
-                                 marginRight = "0.8rem" marginTop = "-0.5rem"
-                                 title="Like" className="mr-1">
-                            <ThumbUpIcon/></CommentReactButton>
+                        {commentReactions}
                     </div>
                 </div>
             </div>
@@ -257,7 +285,7 @@ class PostComponent extends Component {
             commentComponents.push(
                 <Comment sourceName={comment.sourceName} message={comment.message} likeCounts = {comment.likes}
                          key={index + "." + comment.sourceName} onReact={this.props.onReact} enabled={this.props.enableReactions}
-                         selectedReaction={this.props.selectedReaction}/>
+                         selectedReaction={this.props.selectedReaction} study = {state.study}/>
             );
         }
 
