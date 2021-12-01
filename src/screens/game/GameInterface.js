@@ -70,6 +70,7 @@ class Comment extends Component {
         const onReact = this.props.onReact;
         const enabled = this.props.enabled;
         const selected = this.props.selectedReaction;
+        const likes = this.props.likeCounts;
 
         return (
             <div className={"flex flex-col p-1 pr-2 mb-1 bg-white shadow" +
@@ -85,7 +86,7 @@ class Comment extends Component {
                                  marginRight = "0.7rem" marginTop = "-0.5rem"
                                  title="Dislike" className="mr-1">
                             <ThumbDownIcon/></CommentReactButton>
-                        <CommentReactButton reaction="like_comment" selected={selected} onReact={onReact} enabled={enabled} countNumber = {100}
+                        <CommentReactButton reaction="like_comment" selected={selected} onReact={onReact} enabled={enabled} countNumber = {likes}
                                  childClassName="transform -translate-y-3 -translate-x-1"
                                  marginRight = "0.8rem" marginTop = "-0.5rem"
                                  title="Like" className="mr-1">
@@ -254,7 +255,7 @@ class PostComponent extends Component {
         for (let index = 0; index < post.comments.length; ++index) {
             const comment = post.comments[index];
             commentComponents.push(
-                <Comment sourceName={comment.sourceName} message={comment.message}
+                <Comment sourceName={comment.sourceName} message={comment.message} likeCounts = {comment.likes}
                          key={index + "." + comment.sourceName} onReact={this.props.onReact} enabled={this.props.enableReactions}
                          selectedReaction={this.props.selectedReaction}/>
             );
