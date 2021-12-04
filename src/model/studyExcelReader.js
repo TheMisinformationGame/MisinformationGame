@@ -434,10 +434,18 @@ function readV1Comments(workbook, firstRow) {
         if (areCellsBlank(workbook, V1.post.worksheet, V1.post.comment.valueColumns, [row]))
             continue;
 
+        const likes = readCellWithDefault(workbook, V1.post.comment.likes.row(row), 0);
+        const dislikes = readCellWithDefault(workbook, V1.post.comment.dislikes.row(row), 0);
+
         comments.push(new PostComment(
             readCell(workbook, V1.post.comment.sourceName.row(row)),
             readCell(workbook, V1.post.comment.message.row(row)),
-            readCellWithDefault(workbook, V1.post.comment.likes.row(row), 0)
+            new ReactionValues(
+                TruncatedNormalDistribution.exactly(likes),
+                TruncatedNormalDistribution.exactly(dislikes),
+                null,
+                null
+            )
         ));
     }
     return comments;

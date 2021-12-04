@@ -12,6 +12,7 @@ import {db, storageRef} from './firebase';
 export function uploadStudyConfiguration(study) {
     let studyCol = db.collection("Studies");
     let studyDoc = studyCol.doc(study.id);
+    console.log(study.toJSON());
     return studyDoc.set(study.toJSON());
 }
 

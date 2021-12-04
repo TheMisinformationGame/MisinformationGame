@@ -95,4 +95,8 @@ export class TruncatedNormalDistribution {
             json["min"], json["max"]
         );
     }
+
+    static exactly(value) {
+        return new TruncatedNormalDistribution(value, 0, value, value);
+    }
 }

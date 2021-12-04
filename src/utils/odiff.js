@@ -7,6 +7,8 @@
 // values
 // count
 
+import {typeToString} from "./types";
+
 export function odiff(a, b) {
     const results = [];
     diffInternal(a, b, results, []);
@@ -86,13 +88,17 @@ var diffInternal = function(a,b,acc,base) {
             set(acc, base, b)
         }
     } else if(a instanceof Object && b instanceof Object) {
-        var keyMap = merge(arrayToMap(Object.keys(a)), arrayToMap(Object.keys(b)))
-        for(var key in keyMap) {
-            var path = base.concat([key])
-            if(key in a && !(key in b)) {
-                unset(acc, path)
-            } else {
-                diffInternal(a[key],b[key],acc, path)
+        if (a.constructor !== b.constructor) {
+            set(acc, base, b);
+        } else {
+            var keyMap = merge(arrayToMap(Object.keys(a)), arrayToMap(Object.keys(b)))
+            for(var key in keyMap) {
+                var path = base.concat([key])
+                if(key in a && !(key in b)) {
+                    unset(acc, path)
+                } else {
+                    diffInternal(a[key],b[key],acc, path)
+                }
             }
         }
     } else {

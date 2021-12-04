@@ -1,4 +1,4 @@
-import {doEnumCheck, doNonNullCheck, doNullableTypeCheck, doTypeCheck, isOfType} from "../utils/types";
+import {doEnumCheck, doNonNullCheck, doNullableTypeCheck, doTypeCheck, isOfType, typeToString} from "../utils/types";
 import {SourcePostSelectionMethod} from "./selectionMethod";
 import {TruncatedNormalDistribution} from "./math";
 import {StudyImage, StudyImageMetadata} from "./images";
@@ -63,46 +63,6 @@ export class Source {
 }
 
 /**
- * A comment that a source made on a post.
- */
-export class PostComment {
-    sourceName; // String
-    message; // String
-    likes; // Number
-
-    constructor(sourceName, message, likes) {
-        doTypeCheck(sourceName, "string", "Comment's Source Name");
-        doTypeCheck(message, "string", "Comment's Message");
-        doTypeCheck(likes, "number", "Comment Likes");
-        this.sourceName = sourceName;
-        this.message = message;
-        this.likes = likes;
-    }
-
-    toJSON() {
-        return {
-            "sourceName": this.sourceName,
-            "message": this.message,
-            "likes": this.likes
-        };
-    }
-
-    static fromJSON(json) {
-        const sourceID = json["sourceID"];
-        let sourceName;
-        if (sourceID === undefined) {
-            sourceName = json["sourceName"];
-        } else {
-            // Older studies use an ID instead.
-            sourceName = sourceID;
-        }
-        return new PostComment(
-            sourceName, json["message"], json["likes"]
-        );
-    }
-}
-
-/**
  * Holds a number for every possible reaction to a post.
  */
 export class ReactionValues {
@@ -126,6 +86,10 @@ export class ReactionValues {
         return (dist !== null ? dist.toJSON() : null);
     }
 
+    static reactionFromJSON(json) {
+        return (json !== null ? TruncatedNormalDistribution.fromJSON(json) : null);
+    }
+
     toJSON() {
         return {
             "like": ReactionValues.reactionToJSON(this.like),
@@ -135,16 +99,46 @@ export class ReactionValues {
         };
     }
 
-    static reactionFromJSON(json) {
-        return (json !== null ? TruncatedNormalDistribution.fromJSON(json) : null);
-    }
-
     static fromJSON(json) {
         return new ReactionValues(
             ReactionValues.reactionFromJSON(json["like"]),
             ReactionValues.reactionFromJSON(json["dislike"]),
             ReactionValues.reactionFromJSON(json["share"]),
             ReactionValues.reactionFromJSON(json["flag"])
+        );
+    }
+}
+
+/**
+ * A comment that a source made on a post.
+ */
+export class PostComment {
+    sourceName; // String
+    message; // String
+    numberOfReactions; // ReactionValues
+
+    constructor(sourceName, message, numberOfReactions) {
+        doTypeCheck(sourceName, "string", "Comment's Source Name");
+        doTypeCheck(message, "string", "Comment's Message");
+        doTypeCheck(numberOfReactions, ReactionValues, "Comment Number of Reactions");
+        this.sourceName = sourceName;
+        this.message = message;
+        this.numberOfReactions = numberOfReactions;
+    }
+
+    toJSON() {
+        return {
+            "sourceName": this.sourceName,
+            "message": this.message,
+            "numberOfReactions": this.numberOfReactions.toJSON()
+        };
+    }
+
+    static fromJSON(json) {
+        return new PostComment(
+            json["sourceName"],
+            json["message"],
+            ReactionValues.fromJSON(json["numberOfReactions"])
         );
     }
 }
@@ -595,10 +589,49 @@ export class Study {
 export function getStudyChangesToAndFromJSON(study) {
     // Convert the study to JSON.
     const json = study.toJSON();
+    const encodedJSON = JSON.stringify(json);
 
-    // Reconstruct the study from the JSON, and convert it back to JSON.
-    const reconstructedJSON = Study.fromJSON(study.id, json, study.lastModifiedTime).toJSON();
+    // Reconstruct the study from the JSON.
+    const reconstructedJSON = JSON.parse(encodedJSON);
+    const reconstructedStudy = Study.fromJSON(study.id, reconstructedJSON, study.lastModifiedTime);
 
     // Return the deep differences between them.
-    return odiff(json, reconstructedJSON);
+    return odiff(json, reconstructedStudy.toJSON());
+}
+
+/**
+ * Converts {@param study} to JSON, and verifies that
+ * the JSON doesn't contain any invalid values. Invalid
+ * values mainly encompasses undefined values and
+ * custom types.
+ *
+ * @return an error string, or else null.
+ */
+export function checkStudyToJSONCompliance(study) {
+    return checkJSONComplianceRecursive("studyJSON", study.toJSON());
+}
+
+function checkJSONComplianceRecursive(path, object) {
+    if (object === undefined)
+        return path + ": unexpected undefined value";
+    if (object === null)
+        return null;
+
+    const type = typeof(object);
+    if (type === "number" || type === "string" || type === "boolean")
+        return null;
+    if (type !== "object")
+        return path + ": unexpected non-object value, (" + type + ") " + object;
+    if (object.constructor !== Object && object.constructor !== Array)
+        return path + ": unexpected typed object, (" + typeToString(object.constructor) + ") " + object;
+
+    for (let key in object) {
+        if (!object.hasOwnProperty(key))
+            continue;
+
+        const error = checkJSONComplianceRecursive(path + "." + key, object[key]);
+        if (error)
+            return error;
+    }
+    return null;
 }

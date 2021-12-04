@@ -2,7 +2,7 @@ import "../index.css"
 import {Component} from "react";
 import {readStudyWorkbook} from "../model/studyExcelReader";
 import StatusLabel, {Status} from "./StatusLabel";
-import {getStudyChangesToAndFromJSON, Study} from "../model/study";
+import {checkStudyToJSONCompliance, getStudyChangesToAndFromJSON, Study} from "../model/study";
 import xlsxHelp from "./help-export-to-xlsx.png"
 import {Game, getGameChangesToAndFromJSON} from "../model/game";
 import {doTypeCheck, isOfType} from "../utils/types";
@@ -74,6 +74,8 @@ export class StudyUploadForm extends MountAwareComponent {
      * @param updateStatusFn the function used to update the UI with progress information.
      */
     uploadStudy(study, updateStatusFn) {
+        doTypeCheck(study, Study, "Study");
+
         updateStatusFn(Status.progress("Uploading images..."));
 
         // We do this in a setTimeout so that React has a chance to
@@ -176,6 +178,14 @@ export class StudyUploadForm extends MountAwareComponent {
                 if (studyChanges.length !== 0) {
                     console.error(studyChanges);
                     reportInternalError("The study changed after saving and loading.");
+                    return;
+                }
+
+                // Verify that none of our custom objects were left after toJSON().
+                const error = checkStudyToJSONCompliance(study);
+                if (error !== null) {
+                    console.error(error);
+                    reportInternalError("The study contained invalid values.");
                     return;
                 }
             } catch (error) {

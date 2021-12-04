@@ -17,6 +17,7 @@ function studyOrBrokenFromJson(studyID, json) {
     try {
         return Study.fromJSON(studyID, json);
     } catch (e) {
+        console.error(e);
         return BrokenStudy.fromJSON(studyID, json, e.message);
     }
 }
