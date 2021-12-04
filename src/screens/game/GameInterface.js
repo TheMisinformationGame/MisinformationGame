@@ -65,117 +65,16 @@ class Source extends Component {
     }
 }
 
-class Comment extends Component {
-    render() {
-        const onReact = this.props.onReact;
-        const enabled = this.props.enabled;
-        const selected = this.props.selectedReaction;
-        const likes = this.props.likeCounts;
-        const study = this.props.study;
-
-        var reactions = ["dislike", "like"];
-        var commentReactions = [];
-
-        const icons = {
-            "like": <ThumbUpIcon/>,
-            "dislike": <ThumbDownIcon/>,
-        };
-
-        const countsReact = {
-            "like": likes,
-            "dislike": 100
-        }
-
-        for (let index = 0; index < reactions.length; ++index) {
-            const reaction = reactions[index];
-            if (!study.commentEnabledReactions[reaction])
-                continue;
-
-            if(reaction == "like"){
-                var right = "0.8rem"
-            }else{
-                var right = "0.7rem"
-            }; 
-
-            commentReactions.push(
-                <CommentReactButton
-                    reaction={reaction + "_comment"} selected={selected} onReact={onReact} enabled={enabled} countNumber = {countsReact[reaction]}
-                    childClassName="transform -translate-y-3 -translate-x-1"
-                    marginRight = {right} marginTop = "-0.5rem"
-                    title={reaction} className="mr-1"
-                >
-                    {icons[reaction]}
-                </CommentReactButton>
-            )
-        };
-
-        return (
-            <div className={"flex flex-col p-1 pr-2 mb-1 bg-white shadow" +
-                        (this.props.className || "")}>
-                <div className="flex mb-4">
-                    <div className="w-3/5">
-                        <p className="w-full underline text-gray-700">{this.props.sourceName}</p>
-                        <p className="w-full text-lg ml-1">{this.props.message}</p>
-                    </div>
-                    <div className = {"flex flex-row-reverse flex-grow flex-wrap p-1 pr-2 mb-1 bg-white w-2/5"}>
-                        {commentReactions}
-                    </div>
-                </div>
-            </div>
-        );
-    }
-}
-
-
-class CommentReactButton extends Component {
-    render() {
-        const reaction = this.props.reaction;
-        const selectionExists = (this.props.selected !== null);
-        const selected = (reaction === this.props.selected);
-        const count = this.props.countNumber;
-
-        const paraStyle = {
-            marginTop : (this.props.marginTop || "0rem") ,
-            marginRight: (this.props.marginRight|| "0rem"),
-            fontSize: '0.95rem',
-            fontWeight: 'bold'
-        }
-
-        return (
-            <div id={reaction}
-                 title={this.props.title}
-                 className={
-                     " group h-11 w-13 pt-1.5 pb-0.5 px-1 sm:px-3 md:px-4 rounded text-center" +
-                     " fill-current transition duration-100 " +
-                     (selected ? " bg-gray-100 font-semibold " : " hover:bg-gray-100 ") +
-                     (this.props.enabled ? " cursor-pointer " : "") +
-                     (this.props.enabled && (selected || !selectionExists) ?
-                         (selected ? " text-blue-700 " : " text-gray-700 ")
-                         : " text-gray-500 ") +
-                     (this.props.className || "")}
-                 style={{fontSize: (this.props.fontSize || "2rem")}}
-                 onClick={() => {
-                    if (this.props.enabled) {
-                        this.props.onReact(reaction);
-                    }
-                 }}>
-
-                {React.cloneElement(this.props.children, {
-                    className: "fill-current "  + 
-                        (this.props.enabled ? "transform group-hover:scale-110 " : "") +
-                        (this.props.childClassName || "")
-                        ,
-                    fontSize: "inherit"
-                })}
-                <p style = {paraStyle} >
-                    {count}
-                </p>
-            </div>
-        );
-    }
-}
 
 class ReactButton extends Component {
+    getPositioningClassName() {
+        return "h-12 w-16 pt-1.5 px-4";
+    }
+
+    getReactionCountClassName() {
+        return "absolute top-10 left-1/2 transform -translate-x-1/2 p-1 text-lg font-bold";
+    }
+
     render() {
         const reaction = this.props.reaction;
         const selectionExists = (this.props.selected !== null);
@@ -186,8 +85,9 @@ class ReactButton extends Component {
             <div id={reaction}
                  title={this.props.title}
                  className={
-                     " group h-12 w-16 pt-1.5 px-1 sm:px-3 md:px-4 rounded text-center " +
+                     " relative group rounded text-center " +
                      " fill-current transition duration-100 " +
+                     " " + this.getPositioningClassName() + " " +
                      (selected ? " bg-gray-100 font-semibold " : " hover:bg-gray-100 ") +
                      (this.props.enabled ? " cursor-pointer " : "") +
                      (this.props.enabled && (selected || !selectionExists) ?
@@ -196,9 +96,9 @@ class ReactButton extends Component {
                      (this.props.className  || "")}
                  style={{fontSize: (this.props.fontSize || "2.5rem")}}
                  onClick={() => {
-                    if (this.props.enabled) {
-                        this.props.onReact(reaction);
-                    }
+                     if (this.props.enabled) {
+                         this.props.onReact(reaction);
+                     }
                  }}>
 
                 {React.cloneElement(this.props.children, {
@@ -209,7 +109,7 @@ class ReactButton extends Component {
                 })}
 
                 {count !== undefined &&
-                    <p className="text-lg font-bold" >
+                    <p className={this.getReactionCountClassName()} >
                         {Math.round(count)}
                     </p>}
             </div>
@@ -217,7 +117,74 @@ class ReactButton extends Component {
     }
 }
 
-class ReactionsRow extends Component {
+class CommentReactButton extends ReactButton {
+    getPositioningClassName() {
+        return "h-9 w-12 pt-1.5 pb-0.5 px-4";
+    }
+
+    getReactionCountClassName() {
+        return "absolute top-8 left-1/2 transform -translate-x-1/2 p-0.5 text-base font-bold";
+    }
+}
+
+class Comment extends Component {
+    render() {
+        const comment = this.props.comment;
+        const study = this.props.study;
+
+        const onReact = this.props.onReact;
+        const enabled = this.props.enabled;
+        const selected = this.props.selectedReaction;
+
+        const reactions = ["dislike", "like"];
+        const commentReactions = [];
+
+        const icons = {
+            "like": <ThumbUpIcon/>,
+            "dislike": <ThumbDownIcon/>,
+        };
+        for (let index = 0; index < reactions.length; ++index) {
+            const reaction = reactions[index];
+            if (!study.commentEnabledReactions[reaction])
+                continue;
+
+            commentReactions.push(
+                <CommentReactButton
+                        reaction={reaction}
+                        key={reaction}
+                        selected={selected}
+                        onReact={onReact}
+                        enabled={enabled}
+                        reactionCount={comment.numberOfReactions[reaction].sample()}
+                        childClassName="transform -translate-y-3 -translate-x-1"
+                        title={reaction}
+                        className="mr-1"
+                        fontSize="1.7rem">
+
+                    {icons[reaction]}
+                </CommentReactButton>
+            )
+        }
+
+        return (
+            <div className={"flex flex-col p-1 pr-2 mb-1 bg-white shadow" +
+                        (this.props.className || "")}>
+                <div className="flex mb-3">
+                    <div className="flex-grow pl-2">
+                        <p className="w-full underline text-gray-700">{comment.sourceName}</p>
+                        <p className="w-full text-lg ml-1">{comment.message}</p>
+                    </div>
+                    <div className="flex flex-row-reverse flex-grow-0 p-1 pr-0 w-1/5">
+                        {commentReactions}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+
+class PostReactionsRow extends Component {
     render() {
         const onReact = this.props.onReact;
         const enabled = this.props.enabled;
@@ -244,14 +211,22 @@ class ReactionsRow extends Component {
             if (!study.postEnabledReactions[reaction])
                 continue;
 
+            let transforms, fontSize;
+            if (reaction === "share") {
+                transforms = "transform -translate-y-2.5 -translate-x-3 flip-x";
+                fontSize = "3.25rem";
+            } else {
+                transforms = "transform -translate-y-0.5 -translate-x-1";
+            }
+
             buttons.push(
                 <ReactButton reaction={reaction} key={reaction}
                              selected={selected} onReact={onReact}
                              enabled={enabled}
                              reactionCount={post.numberOfReactions[reaction]}
-                             childClassName="transform -translate-y-0.5 -translate-x-1"
+                             childClassName={transforms}
                              title={titles[reaction]}
-                             className="mr-1">
+                             className="mr-1" fontSize={fontSize}>
 
                     {icons[reaction]}
                 </ReactButton>
@@ -259,7 +234,7 @@ class ReactionsRow extends Component {
         }
 
         return (
-            <div className="text-lg flex flex-wrap flex-row pt-2 pb-6 px-2">
+            <div className="text-lg flex flex-wrap flex-row pt-1 pb-6 mb-0.5 px-2">
                 <div className="flex flex-grow">
                     {buttons}
                 </div>
@@ -283,9 +258,11 @@ class PostComponent extends Component {
         for (let index = 0; index < post.comments.length; ++index) {
             const comment = post.comments[index];
             commentComponents.push(
-                <Comment sourceName={comment.sourceName} message={comment.message} likeCounts = {comment.likes}
-                         key={index + "." + comment.sourceName} onReact={this.props.onReact} enabled={this.props.enableReactions}
-                         selectedReaction={this.props.selectedReaction} study = {state.study}/>
+                <Comment comment={comment} study={state.study}
+                         key={index + "." + comment.sourceName}
+                         onReact={this.props.onReact}
+                         enabled={this.props.enableReactions}
+                         selectedReaction={this.props.selectedReaction} />
             );
         }
 
@@ -320,7 +297,7 @@ class PostComponent extends Component {
 
                     {/* The reactions to the post and their counts. */}
                     <hr />
-                    <ReactionsRow onReact={this.props.onReact}
+                    <PostReactionsRow onReact={this.props.onReact}
                                   enabled={this.props.enableReactions}
                                   selectedReaction={this.props.selectedReaction}
                                   study={state.study}
