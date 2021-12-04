@@ -8,7 +8,7 @@ function Home() {
     if (window.location.hostname === "misinformation-game.web.app") {
         exampleGameURL = "/study/axsvxt37ctac6ltr";
     } else if (window.location.hostname === "localhost") {
-        exampleGameURL = "/study/2oxudh9xx8f74cgi";
+        exampleGameURL = "/study/yr10i6u5hf9fc1yh";
     }
 
     return (

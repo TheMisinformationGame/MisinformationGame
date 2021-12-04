@@ -1,18 +1,16 @@
 {
-  "name": "Admins/PZu776G9ctZGXSGZvxXVh3zUPnEa/Studies/53cbp8t3isam6syd/S3.png",
+  "name": "Admins/PZu776G9ctZGXSGZvxXVh3zUPnEa/Studies/o56hrxovuchv1sfi/S3.png",
   "bucket": "misinformation-game.appspot.com",
   "contentType": "application/octet-stream",
   "metageneration": 1,
-  "generation": 1638283157104,
+  "generation": 1638585850297,
   "storageClass": "STANDARD",
   "etag": "someETag",
   "contentDisposition": "inline",
   "contentEncoding": "identity",
-  "downloadTokens": [
-    "ecdcf12f-e5fe-4b9c-a73c-5168b69eaf6a"
-  ],
-  "timeCreated": "2021-11-30T14:39:17.103Z",
-  "updated": "2021-11-30T14:39:17.105Z",
+  "downloadTokens": [],
+  "timeCreated": "2021-12-04T02:44:10.296Z",
+  "updated": "2021-12-04T02:44:10.297Z",
   "size": 218607,
   "md5Hash": "aheU6H50imZSmMFK4n9fJw==",
   "crc32c": "4224848809"
