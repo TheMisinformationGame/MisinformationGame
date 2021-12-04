@@ -27,6 +27,10 @@ export class GameRules extends ActiveGameScreen {
 
         const target = "/study/" + study.id + "/post-intro" + window.location.search;
         const continueDelaySeconds = 20;
+
+        const followersAndCredibility = (study.displayFollowers ? "follower count" : "") + 
+                                        " " +  
+                                        (study.displayCredibility ? "credibility rating" : "")
         return (
             <div>
                 <div className="m-1 bg-white p-10 max-w-4xl ml-auto mr-auto">
@@ -69,6 +73,14 @@ export class GameRules extends ActiveGameScreen {
                         </li>
                     </ul>
 
+                    {study.requireComments && 
+                    <p className="leading-5 mb-4 mt-6">
+                        The text box below the post is where you add your own comment
+                    </p>
+                    }
+                    {/* Image of comment box, once implemented */}
+
+                    {study.requireReactions &&
                     <p className="leading-5 mb-4 mt-6">
                         To move on to the next post, you must first select to like, dislike, share, flag,
                         or skip the post, which can be done underneath the content of the post. Once you
@@ -76,11 +88,22 @@ export class GameRules extends ActiveGameScreen {
                         <b>&nbsp;Continue to Next Post&nbsp;</b>
                         button underneath <b>Your Progress</b>.
                     </p>
-
+                    }
+                    {!study.requireReactions &&
                     <p className="leading-5 mb-4 mt-6">
-                        Your own followers and credibility rating will also be shown under
+                        For any post shown, you may "react" to it with any of the buttons available. Once
+                        you have reacted to the post, you can press the 
+                        <b>&nbsp;Continue to Next Post&nbsp;</b>
+                        button underneath <b>Your Progress</b>.
+                    </p>
+                    }
+
+                    {(study.displayFollowers || study.displayCredibility) &&
+                    <p className="leading-5 mb-4 mt-6">
+                        Your own {followersAndCredibility} will also be shown under
                         <b>&nbsp;Your Progress</b>,
                     </p>
+                    }
                     <ParticipantProgress
                         overrideFollowers={13}
                         overrideCredibility={56}
@@ -89,10 +112,13 @@ export class GameRules extends ActiveGameScreen {
                         onNextPost={() => {}}
                         nextPostEnabled={false}/>
 
+                    {study.displayFollowers &&
                     <p className="leading-5 my-4">
                         Your <b><i>follower count</i></b> is the number of other users
                         following you on this network.
                     </p>
+                    }
+                    {study.displayCredibility &&
                     <p className="leading-5 my-4">
                         Your <b><i>credibility rating</i></b> is an indication of how
                         credible you are perceived to be on a scale from 0 to 100.
@@ -106,6 +132,7 @@ export class GameRules extends ActiveGameScreen {
                             dark blue
                         </span> for the 90-100 range.
                     </p>
+                    }
                 </div>
 
                 <ContinueBanner to={target} condition={true} delay={continueDelaySeconds} />
