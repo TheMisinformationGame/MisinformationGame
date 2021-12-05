@@ -27,6 +27,9 @@ class ChangeLabel extends Component {
 }
 
 export class ParticipantProgress extends Component {
+    // constructor(props) {
+
+    // }
     render() {
         const participant = this.props.participant;
         const nextPostEnabled = this.props.nextPostEnabled;
@@ -34,6 +37,9 @@ export class ParticipantProgress extends Component {
 
         const followers = (this.props.overrideFollowers || participant.followers);
         const credibility = (this.props.overrideCredibility || participant.credibility);
+
+        const displayFollowers = this.props.displayFollowers;
+        const displayCredibility = this.props.displayCredibility;
         return (
             <div className={
                 "w-full bg-white " + (fancyPositioning ?
@@ -52,6 +58,7 @@ export class ParticipantProgress extends Component {
                     <p className="text-xl font-semibold mb-2">
                         Your Progress
                     </p>
+                    {displayFollowers &&
                     <p className="text-xl">
                         <SupervisedUserCircleIcon className="align-bottom mr-1" />
                         <span className="inline-block text-lg w-24 transform -translate-y-0.5">
@@ -62,6 +69,9 @@ export class ParticipantProgress extends Component {
                         </span>
                         <ChangeLabel change={this.props.followerChange} />
                     </p>
+                    }
+                    
+                    {displayCredibility &&
                     <p className="text-xl">
                         <CheckCircleIcon className="align-bottom mr-1" />
                         <span className="inline-block text-lg w-24">
@@ -71,6 +81,7 @@ export class ParticipantProgress extends Component {
                                           className="transform translate-y-2" />
                         <ChangeLabel change={this.props.credibilityChange} />
                     </p>
+                    }
 
                     <div onClick={this.props.onNextPost}
                          title={nextPostEnabled || this.props.hideTooltip ? "" :
