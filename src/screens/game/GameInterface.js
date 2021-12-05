@@ -80,8 +80,11 @@ class ReactButton extends Component {
         const reaction = this.props.reaction;
         const selectionExists = (this.props.selected !== null);
         const selected = (reaction === this.props.selected);
-        const reactionCount = this.props.reactionCount;
 
+        let reactionCount = this.props.reactionCount;
+        if (typeof(reactionCount) === "number" && selected) {
+            reactionCount += 1;
+        }
         return (
             <div id={reaction}
                  title={this.props.title}
