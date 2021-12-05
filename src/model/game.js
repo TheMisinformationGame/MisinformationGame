@@ -207,16 +207,14 @@ export class GamePost {
         doTypeCheck(study, Study, "Study")
         doTypeCheck(post, Post, "Post");
         const numberOfReactions = {};
-        if (study.displayNumberOfReactions) {
-            const reactions = ["like", "dislike", "share", "flag"];
-            for (let index = 0; index < reactions.length; ++index) {
-                const reaction = reactions[index];
-                const distribution = post.numberOfReactions[reaction];
-                if (!distribution)
-                    continue;
+        const reactions = ["like", "dislike", "share", "flag"];
+        for (let index = 0; index < reactions.length; ++index) {
+            const reaction = reactions[index];
+            const distribution = post.numberOfReactions[reaction];
+            if (!distribution)
+                continue;
 
-                numberOfReactions[reaction] = distribution.sample();
-            }
+            numberOfReactions[reaction] = distribution.sample();
         }
         return new GamePost(study, post, numberOfReactions, false);
     }
@@ -327,7 +325,7 @@ export class GameState {
  */
 export class GameParticipant {
     participantID; // String, or null
-    reactions; // String[]
+    reactions; // String?[]
     firstInteractTimesMS; // Number[]
     lastInteractTimesMS; // Number[]
     credibility; // Number
@@ -358,7 +356,7 @@ export class GameParticipant {
     }
 
     addReaction(reaction, credibilityChange, followersChange, firstInteractMS, lastInteractMS) {
-        doTypeCheck(reaction, "string", "Participant's Reaction");
+        doNullableTypeCheck(reaction, "string", "Participant's Reaction");
         doTypeCheck(credibilityChange, "number", "Participant's Credibility Change after Reaction");
         doTypeCheck(followersChange, "number", "Participant's Followers Change after Reaction");
         doTypeCheck(firstInteractMS, "number", "Time it took for the participant to first interact");
@@ -538,10 +536,10 @@ export class Game {
      *                       next post, in milliseconds.
      */
     advanceState(reaction, firstInteractMS, lastInteractMS) {
-        if (!["like", "dislike", "share", "flag", "skip"].includes(reaction))
+        if (reaction !== null && !["like", "dislike", "share", "flag", "skip"].includes(reaction))
             throw new Error("Unknown reaction " + reaction);
 
-        if (reaction === "skip") {
+        if (reaction === "skip" || reaction === null) {
             this.participant.addReaction(reaction, 0, 0, firstInteractMS, lastInteractMS);
         } else {
             const post = this.getCurrentState().currentPost.post;

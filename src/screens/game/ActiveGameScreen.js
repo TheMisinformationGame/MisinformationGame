@@ -11,19 +11,25 @@ export class ActiveGameScreen extends ActiveStudyScreen {
     constructor(props) {
         super(props);
 
+        const manager = getDataManager();
+
         // Get the session ID from the URL.
         const sessionID = new URLSearchParams(window.location.search).get("s");
         if (sessionID) {
-            getDataManager().setSessionID(sessionID);
+            manager.setSessionID(sessionID);
         }
 
+        // If the study and game are already loaded,
+        // then skip the delayed Promise step.
+        const knownStudy = manager.activeStudy;
+        const knownGame = manager.activeGame;
         this.defaultState = {
-            study: null,
-            studyLoading: true,
+            study: knownStudy,
+            studyLoading: (knownStudy === null),
             studyLoadError: null,
 
-            game: null,
-            gameLoading: true,
+            game: knownGame,
+            gameLoading: (knownGame === null),
             gameLoadError: null
         };
         this.state = this.defaultState;
@@ -36,6 +42,10 @@ export class ActiveGameScreen extends ActiveStudyScreen {
             this.setStateIfMounted({...this.defaultState, study: study, studyLoading: false,});
             this.reloadActiveGame();
         };
+
+        if (knownGame !== null) {
+            this.afterGameLoaded(knownGame);
+        }
     }
 
     updateQueryParams(game) {
@@ -125,8 +135,6 @@ export class ActiveGameScreen extends ActiveStudyScreen {
         if (!game)
             return <ErrorLabel className="text-2xl m-2" value="The game did not load correctly." />;
 
-        // Just in case
-        this.updateQueryParams(game);
         return this.renderWithStudyAndGame(study, game);
     }
 }

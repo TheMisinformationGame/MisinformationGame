@@ -15,8 +15,15 @@ class DataManager {
         this.allStudiesPromiseGenerator = null;
         this.studyPromiseGenerators = {};
         this.activeGameStudyID = null;
+
         this.sessionID = null;
         this.activeGamePromiseGenerator = null;
+
+        // These are used as short-cuts to avoid
+        // the Promises when possible.
+        this.activeStudy = null;
+        this.activeGame = null;
+
         this.imagePromiseGenerators = {};
         this.updateListeners = [];
         this.authChangeListeners = [];
@@ -105,6 +112,9 @@ class DataManager {
      * Sets the ID of the currently active study to display.
      */
     setActiveStudy(studyID) {
+        if (this.activeGameStudyID !== studyID) {
+            this.activeStudy = null;
+        }
         this.activeGameStudyID = studyID;
     }
 
@@ -136,6 +146,8 @@ class DataManager {
         this.allStudiesPromiseGenerator = null;
         this.studyPromiseGenerators = {};
         this.activeGamePromiseGenerator = null;
+        this.activeStudy = null;
+        this.activeGame = null;
     }
 
     /**
@@ -144,6 +156,10 @@ class DataManager {
      */
     cacheStudy(study) {
         this.studyPromiseGenerators[study.id] = () => Promise.resolve(study);
+        if (study.id === this.activeGameStudyID) {
+            this.activeStudy = study;
+        }
+
         this.postStudyUpdateEvent(study);
     }
 
@@ -233,8 +249,16 @@ class DataManager {
      * call {@link DataManager#getStudy()} to get a study promise.
      */
     readStudy(studyID) {
+        if (studyID === this.activeGameStudyID) {
+            this.activeStudy = null;
+        }
+
         const studyPromise = readStudySettings(studyID).then((study) => {
             this.studyPromiseGenerators[studyID] = () => Promise.resolve(study);
+            if (studyID === this.activeGameStudyID) {
+                this.activeStudy = study;
+            }
+
             this.postStudyUpdateEvent(study);
             return study;
         }).catch((err) => {
@@ -261,8 +285,13 @@ class DataManager {
      * Returns a Promise to read or create the currently active game.
      */
     readActiveGame(studyID, sessionID) {
+        if (this.activeGameStudyID !== studyID) {
+            this.activeStudy = null;
+        }
+
         this.activeGameStudyID = studyID;
         this.sessionID = sessionID;
+        this.activeGame = null;
 
         // If there is no active study.
         if (!studyID) {
@@ -302,6 +331,7 @@ class DataManager {
 
             this.sessionID = game.sessionID;
             this.activeGamePromiseGenerator = () => Promise.resolve(game);
+            this.activeGame = game;
             return game;
         }).catch((err) => {
             this.activeGamePromiseGenerator = () => Promise.reject(err);

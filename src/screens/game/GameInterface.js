@@ -79,7 +79,7 @@ class ReactButton extends Component {
         const reaction = this.props.reaction;
         const selectionExists = (this.props.selected !== null);
         const selected = (reaction === this.props.selected);
-        const count = this.props.reactionCount;
+        const reactionCount = this.props.reactionCount;
 
         return (
             <div id={reaction}
@@ -108,9 +108,9 @@ class ReactButton extends Component {
                     fontSize: "inherit"
                 })}
 
-                {count !== undefined &&
+                {reactionCount !== undefined &&
                     <p className={this.getReactionCountClassName()} >
-                        {Math.round(count)}
+                        {Math.round(reactionCount)}
                     </p>}
             </div>
         );
@@ -119,7 +119,7 @@ class ReactButton extends Component {
 
 class CommentReactButton extends ReactButton {
     getPositioningClassName() {
-        return "h-9 w-12 pt-1.5 pb-0.5 px-4";
+        return "h-9 w-11 pt-1.5 pb-0.5 px-3";
     }
 
     getReactionCountClassName() {
@@ -148,6 +148,13 @@ class Comment extends Component {
             if (!study.commentEnabledReactions[reaction])
                 continue;
 
+            let reactionCount;
+            if (study.displayNumberOfReactions) {
+                reactionCount = comment.numberOfReactions[reaction].sample();
+            } else {
+                reactionCount = undefined;
+            }
+
             commentReactions.push(
                 <CommentReactButton
                         reaction={reaction}
@@ -155,10 +162,9 @@ class Comment extends Component {
                         selected={selected}
                         onReact={onReact}
                         enabled={enabled}
-                        reactionCount={comment.numberOfReactions[reaction].sample()}
+                        reactionCount={reactionCount}
                         childClassName="transform -translate-y-3 -translate-x-1"
                         title={reaction}
-                        className="mr-1"
                         fontSize="1.7rem">
 
                     {icons[reaction]}
@@ -219,11 +225,18 @@ class PostReactionsRow extends Component {
                 transforms = "transform -translate-y-0.5 -translate-x-1";
             }
 
+            let reactionCount;
+            if (study.displayNumberOfReactions) {
+                reactionCount = post.numberOfReactions[reaction];
+            } else {
+                reactionCount = undefined;
+            }
+
             buttons.push(
                 <ReactButton reaction={reaction} key={reaction}
                              selected={selected} onReact={onReact}
                              enabled={enabled}
-                             reactionCount={post.numberOfReactions[reaction]}
+                             reactionCount={reactionCount}
                              childClassName={transforms}
                              title={titles[reaction]}
                              className="mr-1" fontSize={fontSize}>
@@ -234,15 +247,17 @@ class PostReactionsRow extends Component {
         }
 
         return (
-            <div className="text-lg flex flex-wrap flex-row pt-1 pb-6 mb-0.5 px-2">
+            <div className={"text-lg flex flex-wrap flex-row pt-1 px-2 " +
+                            (study.displayNumberOfReactions ? " pb-6 mb-0.5 " : " mb-1 ")}>
                 <div className="flex flex-grow">
                     {buttons}
                 </div>
 
-                <ReactButton reaction="skip" selected={selected} onReact={onReact} enabled={enabled}
-                             className="w-32" fontSize="1.25rem" childClassName="transform translate-y-1">
-                    <p>Skip Post</p>
-                </ReactButton>
+                {!study.requireReactions &&
+                    <ReactButton reaction="skip" selected={selected} onReact={onReact} enabled={enabled}
+                                 className="w-32" fontSize="1.25rem" childClassName="transform translate-y-1">
+                        <p>Skip Post</p>
+                    </ReactButton>}
             </div>
         );
     }
@@ -297,11 +312,12 @@ class PostComponent extends Component {
 
                     {/* The reactions to the post and their counts. */}
                     <hr />
-                    <PostReactionsRow onReact={this.props.onReact}
-                                  enabled={this.props.enableReactions}
-                                  selectedReaction={this.props.selectedReaction}
-                                  study={state.study}
-                                  post={state.currentPost} />
+                    <PostReactionsRow
+                        onReact={this.props.onReact}
+                        enabled={this.props.enableReactions}
+                        selectedReaction={this.props.selectedReaction}
+                        study={state.study}
+                        post={state.currentPost} />
                 </div>
 
                 {/* The comments on the post. */}
@@ -427,7 +443,7 @@ export class GameScreen extends ActiveGameScreen {
         this.updateGameState(this.state.game, this.state.error, true);
     }
 
-    onClickReaction(reaction) {
+    onPostReaction(reaction) {
         // If the selected reaction is clicked, toggle it off.
         if (this.state.selectedReaction === reaction) {
             reaction = null;
@@ -551,7 +567,7 @@ export class GameScreen extends ActiveGameScreen {
         const displayPrompt = !this.state.dismissedPrompt;
         const error = this.state.error;
         const finished = game.isFinished();
-        const nextPostEnabled = (this.state.selectedReaction !== null);
+        const nextPostEnabled = (!study.requireReactions || this.state.selectedReaction !== null);
         return (
             <>
                 {displayPrompt &&
@@ -573,10 +589,10 @@ export class GameScreen extends ActiveGameScreen {
                             participant={participant}
                             overrideFollowers={this.state.overrideFollowers}
                             overrideCredibility={this.state.overrideCredibility}
-                            nextPostEnabled={nextPostEnabled && this.state.inputEnabled}
+                            nextPostEnabled={nextPostEnabled && this.state.reactionsAllowed && this.state.inputEnabled}
                             onNextPost={() => {
                                 const reaction = this.state.selectedReaction;
-                                if (reaction) {
+                                if (!study.requireReactions || reaction !== null) {
                                     this.onUserReact(reaction, game);
                                 }
                             }}
@@ -584,7 +600,9 @@ export class GameScreen extends ActiveGameScreen {
                                 finished ?
                                     "The study is complete!" :
                                 nextPostEnabled ?
-                                    "Continue to Next Post" :
+                                    (this.state.reactionsAllowed ?
+                                        "Continue to next post" : "Please wait to continue")
+                                    :
                                     "React to the post to continue"
                             }
                             followerChange={this.state.followerChange}
@@ -602,7 +620,7 @@ export class GameScreen extends ActiveGameScreen {
                         {state && !error &&
                             <PostComponent
                                 state={state}
-                                onReact={r => this.onClickReaction(r)}
+                                onReact={r => this.onPostReaction(r)}
                                 enableReactions={this.state.reactionsAllowed && this.state.inputEnabled}
                                 selectedReaction={this.state.selectedReaction} />}
 

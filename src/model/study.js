@@ -389,6 +389,7 @@ export class Study {
         this.length = length;
 
         this.requireReactions = requireReactions;
+
         this.reactDelaySeconds = reactDelaySeconds;
         this.requireComments = requireComments;
         this.minimumCommentLength = minimumCommentLength;

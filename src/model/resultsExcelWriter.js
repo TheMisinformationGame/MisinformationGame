@@ -86,7 +86,7 @@ function constructWorkbook(study, results, problems) {
                 beforeFollowers: beforeFollowers,
                 afterCredibility: afterCredibility,
                 afterFollowers: afterFollowers,
-                reaction: participant.reactions[stateIndex],
+                reaction: participant.reactions[stateIndex] || "",
                 firstInteractTime: participant.firstInteractTimesMS[stateIndex],
                 lastInteractTime: participant.lastInteractTimesMS[stateIndex],
                 credibilityChange: afterCredibility - beforeCredibility,

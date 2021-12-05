@@ -27,9 +27,6 @@ class ChangeLabel extends Component {
 }
 
 export class ParticipantProgress extends Component {
-    // constructor(props) {
-
-    // }
     render() {
         const participant = this.props.participant;
         const nextPostEnabled = this.props.nextPostEnabled;
@@ -40,6 +37,12 @@ export class ParticipantProgress extends Component {
 
         const displayFollowers = this.props.displayFollowers;
         const displayCredibility = this.props.displayCredibility;
+
+        const onNextPost = () => {
+            if (nextPostEnabled) {
+                this.props.onNextPost();
+            }
+        };
         return (
             <div className={
                 "w-full bg-white " + (fancyPositioning ?
@@ -58,32 +61,31 @@ export class ParticipantProgress extends Component {
                     <p className="text-xl font-semibold mb-2">
                         Your Progress
                     </p>
+
                     {displayFollowers &&
-                    <p className="text-xl">
-                        <SupervisedUserCircleIcon className="align-bottom mr-1" />
-                        <span className="inline-block text-lg w-24 transform -translate-y-0.5">
-                            Followers:
-                        </span>
-                        <span className="font-semibold">
-                            &nbsp;{Math.round(followers)}&nbsp;
-                        </span>
-                        <ChangeLabel change={this.props.followerChange} />
-                    </p>
-                    }
+                        <p className="text-xl">
+                            <SupervisedUserCircleIcon className="align-bottom mr-1" />
+                            <span className="inline-block text-lg w-24 transform -translate-y-0.5">
+                                Followers:
+                            </span>
+                            <span className="font-semibold">
+                                &nbsp;{Math.round(followers)}&nbsp;
+                            </span>
+                            <ChangeLabel change={this.props.followerChange} />
+                        </p>}
                     
                     {displayCredibility &&
-                    <p className="text-xl">
-                        <CheckCircleIcon className="align-bottom mr-1" />
-                        <span className="inline-block text-lg w-24">
-                            Credibility:
-                        </span>
-                        <CredibilityLabel credibility={credibility}
-                                          className="transform translate-y-2" />
-                        <ChangeLabel change={this.props.credibilityChange} />
-                    </p>
-                    }
+                        <p className="text-xl">
+                            <CheckCircleIcon className="align-bottom mr-1" />
+                            <span className="inline-block text-lg w-24">
+                                Credibility:
+                            </span>
+                            <CredibilityLabel credibility={credibility}
+                                              className="transform translate-y-2" />
+                            <ChangeLabel change={this.props.credibilityChange} />
+                        </p>}
 
-                    <div onClick={this.props.onNextPost}
+                    <div onClick={onNextPost}
                          title={nextPostEnabled || this.props.hideTooltip ? "" :
                              "You must react to the post before you can continue to the next post"}
                          className={
