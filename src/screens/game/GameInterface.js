@@ -456,7 +456,7 @@ export class GameScreen extends ActiveGameScreen {
         this.setState(state);
     }
 
-    onUserReact(reaction, game) {
+    onNextPost(reaction, game) {
         const postShowTime = this.state.postShowTime;
         const firstInteractMS = this.state.firstInteractTime - postShowTime;
         const lastInteractMS = Date.now() - postShowTime;
@@ -593,7 +593,7 @@ export class GameScreen extends ActiveGameScreen {
                             onNextPost={() => {
                                 const reaction = this.state.selectedReaction;
                                 if (!study.requireReactions || reaction !== null) {
-                                    this.onUserReact(reaction, game);
+                                    this.onNextPost(reaction, game);
                                 }
                             }}
                             nextPostText={
