@@ -1,7 +1,7 @@
 /**
  * A source with a known credibility and follower count.
  */
-import {doNullableTypeCheck, doTypeCheck, isOfType} from "../utils/types";
+import {doArrayTypeCheck, doNullableArrayTypeCheck, doNullableTypeCheck, doTypeCheck, isOfType} from "../utils/types";
 import {BrokenStudy, Post, Source, Study} from "./study";
 import {selectFilteredRandomElement, selectFilteredWeightedRandomElement} from "../utils/random";
 import {odiff} from "../utils/odiff";
@@ -320,54 +320,154 @@ export class GameState {
 }
 
 /**
+ * Stores the reaction of a user to a comment.
+ */
+export class GameCommentReaction {
+    commentID; // Number
+    reaction; // String
+    reactTimeMS; // Number
+
+    constructor(commentID, reaction, reactTimeMS) {
+        doTypeCheck(commentID, "number", "Comment ID for Comment Reaction");
+        doTypeCheck(reaction, "string", "Comment Reaction");
+        doTypeCheck(reactTimeMS, "number", "Comment Reaction Time")
+        this.commentID = commentID;
+        this.reaction = reaction;
+        this.reactTimeMS = reactTimeMS;
+    }
+
+    toJSON() {
+        return {
+            "commentID": this.commentID,
+            "reaction": this.reaction,
+            "reactTimeMS": this.reactTimeMS
+        };
+    }
+
+    static fromJSON(json) {
+        return new GameCommentReaction(
+            json["commentID"],
+            json["reaction"],
+            json["reactTimeMS"]
+        );
+    }
+}
+
+/**
+ * Stores all of the interactions of a user with a post.
+ */
+export class GamePostInteraction {
+    postReaction; // String?
+    commentReactions; // GameCommentReaction[]
+    comment; // String?
+
+    firstInteractTimeMS; // Number
+    lastInteractTimeMS; // Number
+
+    constructor(postReaction, commentReactions, comment, firstInteractTimeMS, lastInteractTimeMS) {
+        doNullableTypeCheck(postReaction, "string", "Reaction to Post");
+        doArrayTypeCheck(commentReactions, GameCommentReaction, "Reactions to Comments");
+        doNullableTypeCheck(comment, "string", "Participant's Comment")
+        doTypeCheck(firstInteractTimeMS, "number", "First Time to Interact with Post")
+        doTypeCheck(lastInteractTimeMS, "number", "Last Time to Interact with Post")
+        this.postReaction = postReaction;
+        this.commentReactions = commentReactions;
+        this.comment = comment;
+        this.firstInteractTimeMS = firstInteractTimeMS;
+        this.lastInteractTimeMS = lastInteractTimeMS;
+    }
+
+    static commentReactionsToJSON(commentReactions) {
+        const json = [];
+        for (let index = 0; index < commentReactions.length; ++index) {
+            json.push(commentReactions[index].toJSON());
+        }
+        return json;
+    }
+
+    static commentReactionsFromJSON(json) {
+        const commentReactions = [];
+        for (let index = 0; index < json.length; ++index) {
+            commentReactions.push(GameCommentReaction.fromJSON(json[index]));
+        }
+        return commentReactions;
+    }
+
+    toJSON() {
+        return {
+            "postReaction": this.postReaction,
+            "commentReactions": GamePostInteraction.commentReactionsToJSON(this.commentReactions),
+            "comment": this.comment,
+            "firstInteractTimeMS": this.firstInteractTimeMS,
+            "lastInteractTimeMS": this.lastInteractTimeMS
+        };
+    }
+
+    static fromJSON(json) {
+        return new GamePostInteraction(
+            json["postReaction"],
+            GamePostInteraction.commentReactionsFromJSON(json["commentReactions"]),
+            json["comment"],
+            json["firstInteractTimeMS"],
+            json["lastInteractTimeMS"]
+        );
+    }
+}
+
+/**
  * Stores the reactions, credibility, and followers
  * of a participant throughout the game.
  */
 export class GameParticipant {
-    participantID; // String, or null
-    reactions; // String?[]
-    firstInteractTimesMS; // Number[]
-    lastInteractTimesMS; // Number[]
+    participantID; // String?
+    postInteractions; // GamePostInteraction[]
     credibility; // Number
     followers; // Number
     credibilityHistory; // Number[]
     followerHistory; // Number[]
 
-    constructor(participantID, credibility, followers, reactions,
-                firstInteractTimesMS, lastInteractTimesMS,
-                credibilityHistory, followerHistory) {
+    constructor(participantID, credibility, followers,
+                postInteractions, credibilityHistory, followerHistory) {
 
         doNullableTypeCheck(participantID, "string", "Participant's ID");
         doTypeCheck(credibility, "number", "Participant's Credibility");
         doTypeCheck(followers, "number", "Participant's Followers");
-        doNullableTypeCheck(reactions, Array, "Participant's Reactions to Posts");
-        doNullableTypeCheck(firstInteractTimesMS, Array, "Participant's Reactions to Posts");
-        doNullableTypeCheck(lastInteractTimesMS, Array, "Participant's Reactions to Posts");
-        doNullableTypeCheck(credibilityHistory, Array, "Participant's Credibility History");
-        doNullableTypeCheck(followerHistory, Array, "Participant's Follower History");
+        doNullableArrayTypeCheck(postInteractions, GamePostInteraction, "Participant's Interactions with Posts");
+        doNullableArrayTypeCheck(credibilityHistory, "number", "Participant's Credibility History");
+        doNullableArrayTypeCheck(followerHistory, "number", "Participant's Follower History");
         this.participantID = participantID;
         this.credibility = credibility;
         this.followers = followers;
-        this.reactions = reactions || [];
-        this.firstInteractTimesMS = firstInteractTimesMS || [];
-        this.lastInteractTimesMS = lastInteractTimesMS || [];
+        this.postInteractions = postInteractions || [];
         this.credibilityHistory = credibilityHistory || [credibility];
         this.followerHistory = followerHistory || [followers];
     }
 
-    addReaction(reaction, credibilityChange, followersChange, firstInteractMS, lastInteractMS) {
-        doNullableTypeCheck(reaction, "string", "Participant's Reaction");
+    addReaction(interaction, credibilityChange, followersChange) {
+        doNullableTypeCheck(interaction, GamePostInteraction, "Participant's Interactions with a Post");
         doTypeCheck(credibilityChange, "number", "Participant's Credibility Change after Reaction");
         doTypeCheck(followersChange, "number", "Participant's Followers Change after Reaction");
-        doTypeCheck(firstInteractMS, "number", "Time it took for the participant to first interact");
-        doTypeCheck(lastInteractMS, "number", "Time it took for the participant to move to next post");
-        this.reactions.push(reaction);
-        this.firstInteractTimesMS.push(firstInteractMS);
-        this.lastInteractTimesMS.push(lastInteractMS);
+        this.postInteractions.push(interaction);
         this.credibility = adjustCredibility(this.credibility, credibilityChange);
         this.followers = adjustFollowers(this.followers, followersChange);
         this.credibilityHistory.push(this.credibility);
         this.followerHistory.push(this.followers);
+    }
+
+    static interactionsToJSON(interactions) {
+        const json = [];
+        for (let index = 0; index < interactions.length; ++index) {
+            json.push(interactions[index].toJSON());
+        }
+        return json;
+    }
+
+    static interactionsFromJSON(json) {
+        const interactions = [];
+        for (let index = 0; index < json.length; ++index) {
+            interactions.push(GamePostInteraction.fromJSON(json[index]));
+        }
+        return interactions;
     }
 
     toJSON() {
@@ -375,9 +475,7 @@ export class GameParticipant {
             "participantID": this.participantID,
             "credibility": this.credibility,
             "followers": this.followers,
-            "reactions": this.reactions,
-            "firstInteractTimesMS": this.firstInteractTimesMS,
-            "lastInteractTimesMS": this.lastInteractTimesMS,
+            "interactions": GameParticipant.interactionsToJSON(this.postInteractions),
             "credibilityHistory": this.credibilityHistory,
             "followerHistory": this.followerHistory
         };
@@ -388,9 +486,7 @@ export class GameParticipant {
             json["participantID"],
             json["credibility"],
             json["followers"],
-            json["reactions"],
-            json["firstInteractTimesMS"],
-            json["lastInteractTimesMS"],
+            GameParticipant.interactionsFromJSON(json["interactions"]),
             json["credibilityHistory"],
             json["followerHistory"]
         );
@@ -464,7 +560,7 @@ export class Game {
      * Returns whether there are no more posts to show to the participant.
      */
     isFinished() {
-        return this.participant.reactions.length >= this.study.length;
+        return this.participant.postInteractions.length >= this.study.length;
     }
 
     /**
@@ -484,7 +580,7 @@ export class Game {
         if (this.isFinished())
             throw new Error("The game has been finished!");
 
-        return this.states[this.participant.reactions.length];
+        return this.states[this.participant.postInteractions.length];
     }
 
     /**
@@ -500,7 +596,7 @@ export class Game {
      * Preloads the images required for the next state.
      */
     preloadNextState() {
-        const nextStateIndex = this.participant.reactions.length + 1;
+        const nextStateIndex = this.participant.postInteractions.length + 1;
         if (nextStateIndex >= this.states.length)
             return;
 
@@ -539,15 +635,15 @@ export class Game {
         if (reaction !== null && !["like", "dislike", "share", "flag", "skip"].includes(reaction))
             throw new Error("Unknown reaction " + reaction);
 
+        const interaction = new GamePostInteraction(reaction, [], null, firstInteractMS, lastInteractMS);
         if (reaction === "skip" || reaction === null) {
-            this.participant.addReaction(reaction, 0, 0, firstInteractMS, lastInteractMS);
+            this.participant.addReaction(interaction, 0, 0);
         } else {
             const post = this.getCurrentState().currentPost.post;
             this.participant.addReaction(
-                reaction,
+                interaction,
                 post.changesToCredibility[reaction].sample(),
-                post.changesToFollowers[reaction].sample(),
-                firstInteractMS, lastInteractMS
+                post.changesToFollowers[reaction].sample()
             );
         }
 
@@ -711,12 +807,17 @@ export class Game {
  * is working correctly.
  */
 export function getGameChangesToAndFromJSON(game) {
-    // Convert to and from JSON.
-    const converted = Game.fromJSON(game.toJSON());
+    // Convert to JSON.
+    const jsonObject = game.toJSON();
+    const jsonString = JSON.stringify(jsonObject);
+
+    // Convert from JSON.
+    const reconstructedJSON = JSON.parse(jsonString);
+    const reconstructedGame = Game.fromJSON(reconstructedJSON);
 
     // Do the diff on the JSON created from each, as
     // doing it on the full objects is too slow. Its
     // not ideal, but it should be good enough.
-    return odiff(game.toJSON(), converted.toJSON());
+    return odiff(jsonObject, reconstructedGame.toJSON());
 }
 

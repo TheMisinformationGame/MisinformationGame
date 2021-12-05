@@ -70,6 +70,7 @@ function constructWorkbook(study, results, problems) {
 
         for (let stateIndex = 0; stateIndex < game.states.length; stateIndex++) {
             const state = game.states[stateIndex];
+            const interaction = participant.postInteractions[stateIndex];
             const beforeCredibility = Math.round(participant.credibilityHistory[stateIndex]);
             const afterCredibility = Math.round(participant.credibilityHistory[stateIndex + 1]);
             const beforeFollowers = Math.round(participant.followerHistory[stateIndex]);
@@ -86,9 +87,9 @@ function constructWorkbook(study, results, problems) {
                 beforeFollowers: beforeFollowers,
                 afterCredibility: afterCredibility,
                 afterFollowers: afterFollowers,
-                reaction: participant.reactions[stateIndex] || "",
-                firstInteractTime: participant.firstInteractTimesMS[stateIndex],
-                lastInteractTime: participant.lastInteractTimesMS[stateIndex],
+                reaction: interaction.reaction || "",
+                firstInteractTime: interaction.firstInteractTimeMS,
+                lastInteractTime: interaction.lastInteractTimeMS,
                 credibilityChange: afterCredibility - beforeCredibility,
                 followerChange: afterFollowers - beforeFollowers
             });

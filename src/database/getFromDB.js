@@ -139,6 +139,7 @@ export async function readAllCompletedStudyResults(studyID, problems) {
                 participantID: participantID,
                 error: err.message
             };
+            console.error(err);
         }
     }
     return games;
