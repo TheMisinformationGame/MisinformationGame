@@ -357,24 +357,112 @@ export class GameCommentReaction {
  * Stores all of the interactions of a user with a post.
  */
 export class GamePostInteraction {
+    postShowTime; // Number (UNIX Milliseconds)
+
     postReaction; // String?
     commentReactions; // GameCommentReaction[]
     comment; // String?
 
-    firstInteractTimeMS; // Number
-    lastInteractTimeMS; // Number
+    firstInteractTimeMS; // Number? (Milliseconds)
+    lastInteractTimeMS; // Number? (Milliseconds)
 
-    constructor(postReaction, commentReactions, comment, firstInteractTimeMS, lastInteractTimeMS) {
+    constructor(postShowTime, postReaction, commentReactions, comment, firstInteractTimeMS, lastInteractTimeMS) {
+        doTypeCheck(postShowTime, "number", "Time the Post was Shown");
         doNullableTypeCheck(postReaction, "string", "Reaction to Post");
         doArrayTypeCheck(commentReactions, GameCommentReaction, "Reactions to Comments");
-        doNullableTypeCheck(comment, "string", "Participant's Comment")
-        doTypeCheck(firstInteractTimeMS, "number", "First Time to Interact with Post")
-        doTypeCheck(lastInteractTimeMS, "number", "Last Time to Interact with Post")
+        doNullableTypeCheck(comment, "string", "Participant's Comment");
+        doNullableTypeCheck(firstInteractTimeMS, "number", "First Time to Interact with Post");
+        doNullableTypeCheck(lastInteractTimeMS, "number", "Last Time to Interact with Post");
+        this.postShowTime = postShowTime;
         this.postReaction = postReaction;
         this.commentReactions = commentReactions;
         this.comment = comment;
-        this.firstInteractTimeMS = firstInteractTimeMS;
-        this.lastInteractTimeMS = lastInteractTimeMS;
+        this.firstInteractTimeMS = firstInteractTimeMS || null;
+        this.lastInteractTimeMS = lastInteractTimeMS || null;
+    }
+
+    static empty() {
+        return new GamePostInteraction(Date.now(), null, [], null, -1, -1);
+    }
+
+    withUpdatedInteractTime() {
+        const timeMS = Date.now() - this.postShowTime;
+        const firstInteractTimeMS = (this.firstInteractTimeMS === null ? timeMS : this.firstInteractTimeMS);
+        const lastInteractTimeMS = timeMS;
+        return new GamePostInteraction(
+            this.postShowTime, this.postReaction, this.commentReactions,
+            this.comment, firstInteractTimeMS, lastInteractTimeMS
+        );
+    }
+
+    withToggledPostReaction(postReaction) {
+        // We want clicking the same reaction twice to toggle it.
+        if (this.postReaction === postReaction) {
+            postReaction = null;
+        }
+        return this.withPostReaction(postReaction);
+    }
+
+    withPostReaction(postReaction) {
+        return new GamePostInteraction(
+            this.postShowTime,
+            postReaction,
+            this.commentReactions,
+            this.comment
+        ).withUpdatedInteractTime();
+    }
+
+    withToggledCommentReaction(commentID, commentReaction) {
+        doNullableTypeCheck(commentReaction, "string", "Comment Reaction");
+
+        const existing = this.findCommentReaction(commentID);
+        if (existing === null) {
+            return this.withCommentReaction(
+                commentID,
+                new GameCommentReaction(
+                    commentID, commentReaction, Date.now() - this.postShowTime
+                )
+            );
+        } else {
+            return this.withCommentReaction(commentID, null);
+        }
+    }
+
+    withCommentReaction(commentID, commentReaction) {
+        doNullableTypeCheck(commentReaction, GameCommentReaction, "Comment Reaction");
+
+        const commentReactions = [];
+        for (let index = 0; index < this.commentReactions.length; ++index) {
+            const existingCommentReaction = this.commentReactions[index];
+            if (existingCommentReaction.commentID !== commentID) {
+                commentReactions.push(existingCommentReaction);
+            }
+        }
+        if (commentReaction !== null) {
+            commentReactions.push(commentReaction);
+        }
+
+        return new GamePostInteraction(
+            this.postShowTime,
+            this.postReaction,
+            commentReactions,
+            this.comment
+        ).withUpdatedInteractTime();
+    }
+
+    findCommentReaction(commentID) {
+        doTypeCheck(commentID, "number", "Comment ID");
+        for (let index = 0; index < this.commentReactions.length; ++index) {
+            const commentReaction = this.commentReactions[index];
+            if (commentReaction.commentID === commentID)
+                return commentReaction;
+        }
+        return null;
+    }
+
+    findCommentReactionString(commentID) {
+        const reaction = this.findCommentReaction(commentID);
+        return reaction === null ? null : reaction.reaction;
     }
 
     static commentReactionsToJSON(commentReactions) {
@@ -395,6 +483,7 @@ export class GamePostInteraction {
 
     toJSON() {
         return {
+            "postShowTime": this.postShowTime,
             "postReaction": this.postReaction,
             "commentReactions": GamePostInteraction.commentReactionsToJSON(this.commentReactions),
             "comment": this.comment,
@@ -405,6 +494,7 @@ export class GamePostInteraction {
 
     static fromJSON(json) {
         return new GamePostInteraction(
+            json["postShowTime"],
             json["postReaction"],
             GamePostInteraction.commentReactionsFromJSON(json["commentReactions"]),
             json["comment"],
@@ -621,29 +711,22 @@ export class Game {
 
     /**
      * Advances to the next state in the game after the
-     * participant reacted with {@param reaction} to the
-     * current post.
+     * participant interacted with a post.
      *
-     * @param reaction can be one of "like", "dislike",
-     *                 "share", "flag", or "skip".
-     * @param firstInteractMS the time it took the user to first interact
-     *                        with the post, in milliseconds.
-     * @param lastInteractMS the time it took the user to continue to the
-     *                       next post, in milliseconds.
+     * @param interactions the interactions that the participant made with the post.
      */
-    advanceState(reaction, firstInteractMS, lastInteractMS) {
-        if (reaction !== null && !["like", "dislike", "share", "flag", "skip"].includes(reaction))
-            throw new Error("Unknown reaction " + reaction);
+    advanceState(interactions) {
+        doTypeCheck(interactions, GamePostInteraction, "Interaction with the Current Post")
 
-        const interaction = new GamePostInteraction(reaction, [], null, firstInteractMS, lastInteractMS);
-        if (reaction === "skip" || reaction === null) {
-            this.participant.addReaction(interaction, 0, 0);
+        const postReaction = interactions.postReaction;
+        if (postReaction === "skip" || postReaction === null) {
+            this.participant.addReaction(interactions, 0, 0);
         } else {
             const post = this.getCurrentState().currentPost.post;
             this.participant.addReaction(
-                interaction,
-                post.changesToCredibility[reaction].sample(),
-                post.changesToFollowers[reaction].sample()
+                interactions,
+                post.changesToCredibility[postReaction].sample(),
+                post.changesToFollowers[postReaction].sample()
             );
         }
 

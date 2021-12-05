@@ -15,6 +15,7 @@ import {ActiveGameScreen} from "./ActiveGameScreen";
 import {Redirect} from "react-router-dom";
 import {MountAwareComponent} from "../../components/MountAwareComponent";
 import {ParticipantProgress} from "../../components/ParticipantProgress";
+import {GamePostInteraction} from "../../model/game";
 
 
 class Source extends Component {
@@ -253,11 +254,10 @@ class PostReactionsRow extends Component {
                     {buttons}
                 </div>
 
-                {!study.requireReactions &&
-                    <ReactButton reaction="skip" selected={selected} onReact={onReact} enabled={enabled}
-                                 className="w-32" fontSize="1.25rem" childClassName="transform translate-y-1">
-                        <p>Skip Post</p>
-                    </ReactButton>}
+                <ReactButton reaction="skip" selected={selected} onReact={onReact} enabled={enabled}
+                             className="w-32" fontSize="1.25rem" childClassName="transform translate-y-1">
+                    <p>Skip Post</p>
+                </ReactButton>
             </div>
         );
     }
@@ -267,6 +267,7 @@ class PostReactionsRow extends Component {
 class PostComponent extends Component {
     render() {
         const state = this.props.state;
+        const interactions = this.props.interactions;
         const post = state.currentPost.post;
         const commentComponents = [];
 
@@ -275,9 +276,9 @@ class PostComponent extends Component {
             commentComponents.push(
                 <Comment comment={comment} study={state.study}
                          key={index + "." + comment.sourceName}
-                         onReact={this.props.onReact}
+                         onReact={r => this.props.onCommentReact(index, r)}
                          enabled={this.props.enableReactions}
-                         selectedReaction={this.props.selectedReaction} />
+                         selectedReaction={interactions.findCommentReactionString(index)} />
             );
         }
 
@@ -313,9 +314,9 @@ class PostComponent extends Component {
                     {/* The reactions to the post and their counts. */}
                     <hr />
                     <PostReactionsRow
-                        onReact={this.props.onReact}
+                        onReact={this.props.onPostReact}
                         enabled={this.props.enableReactions}
-                        selectedReaction={this.props.selectedReaction}
+                        selectedReaction={interactions.postReaction}
                         study={state.study}
                         post={state.currentPost} />
                 </div>
@@ -416,7 +417,9 @@ export class GameScreen extends ActiveGameScreen {
 
             error: null,
             reactionsAllowed: false,
-            selectedReaction: null,
+
+            interactions: GamePostInteraction.empty(),
+
             dismissedPrompt: false,
 
             overrideFollowers: null,
@@ -424,9 +427,6 @@ export class GameScreen extends ActiveGameScreen {
             followerChange: null,
             credibilityChange: null,
             inputEnabled: true,
-
-            postShowTime: null,
-            firstInteractTime: null
         };
         this.state = this.defaultState;
     }
@@ -444,26 +444,23 @@ export class GameScreen extends ActiveGameScreen {
     }
 
     onPostReaction(reaction) {
-        // If the selected reaction is clicked, toggle it off.
-        if (this.state.selectedReaction === reaction) {
-            reaction = null;
-        }
-
-        const state = {...this.state, selectedReaction: reaction};
-        if (state.firstInteractTime === null) {
-            state.firstInteractTime = Date.now();
-        }
-        this.setState(state);
+        this.setState({
+            ...this.state,
+            interactions: this.state.interactions.withToggledPostReaction(reaction)
+        });
     }
 
-    onNextPost(reaction, game) {
-        const postShowTime = this.state.postShowTime;
-        const firstInteractMS = this.state.firstInteractTime - postShowTime;
-        const lastInteractMS = Date.now() - postShowTime;
+    onCommentReaction(commentIndex, reaction) {
+        this.setState({
+            ...this.state,
+            interactions: this.state.interactions.withToggledCommentReaction(commentIndex, reaction)
+        });
+    }
 
+    onNextPost(game) {
         const beforeFollowers = Math.round(game.participant.followers);
         const beforeCredibility = Math.round(game.participant.credibility);
-        game.advanceState(reaction, firstInteractMS, lastInteractMS);
+        game.advanceState(this.state.interactions);
 
         const followerChange = Math.round(game.participant.followers) - beforeFollowers;
         const credibilityChange = Math.round(game.participant.credibility) - beforeCredibility;
@@ -533,9 +530,8 @@ export class GameScreen extends ActiveGameScreen {
 
             error: error,
             reactionsAllowed: (!this.state.dismissedPrompt && !game),
-            selectedReaction: null,
-            postShowTime: Date.now(),
-            firstInteractTime: null,
+
+            interactions: GamePostInteraction.empty(),
 
             overrideFollowers: null,
             overrideCredibility: null,
@@ -567,7 +563,7 @@ export class GameScreen extends ActiveGameScreen {
         const displayPrompt = !this.state.dismissedPrompt;
         const error = this.state.error;
         const finished = game.isFinished();
-        const nextPostEnabled = (!study.requireReactions || this.state.selectedReaction !== null);
+        const nextPostEnabled = (!study.requireReactions || this.state.interactions.postReaction !== null);
         return (
             <>
                 {displayPrompt &&
@@ -591,9 +587,9 @@ export class GameScreen extends ActiveGameScreen {
                             overrideCredibility={this.state.overrideCredibility}
                             nextPostEnabled={nextPostEnabled && this.state.reactionsAllowed && this.state.inputEnabled}
                             onNextPost={() => {
-                                const reaction = this.state.selectedReaction;
+                                const reaction = this.state.interactions.postReaction;
                                 if (!study.requireReactions || reaction !== null) {
-                                    this.onNextPost(reaction, game);
+                                    this.onNextPost(game);
                                 }
                             }}
                             nextPostText={
@@ -620,9 +616,10 @@ export class GameScreen extends ActiveGameScreen {
                         {state && !error &&
                             <PostComponent
                                 state={state}
-                                onReact={r => this.onPostReaction(r)}
+                                onPostReact={r => this.onPostReaction(r)}
+                                onCommentReact={(i, r) => this.onCommentReaction(i, r)}
                                 enableReactions={this.state.reactionsAllowed && this.state.inputEnabled}
-                                selectedReaction={this.state.selectedReaction} />}
+                                interactions={this.state.interactions} />}
 
                         {/* If the game is finished, display a game completed prompt. */}
                         {!state && finished && <GameFinished study={study} game={game} />}
