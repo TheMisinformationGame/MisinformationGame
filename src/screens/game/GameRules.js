@@ -29,7 +29,7 @@ export class GameRules extends ActiveGameScreen {
         const continueDelaySeconds = 20;
 
         const followersAndCredibility = (study.displayFollowers ? "follower count" : "") + 
-                                        " " +  
+                                        (study.displayFollowers && study.displayCredibility ? " and " : "") +
                                         (study.displayCredibility ? "credibility rating" : "")
         return (
             <div>
