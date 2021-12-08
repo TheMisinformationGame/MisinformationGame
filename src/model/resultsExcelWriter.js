@@ -97,6 +97,44 @@ function constructWorkbook(study, results, problems) {
     }
     styleWorksheetHeader(resultsWorksheet);
 
+    // We store comment reactions in another worksheet 
+    const commentsWorksheet = workbook.addWorksheet("Comments");
+    commentsWorksheet.columns = [
+        {header: "Session ID", key: "sessionID", width: 24},
+        {header: "Participant ID", key: "participantID", width: 24},
+        {header: "Post ID", key: "postID", width:24},
+        {header: "Comment ID", key:"commentID", width: 24},
+        {header: "Comment Content", key: "commentContent", width: 24},
+        {header: "Displayed Likes", key: "displayedLikes", width: 24},
+        {header: "Displayed Dislikes", key: "displayedDislikes", width: 24},
+        {header: "Reaction", key: "reaction", width: 24},
+        {header: "Reaction Time (ms)", key: "reactTime", width: 24},
+    ];
+    for(let index = 0 ; index < results.length; index++){
+        const game = results[index];
+        const participant = game.participant;
+        for( let stateIndex = 0 ; stateIndex < game.states.length; stateIndex ++){
+            const state = game.states[stateIndex];
+            const interaction = participant.postInteractions[stateIndex];
+            for( let commentIndex = 0 ; commentIndex < interaction.commentReactions.length; commentIndex ++ ){
+                let commentReact = interaction.commentReactions[commentIndex];
+                commentsWorksheet.addRow({
+                    sessionID: game.sessionID,
+                    participantID: participant.participantID || "",
+                    postID: state.currentPost.post.id,
+                    commentID: commentReact.commentID,
+                    commentContent: state.currentPost.post.comments[commentIndex].message,
+                    displayedLikes: state.currentPost.post.comments[commentIndex].numberOfReactions.like || "",
+                    displayedDislikes: state.currentPost.post.comments[commentIndex].numberOfReactions.dislike || "",
+                    reaction: commentReact.reaction,
+                    reactTime: commentReact.reactTimeMS
+                });
+            }
+        }
+    };
+    styleWorksheetHeader(commentsWorksheet);
+
+
     // We store participant metadata in another sheet.
     const participantWorksheet = workbook.addWorksheet("Participants");
     participantWorksheet.columns = [
