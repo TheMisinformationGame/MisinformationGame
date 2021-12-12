@@ -210,12 +210,14 @@ function constructWorkbook(study, results, problems) {
         {header: "Session ID", key: "sessionID", width: 24},
         {header: "Participant ID", key: "participantID", width: 24},
         {header: "Completion Code", key: "completionCode", width: 24},
+        {header: "Duration (Seconds)", key: "gameDuration", width: 24},
         {header: "Game Start Time (UTC)", key: "gameStartTime", width: 30},
         {header: "Game Finish Time (UTC)", key: "gameEndTime", width: 30},
         {header: "Study Modification Time (UTC)", key: "studyModTime", width: 36},
     ];
     for(let index = 0; index < results.length; index++) {
         const game = results[index];
+        const duration = game.endTime - game.startTime;
         const startTime = createDateFromUnixEpochTimeSeconds(game.startTime);
         const endTime = createDateFromUnixEpochTimeSeconds(game.endTime);
         const studyModTime = createDateFromUnixEpochTimeSeconds(game.study.lastModifiedTime);
@@ -223,6 +225,7 @@ function constructWorkbook(study, results, problems) {
             participantID: game.participant.participantID,
             sessionID: game.sessionID,
             completionCode: game.completionCode || "",
+            gameDuration: duration,
             gameStartTime: formatUTCDate(startTime),
             gameEndTime: formatUTCDate(endTime),
             studyModTime: formatUTCDate(studyModTime)
