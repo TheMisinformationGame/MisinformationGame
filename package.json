@@ -29,6 +29,7 @@
   "scripts": {
     "start": "craco start",
     "emulators": "npx firebase emulators:start --import=\"test/firebase-dev-environment\"",
+    "docs": "cd docs && bundle-2.7 exec jekyll serve --watch -o",
     "build": "craco build",
     "ci-build": "CI=false INLINE_RUNTIME_CHUNK=false craco build",
     "test": "craco test"
