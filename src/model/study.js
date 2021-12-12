@@ -82,6 +82,20 @@ export class ReactionValues {
         this.flag = flag;
     }
 
+    sampleAll() {
+        const numberOfReactions = {};
+        const reactions = ["like", "dislike", "share", "flag"];
+        for (let index = 0; index < reactions.length; ++index) {
+            const reaction = reactions[index];
+            const distribution = this[reaction];
+            if (!distribution)
+                continue;
+
+            numberOfReactions[reaction] = distribution.sample();
+        }
+        return numberOfReactions;
+    }
+
     static reactionToJSON(dist) {
         return (dist !== null ? dist.toJSON() : null);
     }
@@ -113,14 +127,17 @@ export class ReactionValues {
  * A comment that a source made on a post.
  */
 export class PostComment {
+    index; // Number
     sourceName; // String
     message; // String
     numberOfReactions; // ReactionValues
 
-    constructor(sourceName, message, numberOfReactions) {
+    constructor(index, sourceName, message, numberOfReactions) {
+        doTypeCheck(index, "number", "Comment's Index")
         doTypeCheck(sourceName, "string", "Comment's Source Name");
         doTypeCheck(message, "string", "Comment's Message");
         doTypeCheck(numberOfReactions, ReactionValues, "Comment Number of Reactions");
+        this.index = index;
         this.sourceName = sourceName;
         this.message = message;
         this.numberOfReactions = numberOfReactions;
@@ -134,8 +151,9 @@ export class PostComment {
         };
     }
 
-    static fromJSON(json) {
+    static fromJSON(json, index) {
         return new PostComment(
+            index,
             json["sourceName"],
             json["message"],
             ReactionValues.fromJSON(json["numberOfReactions"])
@@ -187,7 +205,7 @@ export class Post {
     static commentsFromJSON(json) {
         const comments = [];
         for (let index = 0; index < json.length; ++index) {
-            comments.push(PostComment.fromJSON(json[index]));
+            comments.push(PostComment.fromJSON(json[index], index));
         }
         return comments;
     }

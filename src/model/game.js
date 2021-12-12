@@ -2,7 +2,7 @@
  * A source with a known credibility and follower count.
  */
 import {doArrayTypeCheck, doNullableArrayTypeCheck, doNullableTypeCheck, doTypeCheck, isOfType} from "../utils/types";
-import {BrokenStudy, Post, Source, Study} from "./study";
+import {BrokenStudy, Post, PostComment, Source, Study} from "./study";
 import {selectFilteredRandomElement, selectFilteredWeightedRandomElement} from "../utils/random";
 import {odiff} from "../utils/odiff";
 import {getDataManager} from "./manager";
@@ -119,6 +119,31 @@ export class GameSource {
     }
 }
 
+export class GamePostComment {
+    comment; // BaseComment
+    numberOfReactions; // {String: Number}
+
+    constructor(comment, numberOfReactions) {
+        doTypeCheck(comment, PostComment, "Comment's Metadata");
+        doTypeCheck(numberOfReactions, "object", "Number of reactions for the comment");
+        this.comment = comment;
+        this.numberOfReactions = numberOfReactions;
+    }
+
+    toJSON() {
+        return {
+            "numberOfReactions": this.numberOfReactions
+        };
+    }
+
+    static fromJSON(json, index, post) {
+        return new GamePostComment(
+            post.comments[index],
+            json["numberOfReactions"]
+        );
+    }
+}
+
 /**
  * A post in the game that may have been shown already.
  */
@@ -126,18 +151,21 @@ export class GamePost {
     // The study is not saved as part of the game states, it is only here for convenience.
     study; // Study
 
-    post; // BasePost
+    post; // Post
     numberOfReactions; // {String: Number}
+    comments; // GamePostComment[]
     shown; // Boolean
 
-    constructor(study, post, numberOfReactions, shown) {
+    constructor(study, post, numberOfReactions, comments, shown) {
         doTypeCheck(study, Study, "Post's Study");
         doTypeCheck(post, Post, "Post's Metadata");
         doTypeCheck(numberOfReactions, "object", "Number of reactions for the post");
+        doArrayTypeCheck(comments, GamePostComment, "Comments on Post");
         doNullableTypeCheck(shown, "boolean", "Whether the post has been shown");
         this.study = study;
         this.post = post;
         this.numberOfReactions = numberOfReactions;
+        this.comments = comments;
         this.shown = !!shown;
     }
 
@@ -145,7 +173,7 @@ export class GamePost {
      * Returns a new GamePost for this post after it has been shown.
      */
     adjustAfterShown() {
-        return new GamePost(this.study, this.post, this.numberOfReactions, true);
+        return new GamePost(this.study, this.post, this.numberOfReactions, this.comments, true);
     }
 
     addUsedSources(usedSources) {
@@ -154,19 +182,39 @@ export class GamePost {
         }
     }
 
+    static commentsToJSON(comments) {
+        const commentsJSON = [];
+        for (let index = 0; index < comments.length; ++index) {
+            commentsJSON.push(comments[index].toJSON())
+        }
+        return commentsJSON;
+    }
+
+    static commentsFromJSON(json, post) {
+        const comments = [];
+        for (let index = 0; index < json.length; ++index) {
+            comments.push(GamePostComment.fromJSON(json[index], index, post));
+        }
+        return comments;
+    }
+
     toJSON() {
         return {
             "postID": this.post.id,
             "numberOfReactions": this.numberOfReactions,
+            "comments": GamePost.commentsToJSON(this.comments),
             "shown": this.shown
         };
     }
 
     static fromJSON(json, study) {
+        const post = study.getPost(json["postID"]);
+        const comments = GamePost.commentsFromJSON(json["comments"], post);
         return new GamePost(
             study,
-            study.getPost(json["postID"]),
+            post,
             json["numberOfReactions"],
+            comments,
             json["shown"]
         );
     }
@@ -206,17 +254,14 @@ export class GamePost {
     static sampleNewPost(study, post) {
         doTypeCheck(study, Study, "Study")
         doTypeCheck(post, Post, "Post");
-        const numberOfReactions = {};
-        const reactions = ["like", "dislike", "share", "flag"];
-        for (let index = 0; index < reactions.length; ++index) {
-            const reaction = reactions[index];
-            const distribution = post.numberOfReactions[reaction];
-            if (!distribution)
-                continue;
-
-            numberOfReactions[reaction] = distribution.sample();
+        const numberOfReactions = post.numberOfReactions.sampleAll();
+        const comments = [];
+        for (let index = 0; index < post.comments.length; ++index) {
+            const comment = post.comments[index];
+            const commentNumberOfReactions = comment.numberOfReactions.sampleAll();
+            comments.push(new GamePostComment(comment, commentNumberOfReactions));
         }
-        return new GamePost(study, post, numberOfReactions, false);
+        return new GamePost(study, post, numberOfReactions, comments, false);
     }
 }
 
