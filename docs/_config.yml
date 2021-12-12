@@ -1,3 +1,12 @@
-theme: jekyll-theme-slate
-title: The Misinformation Game
+
+title: Misinformation Game Docs
 description: The Misinformation Game is a social-media simulator used to research the spread of misinformation through social-media.
+author: Paddy Lamont
+
+markdown: kramdown
+highlighter: rouge
+permalink: /:title
+plugins: [jekyll-sitemap, jekyll-feed, jekyll-seo-tag]
+
+sass:
+  sass_dir: _sass

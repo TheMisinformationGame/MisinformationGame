@@ -21,6 +21,10 @@ package-lock.json
 Gemfile.lock
 .jekyll-cache
 _site
+.sass-cache
+.jekyll-metadata
+*.gem
+
 
 # misc
 .env.local

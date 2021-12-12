@@ -1,0 +1,24 @@
+<header class="site-header">
+  <div class="header-content">
+    <div class="site-header-width-limit">
+      <h3 class="site-title">
+        <a href="/">
+          <img id="logo" src="/assets/img/logo.png" alt="Misinformation Game Logo" />
+          <span>
+        {{ site.title }}
+      </span>
+        </a>
+      </h3>
+      <nav class="menu-list">
+        {% for item in site.data.settings.social %}
+        <a href="{{ item.link }}" class="menu-link" target="_blank">
+          <i class="fa fa-{{ item.icon }}" aria-hidden="true"></i>
+        </a>
+        {% endfor %}
+      </nav>
+    </div>
+  </div>
+  <div class="header-colour-edge">
+    <!-- Nothing to see here -->
+  </div>
+</header>

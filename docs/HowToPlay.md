@@ -53,7 +53,7 @@ you on this network.
 Your credibility rating is an indication of how credible
 you are perceived to be on a scale from 0 to 100. Credibility
 ratings will also be colour coded from dark red
-(![#961818](https://via.placeholder.com/15/961818/000000?text=+))
+(<img class="inline-img" src="https://via.placeholder.com/15/961818/000000?text=+" alt="#961818">)
 for the 0-10 range to dark blue
-(![#006be2](https://via.placeholder.com/15/006be2/000000?text=+))
+(<img class="inline-img" src="https://via.placeholder.com/15/006be2/000000?text=+" alt="#006be2">)
 for the 90-100 range.
