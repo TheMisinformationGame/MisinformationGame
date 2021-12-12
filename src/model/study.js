@@ -91,7 +91,7 @@ export class ReactionValues {
             if (!distribution)
                 continue;
 
-            numberOfReactions[reaction] = distribution.sample();
+            numberOfReactions[reaction] = Math.round(distribution.sample());
         }
         return numberOfReactions;
     }

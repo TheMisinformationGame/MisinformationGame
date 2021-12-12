@@ -368,22 +368,22 @@ export class GameState {
  * Stores the reaction of a user to a comment.
  */
 export class GameCommentReaction {
-    commentID; // Number
+    commentIndex; // Number
     reaction; // String
     reactTimeMS; // Number
 
-    constructor(commentID, reaction, reactTimeMS) {
-        doTypeCheck(commentID, "number", "Comment ID for Comment Reaction");
+    constructor(commentIndex, reaction, reactTimeMS) {
+        doTypeCheck(commentIndex, "number", "Comment ID for Comment Reaction");
         doTypeCheck(reaction, "string", "Comment Reaction");
         doTypeCheck(reactTimeMS, "number", "Comment Reaction Time")
-        this.commentID = commentID;
+        this.commentIndex = commentIndex;
         this.reaction = reaction;
         this.reactTimeMS = reactTimeMS;
     }
 
     toJSON() {
         return {
-            "commentID": this.commentID,
+            "commentID": this.commentIndex,
             "reaction": this.reaction,
             "reactTimeMS": this.reactTimeMS
         };
@@ -457,29 +457,29 @@ export class GamePostInteraction {
         ).withUpdatedInteractTime();
     }
 
-    withToggledCommentReaction(commentID, commentReaction) {
+    withToggledCommentReaction(commentIndex, commentReaction) {
         doNullableTypeCheck(commentReaction, "string", "Comment Reaction");
 
-        const existing = this.findCommentReaction(commentID);
-        if (existing === null) {
+        const existing = this.findCommentReaction(commentIndex);
+        if (existing === null || existing.reaction !== commentReaction) {
             return this.withCommentReaction(
-                commentID,
+                commentIndex,
                 new GameCommentReaction(
-                    commentID, commentReaction, Date.now() - this.postShowTime
+                    commentIndex, commentReaction, Date.now() - this.postShowTime
                 )
             );
         } else {
-            return this.withCommentReaction(commentID, null);
+            return this.withCommentReaction(commentIndex, null);
         }
     }
 
-    withCommentReaction(commentID, commentReaction) {
+    withCommentReaction(commentIndex, commentReaction) {
         doNullableTypeCheck(commentReaction, GameCommentReaction, "Comment Reaction");
 
         const commentReactions = [];
         for (let index = 0; index < this.commentReactions.length; ++index) {
             const existingCommentReaction = this.commentReactions[index];
-            if (existingCommentReaction.commentID !== commentID) {
+            if (existingCommentReaction.commentIndex !== commentIndex) {
                 commentReactions.push(existingCommentReaction);
             }
         }
@@ -495,18 +495,18 @@ export class GamePostInteraction {
         ).withUpdatedInteractTime();
     }
 
-    findCommentReaction(commentID) {
-        doTypeCheck(commentID, "number", "Comment ID");
+    findCommentReaction(commentIndex) {
+        doTypeCheck(commentIndex, "number", "Comment ID");
         for (let index = 0; index < this.commentReactions.length; ++index) {
             const commentReaction = this.commentReactions[index];
-            if (commentReaction.commentID === commentID)
+            if (commentReaction.commentIndex === commentIndex)
                 return commentReaction;
         }
         return null;
     }
 
-    findCommentReactionString(commentID) {
-        const reaction = this.findCommentReaction(commentID);
+    findCommentReactionString(commentIndex) {
+        const reaction = this.findCommentReaction(commentIndex);
         return reaction === null ? null : reaction.reaction;
     }
 

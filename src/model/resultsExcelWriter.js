@@ -22,9 +22,40 @@ function styleWorksheetHeader(worksheet) {
 }
 
 /**
+ * Sets the columns of {@param worksheet} to the columns
+ * specified in {@param columnSpecs}. Rows can be disabled
+ * by setting "enabled" to false for that row.
+ */
+function setWorksheetColumns(worksheet, columnSpecs) {
+    const columns = [];
+    for (let index = 0; index < columnSpecs.length; ++index) {
+        const spec = columnSpecs[index];
+
+        // If the include key is missing or true, then include this row.
+        if (spec["enabled"] !== undefined) {
+            if (!spec["enabled"])
+                continue;
+            delete spec["enabled"];
+        }
+
+        columns.push(spec);
+    }
+    worksheet.columns = columns;
+}
+
+/**
  * Creates the workbook to store the results into.
  */
 function constructWorkbook(study, results, problems) {
+    const showFollowers = study.displayFollowers;
+    const showCredibility = study.displayCredibility;
+    const showPostLikes = study.postEnabledReactions.like;
+    const showPostDislikes = study.postEnabledReactions.dislike;
+    const showPostShares = study.postEnabledReactions.share;
+    const showPostFlags = study.postEnabledReactions.flag;
+    const showCommentLikes = study.commentEnabledReactions.like;
+    const showCommentDislikes = study.commentEnabledReactions.dislike;
+
     const workbook = new excel.Workbook();
 
     // Write the metadata about the study.
@@ -44,26 +75,36 @@ function constructWorkbook(study, results, problems) {
     coverWorksheet.getCell("C2").alignment = {vertical: "top", horizontal: "left"};
     styleWorksheetHeader(coverWorksheet);
 
-    // We store all participant reactions into one results worksheet.
-    const resultsWorksheet = workbook.addWorksheet("Results");
-    resultsWorksheet.columns = [
+    // We store all post reactions into one worksheet.
+    let containsAnyPosts = false;
+    const postsWorksheet = workbook.addWorksheet("Posts");
+    setWorksheetColumns(postsWorksheet, [
         {header: "Session ID", key: "sessionID", width: 24},
         {header: "Participant ID", key: "participantID", width: 24},
         {header: "Post Order", key: "postOrder", width: 16},
         {header: "Post ID", key: "postID", width: 12},
+
         {header: "Source ID", key: "sourceID", width: 14},
-        {header: "Source Followers", key: "sourceFollowers", width: 22},
-        {header: "Source Credibility", key: "sourceCredibility", width: 22},
-        {header: "Participant Credibility Before", key: "beforeCredibility", width: 36},
-        {header: "Participant Followers Before", key: "beforeFollowers", width: 36},
-        {header: "Participant Credibility After", key: "afterCredibility", width: 36},
-        {header: "Participant Followers After", key: "afterFollowers", width: 36},
+        {header: "Source Credibility", key: "sourceCredibility", width: 22, enabled: showCredibility},
+        {header: "Source Followers", key: "sourceFollowers", width: 22, enabled: showFollowers},
+
+        {header: "Post Headline", key: "postHeadline", width: 32},
+        {header: "Post Likes", key: "postLikes", width: 20, enabled: showPostLikes},
+        {header: "Post Dislikes", key: "postDislikes", width: 20, enabled: showPostDislikes},
+        {header: "Post Shares", key: "postShares", width: 20, enabled: showPostShares},
+        {header: "Post Flags", key: "postFlags", width: 20, enabled: showPostFlags},
+
         {header: "Reaction", key: "reaction", width: 12},
         {header: "First Time to Interact (MS)", key: "firstInteractTime", width: 32},
         {header: "Last Time to Interact (MS)", key: "lastInteractTime", width: 32},
-        {header: "Credibility Change", key: "credibilityChange", width: 22},
-        {header: "Follower Change", key: "followerChange", width: 22}
-    ];
+        {header: "Credibility Change", key: "credibilityChange", width: 22, enabled: showCredibility},
+        {header: "Follower Change", key: "followerChange", width: 22, enabled: showFollowers},
+
+        {header: "Credibility Before", key: "beforeCredibility", width: 22, enabled: showCredibility},
+        {header: "Followers Before", key: "beforeFollowers", width: 22, enabled: showFollowers},
+        {header: "Credibility After", key: "afterCredibility", width: 22, enabled: showCredibility},
+        {header: "Followers After", key: "afterFollowers", width: 22, enabled: showFollowers},
+    ]);
     for(let index = 0; index < results.length; index++) {
         const game = results[index];
         const participant = game.participant;
@@ -75,64 +116,92 @@ function constructWorkbook(study, results, problems) {
             const afterCredibility = Math.round(participant.credibilityHistory[stateIndex + 1]);
             const beforeFollowers = Math.round(participant.followerHistory[stateIndex]);
             const afterFollowers = Math.round(participant.followerHistory[stateIndex + 1]);
-            resultsWorksheet.addRow({
+            postsWorksheet.addRow({
                 sessionID: game.sessionID,
                 participantID: participant.participantID || "",
                 postOrder: stateIndex + 1,
                 postID: state.currentPost.post.id,
+
                 sourceID: state.currentSource.source.id,
                 sourceFollowers: Math.round(state.currentSource.followers),
                 sourceCredibility: Math.round(state.currentSource.credibility),
+
+                postHeadline: state.currentPost.post.headline || "",
+                postLikes: state.currentPost.numberOfReactions.like || "",
+                postDislikes: state.currentPost.numberOfReactions.dislike || "",
+                postShares: state.currentPost.numberOfReactions.share || "",
+                postFlags: state.currentPost.numberOfReactions.flag || "",
+
+                reaction: interaction.postReaction || "",
+                firstInteractTime: interaction.firstInteractTimeMS,
+                lastInteractTime: interaction.lastInteractTimeMS,
+                credibilityChange: afterCredibility - beforeCredibility,
+                followerChange: afterFollowers - beforeFollowers,
+
                 beforeCredibility: beforeCredibility,
                 beforeFollowers: beforeFollowers,
                 afterCredibility: afterCredibility,
                 afterFollowers: afterFollowers,
-                reaction: interaction.reaction || "",
-                firstInteractTime: interaction.firstInteractTimeMS,
-                lastInteractTime: interaction.lastInteractTimeMS,
-                credibilityChange: afterCredibility - beforeCredibility,
-                followerChange: afterFollowers - beforeFollowers
             });
+            containsAnyPosts = true;
         }
     }
-    styleWorksheetHeader(resultsWorksheet);
+    styleWorksheetHeader(postsWorksheet);
+    if (!containsAnyPosts) {
+        workbook.removeWorksheet(postsWorksheet.name);
+    }
 
-    // We store comment reactions in another worksheet 
+
+    // We store comment reactions in another worksheet
+    let containsAnyComments = false;
     const commentsWorksheet = workbook.addWorksheet("Comments");
-    commentsWorksheet.columns = [
+    setWorksheetColumns(commentsWorksheet, [
         {header: "Session ID", key: "sessionID", width: 24},
         {header: "Participant ID", key: "participantID", width: 24},
-        {header: "Post ID", key: "postID", width:24},
-        {header: "Comment ID", key:"commentID", width: 24},
-        {header: "Comment Content", key: "commentContent", width: 24},
-        {header: "Displayed Likes", key: "displayedLikes", width: 24},
-        {header: "Displayed Dislikes", key: "displayedDislikes", width: 24},
-        {header: "Reaction", key: "reaction", width: 24},
+        {header: "Post Order", key: "postOrder", width: 16},
+        {header: "Post ID", key: "postID", width: 12},
+
+        {header: "Comment Order", key:"commentOrder", width: 20},
+        {header: "Comment Text", key: "commentContent", width: 32},
+        {header: "Comment Likes", key: "commentLikes", width: 24, enabled: showCommentLikes},
+        {header: "Comment Dislikes", key: "commentDislikes", width: 24, enabled: showCommentDislikes},
+
+        {header: "Reaction", key: "reaction", width: 12},
         {header: "Reaction Time (ms)", key: "reactTime", width: 24},
-    ];
-    for(let index = 0 ; index < results.length; index++){
+    ]);
+    for (let index = 0 ; index < results.length; index++){
         const game = results[index];
         const participant = game.participant;
-        for( let stateIndex = 0 ; stateIndex < game.states.length; stateIndex ++){
+
+        for (let stateIndex = 0 ; stateIndex < game.states.length; ++stateIndex) {
             const state = game.states[stateIndex];
             const interaction = participant.postInteractions[stateIndex];
-            for( let commentIndex = 0 ; commentIndex < interaction.commentReactions.length; commentIndex ++ ){
-                let commentReact = interaction.commentReactions[commentIndex];
+
+            for (let commentIndex = 0; commentIndex < state.currentPost.comments.length; ++commentIndex) {
+                const comment = state.currentPost.comments[commentIndex];
+                const reaction = interaction.findCommentReaction(commentIndex);
                 commentsWorksheet.addRow({
                     sessionID: game.sessionID,
                     participantID: participant.participantID || "",
+                    postOrder: stateIndex + 1,
                     postID: state.currentPost.post.id,
-                    commentID: commentReact.commentID,
-                    commentContent: state.currentPost.post.comments[commentIndex].message,
-                    displayedLikes: state.currentPost.post.comments[commentIndex].numberOfReactions.like || "",
-                    displayedDislikes: state.currentPost.post.comments[commentIndex].numberOfReactions.dislike || "",
-                    reaction: commentReact.reaction,
-                    reactTime: commentReact.reactTimeMS
+
+                    commentOrder: (comment.comment.index + 1),
+                    commentContent: comment.comment.message,
+                    commentLikes: comment.numberOfReactions["like"],
+                    commentDislikes: comment.numberOfReactions["dislike"],
+
+                    reaction: (reaction ? reaction.reaction : ""),
+                    reactTime: (reaction ? reaction.reactTimeMS : "")
                 });
+                containsAnyComments = true;
             }
         }
-    };
+    }
     styleWorksheetHeader(commentsWorksheet);
+    if (!containsAnyComments) {
+        workbook.removeWorksheet(commentsWorksheet.name);
+    }
 
 
     // We store participant metadata in another sheet.
