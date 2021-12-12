@@ -233,6 +233,7 @@ function constructWorkbook(study, results, problems) {
     }
     styleWorksheetHeader(participantWorksheet);
 
+
     // If there were problems loading any results, report them.
     if (Object.keys(problems).length > 0) {
         const problemsWorksheet = workbook.addWorksheet("Problems");
