@@ -61,10 +61,12 @@ body {
 body img {
   margin: 5px auto auto auto;
   display: block;
-  max-width: 600px;
+  max-width: min(90vw, 600px);
+  height: auto;
 }
 body img.inline-img {
   display: inline;
+  width: auto;
   margin-left: 0.06em;
   margin-right: 0.06em;
   vertical-align: -10%;
