@@ -1,4 +1,4 @@
-# Misinformation Game Documentation
+# The Misinformation Game
 
 The Misinformation Game is a social media simulator built to
 study the behavior of people when they interact with social
