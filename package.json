@@ -33,7 +33,7 @@
     "docs": "cd docs && bundle-2.7 exec jekyll serve --baseurl=\"\" -o --watch",
     "build": "NODE_OPTIONS=--openssl-legacy-provider craco build",
     "ci-build": "NODE_OPTIONS=--openssl-legacy-provider CI=false INLINE_RUNTIME_CHUNK=false craco build",
-    "test": "craco test"
+    "test": "NODE_OPTIONS=--openssl-legacy-provider craco test"
   },
   "eslintConfig": {
     "extends": [
