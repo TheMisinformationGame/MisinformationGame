@@ -11,6 +11,7 @@ from https://misinformation-game.web.app.
 
 ## How to Participate
 
+### Posts
 You will be shown a series of posts, which you are encouraged
 to interact with. To begin with, you will start with 0 followers
 and a credibility rating of 50. As you interact with posts, these
@@ -45,6 +46,24 @@ Next Post button underneath Your Progress.
 _Note: You may not be shown all of these reactions. This 
 is normal and depends on what reactions have been enabled._
 
+### Comments 
+Under the posts, you may see a series of comments. These comments
+may also allow you to interact with them individually.
+
+<img src="screenshots/comment.png" alt="comment" height="180" />
+
+You may be able to react to a comment in the following ways:
+
+- The **like** button (thumbs up icon) will indicate to others
+  that you like the content of this post.
+
+- The **dislike** button (thumbs down icon) will indicate to
+  others that you dislike the content of this post.
+  
+_Note: You may not be shown all of these reactions. This 
+is normal and depends on what reactions have been enabled._
+
+### Progress
 Your own followers and credibility rating will also be shown
 under Your Progress,
 
