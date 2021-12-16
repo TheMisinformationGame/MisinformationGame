@@ -50,7 +50,7 @@ is normal and depends on what reactions have been enabled._
 Under the posts, you may see a series of comments. These comments
 may also allow you to interact with them individually.
 
-<img src="screenshots/comment.png" alt="comment" height="180" />
+<img src="screenshots/comment.png" alt="comment" height="80" />
 
 You may be able to react to a comment in the following ways:
 
