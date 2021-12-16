@@ -96,7 +96,57 @@ credibility after they reacted to this post.
 **Follower Change:** The change to the participant's
 follower number after they reacted to this post.
 
-## 3. Participants Sheet
+## 3. Comments Sheet
+
+**Session ID:** The session ID can be used to uniquely
+identify one play-through of the game by a participant. This
+session ID is the same session ID as used in the **Results** 
+sheet. The session ID is always available, and it is unique 
+for every participant.
+
+**Participant ID:** The ID that the participant entered when
+starting the study, or that was filled in for them through the
+URL. The participant ID is _not_ guaranteed to be unique, as
+multiple participants could enter the same participant ID. It
+is also not guaranteed to be present if the study has been
+configured to not require identification.
+
+**Post Order:** A number starting from 1 that represents when
+the participant was shown the post associated with this row of 
+the results. For example, a Post Order of 1 would represent the 
+first post shown to a participant, and a Post Order of 4 would 
+represent the fourth post the participant was shown.
+
+**Post ID:** The post identifier of the post that was shown to
+the participant. It is the same ID that was specified in the
+study configuration spreadsheet.
+
+**Comment Order:** A number starting from 1 that identifies the 
+order in the post, that the comment is shown. For example, a 
+value of 3 would indicate that the comment is the third comment 
+displayed. 
+
+**Comment Order:** A text cell which contains the text of the 
+comment that is displayed. 
+
+**Comment Likes:** A number which represents the number of likes
+that the comment has, when it is displayed to the participant. 
+
+**Comment Dislikes:** A number which represents the number of 
+dislikesthat the comment has, when it is displayed to the 
+participant. 
+
+**Reaction:** The reaction that the participant chose
+for this comment. This can be one of `like` or `dislike`.
+_Note:_ A blank value indicates that there was no reaction
+to the comment.
+
+**Reaction Time (ms):** The time from post onset
+to an initial response to the comment being selected, in 
+milliseconds. _Note:_ A blank value indicates that there 
+was no reaction to the comment.
+
+## 4. Participants Sheet
 
 **Session ID:** The session ID can be used to uniquely
 identify one play-through of the game by a participant. This
