@@ -42,6 +42,9 @@ underneath the content of the post. Once you have reacted
 to the post, you will be able to press the Continue to
 Next Post button underneath Your Progress.
 
+_Note: You may not be shown all of these reactions. This 
+is normal and depends on what reactions have been enabled._
+
 Your own followers and credibility rating will also be shown
 under Your Progress,
 
