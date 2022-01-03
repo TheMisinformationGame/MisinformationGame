@@ -1,23 +1,23 @@
 <!doctype html>
 <html>
-  {% include head.html %}
-  <body>
-    {% include header.html %}
-    <div class="container">
-      <div class="content-wrapper">
+{% include head.html %}
+<body>
+  {% include header.html %}
+  <div class="container">
+    <div class="content-wrapper">
 
-        <!-- Show the path to this page on non-home pages. -->
-        {% if page.showPath %}
-          <div class="page-path">
-            <a href="/">Home</a>
-            &gt;
-            <a href="{{ page.url }}">{{ page.title }}</a>
-          </div>
-        {% endif %}
+      <!-- Show the path to this page on non-home pages. -->
+      {% if page.showPath %}
+        <div class="page-path">
+          <a href="/">Home</a>
+          &gt;
+          <a href="{{ page.url }}">{{ page.title }}</a>
+        </div>
+      {% endif %}
 
-        {{ content }}
-      </div>
+      {{ content }}
     </div>
-    {% include footer.html %}
-  </body>
+  </div>
+  {% include footer.html %}
+</body>
 </html>

@@ -394,98 +394,104 @@ These IDs can be found in the _Posts_ sheet.
 The _Sources_ sheet allows you to add all the sources that
 can be shown to participants during your study. Each source
 contains several settings to define their appearance and
-behaviour.
-
-The top of the sheet contains documentation about all
-the settings that can be defined for each source. To
-the right there is also a widget that can be used to
-preview the settings for your sources.
-
-### 2.6.1. Default Source Values
-This section defines defaults for a lot of the common
-columns for sources. If one of these values is not included
-for a source, the defaults here will be used instead.
-
-The Default Source Values also allow you to define normal
-distributions for the initial number of followers and 
-credibility scores of sources. This functionality is not 
-provided on a per-source basis. The normal distributions for 
-the initial credibility and followers is configured by setting 
-the mean and standard deviation of the distributions. These 
-values are then used to sample the initial credibility and 
-followers of sources when a new game is started.
-
-The sampling of initial credibility values is truncated to
-between 0 and 100 credibility. The sampling of initial
-follower values is also truncated such that the values are 
-always greater than zero, and always within 5 SDs of the 
-mean. The 5 SD constraint is used to avoid random huge 
-deviations from the expected distribution. The chances of a 
-value being selected outside M +/- 5 SD is tiny (0.00006%), 
-and therefore this should not affect the shape of the 
-distributions noticeably.
-
-### Sources Table
-The table below the Default Source Values is where all sources 
-can be added. Each row in this table represents one source. 
-The **ID**, **Name**, and **Avatar** of each source is 
-required to be entered (the **ID** should be pre-filled
-already). The remaining settings are optional, and if they 
-are omitted the default settings are used instead.
-
-**ID:** The ID of each source is used to uniquely identify
-the source. This ID should be of the form `Sx` where x is
-an increasing integer (e.g. S1, S2, S3, etc...). This ID
-will be used in the results to refer to this specific source.
-In the template sheet, all the IDs are already filled in,
-and you should not have to edit them.
+behaviour. An example source for a post is shown below,
 
 <img src="screenshots/example-source.png" alt="An example source in the game interface" height="76" />
 
-**Name:** The name of the source is the name that will be
-shown to participants when this source is used alongside
-a post.
+The top of the _sources_ sheet contains documentation
+about all the settings that can be defined for each source.
+To the right there is also a widget that can be used to
+preview the settings for your sources.
 
-**Avatar:** The avatar of the source is an image that is
-displayed in a circle alongside the source. If the avatar
-is not square, it will be cropped. The avatar image is
-_required_, and an error will be given if an avatar is
-not included for a source. The avatar image must be
-inserted into the spreadsheet using the **Insert** menu
-at the top of the page on Google Sheets. You must first
-select the cell where you want to insert the avatar image,
-and then select **Insert** -> **Image** -> **Image in cell**.
-If you do not use this procedure, then the application will
-not be able to find the image to use for the avatar.
+### 2.6.1. Default Source Values
+This section defines defaults for some source parameters
+to avoid repetition in entering values that are constant
+for most sources. If one of the parameters that has a
+default is not included for a specific source, the default
+value will be used instead.
 
-The avatar images support all standard image file types,
-however .png and .jpg images are recommended. If you wish
-to insert animated avatars into a game, then .gif files
-are also supported (However, they tend to have much higher
-file sizes than .png or .jpg images). Newer file types
-such as WEBP are supported on modern web-browsers, but
-they may not load correctly for participant's with older
-web-browsers. Additionally, it is good to refrain from
-uploading large images to reduce the amount of data that
-participants have to download. The avatars are only shown
-at small sizes, so any image above a size of 128 pixels by
-128 pixels will be wasted. This corresponds to a typical
-file size of below 20 Kb.
+The _Default Source Values_ allows you to define normal
+distributions for the initial number of followers and 
+credibility scores of sources. This random sampling of
+the initial number of followers and credibility for
+sources is not available on a per-source basis. The normal
+distributions for the initial credibility and followers is
+configured by setting the mean and standard deviation of
+the distributions. These values are then used to sample
+the initial credibility and followers of sources from a
+normal distribution with that mean and standard deviation
+when a new game is started.
+
+The sampling of initial credibility values is truncated to
+between 0 and 100 credibility. The sampling of initial
+follower count values is also truncated such that source's
+follower counts are never negative, and are always within
+5 standard deviations of the mean. The 5 SD constraint
+is used to avoid random huge deviations from the expected
+distribution. The chances of a value being selected outside
+the mean +/- 5 SD is tiny (0.00006%), and therefore this
+should not affect the shape of the distributions noticeably.
+
+An example preview of the distributions of the follower
+count and credibility for a source is shown below,
+
+<img src="screenshots/example-config-source-preview.png" alt="An example source in the game interface" height="484" />
+
+### 2.6.2. Sources Table
+The table below the Default Source Values is where the sources 
+in the study can be added. Each row in this table represents
+one source. The **ID** and **Name** of each source is required
+(although the **ID** should be pre-filled already). The remaining
+settings are optional, and if they are omitted the default settings
+are used instead. If an **Avatar** for a source is omitted, it will
+use a default based upon the **Name** of the source instead.
+
+<span class="param-name">Source ID</span>
+The ID's of sources are used to uniquely identify them. For example,
+the ID of a source will be used to reference it in the results of
+a study. The ID's of the sources should be of the form `Sx`, where
+`x` is an increasing integer (e.g. `S1`, `S2`, `S3`, etc...). In the
+template sheet, all the IDs are already filled in, and you should not
+have to edit them.
+
+<span class="param-name">Name</span>
+The name of the source will be shown to participants when this source
+is used alongside a post.
+
+<span class="param-name">Avatar</span>
+The avatar of a source is an optional image that is displayed in a circle
+alongside the source. If the avatar is not square, it will be cropped.
+The avatar image must be inserted into the spreadsheet using the **Insert**
+menu at the top of the page on Google Sheets. You must first select the cell
+where you want to insert the avatar image, and then select **Insert** ->
+**Image** -> **Image in cell**. If you do not use this procedure, then the
+application will not be able to find the image to use for the avatar.
+
+The avatar images support all standard image file types, however `.png` and
+`.jpg` images are recommended. If you wish to insert animated avatars into
+a game, then `.gif` files are also supported (however, `.gif` files are not
+recommended for static images due to their larger file size). Newer file types
+such as WEBP are supported on modern web-browsers, but they may not load
+correctly for participant's with older web-browsers.
+
+Additionally, it is good to refrain from uploading large images to reduce the
+amount of data that participants have to download. The avatars are only shown
+at small sizes, so any image above a size of 128 pixels by 128 pixels will be
+wasted. This corresponds to a typical file size of below 20 Kb.
 
 <img src="diagrams/inserting-image.png" alt="How to insert an image" height="275"/>
 
-**Max Posts:** The maximum posts for a source allows you
-to set a hard limit on the number of times a source is
-shown to the participant. This value can either be an
-integer greater than or equal to zero, or the text
-"Unlimited" to represent that there is no maximum number
-of posts for this source.
+<span class="param-name">Max Posts</span>
+The maximum posts for a source allows you to set a hard limit on the number
+of times a source is shown to the participant. This value can either be an
+integer greater than or equal to zero, or the text `Unlimited` to represent
+that there is no maximum number of posts for this source.
 
 The Max Posts value is also used to weight the random
 selection of sources to be shown to participants. Sources
 with a higher Max Posts value will have a higher chance of 
 being selected than sources with a low Max Posts value. 
-Sources with a Max Posts of "Unlimited" will be weighted 
+Sources with a Max Posts of `Unlimited` will be weighted 
 with the mean weighting of all sources with a Max Posts value.
 Therefore, if you wish one source to show up more than others, 
 but do not wish to limit the number of times other sources can 
@@ -493,18 +499,30 @@ be selected, you can use high values of Max Posts (e.g. a
 source with Max Posts = 100 will be selected 10x more than a 
 source with Max Posts = 10).
 
-**Initial Followers:** This value lets you set an exact
-follower number for this source to start with.
+<span class="param-name">Initial Followers</span>
+This optional value lets you set an exact initial
+follower count for this source. However, the actual
+follower count of the source may differ throughout
+participant's games (see the [Simulation](/Simulation)
+page for details).
 
-**Initial Credibility:** This value lets you set an exact
+
+<span class="param-name">Initial Credibility</span>
+This optional value lets you set an exact initial
+credibility number for this source. However, the actual
+credibility number of the source may differ throughout
+participant's games (see the [Simulation](/Simulation)
+page for details).
+
+This value lets you set an exact
 credibility number for this source to start with.
 
-**True Post Percentage:** When using the _Source-Ratios_
-source/post selection method, this value is used to define
-the percentage of true posts that this source should show.
-After this source is selected, this will indicate the 
-probability of it posting a true post rather than a false 
-post.
+<span class="param-name">True Post Percentage</span>
+When using the _Source-Ratios_ source/post selection method,
+this value is used to define the percentage of true posts that
+this source should show. After this source is selected, this
+will indicate the probability of it being paired a true post
+rather than a false post.
 
 
 ## 2.7. 📄 Posts Sheet

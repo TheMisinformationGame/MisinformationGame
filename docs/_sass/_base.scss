@@ -65,7 +65,8 @@ body {
 body img {
   margin: 5px auto auto auto;
   display: block;
-  max-width: min(90vw, 600px);
+  max-height: 360px;
+  max-width: 800px;
   height: auto;
 }
 body img.inline-img {
