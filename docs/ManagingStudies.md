@@ -1,3 +1,8 @@
+---
+title: Managing Studies
+showPath: true
+---
+
 # Managing Studies
 This document outlines the general processes to manage
 your studies using The Misinformation Game after you

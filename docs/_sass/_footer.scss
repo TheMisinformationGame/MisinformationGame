@@ -2,22 +2,8 @@
   background: #f4f4f4;
   width: 100%;
   margin-top: 1em;
-}
-
-.site-header {
-  min-height: $header-thickness;
-  width: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-  background-color: white;
-  box-shadow: 0 5px 6px -6px #bbb;
-  z-index: 100;
-}
-.footer-colour-edge {
-  width: 100%;
-  height: 2px;
-  background: $brand-color;
+  color: black;
+  border-top: 3px solid $brand-color;
 }
 .footer-content {
   display: block;
@@ -27,34 +13,20 @@
   margin-right: auto;
   max-width: $header-width;
 }
-
 .footer a {
-  color: #222222;
-  padding: 0px 10px 0px;
-  text-decoration: none;
-  &:hover {
-    color: #444444;
-  }
+  text-decoration: underline;
+  padding: 0 10px 0;
 }
-.footer-description, .footer-author {
+.footer div {
   display: block;
   text-align: center;
   width: 100%;
-  color: #9a9a9a;
 }
 .footer-description {
-  font-size: 0.9rem;
   padding-top: 1em;
   padding-bottom: 1em;
 }
-.footer-description a {
-  color: #444444;
-}
 
-.footer-author {
-  font-size: 0.8rem;
-  padding-bottom: 1em;
-}
-.footer-author a {
-  color: #555555;
+.footer-links {
+  padding-bottom: 1.6em;
 }

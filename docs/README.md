@@ -1,23 +1,15 @@
 # The Misinformation Game
 
 The Misinformation Game is a social media simulator built to
-study the behavior of people when they interact with social
-media. To achieve this, The Misinformation Game simulates
-a social media feed for research participants. Participants
-will be shown one fake social media post at a time. They may
-then react to the post and its comments. The posts, the sources
-of those posts, and the comments underneath the posts that are
-shown to participants are all configurable though the
-[configuration spreadsheet](StudyConfiguration.md).
-
-Additionally, participants may have a follower count and
-credibility rating that will be tracked throughout their
-game. These values will change throughout the game as the
-interactions of participants with posts affect their follower
-count and credibility rating. The changes to a participant's
-follower count and credibility rating after they interact
-with posts can be controlled through the configuration
-spreadsheet.
+study people's behaviour when they interact with social media.
+To achieve this, The Misinformation Game simulates a social
+media feed for research participants. Participants will be shown
+one fake social media post at a time, and they may then react to
+the post and its comments. The Misinformation Game has been
+designed to be highly customisable so that tightly controlled
+experiences can be created for participants. This customisability
+is a core focus of The Misinformation Game, to facilitate the
+research of a wide array of social media related questions.
 
 
 ### Example Game
@@ -31,21 +23,18 @@ You can enter any ID to access the example game.
 <p class="spacer"></p>
 
 ## Getting Started
-The Misinformation Game is primarily a research tool.
-Therefore, it contains many configuration options to
-tailor the game for specific research purposes. To find
+The Misinformation Game contains many configuration options
+to tailor the game for specific research purposes. To find
 out whether The Misinformation Game is the right fit for
-your research, you may see the options for configuring
-your own study in the
-[study configuration documentation](StudyConfiguration.md).
-Additionally, the results that are made available
-for analysis are also described in the
-[results documentation](Results.md).
+your research, we recommend that you read through the available
+options for configuring your own study on the
+[Study Configuration](StudyConfiguration.md) page. Additionally,
+the results that are made available for your analysis are
+described on the [Results](Results.md) page.
 
-Once you have decided to create and run a study using
-The Misinformation Game, you will need to host your
-own website for the game. The steps to host your own
-instance of the game are described in both a
+To conduct a study using The Misinformation Game, you will need
+to host your own website for the game using Google Firebase.
+The steps to host your own instance of the game are described in both a
 [Non-Technical Installation Guide](NonTechnicalInstallation.pdf)
 and a [Technical Installation Guide](TechnicalInstallation.md).
 If you are proficient with the command-line and
@@ -84,4 +73,4 @@ guide should be easier to follow.
 - [Issue Tracker](https://github.com/TheMisinformationGame/MisinformationGame/issues) -
   If you find any issues, please report them here. 
 - [Example Game](https://misinformation-game.web.app/study/axsvxt37ctac6ltr) -
-  Dip your toes in with an example game.
+  Test out The Misinformation Game with an example study.

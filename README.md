@@ -1,9 +1,9 @@
 # The Misinformation Game
 The Misinformation Game is a social media simulator built to study
 the behavior of people when they interact with social media. This
-game was built as part of the CITS3200 unit at UWA by Paddy Lamont,
-Dean Law Yim Wan, Xiyu Gao, Danny Marwick, Andrew Pilkington,
-and Yunhui Rao, in collaboration with Professor Ullrich Ecker.
+project was started at UWA by Paddy Lamont, Dean Law Yim Wan,
+Xiyu Gao, Danny Marwick, Andrew Pilkington, and Yunhui Rao,
+in collaboration with Professor Ullrich Ecker.
 
 ### Example Game
 If you would like to test playing through a study created using

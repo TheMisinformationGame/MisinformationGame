@@ -1,3 +1,8 @@
+---
+title: Study Configuration
+showPath: true
+---
+
 # Creating your own studies
 Studies in The Misinformation Game are configured through the
 use of Google Sheets spreadsheets. These spreadsheets contain
@@ -11,34 +16,14 @@ Excel.
 
 # Table of Contents
 * [1. ✏ Create a new Spreadsheet](#1--create-a-new-spreadsheet)
-    + [Method 1: Copy the Template](#method-1-copy-the-template)
-    + [Method 2: Upload the Template](#method-2-upload-the-template)
 * [2. 📜 Enter your study settings into the Spreadsheet](#2--enter-your-study-settings-into-the-spreadsheet)
-    + [📄 About Sheet](#-about-sheet)
-    + [📄 Overview Sheet](#-overview-sheet)
-        - [Status](#status)
-        - [Opened in Google Sheets](#opened-in-google-sheets)
-        - [General Settings](#general-settings)
-        - [Sources](#sources)
-        - [Posts](#posts)
-    + [📄 General Sheet](#-general-sheet)
-    + [📄 Pages Sheet](#-pages-sheet)
-        - [Formatting](#formatting)
-        - [Introduction before game rules](#introduction-before-game-rules)
-        - [Introduction after game rules](#introduction-after-game-rules)
-        - [Debriefing](#debriefing)
-    + [📄 Source & Post Selection Sheet](#-source--post-selection-sheet)
-        - [Selecting a Method](#selecting-a-method)
-        - [Method 1: Overall-Ratio](#method-1-overall-ratio)
-        - [Method 2: Source-Ratios](#method-2-source-ratios)
-        - [Method 3: Credibility](#method-3-credibility)
-        - [Method 4: Pre-Defined](#method-4-pre-defined)
-    + [📄 Sources Sheet](#-sources-sheet)
-        - [Default Source Values](#default-source-values)
-        - [Sources Table](#sources-table)
-    + [📄 Posts Sheet](#-posts-sheet)
-        - [Default Post Values](#default-post-values)
-        - [Posts Table](#posts-table)
+    - [📄 About Sheet](#21--about-sheet)
+    - [📄 Overview Sheet](#22--overview-sheet)
+    - [📄 General Sheet](#23--general-sheet)
+    - [📄 Pages Sheet](#24--pages-sheet)
+    - [📄 Source & Post Selection Sheet](#25--source--post-selection-sheet)
+    - [📄 Sources Sheet](#26--sources-sheet)
+    - [📄 Posts Sheet](#27--posts-sheet)
 * [3. 📤 Uploading your Study](#3--uploading-your-study)
 
 
@@ -47,38 +32,40 @@ Before you can start configuring your study, you will first
 need to create a new spreadsheet for the study in Google
 Sheets. You can create a new spreadsheet by either copying
 the Study Template spreadsheet that is already on Google
-Sheets, or by uploading the Study Template document from
-this directory.
+Sheets, or by uploading the Study Template file.
 
-## Method 1: Copy the Template
+## Method 1: Copy the Template (Recommended)
 You can access the Study Template spreadsheet on Google Sheets
 [here](https://docs.google.com/spreadsheets/d/1BeJ2krpg_lDG8dnq5n4Gqopin2NBhVbDyTDdsplbVUY).
 After you have loaded the template spreadsheet, you can select
-**File** -> **Make a copy** to clone the spreadsheet so that
+**_File_** -> **_Make a copy_** to clone the spreadsheet so that
 you can make changes.
 
 ## Method 2: Upload the Template
-If you are not able to access the study template from the URL
-in section 1.1, you can also upload
-[StudyTemplate.xlsx](StudyTemplate.xlsx) to your Google Sheets.
+You can download the Study Template file from
+[StudyTemplate.xlsx](StudyTemplate.xlsx). This file can then
+be uploaded to your Google Sheets using the following steps:
 
-**Step 1:** Access Google Sheets at https://sheets.google.com.
+**Step 1:** Access Google Sheets at
+[https://sheets.google.com](https://sheets.google.com).
 
-**Step 2:** Select the *Blank* option to start a new spreadsheet.
+**Step 2:** Select the **_Blank_** option to start a new
+spreadsheet.
 
-**Step 3:** Select *File* -> *Import* -> *Upload*
--> *Select a file from your device*.
+**Step 3:** Select **_File_** -> **_Import_** -> **_Upload_**
+-> **_Select a file from your device_**.
 
 **Step 4:** Use the file chooser to select the
-[StudyTemplate.xlsx](StudyTemplate.xlsx) file to upload.
+[StudyTemplate.xlsx](StudyTemplate.xlsx) file that you
+downloaded to upload.
 
-**Step 5:** Select the *Import Location* to be
-*Replace spreadsheet*.
+**Step 5:** Select the **_Import Location_** to be
+**_Replace spreadsheet_**.
 
-**Step 6:** Click *Import Data.*
+**Step 6:** Click **_Import Data_**.
 
 Your spreadsheet should now contain everything you need
-to create a new study.
+to create your new study.
 
 # 2. 📜 Enter your study settings into the Spreadsheet
 The configuration spreadsheet may look intimidating at
@@ -90,8 +77,8 @@ however you are free to jump back and forth as you
 configure your study.
 
 
-## 📄 About Sheet
-The About sheet gives an overview of the structure of
+## 2.1. 📄 About Sheet
+The _About_ sheet gives an overview of the structure of
 the spreadsheet, with a short description of each sheet in
 the spreadsheet. It also contains a legend for what the
 different colour codes mean throughout the spreadsheet.
@@ -102,20 +89,20 @@ will help when reading the rest of the configuration
 spreadsheet.
 
 
-## 📄 Overview Sheet
-The Overview sheet provides a summary of all the settings
+## 2.2. 📄 Overview Sheet
+The _Overview_ sheet provides a summary of all the settings
 that have been entered. It also collates all the errors
 between all the sheets into one place, so that you can
 easily identify if there are any errors in your
 configuration.
 
-### Status
+### 2.2.1. Status
 The status of the spreadsheet gives an indication of
 whether there are any errors in the spreadsheet. If
 there are any errors in any of the sheets, an error
 will be shown here.
 
-### Opened in Google Sheets
+### 2.2.2. Opened in Google Sheets
 This attempts to detect whether the spreadsheet was
 opened in Google Sheets, and will error if it can
 detect that it was opened in Microsoft Excel. This
@@ -123,19 +110,19 @@ detection uses a bug when converting between Google
 Sheets and Microsoft Excel, and it therefore may not
 be 100% accurate.
 
-### General Settings
+### 2.2.3. General Settings
 This section gives an overview of the general settings
 of your study, as well as their validity in the top-left.
 The **Pages** value will show the exact order of pages
 that participants will be shown when they participate
 in your study.
 
-### Sources
-This will show the validity of all sources, as well as
-the number of sources that have been included in the
-_Sources_ sheet.
+### 2.2.4. Sources
+This will show the validity of all the sources you have
+entered, and includes the number of sources that have been
+included in the _Sources_ sheet.
 
-### Posts
+### 2.2.5. Posts
 This will show the validity of all posts, as well as the
 number of true and false posts that have been included
 in the _Posts_ sheet.
@@ -144,91 +131,161 @@ If there are fewer true or false posts than the length of
 the study, a warning will be shown. This warning is shown
 as it is possible that the post selection will try to select
 a true post but fail due to having already shown all the
-true posts (depending on settings; see below and 
+true posts (depending on settings; see the 
 [Simulation Documentation](Simulation.md) for details). 
 The post selection will instead have to display
 a false post in this case. This could lead to a false post
 being shown, even if the true post percentage is 100%.
 
 
-## 📄 General Sheet
+## 2.3. 📄 General Sheet
 The General sheet is the best place to start when creating
-a study. It contains all the general settings of
-the study including its name, description, and length.
+a study. It contains all the most broad settings of
+studies including their name, description, and length.
 
-**Name:** The name of your study is used to identify it in
-your admin dashboard. This name is not shown to participants.
+### 2.3.1. Basic Settings
 
-**Description:** The description of your study is used
-to include information about the study in your admin
-dashboard. This description is not shown to participants.
+This section contains the most basic settings that likely
+should be changed for each study.
 
-**Prompt:** The prompt text to be shown to participants
-before they start the study. An example prompt is shown
-below.
+<span class="param-name">Name</span>
+The name of your study is used to identify it in your
+admin dashboard. This name is not shown to participants.
+
+<span class="param-name">Description</span>
+The description of your study is used to include
+information about the study in your admin dashboard.
+This description is not shown to participants.
+
+<span class="param-name">Prompt</span>
+The prompt text to be shown to participants before they
+start the study. An example prompt is shown below.
 
 <img src="screenshots/example-prompt.png" alt="Example prompt" height="250"/>
 
-**Prompt Continue Delay (Seconds):** This value represents
-the number of seconds that the participant will have to
-wait before they are allowed to continue past the prompt.
-The continue button will be disabled for this number of
-seconds.
+<span class="param-name">Length of Game</span>
+The exact number of posts to show to participants before
+they complete the study. The length of studies must
+be at least 1 post.
 
-**Require Participant Identification:** This value
-represents whether participants will be required to
-provide a participant ID before starting the study.
-If this value is true, then participants will be shown
-an identification screen for them to manually enter their
-ID unless the ID is auto-populated from the URL they have
-been given.
+<span class="param-name">Require Reactions</span>
+Whether to require participants to react to every post.
+Participants will still be able to skip posts, but to
+do so they will have to explicitly select "Skip Post"
+as their reaction.
 
-**Length of Game:** This value represents the exact number
-of posts that participants will be shown before they have
-completed the study. The participant must react to this
-number of posts before their results are saved and they
-are shown the debriefing.
+<span class="param-name">Require Comments</span>
+Whether comments made by the participants are required
+for each post, optional for each post, or disabled
+entirely.
 
-**Reaction Delay (Seconds):** The number of seconds that
-participants must wait before they are able to react to
-a post. During this number of seconds after they are shown
-the post, the reaction buttons will be disabled.
+<span class="param-name">Require Participant Identification</span>
+Whether participants will be required to provide a
+participant ID before starting the study. If this value
+is true, then participants will be shown an identification
+screen for them to manually enter their ID if it has not
+already been automatically populated from the URL they
+have been given.
 
-**Generate Completion Code:** Whether a completion code
-should be generated for participants to be displayed
-below their debriefing. The completion code is a random
-number that is not guaranteed to be unique for each
-participant.
+### 2.3.2. User Interface Settings
+
+This section contains the settings that change the user
+interface of The Misinformation Game for participants.
+These options change the way that participants are able
+to interact with your study.
+
+<span class="param-name">Display Followers</span>
+Whether to show followers to participants. This includes
+the followers of both sources and participants.
+
+<span class="param-name">Display Credibility</span>
+Whether to show credibility to participants. This includes
+the credibility of both sources and participants.
+
+<span class="param-name">Display Progress</span>
+Whether to show participants the number of posts they
+have reacted to, and how many they have remaining
+(e.g. "Post 51 of 100").
+
+<span class="param-name">Display Number of Reactions</span>
+Whether to show the ostensible number of prior reactions
+to posts and comments adjacent to the reaction buttons.
+
+<span class="param-name">Post Likes Enabled</span>
+Whether to allow participants to like posts.
+
+<span class="param-name">Post Dislikes Enabled</span>
+Whether to allow participants to dislike posts.
+
+<span class="param-name">Post Shares Enabled</span>
+Whether to allow participants to share posts.
+
+<span class="param-name">Post Flags Enabled</span>
+Whether to allow participants to flag posts.
+
+<span class="param-name">Comment Likes Enabled</span>
+Whether to allow participants to like comments.
+
+<span class="param-name">Comment Dislikes Enabled</span>
+Whether to allow participants to dislike comments.
+
+### 2.3.3. Advanced Settings
+
+These settings can be used to fine-tune your study.
+It is unlikely that you will need to edit these settings.
+
+<span class="param-name">Minimum Comment Length</span>
+The minimum number of characters that participants must
+enter for their comments. The minimum length of comments
+must be at least 1 character.
+
+<span class="param-name">Prompt Continue Delay (Seconds)</span>
+The period of time in which participants are not able
+to continue past the prompt page to start the game.
+This delay cannot be negative, but it can be zero.
+
+<span class="param-name">Next Post Delay (Seconds)</span>
+The period of time after the current post is shown
+in which participants are not able to continue to
+the next post. This delay cannot be negative, but
+it can be zero.
+
+<span class="param-name">Generate Completion Code</span>
+Whether to generate and display a completion code
+to participants once they have completed the study.
+An example debriefing page that includes a generated
+completion code for a participant is shown below,
 
 <img src="screenshots/example-debriefing-no-border.png" alt="Example debriefing page" height="140" />
 
-**Completion Code Digits:** The number of digits that
-should be included in the completion code. For example,
-if the number of digits is set to 4, then numbers between
-1000 and 9999 will be generated.
+<span class="param-name">Completion Code Digits</span>
+The number of digits to generate for the completion
+code (e.g. If this value is 4, then completion codes
+from 1000 to 9999 will be generated). The number of
+digits in completion codes must be at least 1.
 
-
-## 📄 Pages Sheet
-The pages sheet allows you to edit the content of the
-instructions and debriefing that the users may be
+## 2.4. 📄 Pages Sheet
+The _Pages_ sheet allows you to edit the content of
+the instructions and debriefing that the users may be
 shown. It also allows you to edit the enforced delays 
 (with disabled continue button) on these pages.
 
-### Formatting
-These page values can be formatted to include **bold**,
-_italic_, larger text, smaller text, coloured text, or
-any other formatting that is available in Google Sheets.
+### 2.4.1. Formatting the Text
+The text on these pages can be formatted to include **bold**,
+_italic_,
+<span style="font-size: 1.2em">larger text</span>,
+<span style="font-size: 0.8em">smaller text</span>,
+<span style="color: purple">coloured text</span>,
+or any other formatting that is available in Google Sheets.
 This formatting will be converted to HTML to be shown to
-participants. To include new lines in this text, Google
-Sheets requires you to type _Alt + Enter_ instead of just
-Enter like most text editors.
+participants. Your text can also be moved onto new lines by 
+pressing **_Alt + Enter_**. This is equivalent to typing
+**_Enter_** in most text editors.
 
 If there are not as many formatting options as you need,
-then you can also include HTML markup in these pages
-that will be included in the pages that participants
-are shown.
+then you can also include HTML markup in the text.
 
-### Introduction before game rules
+### 2.4.2. Introduction before game rules
 This page will be shown to participants after they have
 identified themselves, and before they are shown the
 rules of the game. This page can be used for instructions. 
@@ -236,31 +293,32 @@ It is _optional_, so if you do not wish to show participants
 an introduction before they are shown the game rules, then 
 leave this page blank.
 
-### Introduction after game rules
+### 2.4.3. Introduction after game rules
 This page will be shown to participants after they have
 been shown the rules of the game. This page can also be 
 used for instructions. It is _optional_, so if you do not 
 wish to show participants an introduction after they are 
 shown the game rules, then leave this page blank.
 
-### Debriefing
+### 2.4.4. Debriefing
 This page will be shown to participants after they have
-completed the study. This page is not optional.
+completed the study. This page is not optional. An
+example of this debriefing screen is shown below,
 
 <img src="screenshots/example-debriefing-no-border.png" alt="Example debriefing page" height="140" />
 
 
-## 📄 Source & Post Selection Sheet
+## 2.5. 📄 Source & Post Selection Sheet
 The Source & Post Selection sheet allows you to edit the
 method that is used to select the source/post pairs that
 will be shown to participants in their games. There are
 four options for source/post selection: **Overall-Ratio**,
 **Source-Ratios**, **Credibility**, and **Pre-Defined**.
 
-For details on how source/post pairs are selected using 
-each method, check out [Simulation Documentation](Simulation.md).
+In-depth descriptions of each selection method are available
+in the [Simulation Documentation](Simulation.md).
 
-### Selecting a Method
+### 2.5.1. Selecting a Method
 The **Source & Post Selection Method** value at the top of
 this sheet should be changed manually to the name of the method 
 to be used. This should be one of _Overall-Ratio_,
@@ -269,59 +327,71 @@ have entered your desired source/post selection method, the
 settings for all the other selection methods will be
 disabled.
 
-### Method 1: Overall-Ratio
+### 2.5.2. Method 1: Overall-Ratio
 Sources will be selected randomly, and the associated
 post will be chosen to match an overall ratio of
-true:false posts.
+true:false posts. The settings for this method are
+available in the **Overall-Ratio Settings** section.
 
-The **True Post Percentage** value can be set underneath
-the **Overall-Ratio Settings** section below.
+<span class="param-name">True Post Percentage</span>
+The percentage of true posts to display to users. This
+percentage is used to probabilistically sample posts.
+Therefore, the actual percentage for each participant
+will differ from this value. However, the percentage
+of true posts shown to all participants collectively
+should approach this value.
 
-### Method 2: Source-Ratios
+### 2.5.3. Method 2: Source-Ratios
 Sources will be selected randomly, and the associated
-post will be chosen to match a true:false ratio defined
-for that specific source (as defined in the Sources
-tab: **True Post Percentage**).
+post will be chosen to match the **True Post Percentage**
+defined for each source.
 
-### Method 3: Credibility
-Sources will be selected randomly, and then a true:false
-ratio used to sample the associated post will be
-calculated from the credibility of the source. The
+Similarly to _Method 1_, this does not guarantee that
+an exact percentage of true posts will be shown for each
+source in one game. However, over all games played, the
+actual percentage of true posts that a source is selected
+to show should approach their defined **True Post Percentage**.
+
+### 2.5.4. Method 3: Credibility
+Sources will be selected randomly, and then a **True Post
+Percentage** will be calculated from the credibility of
+the source. The ratio will then be used to sample a true
+or false post to display alongside the source. The
 relationship between the source's credibility and the
-true-post percentage to be used is a linear relationship
-that can be defined under **Credibility Settings** below.
+true-post percentage to be used is a linear relationship.
+The parameters of the linear relationship between the two
+can be configured under the **Credibility Settings** section.
 
-The linear relationship is defined by defining the two
-co-efficients **m** and **c** for the linear relationship
-**y = mx + c**.
+<span class="param-name">Linear Slope</span>
+The increase in the **True Post Percentage** for every unit
+increase in a source's credibility.
 
-**Linear Slope:** The linear slope represents the increase
-in true-post Percentage for every unit increase in a
-source's credibility. It is the **m** value in the equation
-**y = mx + c**.
+<span class="param-name">Linear Intercept</span>
+The **True Post Percentage** to use when a source's
+credibility is zero.
 
-**Linear Intercept:** The linear intercept represents the
-true-post Percentage when a source's credibility is zero.
-It is the **c** value in the equation **y = mx + c**.
+### 2.5.5. Method 4: Pre-Defined
+An exact set of source/post pairs is manually defined.
+The source/post pairs can be manually defined in the
+_Pre-Defined Source & Post Order_ sheet, alongside
+other settings for this method.
 
-### Method 4: Pre-Defined
-The exact order of source/post pairs to be shown to
-participants is defined, with no randomness at all.
-The exact order to use for this method can be
-configured in the **Pre-Defined Source & Post Order**
-sheet in this spreadsheet.
+<span class="param-name">Randomise Order</span>
+Whether the presentation order of the pairs should
+be randomised. Otherwise, the pairs will be shown
+in the exact order specified.
 
-Within the **Pre-Defined Source & Post Order** sheet,
-the exact order is represented by entering the ID of
-the source and the ID of the post to use for each
-post that is shown to the participant. The participants
-will be shown these source/post pairs from top to
-bottom. You must define the same number of source/post
-pairs here as the length of the study.
+<span class="param-name">Source ID</span>
+The ID of the source to be used for the post (e.g. **S1**).
+These IDs can be found in the _Sources_ sheet.
+
+<span class="param-name">Post ID</span>
+The ID of the post to display (e.g. **S1**).
+These IDs can be found in the _Posts_ sheet.
 
 
-## 📄 Sources Sheet
-The Sources sheet allows you to add all the sources that
+## 2.6. 📄 Sources Sheet
+The _Sources_ sheet allows you to add all the sources that
 can be shown to participants during your study. Each source
 contains several settings to define their appearance and
 behaviour.
@@ -331,7 +401,7 @@ the settings that can be defined for each source. To
 the right there is also a widget that can be used to
 preview the settings for your sources.
 
-### Default Source Values
+### 2.6.1. Default Source Values
 This section defines defaults for a lot of the common
 columns for sources. If one of these values is not included
 for a source, the defaults here will be used instead.
@@ -437,7 +507,7 @@ probability of it posting a true post rather than a false
 post.
 
 
-## 📄 Posts Sheet
+## 2.7. 📄 Posts Sheet
 The Posts sheet allows you to add all the posts that could
 be shown to participants during the game. Each post can
 only be shown to a participant once, and will never be

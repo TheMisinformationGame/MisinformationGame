@@ -1,3 +1,9 @@
+---
+title: Original Design
+showPath: true
+permalink: /original-design/
+---
+
 **This information is out of date.** This document is kept as
 the original design document for the application.
 

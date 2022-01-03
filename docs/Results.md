@@ -1,3 +1,8 @@
+---
+title: Results
+showPath: true
+---
+
 # Results
 The results for studies can be downloaded from the Admin
 Dashboard, by selecting your study, and then selecting

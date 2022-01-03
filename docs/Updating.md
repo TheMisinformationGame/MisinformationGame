@@ -1,4 +1,9 @@
-# Updating your instance of The Misinformation Game
+---
+title: Updating
+showPath: true
+---
+
+# Updating your Instance of The Misinformation Game
 
 This guide will show you how to update your instance of
 The Misinformation Game to the latest version from this

@@ -1,3 +1,8 @@
+---
+title: Firebase Pricing
+showPath: true
+---
+
 # Firebase Pricing
 The Misinformation Game is hosted using Firebase as its
 backend. This document analyses the pricing information

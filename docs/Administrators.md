@@ -1,3 +1,8 @@
+---
+title: Registering Administrators
+showPath: true
+---
+
 # Administrators
 In order for users to upload their own studies, they must first
 be registered as administrators. This document outlines the

@@ -1,3 +1,8 @@
+---
+title: Development Environment
+showPath: true
+---
+
 # Development Environment
 This document describes how to set up your development
 environment to work on The Misinformation Game and host

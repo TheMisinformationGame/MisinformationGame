@@ -1,4 +1,9 @@
-# How to play The Misinformation Game
+---
+title: How to Play
+showPath: true
+---
+
+# How to Play The Misinformation Game
 
 **This is a copy of the page that will be shown to
 participants before they start participating in a study.**

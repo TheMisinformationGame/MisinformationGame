@@ -1,3 +1,8 @@
+---
+title: Technical Overview
+showPath: true
+---
+
 # Technical Overview
 
 This document provides an overview of the technical

@@ -2,6 +2,26 @@
   Site container
 */
 
+.page-path {
+  padding-top: 0.6em;
+  color: #5f5f5f;
+}
+.page-path a {
+  color: #6c6c6c;
+}
+
+.param-name {
+  display: block;
+  color: black;
+  font-weight: 800;
+  text-decoration: underline;
+}
+.param-name::after {
+  display: inline-block;
+  content: ":";
+  text-decoration: none;
+}
+
 .content-wrapper a {
   text-decoration: underline;
 }
@@ -12,7 +32,7 @@
   width: $container-width - 20px;
 }
 .content-wrapper h1 {
-  margin: 20px 0px 5px;
+  margin: 20px 0 5px;
 }
 @media (max-width: $container-width) {
   .container {

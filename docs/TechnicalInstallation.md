@@ -1,3 +1,8 @@
+---
+title: Technical Installation
+showPath: true
+---
+
 # Installation of The Misinformation Game
 This guide outlines the steps required to deploy your
 own instance of The Misinformation Game on Firebase.
