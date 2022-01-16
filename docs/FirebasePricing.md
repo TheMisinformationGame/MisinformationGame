@@ -47,22 +47,22 @@ Firebase Hosting is the backend service that sends
 the website to participants. This does not include sending
 the images within studies.
 
-|  Hosting Action  |  Free Tier Limit  |  Paid Tier Pricing  |
-| -------- | ----------------- | ------------------- |
-|  Storage  |  10 GB  |  $0.026/GB  |
-|  Data transfer  |  360 MB/day  |  $0.15/GB  |
+| Hosting Action | Free Tier Limit  | Paid Tier Pricing  |
+|----------------|------------------|--------------------|
+| Storage        | 10 GB            | $0.026/GB          |
+| Data transfer  | 360 MB/day       | $0.15/GB           |
 
 ### 2.2. Firebase Cloud Firestore
 Firebase Cloud Firestore is the backend service that stores
 the metadata about studies, and stores the results of studies.
 
-|  Cloud Storage Action  |  Free Tier Limit  |  Paid Tier Pricing  |
-| -------- | ----------------- | ------------------- |
-|  Stored data  |  1 GiB  |  $0.115/GiB  |
-|  Network egress  |  10 GiB/day  |  $0.12/GB  |
-|  Document writes  |  20K/day  |  $0.115/100k  |
-|  Document reads  |  50K/day  |  $0.038/100k  |
-|  Document deletes  |  20K/day  |  $0.013/100k  |
+| Cloud Storage Action  | Free Tier Limit  | Paid Tier Pricing  |
+|-----------------------|------------------|--------------------|
+| Stored data           | 1 GiB            | $0.115/GiB         |
+| Network egress        | 10 GiB/day       | $0.12/GB           |
+| Document writes       | 20K/day          | $0.115/100k        |
+| Document reads        | 50K/day          | $0.038/100k        |
+| Document deletes      | 20K/day          | $0.013/100k        |
 
 ### 2.3. Firebase Cloud Storage
 Firebase Cloud Storage is the backend service where the
@@ -70,12 +70,12 @@ images that are contained within studies are stored. This
 service is used to send the images within studies to
 participants.
 
-|  Cloud Storage Action  |  Free Tier Limit  |  Paid Tier Pricing  |
-| -------- | ----------------- | ------------------- |
-|  GB stored  |  5 GB  |  $0.026/GB  |
-|  GB downloaded  |  1 GB/day  |  $0.12/GB  |
-|  Upload operations  |  20K/day  |  $0.05/10k  |
-|  Download operations  |  50K/day  |  $0.004/10k  |
+| Cloud Storage Action  | Free Tier Limit  | Paid Tier Pricing  |
+|-----------------------|------------------|--------------------|
+| GB stored             | 5 GB             | $0.026/GB          |
+| GB downloaded         | 1 GB/day         | $0.12/GB           |
+| Upload operations     | 20K/day          | $0.05/10k          |
+| Download operations   | 50K/day          | $0.004/10k         |
 
 ## 3. Pricing Estimates for Example Studies
 We can make pricing estimates for running a study by
@@ -197,20 +197,6 @@ to be similar, despite the fact that the second image is
 only 29% of the size of the first. Therefore, to reduce the
 file size and increase the number of participants that can
 be supported under the free tier, down-scaling your post
-images will be very important. The online tool
-[Simple Image Resizer](http://www.simpleimageresizer.com/)
-can be used to perform this down-scaling for you. When
-down-scaling using this service, it is best to select
-the **dimensions** option for _Define the new size of
-your image_, and to enter a new width of 800.
-
-Additionally, after down-scaling your post images, you can
-also run the images through a compression service such as
-[CompressJpeg.com](https://compressjpeg.com/) to reduce
-their size even further. The image below is even further
-compressed to 74KB.
-
-**Scaled-Down and Compressed Image, 800x500, 74KB:**
-
-<img src="diagrams/example-image-800x500-compressed.jpg" alt="Example image that is 800 x 500 and compressed" width="600" />
-
+images will be very important. More information about
+downscaling and compressing your images can be found in
+the [Including Images in Studies](/Images) documentation.

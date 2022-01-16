@@ -50,6 +50,12 @@ to. You can then use the tool
 to resize your study images to the recommended sizes before adding
 them to your study configuration spreadsheet.
 
+**Original Image, 1600x1000, 295KB:**
+<img src="diagrams/example-image-1600x1000.jpg" alt="Example image that is 1600 x 1000" width="600" />
+
+**Scaled-Down Image, 800x500, 88KB:**
+<img src="diagrams/example-image-800x500.jpg" alt="Example image that is 800 x 500" width="600" />
+
 
 ## 3. Compress your images
 <span class="recommendation">Recommendation</span>
@@ -63,6 +69,12 @@ of these tools is often imperceptibly different from the original image,
 especially when the image is a photo. However, it is recommended that
 you compare the image to the original after compression to make sure it
 hasn't lost too much quality.
+
+**Scaled-Down Image, 800x500, 88KB:**
+<img src="diagrams/example-image-800x500.jpg" alt="Example image that is 800 x 500" width="600" />
+
+**Scaled-Down and Compressed Image, 800x500, 74KB:**
+<img src="diagrams/example-image-800x500-compressed.jpg" alt="Example image that is 800 x 500 and compressed" width="600" />
 
 
 ## 4. Insert the images into your study configuration
