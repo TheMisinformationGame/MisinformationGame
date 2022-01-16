@@ -10,6 +10,18 @@
   color: #6c6c6c;
 }
 
+.recommendation {
+  display: inline-block;
+  color: black;
+  font-weight: 800;
+  text-decoration: underline;
+}
+.recommendation::after {
+  display: inline-block;
+  content: ":";
+  text-decoration: none;
+}
+
 .param-name {
   display: block;
   color: black;

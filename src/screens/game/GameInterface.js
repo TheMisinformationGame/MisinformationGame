@@ -610,7 +610,7 @@ export class GameScreen extends ActiveGameScreen {
                     {/* Space in the middle. */}
                     <div className="flex-1 max-w-mini" />
 
-                    {/* */}
+                    {/* The post and its associated comments. */}
                     <div className="bg-gray-200 w-full md:max-w-xl
                                     md:border-l-2 md:border-r-2 md:border-gray-700 shadow-2xl"
                          style={{minHeight: "100vh"}}>

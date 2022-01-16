@@ -48,6 +48,7 @@ guide should be easier to follow.
 - [How to play The Misinformation Game](HowToPlay.md) -
   The guide given to participants before they start a study.
 - [Study Configuration](StudyConfiguration.md) - A guide to create your own study.
+- [Including Images in Studies](Images.md) - Recommendations for including images in studies.
 - [Results](Results.md) - Descriptions of the results that are recorded by the game.
 - [Managing Studies](ManagingStudies.md) - How to upload, enable, disable, and delete your studies.
 - [Registering Administrators](Administrators.md) - How to securely assign administrator privileges.

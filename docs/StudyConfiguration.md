@@ -461,23 +461,16 @@ is used alongside a post.
 <span class="param-name">Avatar</span>
 The avatar of a source is an optional image that is displayed in a circle
 alongside the source. If the avatar is not square, it will be cropped.
+The avatar images are only shown at small sizes, and therefore are
+recommended to have the dimension of 96⨯96 pixels. Recommendations for
+image file formats, downscaling your images, and compressing your images
+are all described in the [Including Images in Studies](/Images) documentation.
+
 The avatar image must be inserted into the spreadsheet using the **Insert**
 menu at the top of the page on Google Sheets. You must first select the cell
 where you want to insert the avatar image, and then select **Insert** ->
-**Image** -> **Image in cell**. If you do not use this procedure, then the
-application will not be able to find the image to use for the avatar.
-
-The avatar images support all standard image file types, however `.png` and
-`.jpg` images are recommended. If you wish to insert animated avatars into
-a game, then `.gif` files are also supported (however, `.gif` files are not
-recommended for static images due to their larger file size). Newer file types
-such as WEBP are supported on modern web-browsers, but they may not load
-correctly for participant's with older web-browsers.
-
-Additionally, it is good to refrain from uploading large images to reduce the
-amount of data that participants have to download. The avatars are only shown
-at small sizes, so any image above a size of 128 pixels by 128 pixels will be
-wasted. This corresponds to a typical file size of below 20 Kb.
+**Image** -> **Image in cell**. If you do not use this procedure, then The
+Misinformation Game may not be able to find the image to use for the avatar.
 
 <img src="diagrams/inserting-image.png" alt="How to insert an image" height="275"/>
 
@@ -566,44 +559,42 @@ will be used in the results to refer to this specific post.
 In the template sheet, all the IDs are already pre-filled,
 and there should be no need to edit them.
 
+<span class="param-name">Headline</span>
+The headline of the post is used to provide a title above the
+content of the post. This headline is optional, and if it is
+not included then only the content of the post will be shown.
+
 <img src="diagrams/post-headline-content.png" alt="Post with headline and content highlighted" height="250"/>
 
-<span class="param-name">Headline</span>
-The headline of the post is used to provide
-a title above the content of the post. This headline is
-optional, and if it is not included then only the content
-of the post will be shown.
-
 <span class="param-name">Content</span>
-The content of the post is used to provide a
-more substantial piece of text, or an image. The content 
-is optional, and if it is not included then only the 
-headline of the post will be shown. The content can be 
-either a piece of text _or_ an image, but it cannot
-contain both.
+The content of the post is used to provide a  more substantial
+piece of text, or an image to display to participants. The content 
+is optional, and if it is not included then only the headline of
+the post will be shown. The content can be either a piece of text
+_or_ an image, but it cannot contain both.
 
-If an image is used, it must be inserted using the same
-procedure as inserting Avatar images into the spreadsheet.
-The content image must be inserted into the spreadsheet
-using the **Insert** menu at the top of the page on Google
-Sheets. You must first select the cell where you want to
-insert the content image, and then select **Insert** ->
-**Image** -> **Image in cell**. If you do not use this
-procedure, then the application will not be able to find
-the image to use for the content.
+If an image is used, then it is recommended to have a width of
+600 pixels. For a typical landscape image, this would lead to
+an approximate dimensions of 600⨯340 pixels. Recommendations for
+image file formats, downscaling your images, and compressing your
+images are all described in the [Including Images in Studies](/Images)
+documentation.
 
-The content images support all standard image file types,
-however .png and .jpg images are recommended. Newer file
-types such as WEBP are supported on modern web-browsers,
-but they may not load correctly for participant's with
-older web-browsers. Additionally, it is good to refrain
-from uploading large images to reduce the amount of data
-that participants have to download. The content images
-will never be shown with a width above 600 pixels.
-Therefore, for a typical content image, a file size of
-100KB should be typical.
+Images must be inserted using the same procedure for inserting Avatar
+images into the spreadsheet. The content image must be inserted into
+the spreadsheet using the **Insert** menu at the top of the page on
+Google Sheets. You must first select the cell where you want to insert
+the content image, and then select **Insert** -> **Image**
+-> **Image in cell**. If you do not use this procedure, then The
+Misinformation Game may not be able to find the image to use for the
+content.
 
 <img src="diagrams/inserting-image.png" alt="How to insert an image" height="275"/>
+
+<span class="param-name">Is True</span>
+This should be set to whether the post should be considered true or false.
+This value is used for the post selection, and for choosing the default
+settings to use for the post. This value is never shown to participants.
 
 <span class="param-name">Changes to Followers</span>
 These settings allow you to
