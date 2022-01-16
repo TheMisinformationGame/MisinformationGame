@@ -25,6 +25,32 @@
 .content-wrapper a {
   text-decoration: underline;
 }
+
+.content-wrapper {
+  h1, h2, h3, h4, h5, h6 {
+    a.header-link {
+      color: $brand-color;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+
+      opacity: 0;
+      transition: opacity ease-in-out 0.2s;
+    }
+    &:hover {
+      a.header-link {
+        opacity: 0.6;
+        transition: opacity ease-in-out 0.2s;
+        &:hover {
+          opacity: 1;
+          transition: opacity ease-in-out 0.2s;
+        }
+      }
+    }
+  }
+}
+
 .content-wrapper {
   padding-top: $header-thickness+10px;
   margin: auto;

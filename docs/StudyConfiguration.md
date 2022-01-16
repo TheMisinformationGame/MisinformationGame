@@ -526,7 +526,7 @@ rather than a false post.
 
 
 ## 2.7. 📄 Posts Sheet
-The Posts sheet allows you to add all the posts that could
+The _Posts_ sheet allows you to add all the posts that could
 be shown to participants during the game. Each post can
 only be shown to a participant once, and will never be
 repeated.
@@ -536,7 +536,7 @@ the settings that can be defined for each post. To
 the right there is also a table to display the total
 number of true and false posts that you have entered.
 
-### Default Post Values
+### 2.7.1. Default Post Values
 This section defines separate defaults for true posts and 
 false posts. This is done so that consistent behaviour can be 
 configured for true posts increasing credibility and false 
@@ -546,7 +546,7 @@ distributions for the changes to participants' followers and
 credibility after they _like_, _dislike_, _share_, or _flag_ 
 a post.
 
-### Posts Table
+### 2.7.2. Posts Table
 The table below the Default Post Values allows you to enter
 all the posts that may be shown to participants during the
 study. Each row in the table represents one post. The
@@ -558,7 +558,8 @@ comments, are optional. If the changes to followers and
 credibility are omitted, the default settings will be
 used instead.
 
-**ID:** The ID of each post is used to uniquely identify
+<span class="param-name">Post ID</span>
+The ID of each post is used to uniquely identify
 the post. This ID should be of the form `Px` where x is
 an increasing integer (e.g. P1, P2, P3, etc...). This ID
 will be used in the results to refer to this specific post.
@@ -567,12 +568,14 @@ and there should be no need to edit them.
 
 <img src="diagrams/post-headline-content.png" alt="Post with headline and content highlighted" height="250"/>
 
-**Headline:** The headline of the post is used to provide
+<span class="param-name">Headline</span>
+The headline of the post is used to provide
 a title above the content of the post. This headline is
 optional, and if it is not included then only the content
 of the post will be shown.
 
-**Content:** The content of the post is used to provide a
+<span class="param-name">Content</span>
+The content of the post is used to provide a
 more substantial piece of text, or an image. The content 
 is optional, and if it is not included then only the 
 headline of the post will be shown. The content can be 
@@ -602,33 +605,39 @@ Therefore, for a typical content image, a file size of
 
 <img src="diagrams/inserting-image.png" alt="How to insert an image" height="275"/>
 
-**Changes to Followers:** These settings allow you to
+<span class="param-name">Changes to Followers</span>
+These settings allow you to
 set the exact change to a participant's followers after
 they _like_, _dislike_, _share_, or _flag_ a post. If
 these values are left blank, the changes to a participant's
 followers will be sampled from the default distributions
 instead.
 
-**Changes to Credibility:** These settings allow you to
+<span class="param-name">Changes to Credibility</span>
+These settings allow you to
 set the exact change to a participant's credibility after
 they _like_, _dislike_, _share_, or _flag_ a specific post. 
 If these values are left blank, the changes to a participant's
 credibility will be sampled from the default distributions
 instead.
 
-**Comments:** Up to three optional comments can be configured
+<span class="param-name">Comments</span>
+Up to three optional comments can be configured
 for each post. Each comment must include both a _Source Name_
 and a _Message_, which are described below.
 
 <img src="screenshots/example-comment.png" alt="Example comment in the game interface" height="100" />
 
-**Comment Source Name:** This value is the name to use as
+<span class="param-name">Comment Source Name</span>
+This value is the name to use as
 the source of the comment.
 
-**Comment Message:** This value is the text of the comment
+<span class="param-name">Comment Message</span>
+This value is the text of the comment
 to display.
 
-**Comment Likes:** This value is not used. In the future,
+<span class="param-name">Comment Likes</span>
+This value is not used. In the future,
 there are plans to add likes to posts and comments,
 however this feature is not fully implemented yet.
 

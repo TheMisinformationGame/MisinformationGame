@@ -15,7 +15,7 @@
         </div>
       {% endif %}
 
-      {{ content }}
+      {% include anchor_headings.html html=content anchorBody="#" anchorClass="header-link" %}
     </div>
   </div>
   {% include footer.html %}
