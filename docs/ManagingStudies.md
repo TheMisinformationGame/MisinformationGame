@@ -43,7 +43,7 @@ _Admin Study View_ for your study by clicking the
 the results of the study and generate an Excel
 spreadsheet with the results. More information on
 the format of these results can be found in the
-[Results.md](Results.md) document.
+[Results](Results) documentation.
 
 ## Updating your Study
 If you have found changes you wish to make to your

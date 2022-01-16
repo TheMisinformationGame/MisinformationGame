@@ -42,5 +42,5 @@ root directory of the source code.
 
 A guide on the usage of the `deploy.sh` script can
 be found within the
-[Installation.md](https://github.com/TheMisinformationGame/MisinformationGame/blob/main/docs/Installation.md#24-deploy-your-firebase-project)
-document.
+[Installation](/TechnicalInstallation#24-deploy-your-firebase-project)
+documentation.

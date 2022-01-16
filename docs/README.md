@@ -28,15 +28,15 @@ to tailor the game for specific research purposes. To find
 out whether The Misinformation Game is the right fit for
 your research, we recommend that you read through the available
 options for configuring your own study on the
-[Study Configuration](StudyConfiguration.md) page. Additionally,
+[Study Configuration](/StudyConfiguration) page. Additionally,
 the results that are made available for your analysis are
-described on the [Results](Results.md) page.
+described on the [Results](/Results) page.
 
 To conduct a study using The Misinformation Game, you will need
 to host your own website for the game using Google Firebase.
 The steps to host your own instance of the game are described in both a
-[Non-Technical Installation Guide](NonTechnicalInstallation.pdf)
-and a [Technical Installation Guide](TechnicalInstallation.md).
+[Non-Technical Installation Guide](/NonTechnicalInstallation.pdf)
+and a [Technical Installation Guide](/TechnicalInstallation).
 If you are proficient with the command-line and
 installing technical tools, then the technical
 installation guide will be quicker, and requires fewer
@@ -45,28 +45,28 @@ technologies, then the non-technical installation
 guide should be easier to follow.
 
 ## Usage Documentation
-- [How to play The Misinformation Game](HowToPlay.md) -
+- [How to play The Misinformation Game](/HowToPlay) -
   The guide given to participants before they start a study.
-- [Study Configuration](StudyConfiguration.md) - A guide to create your own study.
-- [Including Images in Studies](Images.md) - Recommendations for including images in studies.
-- [Results](Results.md) - Descriptions of the results that are recorded by the game.
-- [Managing Studies](ManagingStudies.md) - How to upload, enable, disable, and delete your studies.
-- [Registering Administrators](Administrators.md) - How to securely assign administrator privileges.
+- [Study Configuration](/StudyConfiguration) - A guide to create your own study.
+- [Including Images in Studies](/Images) - Recommendations for including images in studies.
+- [Results](/Results) - Descriptions of the results that are recorded by the game.
+- [Managing Studies](/ManagingStudies) - How to upload, enable, disable, and delete your studies.
+- [Registering Administrators](/Administrators) - How to securely assign administrator privileges.
 
 ## Hosting Documentation
-- [Firebase Pricing](FirebasePricing.md) - A guide to estimate the hosting costs of running a study.
-- [Non-Technical Installation Guide](NonTechnicalInstallation.pdf) -
+- [Firebase Pricing](/FirebasePricing) - A guide to estimate the hosting costs of running a study.
+- [Non-Technical Installation Guide](/NonTechnicalInstallation.pdf) -
   A guide to host your own study using Firebase (longer, for non-technical users).
-- [Technical Installation Guide](TechnicalInstallation.md) -
+- [Technical Installation Guide](/TechnicalInstallation) -
   A guide to host your own study using Firebase (shorter, for technical users).
-- [Updating your Installation](Updating.md) -
+- [Updating your Installation](/Updating) -
   A guide to retrieve new features and fixes for your installation.
 
 ## System Documentation
-- [Technical Overview](TechnicalOverview.md) - A broad overview of the tech-stack used by the game.
-- [Simulation](Simulation.md) - An in-depth description on the simulation that powers the game.
-- [Development Environment](Development.md) - A guide for developers to make adjustments to the game.
-- [Original Design](original-design/README.md) - The original, outdated, design document for the game.
+- [Technical Overview](/TechnicalOverview) - A broad overview of the tech-stack used by the game.
+- [Simulation](/Simulation) - An in-depth description on the simulation that powers the game.
+- [Development Environment](/Development) - A guide for developers to make adjustments to the game.
+- [Original Design](/original-design/) - The original, outdated, design document for the game.
 
 ## Other Useful Links
 - [Source Code](https://github.com/TheMisinformationGame/MisinformationGame) -

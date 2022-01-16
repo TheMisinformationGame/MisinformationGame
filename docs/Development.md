@@ -24,7 +24,7 @@ Firebase requires that you connect it to a Firebase
 project just to run the project locally for testing.
 You can create a new project by following the
 **2.1.1.Create Project** section of the
-[Installation Guide](TechnicalInstallation.md). You do not
+[Installation Guide](/TechnicalInstallation). You do not
 have to follow the guide any further to setup the
 Firebase project, you just need one to exist.
 However, if you already have a production Firebase

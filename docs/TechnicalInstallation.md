@@ -349,5 +349,5 @@ you set up in step 1!
 # 3. Registration of Administrators
 Before you can upload studies, you will need to register
 your Google account as an administrator. A guide to register
-users as administrators can be found in
-[Administrators.md](Administrators.md).
+users as administrators can be found in the
+[Administrators](/Administrators) documentation.

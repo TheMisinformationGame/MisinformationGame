@@ -162,7 +162,7 @@ the study, a warning will be shown. This warning is shown
 as it is possible that the post selection will try to select
 a true post but fail due to having already shown all the
 true posts (depending on settings; see the 
-[Simulation Documentation](Simulation.md) for details). 
+[Simulation](/Simulation) documentation for details). 
 The post selection will instead have to display
 a false post in this case. This could lead to a false post
 being shown, even if the true post percentage is 100%.
@@ -369,7 +369,7 @@ four options for source/post selection: **Overall-Ratio**,
 **Source-Ratios**, **Credibility**, and **Pre-Defined**.
 
 In-depth descriptions of each selection method are available
-in the [Simulation Documentation](Simulation.md).
+in the [Simulation](/Simulation) documentation.
 
 
 <h3 id="selection-selecting-method">
