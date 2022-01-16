@@ -23,7 +23,7 @@
 }
 
 .param-name {
-  display: block;
+  display: inline-block;
   color: black;
   font-weight: 800;
   text-decoration: underline;
@@ -47,9 +47,6 @@
     a.header-link {
       color: $brand-color;
       text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
 
       opacity: 0;
       transition: opacity ease-in-out 0.2s;
@@ -63,6 +60,11 @@
           transition: opacity ease-in-out 0.2s;
         }
       }
+    }
+  }
+  h1, h2, h3 {
+    a.header-link:hover {
+      text-decoration: underline;
     }
   }
 }
