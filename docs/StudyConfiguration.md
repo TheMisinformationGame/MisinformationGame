@@ -612,13 +612,15 @@ number of true and false posts that you have entered.
     2.7.1. Default Post Values
 </h3>
 This section defines separate defaults for true posts and 
-false posts. This is done so that consistent behaviour can be 
-configured for true posts increasing credibility and false 
-posts decreasing credibility (if that behavior is desired). 
-The default values allow specification of normal
-distributions for the changes to participants' followers and
-credibility after they _like_, _dislike_, _share_, or _flag_ 
-a post.
+false posts. This is done to reduce the effort in creating
+consistent behaviour for true and false posts. For example,
+you could make sharing true posts increase credibility,
+and sharing false posts participant credibility. The default
+values allow specification of normal distributions for the
+changes to participants' followers and credibility after they
+_like_, _dislike_, _share_, or _flag_ a post. There is also
+a default distribution for the number of reactions to display
+for _likes_, _dislikes_, _shares_, or _flags_ for posts.
 
 
 <h3 id="posts-table">
