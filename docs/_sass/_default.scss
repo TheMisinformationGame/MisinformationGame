@@ -2,6 +2,14 @@
   Site container
 */
 
+body {
+  display: flex;
+  flex-direction: column;
+}
+.container {
+  flex-grow: 1;
+}
+
 .content-wrapper .page-path {
   padding-top: 0.6em;
   color: #5f5f5f;
