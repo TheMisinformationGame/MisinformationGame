@@ -2,11 +2,11 @@
   Site container
 */
 
-.page-path {
+.content-wrapper .page-path {
   padding-top: 0.6em;
   color: #5f5f5f;
 }
-.page-path a {
+.content-wrapper .page-path a {
   color: #6c6c6c;
 }
 
@@ -23,7 +23,11 @@
 }
 
 .content-wrapper a {
+  color: $brand-color;
   text-decoration: underline;
+}
+.content-wrapper a:hover {
+  color: $brand-color-darker;
 }
 
 .content-wrapper {
