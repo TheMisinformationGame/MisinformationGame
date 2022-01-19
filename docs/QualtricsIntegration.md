@@ -23,7 +23,7 @@ which is not "Question Text."
 (The name of the item will change depending on your own survey.)
 
 The final text in the question will be in the following format:
-<your_domain>.web.app/study/<your_study_id>?id=<user_id_inputted>
+<b><your_domain>.web.app/study/<your_study_id>?id=<user_id_inputted></b>
 
 After this your survey will contain the following questions in the 
 following format:
