@@ -60,6 +60,7 @@ guide should be easier to follow.
 - [Results](/Results) - Descriptions of the results that are recorded by the game.
 - [Managing Studies](/ManagingStudies) - How to upload, enable, disable, and delete your studies.
 - [Registering Administrators](/Administrators) - How to securely assign administrator privileges.
+- [Integration with Qualtrics](/QualtricsIntegration) - How to integrate a study into Qualtrics.
 
 ## Hosting Documentation
 - [Firebase Pricing](/FirebasePricing) - A guide to estimate the hosting costs of running a study.

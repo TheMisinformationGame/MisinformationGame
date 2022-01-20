@@ -1,3 +1,8 @@
+---
+title: Qualtrics Integration
+showPath: true
+---
+
 # Qualtrics Integration 
 If you are using the Qualtrics Online Survey Platform to direct
 users to your Misinformation Game site, you can directly input
