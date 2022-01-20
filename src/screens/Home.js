@@ -6,7 +6,7 @@ import {GithubCorner} from "../components/GithubCorner";
 function Home() {
     let exampleGameURL = null;
     if (window.location.hostname === "misinformation-game.web.app") {
-        exampleGameURL = "/study/axsvxt37ctac6ltr";
+        exampleGameURL = "/study/m1v891krnanahrdi";
     } else if (window.location.hostname === "localhost") {
         exampleGameURL = "/study/yr10i6u5hf9fc1yh";
     }
