@@ -210,7 +210,7 @@ as their reaction.
 
 <h6 id="general-require-comments"><span class="param-name">Require Comments</span></h6>
 Whether comments made by the participants are required
-for each post, optional for each post, or disabled
+for each post (enter "required"), optional for each post, or disabled
 entirely.
 
 <h6 id="general-require-identification"><span class="param-name">Require Participant Identification</span></h6>
@@ -575,6 +575,13 @@ follower count of the source may differ throughout
 participant's games (see the [Simulation](/Simulation)
 page for details).
 
+This value is only used if
+
+Only used if:
+- <a class="param-link" href="#general-display-followers">
+      General > UI Settings > Display Followers
+  </a> is true.
+
 
 <h6 id="sources-initial-credibility"><span class="param-name">Initial Credibility</span></h6>
 This optional value lets you set an exact initial
@@ -583,8 +590,10 @@ credibility number of the source may differ throughout
 participant's games (see the [Simulation](/Simulation)
 page for details).
 
-This value lets you set an exact
-credibility number for this source to start with.
+Only used if:
+- <a class="param-link" href="#general-display-credibility">
+      General > UI Settings > Display Credibility
+  </a> is true.
 
 <h6 id="sources-true-post-percentage"><span class="param-name">True Post Percentage</span></h6>
 When using the _Source-Ratios_ source/post selection method,
@@ -592,6 +601,11 @@ this value is used to define the percentage of true posts that
 this source should show. After this source is selected, this
 will indicate the probability of it being paired a true post
 rather than a false post.
+
+Only used if:
+- <a class="param-link" href="#selection-selecting-method">
+      Source & Post Selection > Method
+  </a> is "Source-Ratios".
 
 
 <h2 id="posts">
@@ -702,13 +716,23 @@ display for each post. These numbers are displayed below the available reactions
 of the post or comment. If this value is not provided for a particular post, the
 change is sampled from the default normal distribution instead.
 
+Only used if:
+<ul class="param-links">
+    <li><a class="param-link" href="#general-display-reaction-counts">
+        General > UI Settings > Display Reaction Counts
+    </a> is true.</li>
+    <li><a class="param-link" href="#general-post-likes-enabled">
+        General > UI Settings > Post Likes/Dislikes/Shares/Flags Enabled
+    </a> is true for each specific reaction.</li>
+</ul>
+
 <h6 id="posts-comments"><span class="param-name">Comments</span></h6>
 Up to three optional comments can be configured for each post. Each comment must
 include both a _Source Name_ and a _Message_, which are described below.
 
 <img src="screenshots/example-comment.png" alt="Example comment in the game interface" height="100" />
 
-<h6 id="posts-comment-dislikes"><span class="param-name">Comment Source Name</span></h6>
+<h6 id="posts-comment-source-name"><span class="param-name">Comment Source Name</span></h6>
 The name of the source to display as having made the comments.
 
 <h6 id="posts-comment-message"><span class="param-name">Comment Message</span></h6>
@@ -719,8 +743,28 @@ The number of likes to display for comments. These likes will only be shown if
 comments are enabled, comment likes are enabled, and displaying the number of
 reactions is enabled.
 
+Only used if:
+<ul class="param-links">
+    <li><a class="param-link" href="#general-display-reaction-counts">
+        General > UI Settings > Display Reaction Counts
+    </a> is true.</li>
+    <li><a class="param-link" href="#general-comment-likes-enabled">
+        General > UI Settings > Comment Likes Enabled
+    </a> is true.</li>
+</ul>
+
 <h6 id="posts-comment-dislikes"><span class="param-name">Comment Dislikes</span></h6>
 The number of dislikes to display for comments.
+
+Only used if:
+<ul class="param-links">
+    <li><a class="param-link" href="#general-display-reaction-counts">
+        General > UI Settings > Display Reaction Counts
+    </a> is true.</li>
+    <li><a class="param-link" href="#general-comment-likes-enabled">
+        General > UI Settings > Comment Dislikes Enabled
+    </a> is true.</li>
+</ul>
 
 
 <h1 id="upload">

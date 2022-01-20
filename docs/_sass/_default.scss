@@ -42,6 +42,17 @@ body {
   text-decoration: none;
 }
 
+.param-links {
+  margin-top: -0.6rem;
+}
+.content-wrapper a.param-link {
+  display: inline-block;
+  text-decoration: none;
+}
+.content-wrapper a.param-link:hover {
+  text-decoration: underline;
+}
+
 .content-wrapper a {
   color: $brand-color;
   text-decoration: underline;
