@@ -551,7 +551,8 @@ class PostComponent extends Component {
                     {showAddComment &&
                         <div className="inline-block rounded px-3 py-1 bg-white shadow mx-1 my-2 cursor-pointer
                                         text-gray-700 hover:bg-gray-50 hover:text-gray-900 active:bg-gray-100"
-                             onClick={() => this.showCommentBox()}>
+                             onClick={() => this.showCommentBox()}
+                             title="Add a comment">
 
                             <AddCommentIcon />
                         </div>}
