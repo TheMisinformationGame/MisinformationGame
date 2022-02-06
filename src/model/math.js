@@ -99,4 +99,8 @@ export class TruncatedNormalDistribution {
     static exactly(value) {
         return new TruncatedNormalDistribution(value, 0, value, value);
     }
+
+    static zero() {
+        return TruncatedNormalDistribution.exactly(0);
+    }
 }

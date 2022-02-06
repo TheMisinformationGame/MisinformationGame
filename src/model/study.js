@@ -121,6 +121,11 @@ export class ReactionValues {
             ReactionValues.reactionFromJSON(json["flag"])
         );
     }
+
+    static zero() {
+        const zero = TruncatedNormalDistribution.zero();
+        return new ReactionValues(zero, zero, zero, zero);
+    }
 }
 
 /**
@@ -158,6 +163,15 @@ export class PostComment {
             json["message"],
             ReactionValues.fromJSON(json["numberOfReactions"])
         );
+    }
+}
+
+/**
+ * A comment that a user made on a post.
+ */
+export class UserComment extends PostComment {
+    constructor(message) {
+        super(-1, "You", message, ReactionValues.zero());
     }
 }
 
@@ -325,7 +339,7 @@ export class Study {
     /**
      * This is a really long constructor, although it is only called
      * twice (once from the excel reader, and once from the JSON reader).
-     * Additionally, all of the parameters are required. Therefore, this
+     * Additionally, all the parameters are required. Therefore, this
      * is simpler than a builder would be. Perhaps grouping the parameters
      * into functional groups could assist in simplifying this, although
      * that seems like a lot of work for little gain.
@@ -433,6 +447,18 @@ export class Study {
         this.sourcePostSelectionMethod = sourcePostSelectionMethod;
         this.sources = sources;
         this.posts = posts;
+    }
+
+    areUserCommentsRequired() {
+        return this.requireComments !== "Required";
+    }
+
+    areUserCommentsEnabled() {
+        return !this.areUserCommentsDisabled();
+    }
+
+    areUserCommentsDisabled() {
+        return this.requireComments === "Disabled";
     }
 
     /**

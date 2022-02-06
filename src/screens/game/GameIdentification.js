@@ -76,7 +76,7 @@ export class GameIdentification extends ActiveGameScreen {
 
         if (this.state.submitOnEnterUp && GameIdentification.isValidValue(this.state.value)) {
             this.props.history.push(target);
-        } else if(this.state.ignoreKeyDowns) {
+        } else if (this.state.ignoreKeyDowns) {
             this.setState({...this.state, ignoreKeyDowns: false});
         }
     }

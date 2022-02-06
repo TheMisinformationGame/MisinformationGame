@@ -440,6 +440,15 @@ export class GamePostInteraction {
         );
     }
 
+    withComment(comment) {
+        return new GamePostInteraction(
+            this.postShowTime,
+            this.postReaction,
+            this.commentReactions,
+            comment
+        ).withUpdatedInteractTime();
+    }
+
     withToggledPostReaction(postReaction) {
         // We want clicking the same reaction twice to toggle it.
         if (this.postReaction === postReaction) {

@@ -4,6 +4,9 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ReplyIcon from '@mui/icons-material/Reply';
 import FlagIcon from '@material-ui/icons/Flag';
+import AddCommentIcon from '@material-ui/icons/AddComment';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {getDataManager} from "../../model/manager";
 import {isOfType} from "../../utils/types";
 import {PromiseImage} from "../../components/PromiseImage";
@@ -16,6 +19,7 @@ import {Redirect} from "react-router-dom";
 import {MountAwareComponent} from "../../components/MountAwareComponent";
 import {ParticipantProgress} from "../../components/ParticipantProgress";
 import {GamePostInteraction} from "../../model/game";
+import {UserComment} from "../../model/study";
 
 
 class Source extends Component {
@@ -181,11 +185,163 @@ class Comment extends Component {
                         (this.props.className || "")}>
                 <div className="flex mb-3">
                     <div className="flex-grow pl-2">
-                        <p className="w-full underline text-gray-700">{comment.sourceName}</p>
+                        <p className="w-full">
+                            <div className={
+                                    "inline-block underline text-gray-700 mr-2 " +
+                                    (this.props.editable ? "text-lg pt-1" : "")}>
+
+                                {comment.sourceName}
+                            </div>
+                            {this.props.editable &&
+                                <div className="inline-block text-gray-600 cursor-pointer mb-1 transform -translate-y-0.5">
+                                    <span title="Edit Comment">
+                                        <EditIcon className="hover:text-gray-800"
+                                                  onClick={() => this.props.onCommentEdit()} />
+                                    </span>
+                                    {this.props.canDelete &&
+                                        <span title="Delete Comment">
+                                            <DeleteForeverIcon className="hover:text-gray-800"
+                                                               onClick={() => this.props.onCommentDelete()} />
+                                        </span>}
+                                </div>}
+                        </p>
                         <p className="w-full text-lg ml-1">{comment.message}</p>
                     </div>
                     <div className="flex flex-row-reverse flex-grow-0 p-1 pr-0 w-1/5">
                         {commentReactions}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+
+class CommentSubmissionRow extends MountAwareComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            ...this.state,
+            value: (props.initialValue || ""),
+            prompt: (props.initialValue ? "Edit Comment:" : "Add Comment:"),
+            displayError: false,
+            ignoreKeyDowns: false,
+            submitOnEnterUp: false
+        };
+    };
+
+    isValidValue(value) {
+        return value && value.trim() !== "";
+    }
+
+    static isEnterKey(e) {
+        return e.charCode === 13 || e.keyCode === 13
+    }
+
+    handleKeyDown(e) {
+        if (!CommentSubmissionRow.isEnterKey(e))
+            return;
+
+        e.preventDefault();
+        if (this.state.ignoreKeyDowns)
+            return;
+
+        if (this.isValidValue(this.state.value)) {
+            // Set the state so the release of the enter key will submit.
+            this.setState({
+                ...this.state, displayError: true,
+                submitOnEnterUp: true, ignoreKeyDowns: true
+            });
+
+            // If the user waits a second without releasing enter, cancel the submit.
+            setTimeout(() => {
+                this.submitCancelTimer = null;
+                this.setStateIfMounted({
+                    ...this.state,
+                    submitOnEnterUp: false
+                });
+            }, 1000);
+        } else {
+            // If the ID is invalid, display the error.
+            this.setState({...this.state, displayError: true});
+        }
+    }
+
+    handleKeyUp(e, target) {
+        if (!CommentSubmissionRow.isEnterKey(e))
+            return;
+
+        e.preventDefault();
+
+        const value = this.state.value;
+        if (this.state.submitOnEnterUp && this.isValidValue(value)) {
+            this.submit(value);
+        } else if (this.state.ignoreKeyDowns) {
+            this.setState({...this.state, ignoreKeyDowns: false});
+        }
+    }
+
+    handleSubmitClick() {
+        const value = this.state.value;
+        if (this.isValidValue(value)) {
+            this.submit(value);
+        } else {
+            // If the ID is invalid, display the error.
+            this.setState({...this.state, displayError: true});
+        }
+    }
+
+    updateValue(value) {
+        this.setState({...this.state, value: value});
+    }
+
+    submit(value) {
+        this.props.submit(value);
+    }
+
+    render() {
+        const study = this.props.study;
+        const requiredLength = study.minimumCommentLength;
+
+        const value = this.state.value;
+        const isError = (!value || value.length < requiredLength);
+        const showError = (this.state.displayError && isError);
+        const error = (!value || value.length === 0 ?
+            "Please write your comment in the entry box above" :
+            "Your comment must be at least " + requiredLength + " characters");
+
+        return (
+            <div className={"flex flex-col py-1 px-2 mb-1 bg-white shadow" +
+                (this.props.className || "")}>
+                <div className="flex flex-col mb-3">
+                    <p className="w-full text-gray-700 mb-1">
+                        {this.state.prompt}
+                    </p>
+                    <textarea
+                        className={
+                            "w-full px-3 py-2 border border-gray-400 " +
+                            "rounded-md justify-self-center bg-gray-100"}
+                        placeholder="Write your comment here"
+                        rows="1"
+                        value={this.state.value}
+                        onChange={e => this.updateValue(e.target.value)}
+                        onKeyDown={e => this.handleKeyDown(e)}
+                        onKeyUp={e => this.handleKeyUp(e)}>
+                    </textarea>
+                    {showError &&
+                        <ErrorLabel value={error} className="mt-1" />}
+
+                    <div>
+                        <div className={
+                                    "inline-block px-3 py-2 mt-2 rounded-md text-white text-sm select-none " +
+                                    (!this.props.enabled ? " bg-gray-400 " :
+                                        (this.state.submitOnEnterUp ? " bg-blue-600 " : " bg-blue-500 active:bg-blue-600 ")
+                                        + " cursor-pointer hover:bg-blue-600 ")}
+                             title={isError ? error : "Click to submit your message as a comment"}
+                             onClick={() => this.handleSubmitClick()}>
+
+                            Submit Comment
+                        </div>
                     </div>
                 </div>
             </div>
@@ -274,13 +430,27 @@ class PostComponent extends Component {
         const post = state.currentPost.post;
         const commentComponents = [];
 
+        if (interactions.comment) {
+            const userComment = new UserComment(interactions.comment);
+            commentComponents.push(
+                <Comment comment={userComment}
+                         study={state.study}
+                         key="user.comment"
+                         enabled={false}
+                         editable={true}
+                         canDelete={!state.study.areUserCommentsRequired()}
+                         onCommentEdit={() => this.props.onCommentEdit()}
+                         onCommentDelete={() => this.props.onCommentDelete()}/>);
+        }
         for (let index = 0; index < post.comments.length; ++index) {
             const comment = post.comments[index];
             commentComponents.push(
-                <Comment comment={comment} study={state.study}
+                <Comment comment={comment}
+                         study={state.study}
                          key={index + "." + comment.sourceName}
                          onReact={r => this.props.onCommentReact(index, r)}
                          enabled={this.props.enableReactions}
+                         editable={false}
                          selectedReaction={interactions.findCommentReactionString(index)} />
             );
         }
@@ -327,6 +497,11 @@ class PostComponent extends Component {
                 {/* The comments on the post. */}
                 {commentComponents.length > 0 &&
                     <p className="font-bold text-gray-600 p-1">Comments:</p>}
+                {state.study.areUserCommentsEnabled() && !interactions.comment &&
+                    <CommentSubmissionRow study={state.study}
+                                          initialValue={this.props.lastComment}
+                                          submit={value => this.props.onCommentSubmit(value)}
+                                          enabled={this.props.enableReactions}/>}
                 {commentComponents}
             </div>
         );
@@ -422,6 +597,7 @@ export class GameScreen extends ActiveGameScreen {
             reactionsAllowed: false,
 
             interactions: GamePostInteraction.empty(),
+            lastComment: null,
 
             dismissedPrompt: false,
 
@@ -457,6 +633,29 @@ export class GameScreen extends ActiveGameScreen {
         this.setState({
             ...this.state,
             interactions: this.state.interactions.withToggledCommentReaction(commentIndex, reaction)
+        });
+    }
+
+    onCommentSubmit(comment) {
+        this.setState({
+            ...this.state,
+            interactions: this.state.interactions.withComment(comment)
+        });
+    }
+
+    onCommentEdit() {
+        this.setState({
+            ...this.state,
+            lastComment: this.state.interactions.comment,
+            interactions: this.state.interactions.withComment(null)
+        });
+    }
+
+    onCommentDelete() {
+        this.setState({
+            ...this.state,
+            lastComment: null,
+            interactions: this.state.interactions.withComment(null)
         });
     }
 
@@ -566,7 +765,28 @@ export class GameScreen extends ActiveGameScreen {
         const displayPrompt = !this.state.dismissedPrompt;
         const error = this.state.error;
         const finished = game.isFinished();
-        const nextPostEnabled = (!study.requireReactions || this.state.interactions.postReaction !== null);
+
+        const madePostReaction = (this.state.interactions.postReaction !== null);
+        const madeUserComment = (this.state.interactions.comment !== null);
+
+        let nextPostEnabled = false;
+        let nextPostError = "";
+        if (study.requireReactions && study.areUserCommentsRequired()) {
+            if (!madePostReaction) {
+                nextPostError = "Please react to the post";
+            } else if (!madeUserComment) {
+                nextPostError = "Comment on the post to continue";
+            } else {
+                nextPostEnabled = true;
+            }
+        } else if (study.requireReactions) {
+            nextPostEnabled = madePostReaction;
+            nextPostError = "React to the post to continue";
+        } else if (study.areUserCommentsRequired()) {
+            nextPostEnabled = madeUserComment;
+            nextPostError = "Comment on the post to continue";
+        }
+
         return (
             <>
                 {displayPrompt &&
@@ -599,10 +819,8 @@ export class GameScreen extends ActiveGameScreen {
                                 finished ?
                                     "The study is complete!" :
                                 nextPostEnabled ?
-                                    (this.state.reactionsAllowed ?
-                                        "Continue to next post" : "Please wait to continue")
-                                    :
-                                    "React to the post to continue"
+                                    (this.state.reactionsAllowed ? "Continue to next post" : "Please wait to continue")
+                                    : nextPostError
                             }
                             followerChange={this.state.followerChange}
                             credibilityChange={this.state.credibilityChange}/>}
@@ -621,8 +839,12 @@ export class GameScreen extends ActiveGameScreen {
                                 state={state}
                                 onPostReact={r => this.onPostReaction(r)}
                                 onCommentReact={(i, r) => this.onCommentReaction(i, r)}
+                                onCommentSubmit={value => this.onCommentSubmit(value)}
+                                onCommentEdit={() => this.onCommentEdit()}
+                                onCommentDelete={() => this.onCommentDelete()}
                                 enableReactions={this.state.reactionsAllowed && this.state.inputEnabled}
-                                interactions={this.state.interactions} />}
+                                interactions={this.state.interactions}
+                                lastComment={this.state.lastComment}/>}
 
                         {/* If the game is finished, display a game completed prompt. */}
                         {!state && finished && <GameFinished study={study} game={game} />}
