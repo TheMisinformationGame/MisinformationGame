@@ -360,6 +360,10 @@ export class Study {
             debrief, sourcePostSelectionMethod,
             sources, posts) {
 
+        if (requireComments) {
+            requireComments = requireComments.toLowerCase();
+        }
+
         doTypeCheck(id, "string", "Study ID");
         doTypeCheck(authorID, "string", "Study Author's ID");
         doTypeCheck(authorName, "string", "Study Author's Name");
@@ -375,7 +379,7 @@ export class Study {
         doTypeCheck(requireReactions, "boolean", "Whether the study requires reactions to posts");
         doTypeCheck(reactDelaySeconds, "number", "Study Reaction Delay");
         doEnumCheck(
-            requireComments, ["Required", "Optional", "Disabled"],
+            requireComments, ["required", "optional", "disabled"],
             "Whether comments are required, optional, or disabled"
         );
         doTypeCheck(minimumCommentLength, "number", "Minimum Comment Length");
@@ -450,15 +454,19 @@ export class Study {
     }
 
     areUserCommentsRequired() {
-        return this.requireComments !== "Required";
+        return this.requireComments === "required";
+    }
+
+    areUserCommentsOptional() {
+        return this.requireComments === "optional";
     }
 
     areUserCommentsEnabled() {
-        return !this.areUserCommentsDisabled();
+        return this.areUserCommentsRequired() || this.areUserCommentsOptional();
     }
 
     areUserCommentsDisabled() {
-        return this.requireComments === "Disabled";
+        return !this.areUserCommentsEnabled();
     }
 
     /**

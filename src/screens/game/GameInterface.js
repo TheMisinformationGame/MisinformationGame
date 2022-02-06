@@ -7,6 +7,7 @@ import FlagIcon from '@material-ui/icons/Flag';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import CloseIcon from '@mui/icons-material/Close';
 import {getDataManager} from "../../model/manager";
 import {isOfType} from "../../utils/types";
 import {PromiseImage} from "../../components/PromiseImage";
@@ -185,7 +186,7 @@ class Comment extends Component {
                         (this.props.className || "")}>
                 <div className="flex mb-3">
                     <div className="flex-grow pl-2">
-                        <p className="w-full">
+                        <div className="w-full">
                             <div className={
                                     "inline-block underline text-gray-700 mr-2 " +
                                     (this.props.editable ? "text-lg pt-1" : "")}>
@@ -204,8 +205,10 @@ class Comment extends Component {
                                                                onClick={() => this.props.onCommentDelete()} />
                                         </span>}
                                 </div>}
+                        </div>
+                        <p className="w-full text-lg ml-1">
+                            {comment.message}
                         </p>
-                        <p className="w-full text-lg ml-1">{comment.message}</p>
                     </div>
                     <div className="flex flex-row-reverse flex-grow-0 p-1 pr-0 w-1/5">
                         {commentReactions}
@@ -314,9 +317,14 @@ class CommentSubmissionRow extends MountAwareComponent {
             <div className={"flex flex-col py-1 px-2 mb-1 bg-white shadow" +
                 (this.props.className || "")}>
                 <div className="flex flex-col mb-3">
-                    <p className="w-full text-gray-700 mb-1">
-                        {this.state.prompt}
-                    </p>
+                    <div className="flex flex-row justify-between w-full text-gray-700 mb-1">
+                        <span>
+                            {this.state.prompt}
+                        </span>
+                        {this.props.canHide &&
+                            <CloseIcon className="cursor-pointer hover:text-gray-900"
+                                       onClick={() => this.props.onHide()}/>}
+                    </div>
                     <textarea
                         className={
                             "w-full px-3 py-2 border border-gray-400 " +
@@ -424,11 +432,50 @@ class PostReactionsRow extends Component {
 
 
 class PostComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.defaultState = {};
+        this.state = {
+            showCommentBox: false
+        };
+    }
+
+    showCommentBox() {
+        this.setState({
+            ...this.state,
+            showCommentBox: true
+        });
+    }
+
+    hideCommentBox() {
+        this.setState({
+            ...this.state,
+            showCommentBox: false
+        });
+    }
+
+    onCommentSubmit(value) {
+        this.hideCommentBox();
+        this.props.onCommentSubmit(value);
+    }
+
+    onCommentEdit() {
+        this.showCommentBox();
+        this.props.onCommentEdit();
+    }
+
     render() {
         const state = this.props.state;
         const interactions = this.props.interactions;
         const post = state.currentPost.post;
         const commentComponents = [];
+
+        const userCommentsEnabled = state.study.areUserCommentsEnabled();
+        const userCommentsRequired = state.study.areUserCommentsRequired();
+        const userCommentsOptional = state.study.areUserCommentsOptional();
+
+        const showCommentBox = !interactions.comment && (userCommentsRequired || this.state.showCommentBox);
+        const showAddComment = !interactions.comment && userCommentsEnabled && !this.state.showCommentBox;
 
         if (interactions.comment) {
             const userComment = new UserComment(interactions.comment);
@@ -439,7 +486,7 @@ class PostComponent extends Component {
                          enabled={false}
                          editable={true}
                          canDelete={!state.study.areUserCommentsRequired()}
-                         onCommentEdit={() => this.props.onCommentEdit()}
+                         onCommentEdit={() => this.onCommentEdit()}
                          onCommentDelete={() => this.props.onCommentDelete()}/>);
         }
         for (let index = 0; index < post.comments.length; ++index) {
@@ -495,13 +542,24 @@ class PostComponent extends Component {
                 </div>
 
                 {/* The comments on the post. */}
-                {(state.study.areUserCommentsEnabled() || commentComponents.length > 0) &&
-                    <p className="font-bold text-gray-600 p-1">Comments:</p>}
-                {state.study.areUserCommentsEnabled() && !interactions.comment &&
+                <div className="flex flex-row justify-between items-end">
+                    {(showCommentBox || commentComponents.length > 0) &&
+                        <p className="font-bold text-gray-600 p-1">Comments:</p>}
+                    {showAddComment &&
+                        <div className="inline-block rounded px-3 py-1 bg-white shadow mx-1 my-2 cursor-pointer
+                                        text-gray-700 hover:bg-gray-50 hover:text-gray-900 active:bg-gray-100"
+                             onClick={() => this.showCommentBox()}>
+
+                            <AddCommentIcon />
+                        </div>}
+                </div>
+                {userCommentsEnabled && !interactions.comment && showCommentBox &&
                     <CommentSubmissionRow study={state.study}
                                           initialValue={this.props.lastComment}
-                                          submit={value => this.props.onCommentSubmit(value)}
-                                          enabled={this.props.enableReactions}/>}
+                                          submit={value => this.onCommentSubmit(value)}
+                                          enabled={this.props.enableReactions}
+                                          canHide={userCommentsOptional}
+                                          onHide={() => this.hideCommentBox()} />}
                 {commentComponents}
             </div>
         );
@@ -639,6 +697,7 @@ export class GameScreen extends ActiveGameScreen {
     onCommentSubmit(comment) {
         this.setState({
             ...this.state,
+            lastComment: null,
             interactions: this.state.interactions.withComment(comment)
         });
     }
