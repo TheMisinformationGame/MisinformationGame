@@ -543,8 +543,11 @@ class PostComponent extends Component {
 
                 {/* The comments on the post. */}
                 <div className="flex flex-row justify-between items-end">
-                    {(showCommentBox || commentComponents.length > 0) &&
-                        <p className="font-bold text-gray-600 p-1">Comments:</p>}
+                    {/* Permanent <div> because we always want the add comment button to be justified to the right. */}
+                    <div>
+                        {(showCommentBox || commentComponents.length > 0) &&
+                            <p className="font-bold text-gray-600 p-1">Comments:</p>}
+                    </div>
                     {showAddComment &&
                         <div className="inline-block rounded px-3 py-1 bg-white shadow mx-1 my-2 cursor-pointer
                                         text-gray-700 hover:bg-gray-50 hover:text-gray-900 active:bg-gray-100"
