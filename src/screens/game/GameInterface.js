@@ -316,7 +316,7 @@ class CommentSubmissionRow extends MountAwareComponent {
         return (
             <div className={"flex flex-col py-1 px-2 mb-1 bg-white shadow" +
                 (this.props.className || "")}>
-                <div className="flex flex-col mb-3">
+                <div className="flex flex-col mb-1.5">
                     <div className="flex flex-row justify-between w-full text-gray-700 mb-1">
                         <span>
                             {this.state.prompt}
