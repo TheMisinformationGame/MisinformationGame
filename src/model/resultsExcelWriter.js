@@ -95,6 +95,7 @@ function constructWorkbook(study, results, problems) {
         {header: "Post Flags", key: "postFlags", width: 20, enabled: showPostFlags},
 
         {header: "Reaction", key: "reaction", width: 12},
+        {header: "User Comment", key: "comment", width: 20, enabled: study.areUserCommentsEnabled()},
         {header: "First Time to Interact (MS)", key: "firstInteractTime", width: 32},
         {header: "Last Time to Interact (MS)", key: "lastInteractTime", width: 32},
         {header: "Credibility Change", key: "credibilityChange", width: 22, enabled: showCredibility},
@@ -133,6 +134,7 @@ function constructWorkbook(study, results, problems) {
                 postFlags: state.currentPost.numberOfReactions.flag || "",
 
                 reaction: interaction.postReaction || "",
+                comment: interaction.comment || "",
                 firstInteractTime: interaction.firstInteractTimeMS,
                 lastInteractTime: interaction.lastInteractTimeMS,
                 credibilityChange: afterCredibility - beforeCredibility,

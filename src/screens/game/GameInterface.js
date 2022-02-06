@@ -495,7 +495,7 @@ class PostComponent extends Component {
                 </div>
 
                 {/* The comments on the post. */}
-                {commentComponents.length > 0 &&
+                {(state.study.areUserCommentsEnabled() || commentComponents.length > 0) &&
                     <p className="font-bold text-gray-600 p-1">Comments:</p>}
                 {state.study.areUserCommentsEnabled() && !interactions.comment &&
                     <CommentSubmissionRow study={state.study}
@@ -734,6 +734,7 @@ export class GameScreen extends ActiveGameScreen {
             reactionsAllowed: (!this.state.dismissedPrompt && !game),
 
             interactions: GamePostInteraction.empty(),
+            lastComment: null,
 
             overrideFollowers: null,
             overrideCredibility: null,
