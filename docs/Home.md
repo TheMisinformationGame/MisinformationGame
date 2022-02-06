@@ -23,7 +23,7 @@ research of a wide array of social media related questions.
 ### Example Game
 If you would like to test playing through a study created using
 The Misinformation Game, you can access an example game at
-[https://misinformation-game.web.app/study/axsvxt37ctac6ltr](https://misinformation-game.web.app/study/axsvxt37ctac6ltr).
+[https://misinformation-game.web.app/study/m1v891krnanahrdi](https://misinformation-game.web.app/study/m1v891krnanahrdi).
 You can enter any ID to access the example game.
 
 ![Game Screenshot](screenshots/example-game.png)
@@ -82,5 +82,5 @@ guide should be easier to follow.
   The Misinformation Game is proudly open-source! 
 - [Issue Tracker](https://github.com/TheMisinformationGame/MisinformationGame/issues) -
   If you find any issues, please report them here. 
-- [Example Game](https://misinformation-game.web.app/study/axsvxt37ctac6ltr) -
+- [Example Game](https://misinformation-game.web.app/study/m1v891krnanahrdi) -
   Test out The Misinformation Game with an example study.
