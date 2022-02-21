@@ -47,6 +47,3 @@ service-account-credentials.json
 **/tsconfig-compile.json
 yarn.lock
 pnpm-lock.yaml
-firestore.rules
-firestore.indexes.json
-storage.rules

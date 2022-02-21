@@ -33,7 +33,9 @@
     "docs": "cd docs && bundle-2.7 exec jekyll serve --baseurl=\"\" -o --watch",
     "build": "NODE_OPTIONS=--openssl-legacy-provider craco build",
     "test": "NODE_OPTIONS=--openssl-legacy-provider craco test",
+
     "ci-build": "NODE_OPTIONS=--openssl-legacy-provider CI=false INLINE_RUNTIME_CHUNK=false craco build",
+
     "win-start": "craco start",
     "win-emulators": "npx firebase emulators:start --import=\"test/firebase-dev-environment\"",
     "win-build": "craco build",
