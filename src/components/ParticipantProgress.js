@@ -38,8 +38,7 @@ export class ParticipantProgress extends Component {
         const displayFollowers = this.props.displayFollowers;
         const displayCredibility = this.props.displayCredibility;
 
-        const progressPercentage = (this.props.progressPercentage || 0);
-        const stringPercent = `${progressPercentage}%`;
+        const stringPercent = `${this.props.progressPercentage}%`;
 
         const onNextPost = () => {
             if (nextPostEnabled) {
