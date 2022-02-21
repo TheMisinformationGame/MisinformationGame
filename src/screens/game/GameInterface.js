@@ -836,8 +836,7 @@ export class GameScreen extends ActiveGameScreen {
         //use the state as a proxy for the post number
         const currentStateNumber = participant.postInteractions.length;
         const totalPosts = game.study.posts.length;
-        console.log(`Percent ${currentStateNumber/totalPosts}`)
-        const progressPercentage = currentStateNumber != 0  ? (currentStateNumber/totalPosts) : 0;
+        const progressPercentage = currentStateNumber != 0  ? (currentStateNumber/totalPosts * 100) : 0;
 
 
         let nextPostEnabled = false;
