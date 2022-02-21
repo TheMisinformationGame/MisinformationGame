@@ -833,6 +833,12 @@ export class GameScreen extends ActiveGameScreen {
         const madePostReaction = (this.state.interactions.postReaction !== null);
         const madeUserComment = (this.state.interactions.comment !== null);
 
+        //use the state as a proxy for the post number
+        const currentPost = game.getCurrentState();
+        const totalPosts = stage.posts.length;
+        const progressPercentage = Math.round(currentPost/totalPosts);
+
+
         let nextPostEnabled = false;
         let nextPostError = "";
         if (study.requireReactions && study.areUserCommentsRequired()) {
@@ -887,7 +893,9 @@ export class GameScreen extends ActiveGameScreen {
                                     : nextPostError
                             }
                             followerChange={this.state.followerChange}
-                            credibilityChange={this.state.credibilityChange}/>}
+                            credibilityChange={this.state.credibilityChange}
+                            progressPercentage = {progressPercentage}
+                            />}
 
                     {/* Space in the middle. */}
                     <div className="flex-1 max-w-mini" />

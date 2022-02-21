@@ -38,6 +38,9 @@ export class ParticipantProgress extends Component {
         const displayFollowers = this.props.displayFollowers;
         const displayCredibility = this.props.displayCredibility;
 
+        const progressPercentage = (this.props.progressPercentage || 0);
+        const stringPercent = `${progressPercentage}%`;
+
         const onNextPost = () => {
             if (nextPostEnabled) {
                 this.props.onNextPost();
@@ -59,7 +62,7 @@ export class ParticipantProgress extends Component {
                     "p-2 px-4 pb-3 " + (fancyPositioning ? "border-t border-gray-400 md:border-none" : "")}>
 
                     <p className="text-xl font-semibold mb-2">
-                        Your Progress
+                        Your Progress ({stringPercent})
                     </p>
 
                     {displayFollowers &&
