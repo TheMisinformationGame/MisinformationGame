@@ -835,7 +835,7 @@ export class GameScreen extends ActiveGameScreen {
 
         //use the state as a proxy for the post number
         const currentPost = game.getCurrentState();
-        const totalPosts = stage.posts.length;
+        const totalPosts = game.posts.length;
         const progressPercentage = Math.round(currentPost/totalPosts);
 
 
