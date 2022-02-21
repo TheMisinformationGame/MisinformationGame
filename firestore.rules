@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /Admins/{user} {
+      allow read: if request.auth != null && request.auth.uid == user;
+    }
+
+    match /Studies/{study} {
+      allow read: if resource == null || resource.data.enabled == true
+                     || (request.auth != null && request.auth.uid == resource.data.authorID);
+
+      allow create: if request.auth != null
+                       && request.auth.uid == request.resource.data.authorID
+                       && exists(/databases/$(database)/documents/Admins/$(request.auth.uid));
+
+      allow update: if request.auth != null
+                       && request.auth.uid == request.resource.data.authorID
+                       && request.auth.uid == resource.data.authorID
+                       && exists(/databases/$(database)/documents/Admins/$(request.auth.uid));
+
+      allow delete: if request.auth != null
+                       && request.auth.uid == resource.data.authorID
+                       && exists(/databases/$(database)/documents/Admins/$(request.auth.uid));
+
+      match /Results/{result} {
+        allow create, update: if true;
+        allow read: if request.auth != null
+                       && request.auth.uid == get(/databases/$(database)/documents/Studies/$(study)).data.authorID;
+      }
+    }
+  }
+}
