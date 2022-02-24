@@ -113,7 +113,7 @@ export class GameRules extends ActiveGameScreen {
                         nextPostText="Continue to Next Post"
                         onNextPost={() => {}}
                         nextPostEnabled={false}
-                        progressPercentage = {"0"}
+                        progressPercentage = {0}
                         />
 
                     {study.displayFollowers &&
