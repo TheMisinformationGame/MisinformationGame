@@ -107,6 +107,7 @@ export class GameRules extends ActiveGameScreen {
                     <ParticipantProgress
                         displayFollowers={study.displayFollowers}
                         displayCredibility={study.displayCredibility}
+                        displayProgress = {study.displayProgress}
                         overrideFollowers={13}
                         overrideCredibility={56}
                         hideTooltip={true}

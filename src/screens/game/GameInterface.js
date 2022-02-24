@@ -868,6 +868,7 @@ export class GameScreen extends ActiveGameScreen {
                         <ParticipantProgress
                             displayFollowers={study.displayFollowers}
                             displayCredibility={study.displayCredibility}
+                            displayProgress = {study.displayProgress}
                             fancyPositioning={true}
                             participant={participant}
                             overrideFollowers={this.state.overrideFollowers}
