@@ -112,7 +112,9 @@ export class GameRules extends ActiveGameScreen {
                         hideTooltip={true}
                         nextPostText="Continue to Next Post"
                         onNextPost={() => {}}
-                        nextPostEnabled={false}/>
+                        nextPostEnabled={false}
+                        progressPercentage = {"0"}
+                        />
 
                     {study.displayFollowers &&
                     <p className="leading-5 my-4">
