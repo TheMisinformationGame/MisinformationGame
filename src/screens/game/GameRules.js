@@ -75,7 +75,7 @@ export class GameRules extends ActiveGameScreen {
 
                     {study.requireComments && 
                     <p className="leading-5 mb-4 mt-6">
-                        The text box below the post is where you add your own comment
+                        The text box below the post is where you add your own comment.
                     </p>
                     }
                     {/* Image of comment box, once implemented */}
