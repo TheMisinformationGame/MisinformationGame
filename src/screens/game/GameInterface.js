@@ -323,6 +323,7 @@ class CommentSubmissionRow extends MountAwareComponent {
         if (this.isValidValue(value)) {
             this.props.submit(value);
         } else {
+            this.props.submit(null);
             // If the ID is invalid, display the error.
             this.setState({
                 ...this.state,
