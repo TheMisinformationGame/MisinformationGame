@@ -116,7 +116,12 @@ export class GameRules extends ActiveGameScreen {
                         nextPostEnabled={false}
                         progressPercentage = {0}
                         />
-
+                    {study.displayProgress && 
+                    <p className="leading-5 my-4">
+                        Your progress is indicated through a <b><i>Percentage</i></b> value.
+                        This will indicate how many posts you have left to react to. 
+                    </p>
+                    }
                     {study.displayFollowers &&
                     <p className="leading-5 my-4">
                         Your <b><i>follower count</i></b> is the number of other users
@@ -138,6 +143,7 @@ export class GameRules extends ActiveGameScreen {
                         </span> for the 90-100 range.
                     </p>
                     }
+
                 </div>
 
                 <ContinueBanner to={target} condition={true} delay={continueDelaySeconds} />
