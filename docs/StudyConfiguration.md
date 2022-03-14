@@ -340,8 +340,47 @@ It is _optional_, so if you do not wish to show participants
 an introduction before they are shown the game rules, then 
 leave this page blank.
 
+<h3 id="pages-rules">
+    2.4.3. Game Rules
+</h3>
+This page will be shown to participants after they have
+viewed the introduction before the game rules. This page
+is intended to be used to explain the rules of the game
+to participants in your study. This page is _optional_,
+so if you do not wish to show participants any game rules,
+then leave this page blank.
+
+The **Game Rules** page also supports several placeholders
+to include icons and example UI elements in the page. The
+placeholders can be included anywhere in this page's content,
+and they will be replaced by their corresponding UI elements
+for participants. For example, if you type 
+{% raw %}`{{LIKE}}`{% endraw %}
+anywhere in the content of the page, then it will be replaced
+by the like icon.
+
+The available placeholders are:
+- {% raw %}`{{LIKE}}`{% endraw %}:
+  The Like reaction icon.
+- {% raw %}`{{DISLIKE}}`{% endraw %}:
+  The Dislike reaction icon.
+- {% raw %}`{{SHARE}}`{% endraw %}:
+  The Share reaction icon.
+- {% raw %}`{{Flag}}`{% endraw %}:
+  The Flag reaction icon.
+- {% raw %}`{{ENABLED-POST-REACTIONS}}`{% endraw %}:
+  All the available reactions for posts displayed in a line,
+  including Skip Post.
+- {% raw %}`{{ENABLED-COMMENT-REACTIONS}}`{% endraw %}:
+  All the available reactions for comments displayed in a line.
+- {% raw %}`{{COMMENT-ENTRY-EXAMPLE}}`{% endraw %}:
+  An example comment entry box for users submitting their
+  own comments.
+- {% raw %}`{{YOUR-PROGRESS-EXAMPLE}}`{% endraw %}:
+  An example Your Progress box with placeholder values.
+
 <h3 id="pages-intro-after-rules">
-    2.4.3. Introduction after game rules
+    2.4.4. Introduction after game rules
 </h3>
 This page will be shown to participants after they have
 been shown the rules of the game. This page can also be 
@@ -350,7 +389,7 @@ wish to show participants an introduction after they are
 shown the game rules, then leave this page blank.
 
 <h3 id="pages-debriefing">
-    2.4.4. Debriefing
+    2.4.5. Debriefing
 </h3>
 This page will be shown to participants after they have
 completed the study. This page is not optional. An
