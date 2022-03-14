@@ -255,6 +255,52 @@ class Comment extends Component {
 }
 
 
+/**
+ * TODO : This should really share the code from CommentSubmissionRow,
+ *        but I don't have the time to do that right now...
+ */
+export class ExampleCommentEntryBox extends Component {
+    render() {
+        return (
+            <div className="flex flex-col py-2 px-3 max-w-sm mb-1 bg-white shadow rounded-lg border border-gray-300 mt-2">
+                <div className="flex flex-col mb-1.5">
+                    <div className="flex flex-row justify-between w-full text-gray-800 mb-1">
+                        <span>Add Comment: </span>
+                    </div>
+                    <textarea
+                        className="w-full px-3 py-2 border border-gray-400 rounded-md justify-self-center bg-gray-100"
+                        style={{minHeight: "2.8em", height: "6em", maxHeight: "2.8em"}}
+                        placeholder="Write your comment here"
+                        rows="1"
+                        value="Write your comment here"
+                        disabled>
+                    </textarea>
+
+                    <div className="transition-height duration-300 ease-out overflow-hidden h-10">
+                        <div className={
+                            "h-8 inline-block px-3 py-1.5 mt-2 mr-1 rounded-md text-white text-sm select-none " +
+                            " cursor-pointer bg-gray-500 "}
+                             title="Click to submit your message as a comment">
+
+                            Submit Comment
+                        </div>
+
+                        <div className={
+                            "h-8 inline-block px-3 py-1.5 mt-2 rounded-md text-white text-sm select-none " +
+                            " cursor-pointer bg-gray-400 "}
+                             title="Click to submit your message as a comment"
+                             onClick={() => this.handleCancelClick()}>
+
+                            Cancel
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+
 class CommentSubmissionRow extends MountAwareComponent {
     constructor(props) {
         super(props);
@@ -383,7 +429,7 @@ class CommentSubmissionRow extends MountAwareComponent {
                 }?
             </ConfirmationDialog>
 
-            <div className={"flex flex-col py-1 px-2 mb-1 bg-white shadow" +
+            <div className={"flex flex-col py-1 px-2 mb-1 bg-white shadow " +
                 (this.props.className || "")}>
                 <div className="flex flex-col mb-1.5">
                     <div className="flex flex-row justify-between w-full text-gray-700 mb-1">

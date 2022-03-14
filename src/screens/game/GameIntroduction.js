@@ -4,7 +4,7 @@ import {Redirect} from "react-router-dom";
 import React from "react";
 
 
-class GameIntroductionScreen extends ActiveGameScreen {
+export class GameIntroductionScreen extends ActiveGameScreen {
     constructor(props) {
         super(props, true);
     }

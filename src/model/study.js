@@ -328,6 +328,8 @@ export class Study {
 
     preIntro; // HTML String
     preIntroDelaySeconds; // Number
+    rules; // HTML String
+    rulesDelaySeconds; // Number
     postIntro; // HTML String
     postIntroDelaySeconds; // Number
     debrief; // HTML String
@@ -356,6 +358,7 @@ export class Study {
             postEnabledReactions, commentEnabledReactions,
             genCompletionCode, completionCodeDigits,
             preIntro, preIntroDelaySeconds,
+            rules, rulesDelaySeconds,
             postIntro, postIntroDelaySeconds,
             debrief, sourcePostSelectionMethod,
             sources, posts) {
@@ -404,6 +407,8 @@ export class Study {
 
         doTypeCheck(preIntro, "string", "Study Introduction before Game Rules");
         doTypeCheck(preIntroDelaySeconds, "number", "Study Introduction before Game Rules Continue Delay");
+        doTypeCheck(rules, "string", "Game Rules");
+        doTypeCheck(rulesDelaySeconds, "number", "Game Rules Continue Delay");
         doTypeCheck(postIntro, "string", "Study Introduction after Game Rules");
         doTypeCheck(postIntroDelaySeconds, "number", "Study Introduction after Game Rules Continue Delay");
         doTypeCheck(debrief, "string", "Study Debrief");
@@ -444,6 +449,8 @@ export class Study {
 
         this.preIntro = preIntro;
         this.preIntroDelaySeconds = preIntroDelaySeconds;
+        this.rules = rules;
+        this.rulesDelaySeconds = rulesDelaySeconds;
         this.postIntro = postIntro;
         this.postIntroDelaySeconds = postIntroDelaySeconds;
         this.debrief = debrief;
@@ -451,6 +458,24 @@ export class Study {
         this.sourcePostSelectionMethod = sourcePostSelectionMethod;
         this.sources = sources;
         this.posts = posts;
+    }
+
+    static convertEnabledReactionsToList(enabledReactions) {
+        const enabled = [];
+        for (let key in enabledReactions) {
+            if (enabledReactions.hasOwnProperty(key) && enabledReactions[key]) {
+                enabled.push(key);
+            }
+        }
+        return enabled;
+    }
+
+    getPostEnabledReactions() {
+        return Study.convertEnabledReactionsToList(this.postEnabledReactions);
+    }
+
+    getCommentEnabledReactions() {
+        return Study.convertEnabledReactionsToList(this.commentEnabledReactions);
     }
 
     areUserCommentsRequired() {
@@ -599,6 +624,8 @@ export class Study {
             "completionCodeDigits": this.completionCodeDigits,
             "preIntro": this.preIntro,
             "preIntroDelaySeconds": this.preIntroDelaySeconds,
+            "rules": this.rules,
+            "rulesDelaySeconds": this.rulesDelaySeconds,
             "postIntro": this.postIntro,
             "postIntroDelaySeconds": this.postIntroDelaySeconds,
             "debrief": this.debrief,
@@ -623,6 +650,7 @@ export class Study {
             json["postEnabledReactions"], json["commentEnabledReactions"],
             json["genCompletionCode"], json["completionCodeDigits"],
             json["preIntro"], json["preIntroDelaySeconds"],
+            json["rules"] || "", json["rulesDelaySeconds"] || 0,
             json["postIntro"], json["postIntroDelaySeconds"],
             json["debrief"],
             SourcePostSelectionMethod.fromJSON(json["sourcePostSelectionMethod"]),

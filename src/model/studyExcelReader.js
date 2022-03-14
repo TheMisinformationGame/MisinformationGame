@@ -112,11 +112,15 @@ const V1 = {
         preIntroDelaySeconds: new WorkbookLoc(
             "Introduction before Game Rules Continue Delay (Seconds)", "Pages", "D3", ExcelNumber
         ),
-        postIntro: new WorkbookLoc("Introduction after Game Rules", "Pages", "B19", ExcelString),
-        postIntroDelaySeconds: new WorkbookLoc(
-            "Introduction after Game Rules Continue Delay (Seconds)", "Pages", "D18", ExcelNumber
+        rules: new WorkbookLoc("Game Rules", "Pages", "B19", ExcelString),
+        rulesDelaySeconds: new WorkbookLoc(
+            "Game Rules Continue Delay (Seconds)", "Pages", "D18", ExcelNumber
         ),
-        debrief: new WorkbookLoc("Debrief", "Pages", "B33", ExcelString),
+        postIntro: new WorkbookLoc("Introduction after Game Rules", "Pages", "B34", ExcelString),
+        postIntroDelaySeconds: new WorkbookLoc(
+            "Introduction after Game Rules Continue Delay (Seconds)", "Pages", "D33", ExcelNumber
+        ),
+        debrief: new WorkbookLoc("Debrief", "Pages", "B48", ExcelString),
     },
 
     sourcePostSelection: {
@@ -606,6 +610,8 @@ function readV1Study(workbook) {
         (genCompletionCode ? readCellWithDefault(workbook, V1.general.advanced.completionCodeDigits, 4) : 0),
         readCellWithDefault(workbook, V1.pages.preIntro, ""),
         readCellWithDefault(workbook, V1.pages.preIntroDelaySeconds, 0),
+        readCellWithDefault(workbook, V1.pages.rules, ""),
+        readCellWithDefault(workbook, V1.pages.rulesDelaySeconds, 0),
         readCellWithDefault(workbook, V1.pages.postIntro, ""),
         readCellWithDefault(workbook, V1.pages.postIntroDelaySeconds, 0),
         readCell(workbook, V1.pages.debrief),
