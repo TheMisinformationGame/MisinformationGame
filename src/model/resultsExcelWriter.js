@@ -112,6 +112,10 @@ function constructWorkbook(study, results, problems) {
 
         for (let stateIndex = 0; stateIndex < game.states.length; stateIndex++) {
             const state = game.states[stateIndex];
+            const likes = state.currentPost.numberOfReactions.like;
+            const dislikes = state.currentPost.numberOfReactions.dislike;
+            const shares = state.currentPost.numberOfReactions.share;
+            const flags = state.currentPost.numberOfReactions.flag;
             const interaction = participant.postInteractions[stateIndex];
             const beforeCredibility = Math.round(participant.credibilityHistory[stateIndex]);
             const afterCredibility = Math.round(participant.credibilityHistory[stateIndex + 1]);
@@ -128,10 +132,10 @@ function constructWorkbook(study, results, problems) {
                 sourceCredibility: Math.round(state.currentSource.credibility),
 
                 postHeadline: state.currentPost.post.headline || "",
-                postLikes: state.currentPost.numberOfReactions.like || "",
-                postDislikes: state.currentPost.numberOfReactions.dislike || "",
-                postShares: state.currentPost.numberOfReactions.share || "",
-                postFlags: state.currentPost.numberOfReactions.flag || "",
+                postLikes: (likes === undefined ? "" : likes),
+                postDislikes: (dislikes === undefined ? "" : dislikes),
+                postShares: (shares === undefined ? "" : shares),
+                postFlags: (flags === undefined ? "" : flags),
 
                 reaction: interaction.postReaction || "",
                 comment: interaction.comment || "",
@@ -181,6 +185,8 @@ function constructWorkbook(study, results, problems) {
 
             for (let commentIndex = 0; commentIndex < state.currentPost.comments.length; ++commentIndex) {
                 const comment = state.currentPost.comments[commentIndex];
+                const likes = comment.numberOfReactions.like;
+                const dislikes = comment.numberOfReactions.dislike;
                 const reaction = interaction.findCommentReaction(commentIndex);
                 commentsWorksheet.addRow({
                     sessionID: game.sessionID,
@@ -190,8 +196,8 @@ function constructWorkbook(study, results, problems) {
 
                     commentOrder: (comment.comment.index + 1),
                     commentContent: comment.comment.message,
-                    commentLikes: comment.numberOfReactions["like"],
-                    commentDislikes: comment.numberOfReactions["dislike"],
+                    commentLikes: (likes === undefined ? "" : likes),
+                    commentDislikes: (dislikes === undefined ? "" : dislikes),
 
                     reaction: (reaction ? reaction.reaction : ""),
                     reactTime: (reaction ? reaction.reactTimeMS : "")
