@@ -340,6 +340,17 @@ pressing **_Alt + Enter_**. This is equivalent to typing
 If there are not as many formatting options as you need,
 then you can also include HTML markup in the text.
 
+For example, links can be included within pages through
+the use of HTML `<a>` tags. For example,
+the following creates a link
+[GitHub](https://github.com/TheMisinformationGame/MisinformationGame)
+that links to The Misinformation Game's GitHub page,
+```html
+<a href="https://github.com/TheMisinformationGame/MisinformationGame">
+  GitHub
+</a>
+```
+
 
 <h3 id="pages-intro-before-rules">
     2.4.2. Introduction before game rules
