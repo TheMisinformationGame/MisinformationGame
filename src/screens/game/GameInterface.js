@@ -28,15 +28,7 @@ class SourceElement extends Component {
         const source = this.props.source;
         const text_xl = (small ? "text-lg" : "text-xl");
 
-        const sourceStyle = source.source.style;
-        const fontColour = sourceStyle[0];
-        const gradient = "linear-gradient(to bottom right, " + sourceStyle[1] + ", " + sourceStyle[2] + ")"
-        const style = {
-            color: fontColour,
-            // Sets the first colour as a fallback if the gradient doesn't work.
-            background: sourceStyle[1] + " " + gradient
-        };
-
+        const sourceStyle = (source.study.genRandomDefaultAvatars ? source.source.style : {});
         return (
             <div className={"flex " + (this.props.className || "")}>
                 <div className={"mr-2 " + (small ? "h-8" : "h-12")}>
@@ -55,7 +47,7 @@ class SourceElement extends Component {
                         <div className={
                             "flex rounded-full object-cover shadow justify-center items-center text-2xl text-bold " +
                             (small ? "h-8 w-8" : "h-12 w-12")
-                        } style={style}>
+                        } style={sourceStyle}>
                             <span>
                                 {source.source.name[0]}
                             </span>
@@ -932,9 +924,9 @@ export class GameScreen extends ActiveGameScreen {
         const madePostReaction = (this.state.interactions.postReaction !== null);
         const madeUserComment = (this.state.interactions.comment !== null);
 
-        const currentStateNumber = participant.postInteractions.length;
-        const totalPosts = game.study.posts.length;
-        const progressPercentage = currentStateNumber !== 0  ? (Math.round(currentStateNumber/totalPosts * 100)) : 0;
+        const currentPostNumber = participant.postInteractions.length;
+        const totalPosts = game.study.length;
+        const progressPercentage = Math.round(currentPostNumber / totalPosts * 100);
 
         let nextPostEnabled = false;
         let nextPostError = "";

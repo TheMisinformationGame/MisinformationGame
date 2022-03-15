@@ -7,24 +7,13 @@ import {odiff} from "../utils/odiff";
 import {getUnixEpochTimeSeconds} from "../utils/time";
 
 
-/**
- * First element: Font colour.
- * Second element: Gradient from colour.
- * Third element: Gradient to colour.
- */
-const AVAILABLE_SOURCE_STYLES = [
-    ["#000000", "#CAC531", "#F3F9A7"],
-    ["#000000", "#fc4a1a", "#f7b733"],
-    ["#000000", "#74ebd5", "#ACB6E5"],
-    ["#000000", "#22c1c3", "#fdbb2d"],
-    ["#000000", "#ff9966", "#ff5e62"],
-    ["#000000", "#C9D6FF", "#E2E2E2"],
-    ["#000000", "#d9a7c7", "#fffcdc"],
-    ["#000000", "#0cebeb", "#20e3b2"],
-    ["#000000", "#36D1DC", "#5B86E5"],
-    ["#ffffff", "#642B73", "#C6426E"],
-    ["#ffffff", "#CB356B", "#BD3F32"],
-    ["#ffffff", "#283c86", "#45a247"]
+export const SOURCE_AVAILABLE_SOURCE_STYLES = [
+    {backgroundColor: "#74ebd5"},
+    {backgroundColor: "#ffb48f"},
+    {backgroundColor: "#c9d3f2"},
+    {backgroundColor: "#e3b6d3"},
+    {backgroundColor: "#8fd186"},
+    {backgroundColor: "#E29587"}
 ];
 
 
@@ -36,7 +25,7 @@ export class Source {
     id; // String
     name; // String
     avatar; // Avatar?
-    style; // [String, String, String]
+    style; // object
     maxPosts; // Number
     followers; // TruncatedNormalDistribution
     credibility; // TruncatedNormalDistribution
@@ -88,7 +77,7 @@ export class Source {
     }
 
     static randomStyle() {
-        return randElement(AVAILABLE_SOURCE_STYLES);
+        return randElement(SOURCE_AVAILABLE_SOURCE_STYLES);
     }
 }
 
@@ -355,6 +344,7 @@ export class Study {
 
     genCompletionCode; // Boolean
     completionCodeDigits; // Number
+    genRandomDefaultAvatars; // Boolean
 
     preIntro; // HTML String
     preIntroDelaySeconds; // Number
@@ -387,6 +377,7 @@ export class Study {
             displayProgress, displayNumberOfReactions,
             postEnabledReactions, commentEnabledReactions,
             genCompletionCode, completionCodeDigits,
+            genRandomDefaultAvatars,
             preIntro, preIntroDelaySeconds,
             rules, rulesDelaySeconds,
             postIntro, postIntroDelaySeconds,
@@ -434,6 +425,7 @@ export class Study {
 
         doTypeCheck(genCompletionCode, "boolean", "Whether the study generates a completion code");
         doTypeCheck(completionCodeDigits, "number", "Study Completion Code Digits");
+        doTypeCheck(genRandomDefaultAvatars, "boolean", "Whether the study generates random default avatars for sources");
 
         doTypeCheck(preIntro, "string", "Study Introduction before Game Rules");
         doTypeCheck(preIntroDelaySeconds, "number", "Study Introduction before Game Rules Continue Delay");
@@ -476,6 +468,7 @@ export class Study {
 
         this.genCompletionCode = genCompletionCode;
         this.completionCodeDigits = completionCodeDigits;
+        this.genRandomDefaultAvatars = genRandomDefaultAvatars;
 
         this.preIntro = preIntro;
         this.preIntroDelaySeconds = preIntroDelaySeconds;
@@ -652,6 +645,7 @@ export class Study {
             "commentEnabledReactions": this.commentEnabledReactions,
             "genCompletionCode": this.genCompletionCode,
             "completionCodeDigits": this.completionCodeDigits,
+            "genRandomDefaultAvatars": this.genRandomDefaultAvatars,
             "preIntro": this.preIntro,
             "preIntroDelaySeconds": this.preIntroDelaySeconds,
             "rules": this.rules,
@@ -666,6 +660,7 @@ export class Study {
     }
 
     static fromJSON(id, json) {
+        const randDefaultAvatars = json["genRandomDefaultAvatars"];
         return new Study(
             id, json["authorID"], json["authorName"],
             json["name"], json["description"],
@@ -679,6 +674,7 @@ export class Study {
             json["displayProgress"], json["displayNumberOfReactions"],
             json["postEnabledReactions"], json["commentEnabledReactions"],
             json["genCompletionCode"], json["completionCodeDigits"],
+            (randDefaultAvatars === undefined ? true : randDefaultAvatars),
             json["preIntro"], json["preIntroDelaySeconds"],
             json["rules"] || "", json["rulesDelaySeconds"] || 0,
             json["postIntro"], json["postIntroDelaySeconds"],

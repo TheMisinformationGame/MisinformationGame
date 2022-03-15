@@ -105,6 +105,7 @@ const V1 = {
             reactDelaySeconds: new WorkbookLoc("Reaction Delay (Seconds)", "General", "D29", ExcelNumber),
             genCompletionCode: new WorkbookLoc("Generate Completion Code", "General", "D30", ExcelBoolean),
             completionCodeDigits: new WorkbookLoc("Completion Code Digits", "General", "D31", ExcelNumber),
+            genRandDefaultAvatars: new WorkbookLoc("Generate Random Default Avatars", "General", "D32", ExcelBoolean),
         }
     },
 
@@ -610,6 +611,7 @@ function readV1Study(workbook) {
         },
         genCompletionCode,
         (genCompletionCode ? readCellWithDefault(workbook, V1.general.advanced.completionCodeDigits, 4) : 0),
+        readCellWithDefault(workbook, V1.general.advanced.genRandDefaultAvatars, true),
         readCellWithDefault(workbook, V1.pages.preIntro, ""),
         readCellWithDefault(workbook, V1.pages.preIntroDelaySeconds, 0),
         readCellWithDefault(workbook, V1.pages.rules, ""),
