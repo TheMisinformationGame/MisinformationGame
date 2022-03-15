@@ -91,14 +91,15 @@ export function convertRichTextToHTML(richText, themeColours) {
         const css = constructCSS(cssParams);
 
         const lines = text.split("\n");
+
+        html += "<span style=\"" + css + "\">"
         for (let lineIndex = 0; lineIndex < lines.length; ++lineIndex) {
             if (lineIndex > 0) {
                 html += "<br/>";
             }
-            html += "<span style=\"" + css + "\">"
             html += lines[lineIndex];
-            html += "</span>";
         }
+        html += "</span>";
     }
     return html;
 }
