@@ -344,11 +344,11 @@ leave this page blank.
     2.4.3. Game Rules
 </h3>
 This page will be shown to participants after they have
-viewed the introduction before the game rules. This page
-is intended to be used to explain the rules of the game
-to participants in your study. This page is _optional_,
-so if you do not wish to show participants any game rules,
-then leave this page blank.
+viewed the introduction before the game rules page. This
+page is intended to be used to explain the rules of the game
+to participants. This page is _optional_, so if you do not
+wish to show participants any game rules, then leave this
+page blank.
 
 The **Game Rules** page also supports several placeholders
 to include icons and example UI elements in the page. The
@@ -358,6 +358,14 @@ for participants. For example, if you type
 {% raw %}`{{LIKE}}`{% endraw %}
 anywhere in the content of the page, then it will be replaced
 by the like icon.
+
+The only limitation is that the entire placeholder should have
+the same formatting (e.g. font size, colour, or bold). If the
+placeholder has inconsistent formatting, then it may not be
+detected and replaced with the UI elements. For example, if
+{% raw %}`{{LI`{% endraw %} is bold, and
+{% raw %}`KE}}`{% endraw %} is not, the placeholder will not
+be replaced.
 
 The available placeholders are:
 - {% raw %}`{{LIKE}}`{% endraw %}:
