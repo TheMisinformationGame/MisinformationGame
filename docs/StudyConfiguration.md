@@ -302,7 +302,7 @@ code (e.g. If this value is 4, then completion codes
 from 1000 to 9999 will be generated). The number of
 digits in completion codes must be at least 1.
 
-<h6 id="general-completion-code-digits"><span class="param-name">Generate Random Default Avatars</span></h6>
+<h6 id="general-generate-random-default-avatars"><span class="param-name">Generate Random Default Avatars</span></h6>
 Whether to use a random background colour for the
 default source avatars. If set to "No", the default
 avatars of sources will all have a white background.

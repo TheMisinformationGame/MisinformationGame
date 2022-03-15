@@ -54,17 +54,18 @@ class SourceElement extends Component {
                         </div>}
                 </div>
                 <div>
-                    <div className="flex">
+                    <div className={"flex " + (small || source.study.displayFollowers ? "" : "pt-1")}>
                         <p className={text_xl}>{source.source.name}</p>
-                        <CredibilityLabel credibility={source.credibility} className={text_xl} />
+                        {source.study.displayCredibility &&
+                            <CredibilityLabel credibility={source.credibility} className={text_xl} />}
                     </div>
 
-                    {!small &&
-                    <div className="flex">
-                        <p className="text-sm">
-                            {Math.round(source.followers)}&nbsp;followers
-                        </p>
-                    </div>}
+                    {!small && source.study.displayFollowers &&
+                        <div className="flex">
+                            <p className="text-sm">
+                                {Math.round(source.followers)}&nbsp;followers
+                            </p>
+                        </div>}
                 </div>
             </div>
         );
