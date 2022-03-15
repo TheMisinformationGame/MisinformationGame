@@ -46,6 +46,13 @@ export function randDigits(digits) {
 }
 
 /**
+ * @return a random element from the items array.
+ */
+export function randElement(items) {
+    return items[Math.floor(Math.random() * items.length)];
+}
+
+/**
  * Returns a random element of {@param array}, with elements
  * filtered by {@param filterFn}. If there are any elements that
  * are preferred by {@param preferenceFn}, they will be selected

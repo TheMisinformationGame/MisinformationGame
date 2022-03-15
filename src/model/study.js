@@ -2,9 +2,30 @@ import {doEnumCheck, doNonNullCheck, doNullableTypeCheck, doTypeCheck, isOfType,
 import {SourcePostSelectionMethod} from "./selectionMethod";
 import {TruncatedNormalDistribution} from "./math";
 import {StudyImage, StudyImageMetadata} from "./images";
-import {randDigits} from "../utils/random";
+import {randDigits, randElement} from "../utils/random";
 import {odiff} from "../utils/odiff";
 import {getUnixEpochTimeSeconds} from "../utils/time";
+
+
+/**
+ * First element: Font colour.
+ * Second element: Gradient from colour.
+ * Third element: Gradient to colour.
+ */
+const AVAILABLE_SOURCE_STYLES = [
+    ["#000000", "#CAC531", "#F3F9A7"],
+    ["#000000", "#fc4a1a", "#f7b733"],
+    ["#000000", "#74ebd5", "#ACB6E5"],
+    ["#000000", "#22c1c3", "#fdbb2d"],
+    ["#000000", "#ff9966", "#ff5e62"],
+    ["#000000", "#C9D6FF", "#E2E2E2"],
+    ["#000000", "#d9a7c7", "#fffcdc"],
+    ["#000000", "#0cebeb", "#20e3b2"],
+    ["#000000", "#36D1DC", "#5B86E5"],
+    ["#ffffff", "#642B73", "#C6426E"],
+    ["#ffffff", "#CB356B", "#BD3F32"],
+    ["#ffffff", "#283c86", "#45a247"]
+];
 
 
 /**
@@ -15,14 +36,16 @@ export class Source {
     id; // String
     name; // String
     avatar; // Avatar?
+    style; // [String, String, String]
     maxPosts; // Number
     followers; // TruncatedNormalDistribution
     credibility; // TruncatedNormalDistribution
     truePostPercentage; // null or a Number between 0 and 1
 
-    constructor(id, name, avatar, maxPosts, followers, credibility, truePostPercentage) {
+    constructor(id, name, avatar, style, maxPosts, followers, credibility, truePostPercentage) {
         doTypeCheck(id, "string", "Source ID");
         doNullableTypeCheck(avatar, [StudyImage, StudyImageMetadata], "Source Avatar");
+        doNullableTypeCheck(style, "object", "Style");
         doTypeCheck(name, "string", "Source Name");
         doTypeCheck(maxPosts, "number", "Source Maximum Posts");
         doTypeCheck(followers, TruncatedNormalDistribution, "Source Initial Followers");
@@ -32,6 +55,7 @@ export class Source {
         this.id = id;
         this.name = name;
         this.avatar = avatar;
+        this.style = style || Source.randomStyle();
         this.maxPosts = maxPosts;
         this.followers = followers;
         this.credibility = credibility;
@@ -43,6 +67,7 @@ export class Source {
             "id": this.id,
             "name": this.name,
             "avatar": (!this.avatar ? null : this.avatar.toMetadata().toJSON()),
+            "style": this.style,
             "maxPosts": this.maxPosts,
             "followers": this.followers.toJSON(),
             "credibility": this.credibility.toJSON(),
@@ -54,11 +79,16 @@ export class Source {
         return new Source(
             json["id"], json["name"],
             (!json["avatar"] ? null : StudyImageMetadata.fromJSON(json["avatar"])),
+            json["style"],
             json["maxPosts"],
             TruncatedNormalDistribution.fromJSON(json["followers"]),
             TruncatedNormalDistribution.fromJSON(json["credibility"]),
             json["truePostPercentage"]
         );
+    }
+
+    static randomStyle() {
+        return randElement(AVAILABLE_SOURCE_STYLES);
     }
 }
 

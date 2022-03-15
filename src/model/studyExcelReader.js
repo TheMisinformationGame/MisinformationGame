@@ -17,6 +17,7 @@ import {
 } from "./selectionMethod";
 import {LinearFunction, TruncatedNormalDistribution} from "./math";
 import {StudyImage} from "./images";
+import {randElement} from "../utils/random";
 
 
 const versionCell = new WorkbookLoc("Version", "About", "M2", ExcelNumber);
@@ -400,6 +401,7 @@ function readV1Sources(workbook, study) {
                     sourceID,
                     readCell(workbook, V1.source.name.row(row)),
                     avatar,
+                    Source.randomStyle(),
                     readCellWithDefault(workbook, V1.source.maxPosts.row(row), defaults.maxPosts),
                     followers, credibility,
                     truePostPercentage

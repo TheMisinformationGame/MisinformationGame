@@ -22,11 +22,21 @@ import {UserComment} from "../../model/study";
 import {ConfirmationDialog} from "../../components/ConfirmationDialog";
 
 
-class Source extends Component {
+class SourceElement extends Component {
     render() {
         const small = !!this.props.small;
         const source = this.props.source;
         const text_xl = (small ? "text-lg" : "text-xl");
+
+        const sourceStyle = source.source.style;
+        const fontColour = sourceStyle[0];
+        const gradient = "linear-gradient(to bottom right, " + sourceStyle[1] + ", " + sourceStyle[2] + ")"
+        const style = {
+            color: fontColour,
+            // Sets the first colour as a fallback if the gradient doesn't work.
+            background: sourceStyle[1] + " " + gradient
+        };
+
         return (
             <div className={"flex " + (this.props.className || "")}>
                 <div className={"mr-2 " + (small ? "h-8" : "h-12")}>
@@ -45,11 +55,10 @@ class Source extends Component {
                         <div className={
                             "flex rounded-full object-cover shadow justify-center items-center text-2xl text-bold " +
                             (small ? "h-8 w-8" : "h-12 w-12")
-                        }>
+                        } style={style}>
                             <span>
                                 {source.source.name[0]}
                             </span>
-                            {/* @Danny Marwick fill in avatar placeholder here */}
                         </div>}
                 </div>
                 <div>
@@ -611,7 +620,7 @@ class PostComponent extends Component {
                 <div className="bg-white shadow">
                     {/* The source of the post. */}
                     <div className="flex p-2 bg-white">
-                        <Source source={state.currentSource} />
+                        <SourceElement source={state.currentSource} />
                     </div>
 
                     {/* The content of the post. */}
