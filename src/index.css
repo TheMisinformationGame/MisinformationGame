@@ -10,10 +10,10 @@ html, body, #root {
     --tw-scale-x: -1;
 }
 
-a {
+p a {
     color: #006be2;
     text-decoration: underline;
 }
-a:hover, a:active {
+p a:hover, p a:active {
     color: #16418A
 }
