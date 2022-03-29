@@ -953,6 +953,8 @@ export class GameScreen extends ActiveGameScreen {
         } else if (study.areUserCommentsRequired()) {
             nextPostEnabled = madeUserComment;
             nextPostError = "Comment on the post to continue";
+        } else {
+            nextPostEnabled = true;
         }
 
         return (
