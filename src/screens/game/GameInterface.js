@@ -319,7 +319,8 @@ class CommentSubmissionRow extends MountAwareComponent {
     };
 
     isValidValue(value) {
-        return value && value.trim() !== "";
+        const requiredLength = this.props.study.minimumCommentLength;
+        return value && value.trim().length >= requiredLength;
     }
 
     getInitialValue() {
@@ -412,7 +413,8 @@ class CommentSubmissionRow extends MountAwareComponent {
             "Please write your comment in the entry box above" :
             "Your comment must be at least " + requiredLength + " characters");
 
-        const submitEnabled = this.state.isEditingComment || (this.props.enabled && this.state.enabled);
+        const submitVisible = this.state.isEditingComment || (this.props.enabled && this.state.enabled);
+        const submitEnabled = !isError && submitVisible;
 
         return (
             <>
@@ -443,7 +445,7 @@ class CommentSubmissionRow extends MountAwareComponent {
                         className={
                             "transition-max-height duration-300 ease-out w-full px-3 py-2 " +
                             "border border-gray-400 rounded-md justify-self-center bg-gray-100 "}
-                        style={{minHeight: "2.8em", height: "6em", maxHeight: submitEnabled ? "12em" : "2.8em"}}
+                        style={{minHeight: "2.8em", height: "6em", maxHeight: submitVisible ? "12em" : "2.8em"}}
                         placeholder="Write your comment here"
                         rows="1"
                         value={this.state.value}
@@ -453,7 +455,7 @@ class CommentSubmissionRow extends MountAwareComponent {
                         <ErrorLabel value={error} className="mt-1" />}
 
                     <div className={"transition-height duration-300 ease-out overflow-hidden " +
-                                    (submitEnabled ? " h-10 " : " h-0 ")}>
+                                    (submitVisible ? " h-10 " : " h-0 ")}>
                         <div className={
                                     "h-8 inline-block px-3 py-1.5 mt-2 mr-1 rounded-md text-white text-sm select-none " +
                                     (submitEnabled ? " cursor-pointer bg-blue-500 active:bg-blue-600 hover:bg-blue-600 "
