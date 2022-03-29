@@ -850,9 +850,12 @@ export class Game {
         const selectedPost = GamePost.findById(currentPosts, sourcePostPair[1]);
 
         // Adjust the state of the source and post.
+        const credibilityChangeDist = selectedPost.post.changesToCredibility.share;
+        const followersChangeDist = selectedPost.post.changesToFollowers.share;
         const newSource = selectedSource.adjustAfterPost(
-            selectedPost.post.changesToCredibility.share.sample(),
-            selectedPost.post.changesToFollowers.share.sample()
+            // These may be missing if shares are disabled.
+            (credibilityChangeDist ? credibilityChangeDist.sample() : 0),
+            (followersChangeDist ? followersChangeDist.sample() : 0)
         );
         const newPost = selectedPost.adjustAfterShown();
 
