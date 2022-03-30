@@ -382,7 +382,7 @@ anywhere in the content of the page, then it will be replaced
 by the like icon.
 
 The only limitation is that the entire placeholder should have
-the same formatting (e.g. font size, colour, or bold). If the
+the same formatting (e.g. font size, colour, and bold). If the
 placeholder has inconsistent formatting, then it may not be
 detected and replaced with the UI elements. For example, if
 {% raw %}`{{LI`{% endraw %} is bold, and
@@ -424,6 +424,20 @@ shown the game rules, then leave this page blank.
 This page will be shown to participants after they have
 completed the study. This page is not optional. An
 example of this debriefing screen is shown below,
+
+The **Debriefing** page also supports the placeholder
+{% raw %}`{{COMPLETION-CODE}}`{% endraw %} to include the completion code
+of the participant in the page. Wherever the placeholder
+is typed in the page's contents, it will be replaced
+by the completion code reveal widget.
+
+The only limitation is that the entire placeholder should have
+the same formatting (e.g. font size, colour, and bold). If the
+placeholder has inconsistent formatting, then it may not be
+detected and replaced with the UI elements. For example, if
+{% raw %}`{{COMPLETION`{% endraw %} is bold, and
+{% raw %}`-CODE}}`{% endraw %} is not, the placeholder will not
+be replaced.
 
 <img src="screenshots/example-debriefing-no-border.png" alt="Example debriefing page" height="140" />
 

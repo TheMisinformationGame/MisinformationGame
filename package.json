@@ -30,7 +30,7 @@
   "scripts": {
     "start": "NODE_OPTIONS=--openssl-legacy-provider craco start",
     "emulators": "npx firebase emulators:start --import=\"test/firebase-dev-environment\"",
-    "docs": "cd docs && bundle-2.7 exec jekyll serve --baseurl=\"\" -o --watch",
+    "docs": "cd docs && bundle exec jekyll serve --baseurl=\"\" -o --watch",
     "build": "NODE_OPTIONS=--openssl-legacy-provider craco build",
     "test": "NODE_OPTIONS=--openssl-legacy-provider craco test",
 
