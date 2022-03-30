@@ -106,16 +106,25 @@ export class GameDebrief extends ActiveGameScreen {
 
     renderWithStudyAndGame(study, game) {
         let debriefHTML = study.debrief;
+        let placeCompletionCodeAtEnd = false;
 
         if (study.genCompletionCode) {
-            debriefHTML = replaceHTMLPlaceholder(debriefHTML, "{{COMPLETION-CODE}}", () => {
-                return <CompletionCodeWidget completionCode={game.completionCode} />
+            const ret = replaceHTMLPlaceholder(debriefHTML, "{{COMPLETION-CODE}}", () => {
+                return <CompletionCodeWidget completionCode={game.completionCode} />;
             }, 1);
+            debriefHTML = ret.content;
+
+            // If there are no occurrences, then place the completion
+            // code at the bottom of the page.
+            placeCompletionCodeAtEnd = (ret.occurrences === 0);
         }
 
         return (
             <div className="m-1 bg-white p-10 max-w-4xl ml-auto mr-auto">
                 <p className="leading-tight" dangerouslySetInnerHTML={{__html: debriefHTML}} />
+
+                {placeCompletionCodeAtEnd &&
+                    <CompletionCodeWidget completionCode={game.completionCode} />}
             </div>
         );
     }

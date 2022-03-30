@@ -24,10 +24,10 @@ export class GameRules extends GameIntroductionScreen {
         );
         const flag = <FlagIcon className="text-gray-700 mr-2" key="flag" />;
 
-        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{LIKE}}", () => like);
-        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{DISLIKE}}", () => dislike);
-        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{SHARE}}", () => share);
-        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{FLAG}}", () => flag);
+        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{LIKE}}", () => like).content;
+        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{DISLIKE}}", () => dislike).content;
+        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{SHARE}}", () => share).content;
+        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{FLAG}}", () => flag).content;
 
         rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{ENABLED-POST-REACTIONS}}", () => {
             const postEnabledReactions = study.getPostEnabledReactions();
@@ -62,7 +62,7 @@ export class GameRules extends GameIntroductionScreen {
                     {content}
                 </div>
             </div>;
-        });
+        }).content;
 
         rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{ENABLED-COMMENT-REACTIONS}}", () => {
             const postEnabledReactions = study.getCommentEnabledReactions();
@@ -93,11 +93,11 @@ export class GameRules extends GameIntroductionScreen {
                     {content}
                 </div>
             </div>;
-        });
+        }).content;
 
         rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{COMMENT-ENTRY-EXAMPLE}}", () => {
             return <ExampleCommentEntryBox />;
-        });
+        }).content;
 
         rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{YOUR-PROGRESS-EXAMPLE}}", () => {
             return <div className="inline-block w-full mb-2">
@@ -113,7 +113,7 @@ export class GameRules extends GameIntroductionScreen {
                     nextPostEnabled={false}
                     progressPercentage = {0} />
             </div>;
-        });
+        }).content;
 
         return rulesHTML;
     }

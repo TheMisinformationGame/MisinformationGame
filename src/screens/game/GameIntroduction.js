@@ -14,16 +14,21 @@ import {renderToStaticMarkup} from "react-dom/server";
  */
 export function replaceHTMLPlaceholder(rulesHTML, placeholder, domGeneratorFn, max) {
     max = max || 0;
-    if (!rulesHTML.includes(placeholder))
-        return rulesHTML;
 
-    const placeholderHTML = renderToStaticMarkup(domGeneratorFn());
-    let index = 0;
-    do {
+    let placeholderHTML = null;
+    let occurrences = 0;
+    while ((max <= 0 || occurrences < max) && rulesHTML.includes(placeholder)) {
+        if (placeholderHTML === null) {
+            placeholderHTML = renderToStaticMarkup(domGeneratorFn());
+        }
         rulesHTML = rulesHTML.replace(placeholder, placeholderHTML)
-        index += 1;
-    } while ((max <= 0 || index < max) && rulesHTML.includes(placeholder));
-    return rulesHTML;
+        occurrences += 1;
+    }
+
+    return {
+        content: rulesHTML,
+        occurrences: occurrences
+    };
 }
 
 
