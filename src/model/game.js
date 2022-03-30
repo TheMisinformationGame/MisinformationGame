@@ -904,11 +904,9 @@ export class Game {
             "endTime": this.endTime,
             "states": Game.statesToJSON(this.states),
             "participant": this.participant.toJSON(),
-            "dismissedPrompt": this.dismissedPrompt
+            "dismissedPrompt": this.dismissedPrompt,
+            "completionCode": this.completionCode || null  // Firebase doesn't like undefined
         };
-        if (this.completionCode !== null) {
-            json["completionCode"] = this.completionCode;
-        }
         return json;
     }
 
