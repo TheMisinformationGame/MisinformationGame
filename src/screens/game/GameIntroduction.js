@@ -2,6 +2,29 @@ import {ContinueBanner} from "../../components/ContinueButton";
 import {ActiveGameScreen} from "./ActiveGameScreen";
 import {Redirect} from "react-router-dom";
 import React from "react";
+import {renderToStaticMarkup} from "react-dom/server";
+
+
+/**
+ * Replaces all occurrences of the placeholder {@param placeholder}
+ * in {@param rulesHTML} with the DOM element returned
+ * from {@param domGeneratorFn} if {@param max} is not set. If
+ * {@param max} is set, then only up to the first {@param max}
+ * occurrences will be replaced.
+ */
+export function replaceHTMLPlaceholder(rulesHTML, placeholder, domGeneratorFn, max) {
+    max = max || 0;
+    if (!rulesHTML.includes(placeholder))
+        return rulesHTML;
+
+    const placeholderHTML = renderToStaticMarkup(domGeneratorFn());
+    let index = 0;
+    do {
+        rulesHTML = rulesHTML.replace(placeholder, placeholderHTML)
+        index += 1;
+    } while ((max <= 0 || index < max) && rulesHTML.includes(placeholder));
+    return rulesHTML;
+}
 
 
 export class GameIntroductionScreen extends ActiveGameScreen {

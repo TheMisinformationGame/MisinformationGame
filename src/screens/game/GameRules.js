@@ -4,21 +4,8 @@ import ReplyIcon from '@mui/icons-material/Reply';
 import FlagIcon from '@material-ui/icons/Flag';
 import React from "react";
 import {ParticipantProgress} from "../../components/ParticipantProgress";
-import {GameIntroductionScreen} from "./GameIntroduction";
-import {renderToStaticMarkup} from 'react-dom/server'
+import {GameIntroductionScreen, replaceHTMLPlaceholder} from "./GameIntroduction";
 import {ExampleCommentEntryBox} from "./GameInterface";
-
-
-function replacePlaceholder(rulesHTML, placeholder, domGeneratorFn) {
-    if (!rulesHTML.includes(placeholder))
-        return rulesHTML;
-
-    const placeholderHTML = renderToStaticMarkup(domGeneratorFn());
-    do {
-        rulesHTML = rulesHTML.replace(placeholder, placeholderHTML)
-    } while (rulesHTML.includes(placeholder));
-    return rulesHTML;
-}
 
 
 /**
@@ -37,12 +24,12 @@ export class GameRules extends GameIntroductionScreen {
         );
         const flag = <FlagIcon className="text-gray-700 mr-2" key="flag" />;
 
-        rulesHTML = replacePlaceholder(rulesHTML, "{{LIKE}}", () => like);
-        rulesHTML = replacePlaceholder(rulesHTML, "{{DISLIKE}}", () => dislike);
-        rulesHTML = replacePlaceholder(rulesHTML, "{{SHARE}}", () => share);
-        rulesHTML = replacePlaceholder(rulesHTML, "{{FLAG}}", () => flag);
+        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{LIKE}}", () => like);
+        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{DISLIKE}}", () => dislike);
+        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{SHARE}}", () => share);
+        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{FLAG}}", () => flag);
 
-        rulesHTML = replacePlaceholder(rulesHTML, "{{ENABLED-POST-REACTIONS}}", () => {
+        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{ENABLED-POST-REACTIONS}}", () => {
             const postEnabledReactions = study.getPostEnabledReactions();
 
             let content;
@@ -77,7 +64,7 @@ export class GameRules extends GameIntroductionScreen {
             </div>;
         });
 
-        rulesHTML = replacePlaceholder(rulesHTML, "{{ENABLED-COMMENT-REACTIONS}}", () => {
+        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{ENABLED-COMMENT-REACTIONS}}", () => {
             const postEnabledReactions = study.getCommentEnabledReactions();
 
             let content;
@@ -108,11 +95,11 @@ export class GameRules extends GameIntroductionScreen {
             </div>;
         });
 
-        rulesHTML = replacePlaceholder(rulesHTML, "{{COMMENT-ENTRY-EXAMPLE}}", () => {
+        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{COMMENT-ENTRY-EXAMPLE}}", () => {
             return <ExampleCommentEntryBox />;
         });
 
-        rulesHTML = replacePlaceholder(rulesHTML, "{{YOUR-PROGRESS-EXAMPLE}}", () => {
+        rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{YOUR-PROGRESS-EXAMPLE}}", () => {
             return <div className="inline-block w-full mb-2">
                 <ParticipantProgress
                     displayFollowers={study.displayFollowers}
