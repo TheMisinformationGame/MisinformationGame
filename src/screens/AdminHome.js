@@ -222,4 +222,3 @@ class AdminPage extends MountAwareComponent {
 }
 
 export default AdminPage;
-

@@ -214,15 +214,15 @@ function constructWorkbook(study, results, problems) {
 
     // We store participant metadata in another sheet.
     const participantWorksheet = workbook.addWorksheet("Participants");
-    participantWorksheet.columns = [
+    setWorksheetColumns(participantWorksheet, [
         {header: "Session ID", key: "sessionID", width: 24},
         {header: "Participant ID", key: "participantID", width: 24},
-        {header: "Completion Code", key: "completionCode", width: 24},
+        {header: "Completion Code", key: "completionCode", width: 24, enabled: study.genCompletionCode},
         {header: "Duration (Seconds)", key: "gameDuration", width: 24},
         {header: "Game Start Time (UTC)", key: "gameStartTime", width: 30},
         {header: "Game Finish Time (UTC)", key: "gameEndTime", width: 30},
         {header: "Study Modification Time (UTC)", key: "studyModTime", width: 36},
-    ];
+    ]);
     for(let index = 0; index < results.length; index++) {
         const game = results[index];
         const duration = game.endTime - game.startTime;

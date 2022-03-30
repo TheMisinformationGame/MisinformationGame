@@ -330,7 +330,7 @@ export class Study {
 
     requireReactions; // Boolean
     reactDelaySeconds; // Number
-    requireComments; // Boolean
+    requireComments; // String
     minimumCommentLength; // Number
     requireIdentification; // Boolean
 
@@ -553,6 +553,9 @@ export class Study {
      * Generates a random completion code string for this study.
      */
     generateRandomCompletionCode() {
+        if (!this.genCompletionCode)
+            throw new Error("Completion codes are disabled for this study");
+
         return randDigits(this.completionCodeDigits);
     }
 

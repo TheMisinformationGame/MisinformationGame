@@ -786,7 +786,9 @@ export class Game {
 
         // Generate a completion code when the game is finished.
         if (this.isFinished()) {
-            this.completionCode = this.study.generateRandomCompletionCode();
+            if (this.study.genCompletionCode) {
+                this.completionCode = this.study.generateRandomCompletionCode();
+            }
             this.endTime = getUnixEpochTimeSeconds();
         }
 
@@ -894,7 +896,7 @@ export class Game {
     }
 
     toJSON() {
-        return {
+        const json = {
             "sessionID": this.sessionID,
             "studyID": this.study.id,
             "study": this.study.toJSON(),
@@ -902,9 +904,12 @@ export class Game {
             "endTime": this.endTime,
             "states": Game.statesToJSON(this.states),
             "participant": this.participant.toJSON(),
-            "dismissedPrompt": this.dismissedPrompt,
-            "completionCode": this.completionCode
+            "dismissedPrompt": this.dismissedPrompt
         };
+        if (this.completionCode !== null) {
+            json["completionCode"] = this.completionCode;
+        }
+        return json;
     }
 
     static fromJSON(json) {
@@ -918,7 +923,7 @@ export class Game {
             Game.statesFromJSON(json["states"], study),
             GameParticipant.fromJSON(json["participant"]),
             json["dismissedPrompt"],
-            json["completionCode"]
+            json["completionCode"] || null
         );
     }
 

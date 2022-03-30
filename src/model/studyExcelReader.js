@@ -17,7 +17,6 @@ import {
 } from "./selectionMethod";
 import {LinearFunction, TruncatedNormalDistribution} from "./math";
 import {StudyImage} from "./images";
-import {randElement} from "../utils/random";
 
 
 const versionCell = new WorkbookLoc("Version", "About", "M2", ExcelNumber);
