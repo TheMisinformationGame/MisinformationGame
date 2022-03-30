@@ -99,9 +99,9 @@ class CompletionCodeWidget extends Component {
 
 
 export class GameDebrief extends ActiveGameScreen {
-    componentDidMount() {
-        super.componentDidMount();
-        CompletionCodeWidget.makeInteractive();
+    componentDidUpdate() {
+        // This must be run after every time the DOM of this component has been updated.
+        window.requestAnimationFrame(CompletionCodeWidget.makeInteractive);
     }
 
     renderWithStudyAndGame(study, game) {
