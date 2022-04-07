@@ -6,7 +6,7 @@ Xiyu Gao, Danny Marwick, Andrew Pilkington, and Yunhui Rao,
 in collaboration with Professor Ullrich Ecker.
 
 ### Example Game
-If you would like to test playing through a study created using
+If you would like to experience a study created using
 The Misinformation Game, you can access an example game at
 https://misinformation-game.web.app/study/m1v891krnanahrdi.
 You can enter any ID to access the example game.
@@ -19,12 +19,12 @@ You can enter any ID to access the example game.
   credibility scores based on participants' interactions with posts.
 - Several options for the dynamic selection of sources and posts
   to show to participants.
+- Customisable engagement metric information.
 - Configurable prompt to be shown to participants before they
   begin participating in a study.
-- Configurable introduction and debriefing screens to be shown
+- Configurable introduction, game rules, and debriefing screens to be shown
   to participants before and after they complete a study.
-- Ability to generate completion codes for participants that
-  they can use to prove they completed the study.
+- Ability to generate unique completion codes for participants.
 - Participants can access the study from desktop, tablet,
   or mobile devices.
 - Rich recording of participants' interactions to allow analysis of their behavior.
@@ -34,8 +34,7 @@ You can enter any ID to access the example game.
   ensure privacy of participants is maintained.
 
 # 🛠️ Documentation
-How the game works, the system architecture of The
-Misinformation Game, and guides to use it to conduct studies
+Information regarding how The Misinformation Game works, the system architecture, and guides to conducting studies
 can all be found at https://themisinformationgame.github.io/.
 This documentation is also available under /docs in this
 repository.
