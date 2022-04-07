@@ -55,5 +55,5 @@ start a study:**
 ![Example Study Prompt](docs/screenshots/example-prompt.png)
 
 **Configurable debriefing given to participants after
-they complete their study:**
+they complete a study:**
 ![Example Study Debriefing](docs/screenshots/example-debriefing.png)
