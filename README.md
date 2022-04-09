@@ -25,8 +25,6 @@ You can enter any ID to access the example game.
 - Configurable introduction, game rules, and debriefing screens to be shown
   to participants before and after they complete a study.
 - Ability to generate unique completion codes for participants.
-- Participants can access the study from desktop, tablet,
-  or mobile devices.
 - Rich recording of participants' interactions to allow analysis of their behavior.
 - Security to restrict access to the results of studies, and to
   stop unauthorised users from uploading their own studies.
