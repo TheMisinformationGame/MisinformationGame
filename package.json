@@ -19,7 +19,7 @@
     "exceljs": "^4.3.0",
     "file-saver": "^2.0.5",
     "firebase": "^8.10.0",
-    "node": "^17.2.0",
+    "node": "^16.14.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
@@ -28,18 +28,13 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "NODE_OPTIONS=--openssl-legacy-provider craco start",
-    "emulators": "npx firebase emulators:start --import=\"test/firebase-dev-environment\"",
+    "start": "craco start",
+    "emulators": "firebase emulators:start --import=\"test/firebase-dev-environment\"",
     "docs": "cd docs && bundle exec jekyll serve --baseurl=\"\" -o --watch",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider craco build",
-    "test": "NODE_OPTIONS=--openssl-legacy-provider craco test",
+    "build": "craco build",
+    "test": "craco test",
 
-    "ci-build": "NODE_OPTIONS=--openssl-legacy-provider CI=false INLINE_RUNTIME_CHUNK=false craco build",
-
-    "win-start": "craco start",
-    "win-emulators": "npx firebase emulators:start --import=\"test/firebase-dev-environment\"",
-    "win-build": "craco build",
-    "win-test": "craco test"
+    "ci-build": "CI=false INLINE_RUNTIME_CHUNK=false craco build"
   },
   "eslintConfig": {
     "extends": [
@@ -63,7 +58,8 @@
     "autoprefixer": "^9.8.6",
     "firebase-tools": "^9.20.0",
     "postcss": "^7.0.36",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7",
+    "metrohash": "latest"
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"
