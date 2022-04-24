@@ -425,10 +425,12 @@ This page will be shown to participants after they have
 completed the study. This page is not optional. An
 example of this debriefing screen is shown below,
 
-The **Debriefing** page also supports the placeholder
-{% raw %}`{{COMPLETION-CODE}}`{% endraw %} to include the completion code
-of the participant in the page. Wherever the placeholder
-is typed in the page's contents, it will be replaced
+The **Debriefing** page also supports the placeholders
+{% raw %}`{{COMPLETION-CODE}}`{% endraw %} and
+{% raw %}`{{COMPLETION-CODE-WITH-CONFIRMATION}}`{% endraw %}
+to include the completion code
+of the participant in the page. Wherever one of the placeholders
+is typed into the page's contents, it will be replaced
 by the completion code reveal widget.
 
 The only limitation is that the entire placeholder should have
@@ -438,6 +440,11 @@ detected and replaced with the UI elements. For example, if
 {% raw %}`{{COMPLETION`{% endraw %} is bold, and
 {% raw %}`-CODE}}`{% endraw %} is not, the placeholder will not
 be replaced.
+
+The optional `-WITH-CONFIRMATION` suffix for the completion code
+will add a checkbox that will require participants to confirm
+that they have read the study debriefing before they can copy
+their completion code.
 
 <img src="screenshots/example-debriefing-no-border.png" alt="Example debriefing page" height="140" />
 
