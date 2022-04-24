@@ -6,10 +6,6 @@ html, body, #root {
     min-height: 100vh;
 }
 
-.flip-x {
-    --tw-scale-x: -1;
-}
-
 p a {
     color: #006be2;
     text-decoration: underline;

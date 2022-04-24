@@ -111,12 +111,14 @@ class ReactButton extends Component {
                      }
                  }}>
 
-                {React.cloneElement(this.props.children, {
-                    className: "fill-current " +
-                        (this.props.enabled ? "transform group-hover:scale-110 " : "") +
-                        (this.props.childClassName || ""),
-                    fontSize: "inherit"
-                })}
+                {/* This extra div avoids the scale transforms from overriding one another for shares. */}
+                <div className={(this.props.enabled ? "transform group-hover:scale-110 " : "")}>
+                    {React.cloneElement(this.props.children, {
+                        className: "fill-current " +
+                            (this.props.childClassName || ""),
+                        fontSize: "inherit"
+                    })}
+                </div>
 
                 {reactionCount !== undefined &&
                     <p className={this.getReactionCountClassName()} >
@@ -519,7 +521,7 @@ class PostReactionsRow extends Component {
 
             let transforms, fontSize;
             if (reaction === "share") {
-                transforms = "transform -translate-y-2.5 -translate-x-3 flip-x";
+                transforms = "transform -translate-y-2.5 -translate-x-3 -scale-x-1";
                 fontSize = "3.25rem";
             } else {
                 transforms = "transform -translate-y-0.5 -translate-x-1";

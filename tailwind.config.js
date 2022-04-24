@@ -3,6 +3,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
+      scale: {
+        '-1': '-1'
+      },
       transitionProperty: {
         'height': 'height'
       },
