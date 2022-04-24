@@ -11,20 +11,22 @@ import {replaceHTMLPlaceholder} from "./GameIntroduction";
 class CompletionCodeWidget extends Component {
     render() {
         const realCompletionCode = this.props.completionCode;
+        const requireConfirmation = this.props.requireConfirmation;
         let hiddenCompletionCode = "";
         for (let digit = 0; digit < realCompletionCode.length; ++digit) {
             hiddenCompletionCode += "*";
         }
 
         return <>
-            <div className="mt-8">
-                <input id="confirmation-checkbox" type="checkbox"
-                       className="inline-block align-middle w-6 h-6
-                                      checked:bg-blue-600 checked:border-transparent" />
-                <label className="inline-block ml-4 font-semibold text-lg align-middle">
-                    I confirm I have read the study debriefing
-                </label>
-            </div>
+            {requireConfirmation &&
+                <div className="mt-8">
+                    <input id="confirmation-checkbox" type="checkbox"
+                           className="inline-block align-middle w-6 h-6
+                                          checked:bg-blue-600 checked:border-transparent" />
+                    <label className="inline-block ml-4 font-semibold text-lg align-middle">
+                        I confirm I have read the study debriefing
+                    </label>
+                </div>}
 
             <div className="flex">
                 <div className="border border-black rounded-md
@@ -35,9 +37,10 @@ class CompletionCodeWidget extends Component {
                         <span id="real-completion-code" style={{"display": "none"}}>
                             {realCompletionCode}
                         </span>
-                        <span id="hidden-completion-code" style={{"display": "inline-block"}}>
-                            {hiddenCompletionCode}
-                        </span>
+                        {requireConfirmation &&
+                            <span id="hidden-completion-code" style={{"display": "inline-block"}}>
+                                {hiddenCompletionCode}
+                            </span>}
                     </p>
                 </div>
                 <button id="copy-completion-code"
@@ -58,19 +61,33 @@ class CompletionCodeWidget extends Component {
      * the use of React.
      */
     static makeInteractive() {
-        const checkbox = document.getElementById("confirmation-checkbox");
-        const realCompletionCode = document.getElementById("real-completion-code");
-        const hiddenCompletionCode = document.getElementById("hidden-completion-code");
         const copy = document.getElementById("copy-completion-code");
-        if (!checkbox || !realCompletionCode || !hiddenCompletionCode || !copy)
+        const realCompletionCode = document.getElementById("real-completion-code");
+        const checkbox = document.getElementById("confirmation-checkbox");
+        const hiddenCompletionCode = document.getElementById("hidden-completion-code");
+        if (!copy || !realCompletionCode)
             return;  // Not in the page.
 
+        const isCopyEnabled = () => !checkbox || checkbox.checked;
         const completionCode = realCompletionCode.innerText;
 
+        copy.addEventListener("click", function() {
+            if (isCopyEnabled()) {
+                navigator.clipboard.writeText(completionCode).then(() => {
+                    console.log("Copied \"" + completionCode + "\" to the clipboard");
+                }).catch(err => {
+                    console.error("Unable to copy \"" + completionCode + "\" to the clipboard");
+                    console.error(err);
+                });
+            }
+        });
+
         const updateStyles = function() {
-            if (checkbox.checked) {
+            if (isCopyEnabled()) {
                 realCompletionCode.style.display = "inline-block";
-                hiddenCompletionCode.style.display = "none";
+                if (hiddenCompletionCode) {
+                    hiddenCompletionCode.style.display = "none";
+                }
                 copy.classList.remove("text-gray-500", "cursor-default");
                 copy.classList.add("hover:bg-gray-100", "active:bg-gray-300")
             } else {
@@ -81,18 +98,9 @@ class CompletionCodeWidget extends Component {
             }
         };
 
-        checkbox.addEventListener("change", updateStyles);
-        copy.addEventListener("click", function() {
-            if (checkbox.checked) {
-                navigator.clipboard.writeText(completionCode).then(() => {
-                    console.log("Copied \"" + completionCode + "\" to the clipboard");
-                }).catch(err => {
-                    console.error("Unable to copy \"" + completionCode + "\" to the clipboard");
-                    console.error(err);
-                });
-            }
-        });
-
+        if (checkbox && hiddenCompletionCode) {
+            checkbox.addEventListener("change", updateStyles);
+        }
         updateStyles();
     }
 }
@@ -109,10 +117,17 @@ export class GameDebrief extends ActiveGameScreen {
         let placeCompletionCodeAtEnd = false;
 
         if (study.genCompletionCode) {
-            const ret = replaceHTMLPlaceholder(debriefHTML, "{{COMPLETION-CODE}}", () => {
-                return <CompletionCodeWidget completionCode={game.completionCode} />;
+            let ret = replaceHTMLPlaceholder(debriefHTML, "{{COMPLETION-CODE}}", () => {
+                return <CompletionCodeWidget completionCode={game.completionCode} requireConfirmation={false} />;
             }, 1);
             debriefHTML = ret.content;
+
+            if (ret.occurrences === 0) {
+                ret = replaceHTMLPlaceholder(debriefHTML, "{{COMPLETION-CODE-WITH-CONFIRMATION}}", () => {
+                    return <CompletionCodeWidget completionCode={game.completionCode} requireConfirmation={true} />;
+                }, 1);
+                debriefHTML = ret.content;
+            }
 
             // If there are no occurrences, then place the completion
             // code at the bottom of the page.
@@ -124,7 +139,7 @@ export class GameDebrief extends ActiveGameScreen {
                 <p className="leading-tight" dangerouslySetInnerHTML={{__html: debriefHTML}} />
 
                 {placeCompletionCodeAtEnd &&
-                    <CompletionCodeWidget completionCode={game.completionCode} />}
+                    <CompletionCodeWidget completionCode={game.completionCode} requireConfirmation={false} />}
             </div>
         );
     }
