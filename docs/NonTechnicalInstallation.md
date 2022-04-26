@@ -64,7 +64,7 @@ https://console.firebase.google.com/
 Once you have logged in click on “Create a project” as seen in Figure 4.
 
 
-<img src="screenshots/Install Guide/fig4.png" alt="figure 4" height="258" />
+<img src="screenshots/Install Guide/fig4.png" alt="figure 4" height="215" />
 
 
 After clicking on “Create a Project” you will be asked to enter some set up information. Follow the instructions below:
@@ -83,7 +83,7 @@ Step 1: Click on “Build” and then “Firestore Database” on the left-hand 
 
 Step 2: Once the FireStore page has loaded, click on “Create database”, as seen in Figure 6.
 
-<img src="screenshots/Install Guide/fig6.png" alt="figure 6" height="258" />
+<img src="screenshots/Install Guide/fig6.png" alt="figure 6" height="215" />
 
 Step 3: Next, you will be asked what rules you would like to set for the project’s database. For the time being, click “Start in production mode”. Click “Next” to continue.</br>
 Step 4: You will be asked at what geographical location you would like your database to be stored. Pick the location that best suits you from the dropdown box. This is most likely the location closest to you. Click “Enable” to continue.</br>
@@ -96,7 +96,7 @@ For our application we want quick and responsive loading of images. These images
 
 If you see a screen like Figure 8, this means that storage is all set up and ready to go. Please note, that you must set up FireStore first. If you see the “Get Started” button in Figure 9, please follow the steps in section 5.1 of this guide.
 
-<img src="screenshots/Install Guide/fig8.png" alt="figure 8" height="258" />
+<img src="screenshots/Install Guide/fig8.png" alt="figure 8" height="215" />
 
 <img src="screenshots/Install Guide/fig9.png" alt="figure 9" height="258" />
 
@@ -110,7 +110,7 @@ Step 1: Click on “Build”, then “Authentication” and finally “Get Start
 Step 2: You will now be asked which Sign-In method you would like to set up. Click on the “Google” icon—we will be making use of Google accounts for authentication. You can select another method, but this guide will assume that Google is used. </br>
 Step 3: After you click on the Google icon, you will see more options. Firstly, click on “Enable” and then on “Project Support Email” and select your own email. Finally click on “Save” to continue. This can be seen in Figure 11.
 
-<img src="screenshots/Install Guide/fig11.png" alt="figure 11" height="258" />
+<img src="screenshots/Install Guide/fig11.png" alt="figure 11" height="278" />
 
 Step 4:  The next stage of authentication is to give yourself Administrator rights. We will first need to set up the website fully, so this step will be done in Section 7 of this guide.
 
@@ -158,9 +158,9 @@ After downloading, double click on the executable. Follow the installation proce
 ### 5.3	RUNNING THE APP
 Now the environment is completely set up and ready for you to edit and to deploy. To deploy a version of this application on the internet, follow the below steps. 
 
-Step 1:  In the top toolbar of Visual Studio Code, click on Terminal > New Terminal. This will open at the bottom of the application and look like Figure 16. 
+Step 1:  In the top toolbar of Visual Studio Code, click on Terminal > New Terminal. This will open at the bottom of the application and look like Figure 17. 
 
-<img src="screenshots/Install Guide/fig17.png" alt="figure 17" height="258" />
+<img src="screenshots/Install Guide/fig17.png" alt="figure 17" height="278" />
 
 Step 1.5: If you are on Windows, you will also need to change to the Git Bash terminal. As seen in Figure 18, first click on the down arrow and then select “Git Bash”. 
 
@@ -168,40 +168,40 @@ Step 1.5: If you are on Windows, you will also need to change to the Git Bash te
 
 This will open a terminal that looks like Figure 19.
 
-<img src="screenshots/Install Guide/fig19.png" alt="figure 19" height="258" />
+<img src="screenshots/Install Guide/fig19.png" alt="figure 19" height="212" />
 
 Step 2: In the terminal at the bottom of the screen run the following command: `./deploy.sh`
 
 You will now see text beginning to be displayed at the bottom of the terminal screen. This will be installing all of the necessary packages and deploy the app. Please note that this process may take a while. See Figure 20 for an example. 
 
-<img src="screenshots/Install Guide/fig20.png" alt="figure 20" height="258" />
+<img src="screenshots/Install Guide/fig20.png" alt="figure 20" height="185" />
 
 During this deployment process you will be asked many questions which require a response. These questions are as follows: </br>
 Question 1: You will then be asked to login to your Google Firebase account. This will open a browser window. Please login to your Google Firebase account and return to Visual Studio Code. </br> 
 Question 2: You will be asked to select a Firebase Project. Select the relevant Firebase project made earlier and then press Enter to continue. This is seen in Figure 21.
 
-<img src="screenshots/Install Guide/fig21.png" alt="figure 21" height="258" />
+<img src="screenshots/Install Guide/fig21.png" alt="figure 21" height="185" />
 
 Question 3: You will then be asked to give an alias to this project. This can be whatever you would like. For example, “test”. Press Enter to continue. </br>
 Question 4: You will then be asked to sign in to Google Cloud. Press Y and then Enter. This will open a login page in your browser, please login with the same Google Account you are using for Firebase. After this return to Visual Studio Code. </br>
 Question 5: You will then be asked to select the cloud project. Press the number next to your project and then press Enter to continue. This is seen in Figure 22.
 
-<img src="screenshots/Install Guide/fig22.png" alt="figure 22" height="258" />
+<img src="screenshots/Install Guide/fig22.png" alt="figure 22" height="185" />
 
 Question 6: Next you will be asked to make a domain name. </br>
 Before entering the URL, please note that the domain name must be your Firebase Project ID. You can get the Project ID from Firebase by clicking on the “Gear” icon on the left and then on “Project Settings”. Figure 23 and 24 below demonstrates this. 
 
-<img src="screenshots/Install Guide/fig23.png" alt="figure 23" height="258" />
+<img src="screenshots/Install Guide/fig23.png" alt="figure 23" height="185" />
 
-<img src="screenshots/Install Guide/fig24.png" alt="figure 24" height="258" />
+<img src="screenshots/Install Guide/fig24.png" alt="figure 24" height="185" />
 
 The URL must be in the format of “<projectID>. appspot.com.” For example, “test-15cff.appspot.com” is a valid domain. See Figure 25 for an example. After entering the URL, press Enter to continue. 
 
-<img src="screenshots/Install Guide/fig25.png" alt="figure 25" height="258" />
+<img src="screenshots/Install Guide/fig25.png" alt="figure 25" height="185" />
 
 Step 4: The site is now fully deployed and ready to be accessed. You will see something similar to Figure 26.
   
-<img src="screenshots/Install Guide/fig26.png" alt="figure 26" height="258" />
+<img src="screenshots/Install Guide/fig26.png" alt="figure 26" height="185" />
 
 You can access the website on your browser at the below domain: 
 <your project ID>.web.app
