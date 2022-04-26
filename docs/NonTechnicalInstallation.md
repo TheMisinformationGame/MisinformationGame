@@ -13,7 +13,7 @@ https://github.com/TheMisinformationGame/MisinformationGame
 
 On this page you will need to click on the green _“Code”_ button and then on the _“Download Zip”_ button as seen in Figure 1 below. This will then prompt you to download a zip file of the code, which you can save anywhere on your computer. Extract the files into a folder. The code is now ready to be accessed.
 
-**INSERT FIG 1 HERE**
+![Figure 1](screenshots/Install Guide/fig1.png)
 
 ### 2.2 Download and Install Visual Studio Code 
 This installation guide demonstrates the installation process of downloading the Visual Studio Code on Windows. Should you be using a Mac, the installation process should be similar, but in case you encounter any difficulties, you can follow the Visual Studio Code installation guide for Mac at this link:  https://code.visualstudio.com/docs/setup/mac.
