@@ -2,7 +2,7 @@
 ## 1. Introduction 
 This document will outline the step-by-step process of installing and hosting the Misinformation Game website. This document will also go through the installation process for all the pre-requisite software that is needed to properly install and edit the app. 
 
-Following this tutorial and installing all of the applications and software will then also enable you to freely edit the code of this project. 
+Following this tutorial and installing all of the applications and software will enable you to freely edit the code of this project. 
 
 ## 2. Download The Code Base and Install Visual Studio Code 
 The first step is to download the code base, as well as an integrated development environment (IDE) to allow easy editing of the files in the code base. We recommend using Visual Studio Code, but any IDE can be used for this process.
@@ -11,14 +11,12 @@ The first step is to download the code base, as well as an integrated developmen
 To download and save the code base onto your device, you can access it at the following link: </br>
 https://github.com/TheMisinformationGame/MisinformationGame
 
-On this page you will then need to click on the green “Code” button and then on the “Download Zip” button as seen in Figure 1 below. This will then prompt you to download a zip file of the code, which you can save anywhere on your computer. Extract the files into a folder. The code is now ready to be accessed.
+On this page you will need to click on the green _“Code”_ button and then on the _“Download Zip”_ button as seen in Figure 1 below. This will then prompt you to download a zip file of the code, which you can save anywhere on your computer. Extract the files into a folder. The code is now ready to be accessed.
 
 **INSERT FIG 1 HERE**
 
 ### 2.2 Download and Install Visual Studio Code 
-This installation guide demonstrates the installation process of downloading the Visual Studio Code on Windows. Should you be using a Mac, the installation process should largely be the same, but in case you encounter any difficulties, you can follow the Visual Studio Code installation guide for Mac at this link:  https://code.visualstudio.com/docs/setup/mac.
-
-**INSERT FIG 1 HERE**
+This installation guide demonstrates the installation process of downloading the Visual Studio Code on Windows. Should you be using a Mac, the installation process should be similar, but in case you encounter any difficulties, you can follow the Visual Studio Code installation guide for Mac at this link:  https://code.visualstudio.com/docs/setup/mac.
 
 Download Visual Studio Code from the following link: 
 https://code.visualstudio.com/download
@@ -55,7 +53,7 @@ To verify your install, in Windows, open the application “Command Prompt” or
 **INSERT FIG 3 HERE**
 
 ## 4. Firebase Set Up 
-Firebase is a technology platform made by Google, which makes running and hosting a website simple. In this project we are utilising Firebase to store information, authenticate our users and to host our website. 
+Firebase is a technology platform made by Google, which makes running and hosting a website simple. In this project we are utilising Firebase to store information, authenticate users and to host the website. 
 
 A Google account is required in order to use Firebase. If you do not have a Google account, you can create one here: 
 https://accounts.google.com/signup/v2/webcreateaccount?hl=en&flowName=GlifWebSignIn&flowEntry=SignUp
@@ -70,7 +68,7 @@ Once you have logged in click on “Create a project” as seen in Figure 4.
 After clicking on “Create a Project” you will be asked to enter some set up information. Follow the instructions below:
 
 Step 1: Enter the name for your project and accept the terms if you agree to them. Click “Continue”.</br>
-Step 2: In the next step you can choose to accept or decline Google Analytics. We recommend that you disable it, as it doesn’t provide any functionality for the application. The service provides analytics about your application, like its usage and advertising metrics. If you want to find out more about Google Analytics, you click the following link: https://www.youtube.com/watch?v=8iZpH7O6zXo&ab_channel=Firebase 
+Step 2: In the next step you can choose to accept or decline Google Analytics. We recommend that you disable it, as it doesn’t provide any functionality for the application. The service provides analytics about your application, like its usage and advertising metrics. If you want to find out more about Google Analytics, click the following link: https://www.youtube.com/watch?v=8iZpH7O6zXo&ab_channel=Firebase 
 
 Now you have started a Firebase Project. Don’t close the browser just yet though, we still require this page for the next steps in set up. 
 
@@ -91,10 +89,8 @@ Step 5: Your database should now be ready to go. Your screen will be similar to 
 
 **INSERT FIG 7 HERE**
 
-The initial set up of Firestore is complete, although we will need to return to Firestore later in this Installation guide. 
-
 ### 4.2 Set Up Storage 
-For our application we want quick and responsive loading of images. These images can range from post images to avatar images. To have images load rapidly, we need to store them in Firebase’s Storage feature. To enable Storage, click on “Build,” then click on “Storage”. 
+For our application we want quick and responsive loading of images. These images can range from post images to avatar images. To have images load rapidly, we need to store them in Firebase’s Storage feature. To enable Storage, click on _“Build,”_ then click on _“Storage”_. 
 
 If you see a screen like Figure 8, this means that storage is all set up and ready to go. Please note, that you must set up FireStore first. If you see the “Get Started” button in Figure 9, please follow the steps in section 5.1 of this guide.
 
@@ -131,6 +127,8 @@ Save this code block into a text file and save it on your computer, we will need
 
 After you click “Continue to console”, your Firebase project will now be set up for use with a Website. 
 
+The initial set up of FireBase is complete, although we will need to return to FireBase later in this Installation guide. 
+
 ## 5. Deploying the Website
 The next part of the set-up process is to have the game website running on your own computer. For this step we will need to use Visual Studio Code, NodeJS, npm, and the Firebase Project that we have set up. 
 
@@ -142,7 +140,8 @@ Step 3: Once the folder is open, you will see a screen similar to Figure 14. On 
 **INSERT FIG 14 HERE**
 
 Step 4: In the “Explorer” section, click the “config” toggle and find and click on the “firebase-config.js” file. You will see something like Figure 14. </br>
-Step 5: Replace the firebaseConfig information with your own information. This information is in the Configuration Information File, which was saved in section 5.4 of this guide. The area that you need to replace is circled in Figure 15.
+Step 5: Replace the firebaseConfig information with your own information. This information is in the Configuration Information File, which was saved in section 5.4 of this guide. The area that you need to replace is circled in Figure 15.</br>
+Step 6: Finally, save the file by pressing _Ctrl + S_ on your keyboard. 
 
 **INSERT FIG 15 HERE**
 
@@ -251,6 +250,8 @@ This is seen in Figure 34.
 **FIG 34**
   
 Step 9: You will now have added your user as an Admin. You can test this by returning to the admin page on your website. You will see a page like Figure 34. 
+  
+_NOTE: Other administrators will be able to set up their own administrator account on the same website domain. The entire installation and hosting process only needs to be followed by one administrator._
 
 **FIG 35**
   
