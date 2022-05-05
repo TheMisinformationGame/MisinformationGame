@@ -62,15 +62,7 @@ function Home() {
 
                     <p className="text-lg mb-2">
                         <a className="text-xl underline text-purple-600 hover:text-purple-900"
-                           href="https://docs.google.com/spreadsheets/d/1BeJ2krpg_lDG8dnq5n4Gqopin2NBhVbDyTDdsplbVUY">
-
-                            Study Template
-                        </a>:
-                        The template to be copied to create new studies.
-                    </p>
-                    <p className="text-lg mb-2">
-                        <a className="text-xl underline text-purple-600 hover:text-purple-900"
-                           href="https://github.com/TheMisinformationGame/MisinformationGame/blob/main/docs/README.md">
+                           href="https://themisinformationgame.github.io/">
 
                             Documentation
                         </a>:
