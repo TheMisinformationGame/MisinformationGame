@@ -4,11 +4,14 @@ import StatusLabel, {Status} from "../components/StatusLabel";
 import {Redirect} from "react-router-dom";
 import {Button} from "../components/Button";
 import {getDataManager} from "../model/manager";
+import {setDefaultPageTitle} from "../index";
 
 
 export class AdminSignIn extends MountAwareComponent {
     constructor(props) {
         super(props);
+        setDefaultPageTitle();
+
         this.state = {
             ...this.state,
             signingIn: false,

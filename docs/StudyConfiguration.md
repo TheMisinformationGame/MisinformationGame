@@ -183,8 +183,9 @@ This section contains the most basic settings that likely
 should be changed for each study.
 
 <h6 id="general-name"><span class="param-name">Name</span></h6>
-The name of your study is used to identify it in your
-admin dashboard. This name is not shown to participants.
+The name that is used for the browser tab title for
+participants in this study. This name is also used to
+identify the study in your admin dashboard.
 
 <h6 id="general-description"><span class="param-name">Description</span></h6>
 The description of your study is used to include

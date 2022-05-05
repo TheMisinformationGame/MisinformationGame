@@ -2,11 +2,14 @@ import {MountAwareComponent} from "../components/MountAwareComponent";
 import {auth} from "../database/firebase";
 import StatusLabel, {Status} from "../components/StatusLabel";
 import {Button, LinkButton} from "../components/Button";
+import {setDefaultPageTitle} from "../index";
 
 
 export class AdminSignOut extends MountAwareComponent {
     constructor(props) {
         super(props);
+        setDefaultPageTitle();
+
         this.state = {
             ...this.state,
             signingOut: false,

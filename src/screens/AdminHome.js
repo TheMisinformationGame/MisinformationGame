@@ -8,6 +8,7 @@ import {isOfType} from "../utils/types";
 import {BrokenStudy} from "../model/study";
 import {MountAwareComponent} from "../components/MountAwareComponent";
 import {auth} from "../database/firebase";
+import {setDefaultPageTitle} from "../index";
 
 
 class StudySummary extends Component {
@@ -72,6 +73,8 @@ class UploadStudyButton extends Component {
 class AdminPage extends MountAwareComponent {
     constructor(props) {
         super(props);
+        setDefaultPageTitle();
+
         this.state = {
             isAdmin: null,
             studies: null,

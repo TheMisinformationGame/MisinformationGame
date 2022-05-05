@@ -20,6 +20,7 @@ import {deleteStudy} from "../database/deleteFromDB";
 import {downloadResults} from "../model/resultsExcelWriter";
 import {createDateFromUnixEpochTimeSeconds} from "../utils/time";
 import {auth} from "../database/firebase";
+import {setDefaultPageTitle} from "../index";
 
 
 class AdminStudyActionButton extends Component {
@@ -408,6 +409,7 @@ class AdminStudy extends MountAwareComponent {
 export class AdminStudyPage extends SimpleActiveStudyScreen {
     constructor(props) {
         super(props, false);
+        setDefaultPageTitle();
     }
 
     renderWithStudy(study) {

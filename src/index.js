@@ -14,6 +14,12 @@ import ErrorScreen from "./screens/Error";
 import {AdminSignIn} from "./screens/AdminSignIn";
 import {AdminSignOut} from "./screens/AdminSignOut";
 
+
+export function setDefaultPageTitle() {
+    document.title = "Misinformation Game";
+}
+
+
 ReactDOM.render(
   <React.StrictMode>
       <BrowserRouter>

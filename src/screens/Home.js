@@ -2,8 +2,11 @@ import React from "react";
 import {Link} from "react-router-dom";
 import Logo from "../logo.png";
 import {GithubCorner} from "../components/GithubCorner";
+import {setDefaultPageTitle} from "../index";
 
 function Home() {
+    setDefaultPageTitle();
+
     let exampleGameURL = null;
     if (window.location.hostname === "misinformation-game.web.app") {
         exampleGameURL = "/study/m1v891krnanahrdi";
