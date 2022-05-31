@@ -10,9 +10,8 @@ participants before they start participating in a study.**
 
 This document has only slight modifications to make the content
 readable within GitHub. If you wish to view the actual
-rules page from the game, then try the
-[example game](https://misinformation-game.web.app/study/axsvxt37ctac6ltr)
-from https://misinformation-game.web.app.
+rules page from the game, then try the example game that can be
+accessed from [the example game page](/link/ExampleGame).
 
 ## How to Participate
 

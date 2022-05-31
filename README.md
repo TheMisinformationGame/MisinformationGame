@@ -7,8 +7,8 @@ in collaboration with Professor Ullrich Ecker.
 
 ### Example Game
 If you would like to experience a study created using
-The Misinformation Game, you can access an example game at
-https://misinformation-game.web.app/study/m1v891krnanahrdi.
+The Misinformation Game, you can access an example game from
+[the example game page](https://themisinformationgame.github.io//link/ExampleGame).
 You can enter any ID to access the example game.
 
 ![Example Game](docs/screenshots/example-game.png)

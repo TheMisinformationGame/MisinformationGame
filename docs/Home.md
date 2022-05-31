@@ -22,8 +22,8 @@ research of a wide array of social media related questions.
 
 ### Example Game
 If you would like to test playing through a study created using
-The Misinformation Game, you can access an example game at
-[https://misinformation-game.web.app/study/m1v891krnanahrdi](https://misinformation-game.web.app/study/m1v891krnanahrdi).
+The Misinformation Game, you can access an example game from
+[the example game page](/link/ExampleGame).
 You can enter any ID to access the example game.
 
 ![Game Screenshot](screenshots/example-game.png)
@@ -83,6 +83,10 @@ guide should be easier to follow.
 - [Source Code](https://github.com/TheMisinformationGame/MisinformationGame) -
   The Misinformation Game is proudly open-source! 
 - [Issue Tracker](https://github.com/TheMisinformationGame/MisinformationGame/issues) -
-  If you find any issues, please report them here. 
-- [Example Game](https://misinformation-game.web.app/study/m1v891krnanahrdi) -
-  Test out The Misinformation Game with an example study.
+  If you find any issues, please report them here.
+- [Example Game](/link/ExampleGame) -
+  Test out The Misinformation Game with an example game.
+- [Study Configuration Template Spreadsheet](/link/StudyTemplate) -
+  The template spreadsheet that should be edited to create your own study.
+- [Example Study Configuration Spreadsheet](/link/ExampleStudy) -
+  The study configuration spreadsheet that is used to create the example game.

@@ -45,8 +45,8 @@ Sheets, or by uploading the Study Template file.
 <h2 id="create-copy">
     Method 1: Copy the Template (Recommended)
 </h2>
-You can access the Study Template spreadsheet on Google Sheets
-[here](https://docs.google.com/spreadsheets/d/1BeJ2krpg_lDG8dnq5n4Gqopin2NBhVbDyTDdsplbVUY).
+You can access the Study Configuration Template Spreadsheet on Google Sheets
+from [the study configuration template page](/link/StudyTemplate).
 After you have loaded the template spreadsheet, you can select
 **_File_** -> **_Make a copy_** to clone the spreadsheet so that
 you can make changes.
