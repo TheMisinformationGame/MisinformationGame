@@ -74,8 +74,10 @@ guide should be easier to follow.
 ## System Documentation
 - [Technical Overview](/TechnicalOverview) - A broad overview of the tech-stack used by the game.
 - [Simulation](/Simulation) - An in-depth description on the simulation that powers the game.
-- [Development Environment](/Development) - A guide for developers to make adjustments to the game.
-- [Original Design](/original-design/) - The original, outdated, design document for the game.
+- [Development](/Development) - A guide for developers to make adjustments to the game.
+- [Documentation Development](/DocsDevelopment) - A guide for developers to make adjustments
+  to this documentation website.
+- [Original Design](/original-design) - The original, outdated, design document for the game.
 
 ## Other Useful Links
 - [Source Code](https://github.com/TheMisinformationGame/MisinformationGame) -

@@ -6,9 +6,7 @@ showPath: true
 # Development Environment
 This document describes how to set up your development
 environment to work on The Misinformation Game and host
-it locally for testing. If you would like to run the documentation
-website locally, see the [Documentation Development Environment](/DocsDevelopment)
-page.
+it locally for testing.
 
 ## 1. Install Dependencies
 Similarly to when deploying the application, the NPM
