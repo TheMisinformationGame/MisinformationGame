@@ -43,7 +43,7 @@ described on the [Results](/Results) page.
 To conduct a study using The Misinformation Game, you will need
 to host your own website for the game using Google Firebase.
 The steps to host your own instance of the game are described in both a
-[Non-Technical Installation Guide](/NonTechnicalInstallation.pdf)
+[Non-Technical Installation Guide](/NonTechnicalInstallation)
 and a [Technical Installation Guide](/TechnicalInstallation).
 If you are proficient with the command-line and
 installing technical tools, then the technical
@@ -64,7 +64,7 @@ guide should be easier to follow.
 
 ## Hosting Documentation
 - [Firebase Pricing](/FirebasePricing) - A guide to estimate the hosting costs of running a study.
-- [Non-Technical Installation Guide](/NonTechnicalInstallation.pdf) -
+- [Non-Technical Installation Guide](/NonTechnicalInstallation) -
   A guide to host your own study using Firebase (longer, for non-technical users).
 - [Technical Installation Guide](/TechnicalInstallation) -
   A guide to host your own study using Firebase (shorter, for technical users).
