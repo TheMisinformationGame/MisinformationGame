@@ -16,6 +16,18 @@ export class ExcelType {
     }
 
     /**
+     * Raises a type error that the value in the given location was expected
+     * to be of this type, but it wasn't able to be coerced to this type.
+     */
+    raiseTypeError(loc, cell) {
+        throw new CellTypeError(
+            "Expected " + loc.address + " (" + loc.name + ") to contain " + loc.type.name +
+            ", but instead it contained " + ExcelType.getExcelJSTypeName(cell.type) +
+            ": " + JSON.stringify(cell.value)
+        );
+    }
+
+    /**
      * Attempts to coerce value with the given type to this
      * type, returning undefined if it is not possible.
      */
@@ -46,7 +58,7 @@ export class ExcelType {
             case Excel.ValueType.Number:
                 return "a number";
             case Excel.ValueType.String:
-                return "a string";
+                return "text";
             case Excel.ValueType.Date:
                 return "a date";
             case Excel.ValueType.Hyperlink:
@@ -69,7 +81,19 @@ export class ExcelType {
 
 class ExcelStringType extends ExcelType {
     constructor() {
-        super(Excel.ValueType.String, "a string");
+        super(Excel.ValueType.String, "text");
+    }
+
+    raiseTypeError(loc, cell) {
+        if (cell.type === Excel.ValueType.Hyperlink) {
+            throw new CellTypeError(
+                "Expected " + loc.address + " (" + loc.name + ") to contain " + this.name +
+                ", but instead it contained " + ExcelType.getExcelJSTypeName(cell.type) + ". " +
+                "Please remove the hyperlinks from the text. If you wish to include links, then " +
+                "there is a guide for this in the Study Configuration > Pages documentation."
+            );
+        }
+        super.raiseTypeError(loc, cell);
     }
 
     coerceType(value, type) {
@@ -308,11 +332,7 @@ export function readCell(workbook, loc) {
     const value = readCellValue(workbook, loc.worksheet, loc.cell, loc.type);
     if (value === undefined) {
         const cell = getWorksheet(workbook, loc.worksheet).getCell(loc.cell);
-        throw new CellTypeError(
-            "Expected " + loc.address + " (" + loc.name + ") to contain " + loc.type.name +
-            ", but instead it contained " + ExcelType.getExcelJSTypeName(cell.type) +
-            ": " + JSON.stringify(cell.value)
-        );
+        loc.type.raiseTypeError(loc, cell);
     }
     return value;
 }

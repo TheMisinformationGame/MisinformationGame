@@ -341,9 +341,16 @@ pressing **_Alt + Enter_**. This is equivalent to typing
 If there are not as many formatting options as you need,
 then you can also include HTML markup in the text.
 
-For example, links can be included within pages through
-the use of HTML `<a>` tags. For example,
-the following creates a link
+If you include HTML in your pages, the formatting must be the same
+from the beginning of the HTML element to its end. If the formatting is
+inconsistent, then the formatting may interfere with the HTML you included.
+If you include a link, and it turns blue, then you will need to remove that
+link for the HTML to work as written. Links can be removed by placing your
+cursor over the blue link text, and clicking the unlink button.
+
+Unfortunately, the Excel library we are using does not support the detection
+of these blue links within cells. Therefore, links must be included through
+the use of HTML `<a>` tags. For example, the HTML below creates a link
 [GitHub](https://github.com/TheMisinformationGame/MisinformationGame)
 that links to The Misinformation Game's GitHub page,
 ```html
