@@ -88,5 +88,5 @@ guide should be easier to follow.
   Test out The Misinformation Game with an example game.
 - [Study Configuration Template Spreadsheet](/link/StudyTemplate) -
   The template spreadsheet that should be edited to create your own study.
-- [Example Study Configuration Spreadsheet](/link/ExampleStudy) -
+- [Example Game Configuration Spreadsheet](/link/ExampleStudy) -
   The study configuration spreadsheet that is used to create the example game.

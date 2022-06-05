@@ -1,11 +1,11 @@
 ---
-title: Link to the Example Study Spreadsheet
+title: Link to the Example Game Spreadsheet
 showPath: true
 ---
 
-# Example Study Configuration Spreadsheet
+# Example Game Configuration Spreadsheet
 
-The example study configuration spreadsheet should be used as an example
+The example game configuration spreadsheet should be used as an example
 to help contextualise the settings in the
 [study configuration template spreadsheet](/link/StudyTemplate). It is the
 study configuration spreadsheet that is used to generate the
@@ -21,6 +21,6 @@ found in the [Study Configuration documentation](/StudyConfiguration).
 You may access the example study configuration spreadsheet
 from the following URLs:
 
-- [Google Sheets Link](https://docs.google.com/spreadsheets/d/1FGyizON4WNmfOrmKtifsqxGCMI0XoJidndikDeCAMcA)
+- [Google Sheets Link](https://docs.google.com/spreadsheets/d/1RxpsvcipGd7N3qYGP0M-ruOjEo8gA2tfTVNCtk_-OWI)
   _\(Recommended\)_
 - [File Download](ExampleStudy.xlsx)
