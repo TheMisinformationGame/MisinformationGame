@@ -87,10 +87,10 @@ class ExcelStringType extends ExcelType {
     raiseTypeError(loc, cell) {
         if (cell.type === Excel.ValueType.Hyperlink) {
             throw new CellTypeError(
-                "Expected " + loc.address + " (" + loc.name + ") to contain " + this.name +
-                ", but instead it contained " + ExcelType.getExcelJSTypeName(cell.type) + ". " +
-                "Please remove the hyperlinks from the text. If you wish to include links, then " +
-                "there is a guide for this in the Study Configuration > Pages documentation."
+                "The text within " + loc.address + " (" + loc.name + ") must not contain " +
+                "any active hyperlinks. Please unlink the hyperlinks within the text. " +
+                "If you wish to include links, there is a guide for this in the " +
+                "Study Configuration > Pages documentation."
             );
         }
         super.raiseTypeError(loc, cell);

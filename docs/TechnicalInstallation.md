@@ -1,5 +1,5 @@
 ---
-title: Technical Installation
+title: Technical Installation Guide
 showPath: true
 ---
 
