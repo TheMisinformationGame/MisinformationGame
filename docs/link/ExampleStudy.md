@@ -21,6 +21,6 @@ found in the [Study Configuration documentation](/StudyConfiguration).
 You may access the example study configuration spreadsheet
 from the following URLs:
 
-- [Google Sheets Link](https://docs.google.com/spreadsheets/d/1RxpsvcipGd7N3qYGP0M-ruOjEo8gA2tfTVNCtk_-OWI)
+- [Google Sheets Link](https://docs.google.com/spreadsheets/d/1TptkyGQiWXVJGtq0FOOjIk1iVM4OA-wd0g4G0mSEdY8)
   _\(Recommended\)_
 - [File Download](ExampleStudy.xlsx)
