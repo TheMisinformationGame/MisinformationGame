@@ -22,13 +22,19 @@ research of a wide array of social media related questions.
 
 ### Example Game
 If you would like to test playing through a study created using
-The Misinformation Game, you can access an example game from
+the Misinformation Game, you can access an example game from
 [the example game page](/link/ExampleGame).
 You can enter any ID to access the example game.
 
 ![Game Screenshot](screenshots/example-game.png)
 
 <p class="spacer"></p>
+
+### Example Results
+If you would like to view an example of the results that can be
+gathered when using the Misinformation Game, the results of a user
+experience study are available from
+[the example results page](/link/ExampleResults).
 
 ## Getting Started
 The Misinformation Game contains many configuration options
@@ -86,6 +92,8 @@ guide should be easier to follow.
   If you find any issues, please report them here.
 - [Example Game](/link/ExampleGame) -
   Test out The Misinformation Game with an example game.
+- [Example Results](/link/ExampleResults) -
+  View the results of a user experience study ran using the Misinformation Game.
 - [Study Configuration Template Spreadsheet](/link/StudyTemplate) -
   The template spreadsheet that should be edited to create your own study.
 - [Example Game Configuration Spreadsheet](/link/ExampleStudy) -
