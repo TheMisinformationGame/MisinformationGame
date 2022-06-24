@@ -279,7 +279,10 @@ export async function downloadResults(study) {
     const blob = new Blob([buffer], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"
     });
-    FileSaver.saveAs(blob, "results.xlsx");
+
+    // Remove characters that could potentially interfere with user's file systems.
+    const safeStudyName = study.name.replace(/[^a-z0-9]/gi, '_');
+    FileSaver.saveAs(blob, "results--" + safeStudyName + ".xlsx");
     return problems;
 }
 
