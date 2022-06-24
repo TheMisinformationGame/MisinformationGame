@@ -4,7 +4,7 @@ showPath: true
 ---
 
 <h1 id="intro">
-    Creating your own studies
+    Study Configuration Guide
 </h1>
 Studies in The Misinformation Game are configured through the
 use of Google Sheets spreadsheets. These spreadsheets contain

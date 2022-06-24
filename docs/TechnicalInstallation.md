@@ -3,12 +3,21 @@ title: Technical Installation Guide
 showPath: true
 ---
 
-# Installation of The Misinformation Game
+<h1 id="intro">
+    Installation (Technical Guide)
+</h1>
 This guide outlines the steps required to deploy your
 own instance of The Misinformation Game on Firebase.
 At the end of this guide, you will have your own
 website hosted at your own custom URL, (e.g.
 https://misinformation-game.web.app).
+
+
+<h2 id="toc">
+    Table of Contents
+</h2>
+TODO
+
 
 ## 1. Installation of Required Tools
 Deployment of this project requires the use of

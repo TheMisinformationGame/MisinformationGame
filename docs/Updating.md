@@ -7,7 +7,10 @@ showPath: true
 
 This guide will show you how to update your instance of
 The Misinformation Game to the latest version from this
-GitHub repository.
+GitHub repository. This guide only works for instances
+of the Misinformation Game that were deployed following
+the [technical installation guide](/TechnicalInstallation).
+
 
 ## 1. Run the automatic update script
 Updates can be automatically downloaded by running
