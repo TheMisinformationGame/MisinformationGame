@@ -27,11 +27,11 @@ function Home() {
                 <div className="max-w-2xl text-left">
                     <h1 className="text-5xl mb-2">The Misinformation Game</h1>
                     <p className="text-lg mb-4">
-                        The Misinformation Game is a social media simulator built to study
-                        the behavior of people when they interact with social media. This
-                        game was built as part of the CITS3200 unit at UWA by Paddy Lamont,
-                        Dean Law Yim Wan, Xiyu Gao, Danny Marwick, Andrew Pilkington,
-                        and Yunhui Rao, in collaboration with Assoc/Prof Ullrich Ecker.
+                        The Misinformation Game is a social media simulator built to study people’s
+                        behaviour when they interact with social media. To achieve this, The Misinformation
+                        Game simulates a social media feed for research participants. You may read more
+                        about the Misinformation Game in&nbsp;
+                        <a href="https://themisinformationgame.github.io/">its documentation</a>.
                     </p>
                     <p className="text-lg mb-2">
                         Press the button below to access the admin interface to manage your studies,
