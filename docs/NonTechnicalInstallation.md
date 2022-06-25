@@ -14,7 +14,7 @@ This guide is aimed to require less technical knowledge than the
 [technical installation guide](/TechnicalInstallation), and as such it requires more time and has a few
 limitations. One major limitation of this process is that it does not allow easily updating the Misinformation
 Game as explained in the [updating guide](/Updating). Instead, this same process will need to be followed
-again to update your instance. If you have a background in IT or software development,
+again to update your instance. If you are comfortable installing software and using the command line,
 then the technical installation guide will likely be easier and quicker to follow.
 
 

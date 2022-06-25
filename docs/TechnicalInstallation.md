@@ -12,6 +12,12 @@ At the end of this guide, you will have your own
 website hosted at your own custom URL, (e.g.
 https://misinformation-game.web.app).
 
+This guide assumes that you have familiarity with installing
+software and using the command line. If you are not familiar
+with these processes, then the
+[non-technical installation guide](/NonTechnicalInstallation)
+may be easier to follow.
+
 
 <h2 id="toc">
     Table of Contents
