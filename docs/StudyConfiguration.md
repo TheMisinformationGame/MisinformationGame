@@ -727,7 +727,7 @@ This section defines separate defaults for true posts and
 false posts. This is done to reduce the effort in creating
 consistent behaviour for true and false posts. For example,
 you could make sharing true posts increase credibility,
-and sharing false posts participant credibility. The default
+and sharing false posts decrease credibility. The default
 values allow specification of normal distributions for the
 changes to participants' followers and credibility after they
 _like_, _dislike_, _share_, or _flag_ a post. There is also
