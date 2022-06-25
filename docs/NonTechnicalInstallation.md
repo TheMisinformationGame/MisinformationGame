@@ -1,6 +1,7 @@
 ---
 title: Non-Technical Installation Guide
 showPath: true
+showBackToTop: true
 ---
 
 <h1 id="intro">

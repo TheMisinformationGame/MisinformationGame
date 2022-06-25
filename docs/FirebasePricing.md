@@ -1,6 +1,7 @@
 ---
 title: Firebase Pricing
 showPath: true
+showBackToTop: true
 ---
 
 # Firebase Pricing
@@ -15,7 +16,7 @@ will likely run into the **Free Tier** usage limits.
 Therefore, as described under _section 4_, it is vital to
 reduce the size of the images you use in your study. If
 you think you will come close to the usage limits, it
-will be best to upgrade your Firebase project to the
+will be best to upgrade your Firebase project to Firebase's
 **Blaze Plan** to ensure that participants don't get
 locked out of the game unexpectedly. You can also set
 [budget alerts](https://firebase.google.com/docs/projects/billing/avoid-surprise-bills#set-up-budget-alert-emails)

@@ -1,6 +1,7 @@
 ---
 title: Registering Administrators
 showPath: true
+showBackToTop: false
 ---
 
 # Administrators

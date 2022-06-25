@@ -1,6 +1,7 @@
 ---
 title: Study Configuration
 showPath: true
+showBackToTop: true
 ---
 
 <h1 id="intro">

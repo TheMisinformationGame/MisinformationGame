@@ -1,6 +1,7 @@
 ---
 title: Including Images in Studies
 showPath: true
+showBackToTop: false
 ---
 
 # Recommendations for including images in studies

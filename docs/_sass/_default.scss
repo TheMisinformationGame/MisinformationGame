@@ -53,6 +53,15 @@ body {
   text-decoration: underline;
 }
 
+a.back-to-top, .content-wrapper a.back-to-top {
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+
+  color: #6c6c6c;
+  text-decoration: underline;
+}
+
 .content-wrapper a {
   color: $brand-color;
   text-decoration: underline;

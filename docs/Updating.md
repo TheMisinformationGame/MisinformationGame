@@ -1,6 +1,7 @@
 ---
 title: Updating
 showPath: true
+showBackToTop: false
 ---
 
 # Updating your Instance of The Misinformation Game

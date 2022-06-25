@@ -2,6 +2,9 @@
 <html>
 {% include head.html %}
 <body>
+  <!-- Allows linking to the top of the page. -->
+  <a id="top"></a>
+
   {% include header.html %}
   <div class="container">
     <div class="content-wrapper">
@@ -16,6 +19,10 @@
       {% endif %}
 
       {% include anchor_headings.html html=content anchorBody="#" anchorClass="header-link" %}
+
+      {% if page.showBackToTop %}
+      <a class="back-to-top" href="#top">Back to Top</a>
+      {% endif %}
     </div>
   </div>
   {% include footer.html %}

@@ -1,6 +1,7 @@
 ---
 title: Documentation Development Environment
 showPath: true
+showBackToTop: false
 ---
 
 # Documentation Development Environment

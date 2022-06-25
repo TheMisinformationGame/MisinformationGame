@@ -1,6 +1,7 @@
 ---
 title: How to Play
 showPath: true
+showBackToTop: true
 ---
 
 # How to Play The Misinformation Game

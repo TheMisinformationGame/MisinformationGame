@@ -1,6 +1,7 @@
 ---
 title: Results
 showPath: true
+showBackToTop: false
 ---
 
 <h1 id="intro">
