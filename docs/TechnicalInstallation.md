@@ -61,7 +61,10 @@ Click the **Add Project** button to create a new Firebase
 project. This will open a screen where you can choose a
 name for your deployment of The Misinformation Game. The
 URL of your website is configured below the Project
-Name input (it is small).
+Name input (it is small). This URL will be shown to
+participants of your studies. Therefore, you may wish to
+choose an ambiguous name, so that participants are not
+influenced by the URL.
 
 <img src="diagrams/firebase-project-creation.png" alt="Example Firebase project creation" height="258" />
 

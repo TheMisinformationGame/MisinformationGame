@@ -115,7 +115,8 @@ the Misinformation Game.
 <img src="screenshots/NonTechnicalInstallationGuide/fig4.png" alt="figure 4" height="215" />
 
 **Step 3:** Enter a name for your project. The name of your project will be used to determine the URL that
-your study participants will access. Once you have selected a name, click **Continue**.
+your study participants will access. Therefore, you may wish to choose an ambiguous name, so that participants
+are not influenced by the URL. Once you have selected a name, click **Continue**.
 
 <img src="diagrams/firebase-project-creation.png" alt="Example Firebase project creation" height="258" />
 

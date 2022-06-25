@@ -80,8 +80,8 @@ participants.
 ## 3. Pricing Estimates for Example Studies
 We can make pricing estimates for running a study by
 considering two different example studies. Each example
-study will contain 100 posts and 30 sources. We will
-assume that the size of the avatar images of each source
+study will contain 100 posts and 30 sources (with avatar images).
+We will assume that the size of the avatar images of each source
 is 50KB.
 
 ### 3.1. Usage Estimates of The Misinformation Game
@@ -136,7 +136,7 @@ likely to be an issue.
 
 ### 3.3. A study with text posts
 The first example study we will consider is a study with
-only text posts, and with 30 sources and 100 posts.
+100 text posts, and 30 sources.
 
 #### Firebase Cloud Storage
 Each participant will have to download the source avatar
