@@ -1,7 +1,8 @@
 ---
 title: Original Design
-showPath: true
 permalink: /original-design/
+showPath: true
+showBackToTop: true
 ---
 
 **This information is out of date.** This document is kept as
