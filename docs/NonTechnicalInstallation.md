@@ -25,7 +25,9 @@ then the technical installation guide will likely be easier and quicker to follo
 TODO
 
 
-## 1. Download the Codebase From GitHub
+<h2 id="download-codebase">
+    1. Download the Codebase From GitHub
+</h2>
 The Misinformation Game must be deployed using its source code. To download and save the codebase onto your
 device, you can access it from [GitHub](https://github.com/TheMisinformationGame/MisinformationGame).
 
@@ -37,7 +39,9 @@ will contain the source code of the Misinformation Game to use in future steps.
 <img src="screenshots/NonTechnicalInstallationGuide/fig1.png" alt="figure 1" height="258" />
 
 
-## 2. Install Visual Studio Code
+<h2 id="install-vscode">
+    2. Install Visual Studio Code
+</h2>
 _If you already have Visual Studio Code installed, then you may skip this step._
 
 This installation guide demonstrates the installation process of downloading the Visual Studio Code on
@@ -61,7 +65,10 @@ and then click **Next**.
 **Step 7:** On the _'Ready to Install'_ page, click **Install**. Once the installation has
 been completed, you may progress to section 3 of this guide.
 
-## 3. Install Node.js and NPM
+
+<h2 id="install-nodejs">
+    3. Install Node.js and NPM
+</h2>
 The next step in the process is to download [Node.js](https://nodejs.org) and [NPM](https://www.npmjs.com/).
 The former is required to run the installation code, and the latter is required to install dependencies of
 the Misinformation Game.
@@ -90,7 +97,9 @@ The default selections include all the components we require, so click **Next**.
 **Step 7:** Click **Install**. Once the installation finishes, click **Finish**.
 
 
-### 3.1 Verify that Node.js and NPM were successfully installed
+<h3 id="verify-nodejs-install">
+    3.1. Verify that Node.js and NPM were successfully installed
+</h3>
 To verify your install, in Windows, open the application “Command Prompt” or "Terminal". In the window, you
 will need to type commands `node -v` and `npm -v`. You can see the commands and their expected outputs below
 in Figure 3. The versions that you have installed may differ from these versions. The guide should continue
@@ -99,7 +108,9 @@ to work, but in case it does not, it may be good to install these specific versi
 <img src="screenshots/NonTechnicalInstallationGuide/fig3.png" alt="figure 3" height="150" />
 
 
-## 4. Create your Firebase Project
+<h2 id="create-firebase-project">
+    4. Create your Firebase Project
+</h2>
 Firebase is a technology platform made by Google, which provides a platform to host websites. The
 Misinformation Game makes use of Firebase for its hosting, authentication, and data storage.
 Therefore, to host your instance of the Misinformation Game, your own Firebase instance will
@@ -130,7 +141,9 @@ disable it, as it doesn't provide any functionality that is used by the Misinfor
 host the Misinformation Game. However, some additional set-up is still required to get it ready.
 
 
-### 4.1 Enable the Firestore Database
+<h3 id="enable-firebase-firestore">
+    4.1. Enable the Firebase Firestore Database
+</h3>
 The Misinformation Game uses the Firestore Database to store users, studies, and study results. Therefore,
 you will need to enable it.
 
@@ -156,7 +169,9 @@ Once you have selected a location, click **Enable**.
 <img src="screenshots/NonTechnicalInstallationGuide/fig7.png" alt="figure 7" height="258" />
 
 
-### 4.2 Enable Storage
+<h3 id="enable-firebase-storage">
+    4.2. Enable Firebase Storage
+</h3>
 Any images that are embedded within studies will be stored within Firebase Storage. Therefore, Storage
 should be enabled.
 
@@ -172,7 +187,9 @@ will need to first enable the Firestore Database as explained in an earlier sect
 <img src="screenshots/NonTechnicalInstallationGuide/fig9.png" alt="figure 9" height="258" />
 
 
-### 4.3 Enable Authentication
+<h3 id="enable-firebase-auth">
+    4.3. Enable Firebase Authentication
+</h3>
 The Misinformation Game uses Firebase Authentication to authenticate administrators. Administrators
 are the users that are given access to upload studies and download their results. This authentication
 is not used for participants in your studies.
@@ -202,7 +219,9 @@ Figure 11 below. This contact email is required by Google's authentication servi
 will be explained later in this guide, as it requires additional set-up to be performed first.
 
 
-### 4.4 Configure the project as a Web-App
+<h3 id="enable-firebase-webapp">
+    4.4. Configure your Firebase Project as a Web-App
+</h3>
 Firebase supports mobile apps as well as websites. We must configure the project as a web-app.
 
 **Step 1:** Click **Project Overview** on the left of the project page, as shown in Figure 12 below.
@@ -230,11 +249,16 @@ bottom-right of this code block that can be pressed to copy it, as shown in Figu
 **Step 7:** Once you have saved the configuration information file, click **Continue to console**.
 
 
-## 5. Deploying the Website
-The next part of the set-up process is to have the game website running on your own computer. For this step
-we will need to use Visual Studio Code, NodeJS, npm, and the Firebase Project that we have set up.
+<h2 id="deploying">
+    5. Deploying the Website
+</h2>
+The next step of the process is to deploy the Misinformation Game to your Firebase project.
+This step will require the software that we installed earlier (Visual Studio Code, Node.js, and NPM).
 
 
+<h3 id="deploying">
+    5.1. Opening and Setting Up the Code
+</h3>
 ### 5.1	OPENING AND SETTING UP THE CODE
 Step 1: Open the Visual Studio Code app. <br/>
 Step 2: Click on File > Open Folder and find the extracted project folder that you saved in section 2.1. <br/>
