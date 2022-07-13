@@ -7,6 +7,8 @@ Game has been designed to be highly customisable so that tightly controlled expe
 created for participants. This customisability is a core focus of The Misinformation Game, to
 facilitate the research of a wide array of social media related questions.
 
+**Pre-print in PsyArXiv:** https://zpr.io/ZsV8ZBqxqsyz
+
 ### Example Game
 If you would like to try a study created using
 The Misinformation Game, you can access an example game from
