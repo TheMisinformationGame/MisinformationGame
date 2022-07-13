@@ -85,6 +85,23 @@ body img.inline-img {
   box-shadow: none;
 }
 
+figure figcaption {
+  text-align: center;
+  font-style: italic;
+  color: #444444;
+  margin-top: 0.6em;
+}
+.content-wrapper figure > figcaption > a,
+figure > figcaption > a {
+  color: #444444;
+  text-decoration: none;
+}
+.content-wrapper figure > figcaption > a:hover,
+figure > figcaption > a:hover {
+  color: #222222;
+  text-decoration: underline;
+}
+
 p {
   display: block;
   margin-top: 1em;
@@ -132,9 +149,10 @@ a {
   text-decoration: none;
 }
 
-/* Offsets heading links so that they aren't hidden below the header. */
+/* Offsets heading and figure links so that they aren't hidden below the header. */
 h1::before, h2::before, h3::before,
-h4::before, h5::before, h6::before {
+h4::before, h5::before, h6::before,
+figure::before {
   content: '';
   display: block;
   height: $heading-link-offset;
