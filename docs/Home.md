@@ -1,5 +1,6 @@
 ---
-title: Home
+title: The Misinformation Game
+skipTitleSuffix: true
 showPath: false
 permalink: /
 ---
