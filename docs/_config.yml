@@ -10,3 +10,9 @@ plugins: [jekyll-sitemap, jekyll-feed, jekyll-seo-tag]
 
 sass:
   sass_dir: _sass
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /screenshots/example-game.png
