@@ -302,10 +302,9 @@ The next step of the process is to deploy the Misinformation Game to your Fireba
 This step will require the software that we installed earlier (Visual Studio Code, Node.js, and NPM).
 
 
-<h3 id="deploying">
+<h3 id="opening-codebase">
     5.1. Opening and Setting Up the Code
 </h3>
-### 5.1	OPENING AND SETTING UP THE CODE
 Step 1: Open the Visual Studio Code app. <br/>
 Step 2: Click on File > Open Folder and find the extracted project folder that you saved in section 2.1. <br/>
 Step 3: Once the folder is open, you will see a screen similar to <a href="#fig14">Figure 14</a>. On the left
@@ -329,7 +328,9 @@ Step 6: Finally, save the file by pressing _Ctrl + S_ on your keyboard.
 </figure>
 
 
-### 5.2 Install Git Bash (For Windows)
+<h3 id="install-git-bash">
+    5.2 Install Git Bash (For Windows)
+</h3>
 Windows users will also need to install Git Bash. You can download it from the below link, by clicking
 the Windows icon, as seen in <a href="#fig16">Figure 16</a>.
 https://git-scm.com/download/win
@@ -344,7 +345,9 @@ of the default settings. After this you should have a working Git for Windows in
 computer.
 
 
-### 5.3	RUNNING THE APP
+<h3 id="running-deployment-script">
+    5.2 Running the Deployment Script
+</h3>
 Now the environment is completely set up and ready for you to edit and to deploy. To deploy a version of
 this application on the internet, follow the below steps.
 
@@ -442,8 +445,9 @@ You can access the website on your browser at the domain \[Your Project ID\].web
 \[Your Project ID\]” is the project ID obtained for question 6 above.
 
 
-## 6. Giving Yourself Admin Rights
-
+<h2 id="granting-admin-rights">
+    6. Giving Yourself Admin Rights
+</h2>
 In order to give yourself Administrator permissions you will need to follow the below steps: <br/>
 Step 1: Access your deployed website at \[Your Project ID\].web.app. This will take you to the page in
 <a href="#fig27">Figure 27</a>.
@@ -531,7 +535,9 @@ domain. The entire installation and hosting process only needs to be followed by
 </figure>
 
 
-## 7. Conclusion
+<h2 id="conclusion">
+    7. Conclusion
+</h2>
 You should now have a fully deployed instance of the Misinformation Game. You may now upload your studies
 through the admin interface. Additional information on configuring your own studies can be found within
 the [study configuration documentation](/StudyConfiguration).
