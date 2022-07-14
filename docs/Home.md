@@ -1,5 +1,5 @@
 ---
-title: The Misinformation Game: A social media simulation tool for research
+title: 'The Misinformation Game: A social media simulation tool for research'
 skipTitleSuffix: true
 showPath: false
 permalink: /
