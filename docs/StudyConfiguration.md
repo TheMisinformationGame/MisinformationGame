@@ -7,12 +7,15 @@ showBackToTop: true
 <h1 id="intro">
     Study Configuration Guide
 </h1>
+
 Studies in The Misinformation Game are configured through the
 use of Google Sheets spreadsheets. These spreadsheets contain
 all settings for your study in one place, including all images
-to be included in your study.
+to be included in your study. This document aims to act as a
+reference for the [configuration spreadsheet](/link/StudyTemplate),
+to help with the configuration of your studies.
 
-**The configuration spreadsheet cannot be opened in Microsoft
+**Important: The configuration spreadsheet cannot be opened in Microsoft
 Excel.** It is built specifically for use in Google Sheets,
 and uses functionality that is not available in Microsoft
 Excel.
