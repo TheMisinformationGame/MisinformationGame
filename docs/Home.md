@@ -8,32 +8,36 @@ permalink: /
 <h1 id="intro">
     The Misinformation Game
 </h1>
-The Misinformation Game is an
-[open-source](https://github.com/TheMisinformationGame/MisinformationGame)
-social media simulator built to study people's behaviour when they
-interact with social media. To achieve this, The Misinformation Game
-simulates a social media feed for research participants. Participants
-will be shown one fake social media post at a time, and they may then
-react to the post and its comments. The Misinformation Game has been
-designed to be highly customisable so that tightly controlled experiences
-can be created for participants. This customisability is a core focus of
-The Misinformation Game, to facilitate the research of a wide array of
+The Misinformation Game is a social media simulator built to study
+people's behaviour when they interact with social media. To achieve
+this, The Misinformation Game simulates a social media feed for
+research participants. Participants will be shown one fake social
+media post at a time, and they may then react to the post and its
+comments. The Misinformation Game has been designed to be highly
+customisable so that tightly controlled experiences can be created
+for participants. This customisability is a core focus of The
+Misinformation Game, to facilitate the research of a wide array of
 social media related questions.
 
 **Preprint Paper:** [PsyArXiv](https://zpr.io/ZsV8ZBqxqsyz)
 
+**Source Code:** [MisinformationGame Repository on GitHub](https://github.com/TheMisinformationGame/MisinformationGame)
 
-### Example Game
+
+## Example Game
 If you would like to test playing through a study created using
 the Misinformation Game, you can access an example game from
 [the example game page](/link/ExampleGame).
 You can enter any ID to access the example game.
 
-![Game Screenshot](screenshots/example-game.png)
+<figure id="fig1">
+    <img src="screenshots/example-game.png" alt="figure 1" height="582" />
+    <figcaption><a href="#fig1">Figure 1.</a> Screenshot of the user interface within a game</figcaption>
+</figure>
 
 <p class="spacer"></p>
 
-### Example Results
+## Example Results
 If you would like to view an example of the results that can be
 gathered when using the Misinformation Game, the results of a user
 experience study are available from
@@ -82,11 +86,12 @@ guide should be easier to follow.
 
 ## System Documentation
 - [Technical Overview](/TechnicalOverview) - A broad overview of the tech-stack used by the game.
-- [Simulation](/Simulation) - An in-depth description on the simulation that powers the game.
+- [Simulation](/Simulation) - An in-depth description of the simulation that powers the game.
 - [Development](/Development) - A guide for developers to make adjustments to the game.
 - [Documentation Development](/DocsDevelopment) - A guide for developers to make adjustments
   to this documentation website.
 - [Original Design](/original-design) - The original, outdated, design document for the game.
+  Only relevant for those who are interested.
 
 ## Other Useful Links
 - [Source Code](https://github.com/TheMisinformationGame/MisinformationGame) -
