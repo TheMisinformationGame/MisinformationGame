@@ -15,10 +15,11 @@ to be included in your study. This document aims to act as a
 reference for the [configuration spreadsheet](/link/StudyTemplate),
 to help with the configuration of your studies.
 
-**Important: The configuration spreadsheet cannot be opened in Microsoft
-Excel.** It is built specifically for use in Google Sheets,
-and uses functionality that is not available in Microsoft
-Excel.
+**Important: The configuration spreadsheet
+<span style="text-decoration: underline">cannot</span>
+be opened in Microsoft Excel.** It is built specifically for use
+in Google Sheets, and uses functionality that is not available in
+Microsoft Excel.
 
 
 <h1 id="toc">
@@ -198,9 +199,12 @@ This description is not shown to participants.
 
 <h6 id="general-prompt"><span class="param-name">Prompt</span></h6>
 The prompt text to be shown to participants before they
-start the study. An example prompt is shown below.
+start the study. An example prompt is shown in [Figure 1](#fig1).
 
-<img src="screenshots/example-prompt.png" alt="Example prompt" height="250"/>
+<figure id="fig1">
+    <img src="screenshots/example-prompt-no-border.png" alt="figure 1" height="501" />
+    <figcaption><a href="#fig1">Figure 1.</a> Screenshot of an example prompt</figcaption>
+</figure>
 
 <h6 id="general-length"><span class="param-name">Length of Game</span></h6>
 The exact number of posts to show to participants before
@@ -297,9 +301,12 @@ it can be zero.
 Whether to generate and display a completion code
 to participants once they have completed the study.
 An example debriefing page that includes a generated
-completion code for a participant is shown below,
+completion code for a participant is shown in [Figure 2](#fig2).
 
-<img src="screenshots/example-debriefing-no-border.png" alt="Example debriefing page" height="140" />
+<figure id="fig2">
+    <img src="screenshots/example-debriefing-no-border.png" alt="figure 2" height="276" />
+    <figcaption><a href="#fig2">Figure 2.</a> Screenshot of an example debriefing page with a completion code</figcaption>
+</figure>
 
 <h6 id="general-completion-code-digits"><span class="param-name">Completion Code Digits</span></h6>
 The number of digits to generate for the completion
@@ -313,10 +320,12 @@ default source avatars. If set to "No", the default
 avatars of sources will all have a white background.
 This setting does nothing if sources are given avatar
 images. The possible background colours when the
-background is randomised are shown below,
+background is randomised are shown in [Figure 3](#fig3).
 
-<img src="screenshots/example-default-random-avatars.png" alt="Example default randomised source avatars" height="140" />
-
+<figure id="fig3">
+    <img src="screenshots/example-default-random-avatars.png" alt="figure 3" height="140" />
+    <figcaption><a href="#fig3">Figure 3.</a> The possible random source avatar background colours</figcaption>
+</figure>
 
 
 <h2 id="pages">
@@ -458,7 +467,10 @@ will add a checkbox that will require participants to confirm
 that they have read the study debriefing before they can copy
 their completion code.
 
-<img src="screenshots/example-debriefing-no-border.png" alt="Example debriefing page" height="140" />
+<figure id="fig4">
+    <img src="screenshots/example-debriefing-no-border.png" alt="figure 4" height="276" />
+    <figcaption><a href="#fig4">Figure 4.</a> Screenshot of an example debriefing page with a completion code</figcaption>
+</figure>
 
 
 <h2 id="selection">
@@ -563,12 +575,15 @@ These IDs can be found in the _Posts_ sheet.
 <h2 id="sources">
     2.6. 📄 Sources Worksheet
 </h2>
-The _Sources_ sheet allows you to add all the sources that
-can be shown to participants during your study. Each source
-contains several settings to define their appearance and
-behaviour. An example source for a post is shown below,
+The _Sources_ sheet allows you to add all the sources that can
+be shown to participants during your study. Each source contains
+several settings to define their appearance and behaviour. An
+example source for a post is shown in [Figure 5](#fig5).
 
-<img src="screenshots/example-source.png" alt="An example source in the game interface" height="76" />
+<figure id="fig5">
+    <img src="screenshots/example-source.png" alt="figure 5" height="76" />
+    <figcaption><a href="#fig5">Figure 5.</a> Screenshot of an example source in the game</figcaption>
+</figure>
 
 The top of the _sources_ sheet contains documentation
 about all the settings that can be defined for each source.
@@ -608,9 +623,12 @@ the mean +/- 5 SD is tiny (0.00006%), and therefore this
 should not affect the shape of the distributions noticeably.
 
 An example preview of the distributions of the follower
-count and credibility for a source is shown below,
+count and credibility for a source is shown in [Figure 6](#fig6).
 
-<img src="screenshots/example-config-source-preview.png" alt="An example source in the game interface" height="484" />
+<figure id="fig6">
+    <img src="screenshots/example-config-source-preview.png" alt="figure 6" height="484" />
+    <figcaption><a href="#fig6">Figure 6.</a> Screenshot of the distributions preview for an example source</figcaption>
+</figure>
 
 
 <h3 id="sources-table">
@@ -647,10 +665,17 @@ are all described in the [Including Images in Studies](/Images) documentation.
 The avatar image must be inserted into the spreadsheet using the **Insert**
 menu at the top of the page on Google Sheets. You must first select the cell
 where you want to insert the avatar image, and then select **Insert** ->
-**Image** -> **Image in cell**. If you do not use this procedure, then The
-Misinformation Game may not be able to find the image to use for the avatar.
+**Image** -> **Image in cell**. This process is highlighted in [Figure 7](#fig7).
+If you do not use this procedure, then The Misinformation Game may not
+be able to find the image to use for the avatar.
 
-<img src="diagrams/inserting-image.png" alt="How to insert an image" height="275"/>
+<figure id="fig7">
+    <img src="diagrams/inserting-image.png" alt="figure 7" height="549" />
+    <figcaption>
+        <a href="#fig7">Figure 7.</a> Diagram demonstrating how to insert an
+        image into a study configuration spreadsheet
+    </figcaption>
+</figure>
 
 <h6 id="sources-max-posts"><span class="param-name">Max Posts</span></h6>
 The maximum posts for a source allows you to set a hard limit on the number
@@ -765,8 +790,13 @@ and there should be no need to edit them.
 The headline of the post is used to provide a title above the
 content of the post. This headline is optional, and if it is
 not included then only the content of the post will be shown.
+The appearance of the headline within posts is highlighted
+in [Figure 8](#fig8).
 
-<img src="diagrams/post-headline-content.png" alt="Post with headline and content highlighted" height="250"/>
+<figure id="fig8">
+    <img src="diagrams/post-headline-content.png" alt="figure 8" height="495" />
+    <figcaption><a href="#fig8">Figure 8.</a> Diagram highlighting the post's headline and content</figcaption>
+</figure>
 
 <h6 id="posts-content"><span class="param-name">Content</span></h6>
 The content of the post is used to provide a  more substantial
@@ -787,11 +817,17 @@ images into the spreadsheet. The content image must be inserted into
 the spreadsheet using the **Insert** menu at the top of the page on
 Google Sheets. You must first select the cell where you want to insert
 the content image, and then select **Insert** -> **Image**
--> **Image in cell**. If you do not use this procedure, then The
-Misinformation Game may not be able to find the image to use for the
-content.
+-> **Image in cell**. This process is highlighted in [Figure 9](#fig9).
+If you do not use this procedure, then The Misinformation Game may not
+be able to find the image to use for the content.
 
-<img src="diagrams/inserting-image.png" alt="How to insert an image" height="275"/>
+<figure id="fig9">
+    <img src="diagrams/inserting-image.png" alt="figure 9" height="549" />
+    <figcaption>
+        <a href="#fig9">Figure 9.</a> Diagram demonstrating how to insert an
+        image into a study configuration spreadsheet
+    </figcaption>
+</figure>
 
 <h6 id="posts-is-true"><span class="param-name">Is True</span></h6>
 This should be set to whether the post should be considered true or false.
@@ -830,9 +866,13 @@ Only used if:
 
 <h6 id="posts-comments"><span class="param-name">Comments</span></h6>
 Up to three optional comments can be configured for each post. Each comment must
-include both a _Source Name_ and a _Message_, which are described below.
+include both a _Source Name_ and a _Message_, which are described below. An
+example comment is shown in [Figure 10](#fig10).
 
-<img src="screenshots/example-comment.png" alt="Example comment in the game interface" height="100" />
+<figure id="fig10">
+    <img src="screenshots/example-comment.png" alt="figure 10" height="123" />
+    <figcaption> <a href="#fig10">Figure 10.</a> Screenshot of an example comment in the game</figcaption>
+</figure>
 
 <h6 id="posts-comment-source-name"><span class="param-name">Comment Source Name</span></h6>
 The name of the source to display as having made the comments.
@@ -876,13 +916,20 @@ Once you have completed configuring your study, it is recommended
 you first check the **Overview** sheet to make sure that
 everything looks correct, and doesn't contain any errors.
 
-The configuration spreadsheet can then be downloaded as an .xlsx 
-file to upload to The Misinformation Game. This can be done by 
-selecting **File** -> **Download** -> **Microsoft Excel (.xlsx)**. 
-The name suggests that this spreadsheet is only meant for Microsoft 
+The configuration spreadsheet can then be downloaded as an .xlsx
+file to upload to The Misinformation Game. This can be done by
+selecting **File** -> **Download** -> **Microsoft Excel (.xlsx)**.
+This process is shown in [Figure 11](#fig11).
+The name suggests that this spreadsheet is only meant for Microsoft
 Excel, but .xlsx is a general-purpose spreadsheet file format.
 
-<img src="diagrams/exporting-config-spreadsheet.png" alt="How to export the configuration spreadsheet" height="250"/>
+<figure id="fig11">
+    <img src="diagrams/exporting-config-spreadsheet.png" alt="figure 11" height="500" />
+    <figcaption>
+        <a href="#fig11">Figure 11.</a> Diagram demonstrating how to download
+        your study configuration spreadsheet.
+    </figcaption>
+</figure>
 
 Once you have downloaded your study configuration as an
 .xlsx file, you can then upload it through The Misinformation
