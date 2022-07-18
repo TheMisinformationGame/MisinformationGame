@@ -181,7 +181,7 @@ class AdminPage extends MountAwareComponent {
                             <ErrorLabel value={[
                                 <b>You are not registered as an admin.</b>,
                                 <span>
-                                    You will not able to access the admin console until you are
+                                    You will not able to access the admin dashboard until you are
                                     granted admin privileges.
                                 </span>,
                                 <span>
