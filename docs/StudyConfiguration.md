@@ -940,4 +940,6 @@ button. This will open a window where you can click
 If there are any errors that could be found with your study,
 then an error will be displayed in this window. Otherwise,
 a success message will be displayed, and you will be redirected
-to the admin view of your new study.
+to the admin view of your new study. Additional information about
+managing your study after you have uploaded it can be found in
+the [Managing Studies documentation](/ManagingStudies).
