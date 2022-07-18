@@ -12,25 +12,24 @@ Dashboard, by selecting your study, and then selecting
 **Download Results**. The results are downloaded as a
 spreadsheet that may be opened in any spreadsheet program
 such as Google Sheets or Microsoft Excel. The results spreadsheet
-is split into four sheets:
+is split into four worksheets:
 
-1) **[The Overview Sheet](#overview):** This sheet contains information about the
+1) **[The Overview Worksheet](#overview):** This sheet contains information about the
    study that the results are from, the number of participants,
    and when the results were downloaded.
 
-2) **[The Posts Sheet](#posts):** This sheet contains all the reactions of
+2) **[The Posts Worksheet](#posts):** This sheet contains all the reactions of
    participants to the posts that they were shown. It also
    includes the number of followers and the credibility score of 
    the source that shared the post, and the participant, as well 
    as the time it took the participant to react to the post.
 
-3) **[The Comments Sheet](#comments) _(optional)_:** This sheet contains the reactions
-   of participants to comments on posts. If a participant did
-   not react to a comment, then the reaction column will be
-   left blank. If your study contains no comments, then this sheet
-   will not be included.
+3) **[The Comments Worksheet](#comments) _(optional)_:** This sheet contains the reactions
+   of participants to comments on posts. If no participants reacted to a comment,
+   then the reaction column will be left blank. If your study contains no comments,
+   then this sheet will not be included.
 
-4) **[The Participants Sheet](#participants):** This sheet contains a list of all the
+4) **[The Participants Worksheet](#participants):** This sheet contains a list of all the
    participants in the study, when they completed the study,
    and their completion codes.
 
@@ -44,8 +43,9 @@ from [the example results page](/link/ExampleResults).
 
 
 <h1 id="overview">
-    1. Overview Sheet
+    1. Overview Worksheet
 </h1>
+
 **Study ID:** The identification number used in the URL of
 the study to identify it. It is unique for each study.
 
@@ -60,7 +60,7 @@ the results were downloaded, in UTC time.
 
 
 <h1 id="posts">
-    2. Posts Sheet
+    2. Posts Worksheet
 </h1>
 **Session ID:** The session ID can be used to uniquely
 identify the reactions of a participant in their play-through
@@ -126,7 +126,7 @@ follower number after they reacted to this post.
 
 
 <h1 id="comments">
-    3. Comments Sheet
+    3. Comments Worksheet
 </h1>
 **Session ID:** The session ID can be used to uniquely
 identify one play-through of the game by a participant. This
@@ -178,7 +178,7 @@ was no reaction to the comment.
 
 
 <h1 id="participants">
-    4. Participants Sheet
+    4. Participants Worksheet
 </h1>
 **Session ID:** The session ID can be used to uniquely
 identify one play-through of the game by a participant. This

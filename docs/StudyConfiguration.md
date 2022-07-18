@@ -26,13 +26,13 @@ Excel.
 </h1>
 * [1. ✏ Create a new Spreadsheet](#create)
 * [2. 📜 Enter your study settings into the Spreadsheet](#configure)
-    - [📄 About Sheet](#about)
-    - [📄 Overview Sheet](#overview)
-    - [📄 General Sheet](#general)
-    - [📄 Pages Sheet](#pages)
-    - [📄 Source & Post Selection Sheet](#selection)
-    - [📄 Sources Sheet](#sources)
-    - [📄 Posts Sheet](#posts)
+    - [📄 About Worksheet](#about)
+    - [📄 Overview Worksheet](#overview)
+    - [📄 General Worksheet](#general)
+    - [📄 Pages Worksheet](#pages)
+    - [📄 Source & Post Selection Worksheet](#selection)
+    - [📄 Sources Worksheet](#sources)
+    - [📄 Posts Worksheet](#posts)
 * [3. 📤 Uploading your Study](#upload)
 
 
@@ -98,7 +98,7 @@ configure your study.
 
 
 <h2 id="about">
-    2.1. 📄 About Sheet
+    2.1. 📄 About Worksheet
 </h2>
 The _About_ sheet gives an overview of the structure of
 the spreadsheet, with a short description of each sheet in
@@ -112,7 +112,7 @@ spreadsheet.
 
 
 <h2 id="overview">
-    2.2. 📄 Overview Sheet
+    2.2. 📄 Overview Worksheet
 </h2>
 The _Overview_ sheet provides a summary of all the settings
 that have been entered. It also collates all the errors
@@ -173,7 +173,7 @@ being shown, even if the true post percentage is 100%.
 
 
 <h2 id="general">
-    2.3. 📄 General Sheet
+    2.3. 📄 General Worksheet
 </h2>
 The General sheet is the best place to start when creating
 a study. It contains all the most broad settings of
@@ -320,7 +320,7 @@ background is randomised are shown below,
 
 
 <h2 id="pages">
-    2.4. 📄 Pages Sheet
+    2.4. 📄 Pages Worksheet
 </h2>
 The _Pages_ sheet allows you to edit the content of
 the instructions and debriefing that the users may be
@@ -462,7 +462,7 @@ their completion code.
 
 
 <h2 id="selection">
-    2.5. 📄 Source & Post Selection Sheet
+    2.5. 📄 Source & Post Selection Worksheet
 </h2>
 The Source & Post Selection sheet allows you to edit the
 method that is used to select the source/post pairs that
@@ -561,7 +561,7 @@ These IDs can be found in the _Posts_ sheet.
 
 
 <h2 id="sources">
-    2.6. 📄 Sources Sheet
+    2.6. 📄 Sources Worksheet
 </h2>
 The _Sources_ sheet allows you to add all the sources that
 can be shown to participants during your study. Each source
@@ -711,7 +711,7 @@ Only used if:
 
 
 <h2 id="posts">
-    2.7. 📄 Posts Sheet
+    2.7. 📄 Posts Worksheet
 </h2>
 The _Posts_ sheet allows you to add all the posts that could
 be shown to participants during the game. Each post can
