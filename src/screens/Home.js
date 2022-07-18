@@ -19,7 +19,7 @@ function Home() {
             <GithubCorner />
             <div className="flex flex-col items-center justify-center min-h-screen">
 
-                <a href="https://github.com/TheMisinformationGame/">
+                <a href="https://themisinformationgame.github.io/">
                     <img src={Logo} alt="Misinformation Game Logo"
                          className="fixed left-2 top-2 h-16" />
                 </a>
