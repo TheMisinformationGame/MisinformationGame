@@ -1,74 +1,256 @@
 ---
 title: Registering Administrators
 showPath: true
-showBackToTop: false
+showBackToTop: true
 ---
 
-# Administrators
+<h1 id="intro">
+    Registering Administrators
+</h1>
 In order for users to upload their own studies, they must first
 be registered as administrators. This document outlines the
 process for a user to be granted administrator privileges.
 
-## 1. User Registration
-Before a user can be made into an administrator, they must first
-register with the application using their Google account. This
-can be done by accessing the Admin Dashboard from the homepage.
-You will then be prompted to sign in using Google. Once you click
-the **Sign In with Google** button, you will be prompted to
-select a Google account to authenticate with. Select the account
-you wish to create studies using, and then you should be
-redirected to the admin dashboard.
 
-You should now see the error **You are not registered as an
-admin**. If you do not see this error, then you are already
-registered as an administrator. However, if you do see this
-message, you will need to be registered through the Firebase
-console.
+<h2 id="toc">
+    Table of Contents
+</h2>
+* [1. User Registration](#user-registration)
+* [2. Finding User IDs](#user-registration)
+    - [2.1. Finding your own User ID](#find-own-user-id)
+    - [2.2. Finding User IDs through the Firebase Console](#find-other-user-id)
+* [3. Admin Registration](#admin-registration)
+    - [3.1. Accessing the Firestore Database](#access-firestore)
+    - [3.2. Registering the First Administrator](#admin-registration-first)
+    - [3.3. Registering Additional Administrators](#admin-registration-additional)
 
-### 1.1. Finding your User ID
-To register yourself as an administrator, you will need to
-know your user ID. Your User ID is displayed in the top-right
-of the admin dashboard underneath your name. It should be a
-long string of letters and numbers that looks similar to
-`rdp1zSjlgiMTAj4t42ve4sE84CvL`.
 
-## 2. Admin Registration
-Administrators are registered through the Firebase console
-through the **Firestore Database** tab on the left. If you
-are the first administrator to be registered, then you will
-have to create the **Admins** collection in Firestore.
+<h2 id="user-registration">
+    1. User Registration
+</h2>
+Users must register with your instance of The Misinformation Game
+before they can be registered as administrators. This must be
+done using a Google account. The process to register as a user
+is described below.
 
-### 2.1. Registering the first administrator
-Press the **+ Start collection** button in the Firestore
-Database tab. You will then be prompted to enter a
-Collection ID. Enter `Admins` as the Collection ID,
-and then press Next.
+**Step 1:** First, the admin dashboard must be accessed from the homepage
+of your instance of The Misinformation Game. The button to access
+the dashboard from the homepage is highlighted in [Figure 1](#fig1).
 
-You will then be prompted to **Add it's first document**.
-Enter your **User ID** in the **Document ID** field.
-Enter `Name` into the **Field** entry, and enter your
-name as the **Value** for the field. The **Type** for
-the field should be set to `string`. Once you have
-entered the Document ID, Field, and Value, press **Save**.
+<figure id="fig1">
+    <img src="diagrams/accessing-admin-dashboard.png" alt="figure 27" height="548" />
+    <figcaption>
+        <a href="#fig1">Figure 1.</a> Diagram demonstrating how to access the
+        admin dashboard from the homepage.
+    </figcaption>
+</figure>
 
-You should now be able to reload the admin dashboard, and
-the **You are not registered as an admin** error should
-be gone.
+**Step 2:** You will then be prompted to sign in using a Google account. You should click
+the **Sign In with Google** button. A screenshot of the sign-in page is shown in [Figure 2](#fig2).
 
-### 2.2. Registering additional administrators
-Additional administrators can be registed by selecting
-the **Admins** collection in the Firestore Database tab.
-Once selected, you should be able to click the
-**Add document** button in the second column.
+<figure id="fig2">
+    <img src="screenshots/sign-in-page.png" alt="figure 2" height="237" />
+    <figcaption>
+        <a href="#fig2">Figure 2.</a> Screenshot of the administrator sign-in page.
+    </figcaption>
+</figure>
 
-You will then be prompted to **Add a document**.
-Enter the **User ID** of the user you wish to register
-in the **Document ID** field. Enter `Name` into the
-**Field** entry, and enter the user's name as the **Value**
-for the field. The **Type** for the field should be set
-to `string`. Once you have entered the Document ID, Field,
-and Value, press **Save**.
+**Step 3:** You should be prompted to select a Google account to authenticate with.
+You should select the Google account that you wish to create studies with. You should
+then be redirected to the admin dashboard page. This page should display a permissions
+error similar to the one shown in [Figure 3](#fig3). If it does not, then you have
+already been granted administrator privileges.
 
-The user should now be able to reload the admin dashboard, and
-the **You are not registered as an admin** error should
-be gone.
+<figure id="fig3">
+    <img src="screenshots/admin-dashboard-with-permissions-error.png" alt="figure 3" height="387" />
+    <figcaption>
+        <a href="#fig3">Figure 3.</a> Screenshot of the admin dashboard with a permissions error.
+    </figcaption>
+</figure>
+
+**Step 4:** You have now been registered as a user, but not an administrator. The process
+to register users as administrators is described under [Admin Registration](#admin-registration) below.
+
+
+
+<h2 id="find-user-id">
+    2. Finding User IDs
+</h2>
+
+Administrators are registered by adding their User ID to a collection in the
+Firestore Database of your instance of The Misinformation Game. Therefore, before
+a user can be registered as an administrator, you will need to find their User ID.
+If you are finding your own User ID, then you may refer to the process in the
+[Finding your own User ID section](#find-own-user-id). If you are finding the
+User ID of another user, then you may refer to the process in the
+[Finding another user's User ID section](#find-other-user-id).
+
+<h3 id="find-own-user-id">
+    2.1. Finding your own User ID
+</h3>
+Your User ID is displayed in the top-right
+of the admin dashboard underneath your name, as highlighted
+in [Figure 4](#fig4). It should be a long string of letters
+and numbers that looks similar to `rdp1zSjlgiMTAj4t42ve4sE84CvL`.
+
+<figure id="fig4">
+    <img src="diagrams/accessing-own-user-id.png" alt="figure 4" height="387" />
+    <figcaption>
+        <a href="#fig4">Figure 4.</a> Diagram demonstrating where to access your user ID.
+    </figcaption>
+</figure>
+
+<h3 id="find-other-user-id">
+    2.2. Finding User IDs through the Firebase Console
+</h3>
+If you are registering another user as an administrator, then it may be easier
+to obtain their User ID manually through the Firebase Console. This can be done
+by accessing the **Build -> Authentication** tab on the left of the Firebase Console.
+The users that have registered will be listed in a table, with their emails given
+in the "Identifier" column. You should find the row with the email of the user that
+you wish to register as an admin. If they do not appear in this table, then you may
+ask them to register as described in the [User Registration section](#user-registration).
+Once you have found their row, then you can click the "Copy UID" button to the right
+of the table to copy their User ID into your clipboard. This User ID should look similar
+to `rdp1zSjlgiMTAj4t42ve4sE84CvL`. It will be used in later sections to register the
+user as an admin. This process to find User IDs through the Firebase Console is shown
+in [Figure 5](#fig5).
+
+<figure id="fig5">
+    <img src="diagrams/copying-user-id.png" alt="figure 5" height="387" />
+    <figcaption>
+        <a href="#fig5">Figure 5.</a> Diagram demonstrating how to copy the User ID of another user.
+    </figcaption>
+</figure>
+
+
+
+<h2 id="admin-registration">
+    3. Admin Registration
+</h2>
+Administrators must be manually registered through the
+[Firebase Console](https://console.firebase.google.com)
+for your instance of The Misinformation Game. The process
+to do this is described in the sections below.
+
+<h3 id="access-firestore">
+    3.1. Accessing the Firestore Database
+</h3>
+
+Administrators are registered by manually adding entries to the Firestore
+database. The Firestore database can be accessed through the
+**Build -> Firestore Database** tab on the left.
+
+<figure id="fig5">
+    <img src="diagrams/accessing-firestore.png" alt="figure 5" height="529" />
+    <figcaption>
+        <a href="#fig5">Figure 5.</a> Diagram demonstrating how to access the Firestore database.
+    </figcaption>
+</figure>
+
+<h3 id="admin-registration-first">
+    3.2. Registering the First Administrator
+</h3>
+When you register your first administrator, you must create the "Admins"
+collection within your Firestore database. The process to do this is
+described below. If you already have an "Admins" collection, then you should
+follow the process in the [Registering Additional Administrators](#admin-registration-additional)
+section instead.
+
+**Step 1:** Press the "+ Start collection" button to create your first
+Firestore collection. This button is highlighted in [Figure 6](#fig6).
+This should open a dialog prompting you to "Start a collection".
+
+<figure id="fig6">
+    <img src="diagrams/starting-firestore-collection.png" alt="figure 6" height="529" />
+    <figcaption>
+        <a href="#fig6">Figure 6.</a> Diagram demonstrating how to create
+        your first Firestore collection.
+    </figcaption>
+</figure>
+
+**Step 2:** You will be prompted to enter an ID for the new collection.
+You should enter `Admins` for the Collection ID, as shown in [Figure 7](#fig7).
+The case of the letters in the Collection ID is important. You may now
+press "Next" to advance to adding the first administrator.
+
+<figure id="fig7">
+    <img src="screenshots/firestore-start-admins-collection.png" alt="figure 7" height="529" />
+    <figcaption>
+        <a href="#fig7">Figure 7.</a> Screenshot of the first step
+        in creating the Admins Firestore collection.
+    </figcaption>
+</figure>
+
+**Step 3:** You will now be prompted to add the first document to the Admins collection.
+The first document that we will add is the first administrator of your instance of
+The Misinformation Game. An example of this form as it is filled in is shown
+in [Figure 8](#fig8).
+
+* You should enter your User ID as the "Document ID". Your User ID can be found using the
+process described under the [Finding your User ID](#find-user-id) section. This will
+allow The Misinformation Game to verify that you are an administrator.
+
+* Next, you should enter `Name` under "Field", and your name under "Value". The "Type"
+field should be set to `string`. This name will later help to keep track of who has been
+granted administrator privileges.
+
+<figure id="fig8">
+    <img src="screenshots/firestore-populate-admins-collection.png" alt="figure 8" height="693" />
+    <figcaption>
+        <a href="#fig8">Figure 8.</a> Screenshot of the second step
+        in creating the Admins Firestore collection.
+    </figcaption>
+</figure>
+
+**Step 4:** You should now be able to reload the admin dashboard and the permission
+error should be gone. You may now upload and manage your studies as described under
+the [Managing Studies documentation](ManagingStudies)!
+
+
+<h3 id="admin-registration-additional">
+    3.3. Registering Additional Administrators
+</h3>
+
+When existing administrators have already been added to your instance of The
+Misinformation Game, the Admins collection will have already been created in
+your Firestore database. This section will describe how to add a new document
+to that collection to register a new user as an administrator. If you
+do not see an Admins collection in your Firestore Database as shown in
+[Figure 9](#fig9), then you should follow the process in the
+[Registering the First Administrator section](#admin-registration-first)
+instead.
+
+**Step 1:** Select the Admins collection in the Firestore database and click "Add document",
+as shown in [Figure 9](#fig9).
+
+<figure id="fig9">
+    <img src="diagrams/adding-new-admin.png" alt="figure 9" height="583" />
+    <figcaption>
+        <a href="#fig9">Figure 9.</a> Diagram demonstrating how to open
+        dialog to add a new administrator.
+    </figcaption>
+</figure>
+
+**Step 2:** You must now fill in a form with the information about the administrator
+you are registering. An example of this form as it is filled in is shown
+in [Figure 10](#fig10).
+
+* You should enter the admin's User ID as the "Document ID". Their User ID can be found using the
+  process described under the [Finding your User ID](#find-user-id) section.
+
+* Next, you should enter `Name` under "Field", and the admin's name under "Value". The "Type"
+  field should be set to `string`. This name will later help to keep track of who has been
+  granted administrator privileges.
+
+<figure id="fig10">
+    <img src="screenshots/firestore-add-to-admins-collection.png" alt="figure 10" height="605" />
+    <figcaption>
+        <a href="#fig10">Figure 10.</a> Screenshot of the dialog
+        used to add a new administrator, filled in with example data.
+    </figcaption>
+</figure>
+
+**Step 3:** The admin that you registered should now be able to reload the admin dashboard
+and the admin permission error should be gone. They may now upload and manage studies as
+described under the [Managing Studies documentation](ManagingStudies)!

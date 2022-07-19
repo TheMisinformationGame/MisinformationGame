@@ -22,7 +22,6 @@ then the technical installation guide will likely be easier and quicker to follo
 <h1 id="toc">
     Table of Contents
 </h1>
-
 * [1. Download the Codebase From GitHub](#download-codebase)
 * [2. Install Visual Studio Code](#install-vscode)
 * [3. Install Node.js and NPM](#install-nodejs)
@@ -36,8 +35,7 @@ then the technical installation guide will likely be easier and quicker to follo
     - [5.1. Opening and Setting Up the Code](#opening-codebase)
     - [5.2. Install Git Bash](#install-git-bash)
     - [5.3. Running the Deployment Script](#running-deployment-script)
-* [6. Giving Yourself Admin Rights](#granting-admin-rights)
-* [7. Conclusion](#conclusion)
+* [6. Conclusion](#conclusion)
 
 
 <h1 id="download-codebase">
@@ -460,99 +458,16 @@ You can access the website on your browser at the domain \[Your Project ID\].web
 \[Your Project ID\]” is the project ID obtained for question 6 above.
 
 
-<h1 id="granting-admin-rights">
-    6. Giving Yourself Admin Rights
-</h1>
-In order to give yourself Administrator permissions you will need to follow the below steps: <br/>
-Step 1: Access your deployed website at \[Your Project ID\].web.app. This will take you to the page in
-<a href="#fig27">Figure 27</a>.
-<br/>
-
-<figure id="fig27">
-    <img src="diagrams/non-technical-installation-guide/27-homepage.png" alt="figure 27" height="293" />
-    <figcaption><a href="#fig27">Figure 27.</a> Misinformation Game homepage</figcaption>
-</figure>
-
-
-Step 2: Then click on “Access the Admin Dashboard” and this will take you to the Admin Sign In page as
-seen in <a href="#fig28">Figure 28</a>. On the sign-in page, click on “Sign in with Google” and sign in
-with your Google account.
-
-<figure id="fig28">
-    <img src="diagrams/non-technical-installation-guide/28-sign-in.png" alt="figure 28" height="108" />
-    <figcaption><a href="#fig28">Figure 28.</a> Misinformation Game admin sign-in page</figcaption>
-</figure>
-
-Step 3: After signing in you will see that you do not have permissions yet. This is seen in
-<a href="#fig29">Figure 29</a>.
-
-<figure id="fig29">
-    <img src="diagrams/non-technical-installation-guide/29-admin-permissions-error.png" alt="figure 29" height="189" />
-    <figcaption><a href="#fig29">Figure 29.</a> Admin dashboard with permissions error</figcaption>
-</figure>
-
-Step 4: You will now need to get to your Google Firebase project at:
-https://console.firebase.google.com/
-In your Firebase project, click on “Build” and then click on “Authentication” as seen in
-<a href="#fig30">Figure 30</a>.
-
-<figure id="fig30">
-    <img src="diagrams/non-technical-installation-guide/30-access-authentication.png" alt="figure 30" height="209" />
-    <figcaption><a href="#fig30">Figure 30.</a> Accessing Firebase authentication</figcaption>
-</figure>
-
-Step 5: In the Authentication screen, make sure you are in the Users tab.
-Find yourself, in the identifier column and then copy your User UID. This can be seen in
-<a href="#fig31">Figure 31</a>.
-
-<figure id="fig31">
-    <img src="diagrams/non-technical-installation-guide/31-find-user-UID.png" alt="figure 31" height="317" />
-    <figcaption><a href="#fig31">Figure 31.</a> Finding user UIDs to register users as admins</figcaption>
-</figure>
-
-Step 6: Now that we have the User UID, we now need to add this to the database.
-Click on “Build” and then click on “Firestore Database”.
-Make sure you are on the “Data” tab and then click on “Start Collection”.
-This is all seen in <a href="#fig32">Figure 32</a>.
-
-<figure id="fig32">
-    <img src="diagrams/non-technical-installation-guide/32-create-admins-firestore-collection-pt1.png" alt="figure 32" height="379" />
-    <figcaption><a href="#fig32">Figure 32.</a> Creating a new collection in Firestore</figcaption>
-</figure>
-
-Step 7: You will then be asked to name the collection. The collection must be called “Admins”.
-Then click “Next” to continue. This is seen in <a href="#fig33">Figure 33</a>.
-
-<figure id="fig33">
-    <img src="diagrams/non-technical-installation-guide/33-create-admins-firestore-collection-pt2.png" alt="figure 33" height="290" />
-    <figcaption><a href="#fig33">Figure 33.</a> Creating the Admins collection in Firestore</figcaption>
-</figure>
-
-Step 8: You will then be asked to create a document in the collection.
-For the Document ID, paste in your “User UID” that you copied earlier in step 5.
-Next in Field type “Name” and then in value insert the user’s name. Then click “Save.”
-This is seen in <a href="#fig34">Figure 34</a>.
-
-<figure id="fig34">
-    <img src="diagrams/non-technical-installation-guide/34-register-first-admin.png" alt="figure 34" height="395" />
-    <figcaption><a href="#fig34">Figure 34.</a> Registering the first admin user in a new Admins collection</figcaption>
-</figure>
-
-Step 9: You will now have added your user as an Admin. You can test this by returning to the admin
-page on your website. You should see a page like <a href="#fig35">Figure 35</a>.
-
-_NOTE: Other administrators will be able to set up their own administrator account on the same website
-domain. The entire installation and hosting process only needs to be followed by one administrator._
-
-<figure id="fig35">
-    <img src="diagrams/non-technical-installation-guide/35-blank-admin-dashboard.png" alt="figure 35" height="207" />
-    <figcaption><a href="#fig35">Figure 35.</a> Misinformation Game admin dashboard with permissions</figcaption>
-</figure>
-
 
 <h1 id="conclusion">
-    7. Conclusion
+    6. Conclusion
 </h1>
-You should now have a fully deployed instance of the Misinformation Game. You may now upload your studies
-through the admin interface. Additional information on configuring your own studies can be found within
-the [study configuration documentation](/StudyConfiguration).
+
+You should now have a fully deployed instance of the Misinformation Game! You may now sign in to your
+instance of The Misinformation Game, and register yourself as an administrator, through the process
+described in the [Registering Administrators documentation](/Administrators).
+
+Once you have registered yourself as an admin, then you can read more about uploading and managing your
+studies in the [Managing Studies documentation](ManagingStudies). Additionally, information on configuring
+your studies can be found in the [Study Configuration documentation](/StudyConfiguration). I hope The
+Misinformation Game proves useful for your research!
