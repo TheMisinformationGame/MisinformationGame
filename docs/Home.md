@@ -97,7 +97,7 @@ guide should be easier to follow.
 - [Source Code](https://github.com/TheMisinformationGame/MisinformationGame) -
   The Misinformation Game is open-source!
 - [The (Mis)information Game Paper](https://zpr.io/ZsV8ZBqxqsyz) -
-  A pre-print paper about the game with validation results.
+  A pre-print paper about The Misinformation Game, including a user experiency study.
 - [Issue Tracker](https://github.com/TheMisinformationGame/MisinformationGame/issues) -
   If you find any issues, please report them here.
 - [Example Game](/link/ExampleGame) -
