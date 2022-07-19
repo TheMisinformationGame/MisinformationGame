@@ -66,14 +66,14 @@ technologies, then the non-technical installation
 guide should be easier to follow.
 
 ## Usage Documentation
-- [How to play The Misinformation Game](/HowToPlay) -
-  The guide given to participants before they start a study.
-- [Study Configuration](/StudyConfiguration) - A guide to create your own study.
+- [How to Play](/HowToPlay) -
+  The default guide given to participants before they start a study.
+- [Study Configuration](/StudyConfiguration) - A reference guide on creating your own study.
 - [Including Images in Studies](/Images) - Recommendations for including images in studies.
-- [Results](/Results) - Descriptions of the results that are recorded by the game.
-- [Managing Studies](/ManagingStudies) - How to upload, enable, disable, and delete your studies.
 - [Registering Administrators](/Administrators) - How to securely assign administrator privileges.
+- [Managing Studies](/ManagingStudies) - How to upload, enable, disable, and delete your studies.
 - [Integration with Qualtrics](/QualtricsIntegration) - How to integrate a study into Qualtrics.
+- [Results](/Results) - A reference guide on the results that are recorded by the game.
 
 ## Hosting Documentation
 - [Firebase Pricing](/FirebasePricing) - A guide to estimate the hosting costs of running a study.
@@ -86,7 +86,7 @@ guide should be easier to follow.
 
 ## System Documentation
 - [Technical Overview](/TechnicalOverview) - A broad overview of the tech-stack used by the game.
-- [Simulation](/Simulation) - An in-depth description of the simulation that powers the game.
+- [Simulation](/Simulation) - An in-depth description of the simulation behind the game.
 - [Development](/Development) - A guide for developers to make adjustments to the game.
 - [Documentation Development](/DocsDevelopment) - A guide for developers to make adjustments
   to this documentation website.
@@ -95,7 +95,9 @@ guide should be easier to follow.
 
 ## Other Useful Links
 - [Source Code](https://github.com/TheMisinformationGame/MisinformationGame) -
-  The Misinformation Game is proudly open-source! 
+  The Misinformation Game is open-source!
+- [The (Mis)information Game Paper](https://zpr.io/ZsV8ZBqxqsyz) -
+  A pre-print paper about the game with validation results.
 - [Issue Tracker](https://github.com/TheMisinformationGame/MisinformationGame/issues) -
   If you find any issues, please report them here.
 - [Example Game](/link/ExampleGame) -
