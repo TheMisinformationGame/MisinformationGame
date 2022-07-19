@@ -138,13 +138,14 @@ to do this is described in the sections below.
 </h3>
 
 Administrators are registered by manually adding entries to the Firestore
-database. The Firestore database can be accessed through the
-**Build -> Firestore Database** tab on the left.
+database. The Firestore database can be accessed through the **Build ->
+Firestore Database** tab on the left. The process to access this tab is
+shown in [Figure 6](#fig6).
 
-<figure id="fig5">
-    <img src="diagrams/accessing-firestore.png" alt="figure 5" height="529" />
+<figure id="fig6">
+    <img src="diagrams/accessing-firestore.png" alt="figure 6" height="529" />
     <figcaption>
-        <a href="#fig5">Figure 5.</a> Diagram demonstrating how to access the Firestore database.
+        <a href="#fig6">Figure 6.</a> Diagram demonstrating how to access the Firestore database.
     </figcaption>
 </figure>
 
@@ -158,26 +159,26 @@ follow the process in the [Registering Additional Administrators](#admin-registr
 section instead.
 
 **Step 1:** Press the "+ Start collection" button to create your first
-Firestore collection. This button is highlighted in [Figure 6](#fig6).
+Firestore collection. This button is highlighted in [Figure 7](#fig7).
 This should open a dialog prompting you to "Start a collection".
 
-<figure id="fig6">
-    <img src="diagrams/starting-firestore-collection.png" alt="figure 6" height="529" />
+<figure id="fig7">
+    <img src="diagrams/starting-firestore-collection.png" alt="figure 7" height="529" />
     <figcaption>
-        <a href="#fig6">Figure 6.</a> Diagram demonstrating how to create
+        <a href="#fig7">Figure 7.</a> Diagram demonstrating how to create
         your first Firestore collection.
     </figcaption>
 </figure>
 
 **Step 2:** You will be prompted to enter an ID for the new collection.
-You should enter `Admins` for the Collection ID, as shown in [Figure 7](#fig7).
+You should enter `Admins` for the Collection ID, as shown in [Figure 8](#fig8).
 The case of the letters in the Collection ID is important. You may now
 press "Next" to advance to adding the first administrator.
 
-<figure id="fig7">
-    <img src="screenshots/firestore-start-admins-collection.png" alt="figure 7" height="529" />
+<figure id="fig8">
+    <img src="screenshots/firestore-start-admins-collection.png" alt="figure 8" height="529" />
     <figcaption>
-        <a href="#fig7">Figure 7.</a> Screenshot of the first step
+        <a href="#fig8">Figure 8.</a> Screenshot of the first step
         in creating the Admins Firestore collection.
     </figcaption>
 </figure>
@@ -185,7 +186,7 @@ press "Next" to advance to adding the first administrator.
 **Step 3:** You will now be prompted to add the first document to the Admins collection.
 The first document that we will add is the first administrator of your instance of
 The Misinformation Game. An example of this form as it is filled in is shown
-in [Figure 8](#fig8).
+in [Figure 9](#fig9).
 
 * You should enter your User ID as the "Document ID". Your User ID can be found using the
 process described under the [Finding your User ID](#find-user-id) section. This will
@@ -195,10 +196,10 @@ allow The Misinformation Game to verify that you are an administrator.
 field should be set to `string`. This name will later help to keep track of who has been
 granted administrator privileges.
 
-<figure id="fig8">
-    <img src="screenshots/firestore-populate-admins-collection.png" alt="figure 8" height="693" />
+<figure id="fig9">
+    <img src="screenshots/firestore-populate-admins-collection.png" alt="figure 9" height="693" />
     <figcaption>
-        <a href="#fig8">Figure 8.</a> Screenshot of the second step
+        <a href="#fig9">Figure 9.</a> Screenshot of the second step
         in creating the Admins Firestore collection.
     </figcaption>
 </figure>
@@ -217,24 +218,24 @@ Misinformation Game, the Admins collection will have already been created in
 your Firestore database. This section will describe how to add a new document
 to that collection to register a new user as an administrator. If you
 do not see an Admins collection in your Firestore Database as shown in
-[Figure 9](#fig9), then you should follow the process in the
+[Figure 10](#fig10), then you should follow the process in the
 [Registering the First Administrator section](#admin-registration-first)
 instead.
 
 **Step 1:** Select the Admins collection in the Firestore database and click "Add document",
-as shown in [Figure 9](#fig9).
+as shown in [Figure 10](#fig10).
 
-<figure id="fig9">
-    <img src="diagrams/adding-new-admin.png" alt="figure 9" height="583" />
+<figure id="fig10">
+    <img src="diagrams/adding-new-admin.png" alt="figure 10" height="583" />
     <figcaption>
-        <a href="#fig9">Figure 9.</a> Diagram demonstrating how to open
+        <a href="#fig10">Figure 10.</a> Diagram demonstrating how to open
         dialog to add a new administrator.
     </figcaption>
 </figure>
 
 **Step 2:** You must now fill in a form with the information about the administrator
 you are registering. An example of this form as it is filled in is shown
-in [Figure 10](#fig10).
+in [Figure 11](#fig11).
 
 * You should enter the admin's User ID as the "Document ID". Their User ID can be found using the
   process described under the [Finding your User ID](#find-user-id) section.
@@ -243,10 +244,10 @@ in [Figure 10](#fig10).
   field should be set to `string`. This name will later help to keep track of who has been
   granted administrator privileges.
 
-<figure id="fig10">
-    <img src="screenshots/firestore-add-to-admins-collection.png" alt="figure 10" height="605" />
+<figure id="fig11">
+    <img src="screenshots/firestore-add-to-admins-collection.png" alt="figure 11" height="605" />
     <figcaption>
-        <a href="#fig10">Figure 10.</a> Screenshot of the dialog
+        <a href="#fig11">Figure 11.</a> Screenshot of the dialog
         used to add a new administrator, filled in with example data.
     </figcaption>
 </figure>
