@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import firebaseConfig from "../../config/firebase-config";
+import developmentConfig from "../../config/development-config";
 import 'firebase/firestore';
 import 'firebase/storage';
 import 'firebase/auth'
@@ -13,9 +14,16 @@ export const storageRef = storage.ref();
 export const auth = firebase.auth();
 export const authProvider = new firebase.auth.GoogleAuthProvider();
 
-// If we're on localhost, then use the local emulator instead of the production database.
-if (window.location.hostname === "localhost") {
-    auth.useEmulator("http://localhost:9099", { disableWarnings: true });
-    storage.useEmulator("localhost", 9199);
-    db.useEmulator("localhost", 9299);
+
+// When in development mode, we want to connect to the Firebase
+// emulators instead of the production Firebase instance.
+const devAddress = developmentConfig.developmentAddress;
+const atDevAddress = (window.location.hostname === devAddress);
+const devMode = developmentConfig.developmentMode;
+export const inDevelopmentMode = (devMode === "on" || (devMode === "auto" && atDevAddress));
+if (inDevelopmentMode) {
+    console.log("Running in development mode!")
+    auth.useEmulator("http://" + devAddress + ":9099", { disableWarnings: true });
+    storage.useEmulator(devAddress, 9199);
+    db.useEmulator(devAddress, 9299);
 }
