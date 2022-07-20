@@ -59,8 +59,8 @@ fi
 # Copy the files we want to save into the temporary directory.
 cp -f ./config/firebase-config.js "$tmp/firebase-config.js" || { echo "Unable to save your Firebase config from ./config/firebase-config.js!" ; exit 1; }
 
-HAS_DEV_CONFIG="$(test -f ./config/development-config.js)"
-if "$HAS_DEV_CONFIG"; then
+HAS_DEV_CONFIG=$( test -f ./config/development-config.js ; echo $? )
+if (( "$HAS_DEV_CONFIG" == 0 )); then
   cp -f ./config/development-config.js "$tmp/development-config.js" || { echo "Unable to save your development config from ./config/development-config.js!" ; exit 1; }
 fi
 
@@ -76,7 +76,7 @@ git reset --hard origin/main || { echo "Unable to apply updates to the git repos
 # Copy back in the Firebase config.
 cp -f "$tmp/firebase-config.js" ./config/firebase-config.js || { echo "Unable to restore your Firebase config to ./config/firebase-config.js!" ; exit 1; }
 
-if "$HAS_DEV_CONFIG"; then
+if (( "$HAS_DEV_CONFIG" == 0 )); then
   cp -f "$tmp/development-config.js" ./config/development-config.js || { echo "Unable to restore your development config to ./config/development-config.js!" ; exit 1; }
 fi
 
