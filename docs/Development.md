@@ -102,11 +102,11 @@ If you wish to run the development environment on an external server, you will
 need to update a couple of config files to update how The Misinformation Game
 will access the Firebase emulators,
 
-1. **[config/development-config.js](https://github.com/TheMisinformationGame/MisinformationGame/blob/main/config/development-config.js)**:
+1. **[config/development-config.js](https://github.com/TheMisinformationGame/MisinformationGame/blob/main/config/development-config.js):**
    The development config allows you to set the `developmentAddress` property to a value
    other than localhost. You will need to update this property to the IP address of your
    server, to inform The Misinformation Game about where to connect to the emulators.
-2. **[firebase.json](https://github.com/TheMisinformationGame/MisinformationGame/blob/main/firebase.json)**:
+2. **[firebase.json](https://github.com/TheMisinformationGame/MisinformationGame/blob/main/firebase.json):**
    The Firebase config contains the addresses where the Firebase emulators will be hosted
    at the bottom of the file. These values will be `127.0.0.1` by default (i.e., localhost).
    You will need to update these values to either `0.0.0.0` or the IP address of your server,
