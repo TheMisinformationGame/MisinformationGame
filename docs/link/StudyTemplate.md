@@ -1,6 +1,7 @@
 ---
 title: Link to the Study Template Spreadsheet
 showPath: true
+sitemap: false
 ---
 
 # Study Configuration Template Spreadsheet

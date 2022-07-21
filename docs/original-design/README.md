@@ -3,6 +3,7 @@ title: Original Design
 permalink: /original-design/
 showPath: true
 showBackToTop: true
+sitemap: false
 ---
 
 **This information is out of date.** This document is kept as

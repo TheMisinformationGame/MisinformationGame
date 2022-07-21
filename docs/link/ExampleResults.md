@@ -1,6 +1,7 @@
 ---
 title: Link to the Example Results
 showPath: true
+sitemap: false
 ---
 
 # Example Results

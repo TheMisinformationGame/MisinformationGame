@@ -1,6 +1,7 @@
 ---
 title: Link to the Example Game Spreadsheet
 showPath: true
+sitemap: false
 ---
 
 # Example Game Configuration Spreadsheet

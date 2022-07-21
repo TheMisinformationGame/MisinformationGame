@@ -6,7 +6,7 @@ author: Paddy Lamont, Dean Law Yim Wan, Lucy Butler, Ullrich Ecker
 markdown: kramdown
 highlighter: rouge
 permalink: /:title
-plugins: [jekyll-sitemap, jekyll-feed, jekyll-seo-tag]
+plugins: [jekyll-sitemap, jekyll-seo-tag]
 
 sass:
   sass_dir: _sass
