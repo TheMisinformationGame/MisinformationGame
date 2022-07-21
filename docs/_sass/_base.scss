@@ -85,6 +85,14 @@ body img.inline-img {
   box-shadow: none;
 }
 
+/* The 'How To Play' page requires custom styling of its images. */
+.content-wrapper img.h2p-img {
+  border: 1px solid rgb(156, 163, 175);
+  border-radius: 0.375rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+
 figure figcaption {
   text-align: center;
   font-style: italic;
