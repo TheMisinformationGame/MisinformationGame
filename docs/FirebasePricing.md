@@ -4,19 +4,43 @@ showPath: true
 showBackToTop: true
 ---
 
-# Firebase Pricing
+<h1 id="intro">
+    Firebase Pricing
+</h1>
+
 The Misinformation Game is hosted using Firebase as its
 backend. This document analyses the pricing information
 of Firebase for hosting your own studies using The
 Misinformation Game.
 
-## Summary
+
+
+<h2 id="toc">
+    Table of Contents
+</h2>
+
+* [1. Summary](#summary)
+* [2. The Structure of Firebase Pricing](#structure)
+* [3. Firebase's Current Pricing](#current-pricing)
+* [4. Firebase Service Usage Estimates](#usage-estimates)
+* [5. Fixed Costs](#fixed-costs)
+* [6. Variable Costs](#variable-costs)
+    - [6.1. Example Cost Estimate: Study with Text Posts](#variable-costs-text)
+    - [6.2. Example Cost Estimate: Study with Image Posts](#variable-costs-images)
+* [7. Reducing Image Sizes](#reducing-image-sizes)
+
+
+
+<h2 id="summary">
+    1. Summary
+</h2>
+
 In summary, studies with many posts that contain images
-will likely run into the **Free Tier** usage limits.
-Therefore, as described under _section 4_, it is vital to
-reduce the size of the images you use in your study. If
-you think you will come close to the usage limits, it
-will be best to upgrade your Firebase project to Firebase's
+will likely run into the free tier usage limits. Therefore,
+as described in the [Reducing Image Sizes section](#reducing-image-sizes),
+it is vital to reduce the size of the images you use in your
+study. If you think you will come close to the usage limits,
+it would be best to upgrade your Firebase project to Firebase's
 **Blaze Plan** to ensure that participants don't get
 locked out of the game unexpectedly. You can also set
 [budget alerts](https://firebase.google.com/docs/projects/billing/avoid-surprise-bills#set-up-budget-alert-emails)
@@ -24,26 +48,38 @@ under the Blaze Plan to ensure you are never charged
 more than a few dollars for hosting your instance of
 The Misinformation Game.
 
-## 1. How the pricing works
+
+
+<h2 id="structure">
+    2. The Structure of Firebase Pricing
+</h2>
+
 Firebase separates the costs for each of its backend services.
 The Misinformation Game makes use of its **Hosting**,
 **Cloud Firestore**, and **Cloud Storage** services. All of
 these services are available under the free tier of Firebase,
 which they refer to as the **Spark Plan**. Firebase also
-offers a paid tier under their **Blaze Plan** for any use
-of their backend services above the free tier limits.
+offers a paid tier under their **Blaze Plan** for use
+of their backend services beyond the free tier limits.
 
-## 2. Firebase's Current Pricing
+
+
+<h2 id="current-pricing">
+    3. Firebase's Current Pricing
+</h2>
+
 At the time of writing this document, Firebase charges
 the following amounts for its backend services when
 the website is hosted in Sydney. These values are likely
 to change between regions, and into the future, however
-they should hopefully give a good estimate for now.
+they should hopefully give a good estimate.
 
 Up-to-date pricing can be found in Firebase's own
 [pricing reference](https://firebase.google.com/pricing).
 
-### 2.1. Firebase Hosting
+<h3 id="current-pricing-hosting">
+    3.1. Firebase Hosting Pricing
+</h3>
 Firebase Hosting is the backend service that sends
 the website to participants. This does not include sending
 the images within studies.
@@ -53,8 +89,10 @@ the images within studies.
 | Storage        | 10 GB            | $0.026/GB          |
 | Data transfer  | 360 MB/day       | $0.15/GB           |
 
-### 2.2. Firebase Cloud Firestore
-Firebase Cloud Firestore is the backend service that stores
+<h3 id="current-pricing-firestore">
+    3.2. Firebase Firestore Pricing
+</h3>
+Firebase Firestore is the backend service that stores
 the metadata about studies, and stores the results of studies.
 
 | Cloud Storage Action  | Free Tier Limit  | Paid Tier Pricing  |
@@ -65,8 +103,10 @@ the metadata about studies, and stores the results of studies.
 | Document reads        | 50K/day          | $0.038/100k        |
 | Document deletes      | 20K/day          | $0.013/100k        |
 
-### 2.3. Firebase Cloud Storage
-Firebase Cloud Storage is the backend service where the
+<h3 id="current-pricing-storage">
+    3.3. Firebase Storage Pricing
+</h3>
+Firebase Storage is the backend service where the
 images that are contained within studies are stored. This
 service is used to send the images within studies to
 participants.
@@ -78,49 +118,38 @@ participants.
 | Upload operations     | 20K/day          | $0.05/10k          |
 | Download operations   | 50K/day          | $0.004/10k         |
 
-## 3. Pricing Estimates for Example Studies
-We can make pricing estimates for running a study by
-considering two different example studies. Each example
-study will contain 100 posts and 30 sources (with avatar images).
-We will assume that the size of the avatar images of each source
-is 50KB.
 
-### 3.1. Usage Estimates of The Misinformation Game
+
+<h2 id="usage-estimates">
+    4. Firebase Service Usage Estimates
+</h2>
+
 The Misinformation Game uses quite predictable patterns
 when accessing the backend services. Therefore, we can
 assume the following numbers for different actions that
 participants and administrators may take.
 
-#### Opening the game
-Opening the game requires participants to download the
-contents of the website. This requires approximately
-500KB of data to be transferred.
+| **Action**                                | **Estimated Firebase Usage**           |
+|-------------------------------------------|----------------------------------------|
+| Downloading the game                      | Hosting: ~500KB download               |
+| Downloading the study specification       | Firestore: 1 read                      |
+| Downloading a source avatar or post image | Storage: download of size of the image |
+| Uploading a participant's results         | Firestore: 1 write                     |
 
-#### Downloading the details of the study
-Once the game has been opened, it must download the
-settings of the study. This requires 1 Firestore
-Database read.
 
-#### Downloading a source avatar or post image
-Downloading an image requires the image to be
-downloaded from Firebase Cloud Storage. The
-amount of data that has to be downloaded will
-depend upon the size of the source avatar images
-and the post images.
 
-#### Uploading a participant's results
-Once a participant has completed the study, it
-will require one Firestore Database write to
-store their results.
-
-### 3.2. Costs for every study
-Every study has some shared costs that do not change
+<h2 id="fixed-costs">
+    5. Fixed Costs
+</h2>
+Every study has some fixed costs per participant, which do not change
 with the size of the study.
 
-#### Firebase Hosting
+<h4 id="fixed-costs-hosting">
+    Firebase Hosting Costs
+</h4>
 Each participant will have to download approximately
 500KB to load the website. Under the Firebase pricing
-information above, the **Free Tier** allows 360MB/day
+information above, the free tier allows 360MB/day
 of data to be downloaded for hosting. Therefore,
 under the free tier, the study would be limited to
 approximately 720 participants per day. For any
@@ -128,35 +157,57 @@ participants above this number, the **Paid Tier** of
 hosting will allow an additional 13,000 participants
 per $1 spent.
 
-#### Firebase Cloud Firestore
+<h4 id="fixed-costs-firestore">
+    Firebase Firestore Costs
+</h4>
 Each participant will have to download the settings of
 the study once, and upload their results once. Therefore,
-under the **Free Tier**, 20 thousand participants can
-participate in the study per day. This is therefore not
-likely to be an issue.
+under the free tier, 20 thousand participants can
+participate in the study per day. Therefore, this is not
+likely to be a limiting factor in the number of participants
+that may take part in a study.
 
-### 3.3. A study with text posts
+
+
+<h2 id="variable-costs">
+    6. Variable Costs
+</h2>
+
+The content and number of sources and posts that are shown to
+the participants of a study will affect the cost per participant.
+This section will attempt to demonstrate this with two example studies:
+one study with text posts, and one study with image posts.
+
+<h3 id="variable-costs-text">
+    6.1. Example Cost Estimate: Study with Text Posts
+</h3>
 The first example study we will consider is a study with
 100 text posts, and 30 sources.
 
-#### Firebase Cloud Storage
+<h4 id="variable-costs-text-storage">
+    Firebase Storage Costs
+</h4>
 Each participant will have to download the source avatar
 for each source that they are shown. If we assume each
 participant is shown every source, then they would have
 to download 30 images from Firebase Cloud Storage. If
 we assume that these avatars are 50KB in size, then
 this will require 1.5MB of data to be downloaded per
-participant. Under the **Free Tier**, this will limit
+participant. Under the free tier, this will limit
 the study to approximately 650 participants per day.
 For any participants above this number, the **Paid
 Tier** of Cloud Storage will allow an additional
 5500 participants per $1 spent.
 
-### 3.4. A study with image posts
+<h3 id="variable-costs-images">
+    6.2. Example Cost Estimate: Study with Image Posts
+</h3>
 The second example study we will consider is a study
 with 100 image posts, and 30 sources.
 
-#### Firebase Cloud Storage
+<h4 id="variable-costs-images-storage">
+    Firebase Storage Costs
+</h4>
 Each participant will have to download the source avatar
 for each source they are shown, as well as the image
 for every post that they are shown. If we assume again
@@ -166,36 +217,47 @@ then they will have to download 30 source avatars and
 assume that the source avatars are 50KB in size, and
 the post images are 200KB in size, then this will
 require 21.5MB of data to be downloaded per participant.
-Under the **Free Tier**, this will limit the study to
+Under the free tier, this will limit the study to
 approximately 45 participants per day. For any
 participants above this number, the **Paid Tier** of
 Cloud Storage will allow an additional 380 participants
 per $1 spent.
 
-## 4. Reducing Image Sizes
+
+
+<h2 id="reducing-image-sizes">
+    7. Reducing Image Sizes
+</h2>
+
 From the analysis above, it becomes clear that most of
 the cost of hosting studies using The Misinformation
 Game on Firebase is due to participants having to
 download images. Therefore, when possible reducing the
 sizes of images is vital to reduce the Firebase costs,
-and to stay within the **Free Tier**.
+and to stay within the free tier.
 
 Reducing the size of images can be down by scaling down
-the images, and exporting them using the JPG file format.
-The two following images will be displayed very similarly
-to participants, however they have very different sizes.
+the images, and exporting them using the JPEG file format.
+The images in [Figure 1](#fig1) and [Figure 2](#fig2)
+will be displayed very similarly to participants, however
+they have very different file sizes.
 
-**Original Image, 1600x1000, 295KB:**
+**Original Image:**
+<figure id="fig1">
+    <img src="diagrams/example-image-1600x1000.jpg" alt="figure 1" height="1000" />
+    <figcaption><a href="#fig1">Figure 1.</a> Photo with a resolution of 1600x1000, and a file size of 295KB.</figcaption>
+</figure>
 
-<img src="diagrams/example-image-1600x1000.jpg" alt="Example image that is 1600 x 1000" width="600" />
 
-**Scaled-Down Image, 800x500, 88KB:**
-
-<img src="diagrams/example-image-800x500.jpg" alt="Example image that is 800 x 500" width="600" />
+**Scaled-Down and Compressed Image:**
+<figure id="fig2">
+    <img src="diagrams/example-image-800x500-compressed.jpg" alt="figure 2" height="500" />
+    <figcaption><a href="#fig2">Figure 2.</a> Compressed photo with a resolution of 800x500, and a file size of 74KB.</figcaption>
+</figure>
 
 As you can see above, the quality of both images appears
 to be similar, despite the fact that the second image is
-only 29% of the size of the first. Therefore, to reduce the
+only 25% of the size of the first. Therefore, to reduce the
 file size and increase the number of participants that can
 be supported under the free tier, down-scaling your post
 images will be very important. More information about
