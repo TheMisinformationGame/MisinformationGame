@@ -1,17 +1,37 @@
 ---
 title: Including Images in Studies
 showPath: true
-showBackToTop: false
+showBackToTop: true
 ---
 
-# Recommendations for including images in studies
+<h1 id="intro">
+    Recommendations for Including Images in Studies
+</h1>
+
 The transfer of images from Firebase to your participants can
 incur a large cost due to the bandwidth required. Therefore,
 reducing the size of the images in your study can reduce the
 cost of running the study, and increase the participants
 that can be served under the free tier of Firebase.
 
-## 1. Choice of image file formats
+
+
+<h2 id="toc">
+    Table of Contents
+</h2>
+
+* [1. Choice of Image File Formats](#image-format-choice)
+    - [1.1. Format to use for Animated Images](#animated-image-format)
+* [2. Scale-Down your Images](#scale-down-images)
+* [3. Compress your Images](#compress-images)
+* [4. Inserting Images into your Study Configuration](#inserting-images-into-study)
+
+
+
+<h2 id="image-format-choice">
+    1. Choice of Image File Formats
+</h2>
+
 <span class="recommendation">Recommendation</span>
 Use JPEG (`.jpg`) image files where possible.
 
@@ -32,13 +52,20 @@ introduce visual artifacts to some images. If you observe this, then
 using PNG files instead will avoid those at the cost of additional
 file size.
 
-### Animated Images
+<h3 id="animated-image-formats">
+    1.1. Format to use for Animated Images
+</h3>
+
 If you wish to include animated images in your study, you may use the
 GIF (`.gif`) image file format. However, these images can be very large,
 and The Misinformation Game does not support more efficient video formats.
 
 
-## 2. Scale-down images
+
+<h2 id="scale-down-images">
+    2. Scale-Down your Images
+</h2>
+
 <span class="recommendation">Recommendation</span>
 Downscale your images to the dimensions recommended in the
 [Study Configuration](/StudyConfiguration) documentation using a tool
@@ -74,7 +101,11 @@ affecting the quality of the images very much.
 </figure>
 
 
-## 3. Compress your images
+
+<h2 id="compress-images">
+    3. Compress your Images
+</h2>
+
 <span class="recommendation">Recommendation</span>
 Use a tool such as [https://imagecompressor.com/](https://imagecompressor.com/)
 to compress your images.
@@ -105,7 +136,11 @@ images can save some bandwidth without affecting the quality of the images very 
 </figure>
 
 
-## 4. Insert the images into your study configuration
+
+<h2 id="inserting-images-into-study">
+    4. Inserting Images into your Study Configuration
+</h2>
+
 Images must be inserted into the configuration spreadsheet using the **Insert**
 menu at the top of the page in Google Sheets. You must first select the cell
 where you want to insert the image, and then select **Insert** -> **Image**
