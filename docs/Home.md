@@ -8,6 +8,7 @@ permalink: /
 <h1 id="intro">
     The Misinformation Game
 </h1>
+
 The Misinformation Game is a social media simulator built to study
 people's behaviour when they interact with social media. To achieve
 this, The Misinformation Game simulates a social media feed for
