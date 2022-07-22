@@ -483,7 +483,7 @@ four options for source/post selection: **Overall-Ratio**,
 **Source-Ratios**, **Credibility**, and **Pre-Defined**.
 
 In-depth descriptions of each selection method are available
-in the [Simulation](/Simulation) documentation.
+in the [Simulation documentation](/Simulation).
 
 
 <h3 id="selection-selecting-method">
