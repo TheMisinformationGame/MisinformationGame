@@ -24,7 +24,11 @@ social media related questions.
 **Source Code:** [MisinformationGame Repository on GitHub](https://github.com/TheMisinformationGame/MisinformationGame)
 
 
-## Example Game
+
+<h2 id="example-game">
+    Example Game
+</h2>
+
 If you would like to test playing through a study created using
 the Misinformation Game, you can access an example game from
 [the example game page](/link/ExampleGame).
@@ -37,13 +41,23 @@ You can enter any ID to access the example game.
 
 <p class="spacer"></p>
 
-## Example Results
+
+
+<h2 id="example-results">
+    Example Results
+</h2>
+
 If you would like to view an example of the results that can be
 gathered when using the Misinformation Game, the results of a user
 experience study are available from
 [the example results page](/link/ExampleResults).
 
-## Getting Started
+
+
+<h2 id="getting-started">
+    Getting Started
+</h2>
+
 The Misinformation Game contains many configuration options
 to tailor the game for specific research purposes. To find
 out whether The Misinformation Game is the right fit for
@@ -65,7 +79,12 @@ steps. However, if you are not familiar with these
 technologies, then the non-technical installation
 guide should be easier to follow.
 
-## Usage Documentation
+
+
+<h2 id="usage-docs">
+    Usage Documentation
+</h2>
+
 - [How to Play](/HowToPlay) -
   The default guide given to participants before they start a study.
 - [Study Configuration](/StudyConfiguration) - A reference guide on creating your own study.
@@ -75,7 +94,12 @@ guide should be easier to follow.
 - [Integration with Qualtrics](/QualtricsIntegration) - How to integrate a study into Qualtrics.
 - [Results](/Results) - A reference guide on the results that are recorded by the game.
 
-## Hosting Documentation
+
+
+<h2 id="hosting-docs">
+    Hosting Documentation
+</h2>
+
 - [Firebase Pricing](/FirebasePricing) - A guide to estimate the hosting costs of running a study.
 - [Non-Technical Installation Guide](/NonTechnicalInstallation) -
   A guide to host your own study using Firebase (longer, for non-technical users).
@@ -84,7 +108,12 @@ guide should be easier to follow.
 - [Updating your Installation](/Updating) -
   A guide to retrieve new features and fixes for your installation.
 
-## System Documentation
+
+
+<h2 id="system-docs">
+    System Documentation
+</h2>
+
 - [Technical Overview](/TechnicalOverview) - A broad overview of the tech-stack used by the game.
 - [Simulation](/Simulation) - An in-depth description of the simulation behind the game.
 - [Development](/Development) - A guide for developers to make adjustments to the game.
@@ -93,7 +122,12 @@ guide should be easier to follow.
 - [Original Design](/original-design) - The original, outdated, design document for the game.
   Only relevant for those who are interested.
 
-## Other Useful Links
+
+
+<h2 id="other-links">
+    Other Useful Links
+</h2>
+
 - [Source Code](https://github.com/TheMisinformationGame/MisinformationGame) -
   The Misinformation Game is open-source!
 - [The (Mis)information Game Paper](https://zpr.io/ZsV8ZBqxqsyz) -
