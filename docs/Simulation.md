@@ -4,9 +4,8 @@ showPath: true
 showBackToTop: true
 ---
 
-<h1 id="intro">
-    Simulation
-</h1>
+# Simulation
+{:#intro .no_toc}
 
 This document outlines the inner-workings of the simulation
 that participants interact with. The simulation for each
@@ -29,20 +28,15 @@ they choose, and may be configured for each post.
 
 
 
-<h1 id="toc">
-    Table of Contents
-</h1>
-* [1. Changes to Source's Credibility and Followers](#source-stats-change)
-* [2. Source/Post Pair Selection](#source-post-selection)
-    - [2.1. Source Selection](#source-selection)
-    - [2.2. Selection Method 1: Overall-Ratio](#selection-method-overall-ratio)
-    - [2.3. Selection Method 2: Source-Ratios](#selection-method-source-ratios)
-    - [2.4. Selection Method 3: Credibility](#selection-method-credibility)
-    - [2.5. Selection Method 4: Pre-Defined](#selection-method-predefined)
+## Table of Contents
+{:#toc .no_toc}
+* toc
+{:toc}
 
-<h2 id="source-stats-change">
-    1. Changes to Source's Credibility and Followers
-</h2>
+
+
+## 1. Changes to Source's Credibility and Followers
+{:#source-stats-change}
 
 Throughout the game, the credibility and followers of the
 sources will change. The change to the credibility and
@@ -60,10 +54,8 @@ course of a game.
 
 
 
-
-<h2 id="source-post-selection">
-    2. Source/Post Pair Selection
-</h2>
+## 2. Source/Post Pair Selection
+{:#source-post-selection}
 
 The source/post pair selection dictates what posts participants
 will be shown, when, and from which source. All the source/post
@@ -82,9 +74,8 @@ The game can be configured such that some sources can be
 associated with many posts, however each post will only ever
 be shown once to a participant.
 
-<h3 id="source-selection">
-    2.1. Source Selection
-</h3>
+### 2.1. Source Selection
+{:#source-selection}
 
 The source to be shown is always chosen first for all
 source/post selection methods other than **Pre-Defined**.
@@ -97,9 +88,8 @@ the mean max-post number of all sources that have a maximum.
 Once the maximum number of posts has been reached for a given
 source, it will not be chosen again.
 
-<h3 id="selection-method-overall-ratio">
-    2.2. Selection Method 1: Overall-Ratio
-</h3>
+### 2.2. Selection Method 1: Overall-Ratio
+{:#selection-method-overall-ratio}
 
 When using the **Overall-Ratio** source/post selection method,
 posts will be chosen to target an overall percentage of true
@@ -132,9 +122,8 @@ deviates from the target ratio, especially with small studies
 true:false ratio, one could easily end up with only 3 true posts
 and 7 false posts, by chance).
 
-<h3 id="selection-method-source-ratios">
-    2.3. Selection Method 2: Source-Ratios
-</h3>
+### 2.3. Selection Method 2: Source-Ratios
+{:#selection-method-source-ratios}
 
 When using the **Source-Ratios** source/post selection method,
 each source must be given their own true-post percentage. The
@@ -142,9 +131,8 @@ post selection then acts in the exact same way as when using
 the **Overall-Ratio** selection method, except that the true-post
 percentage is source-specific.
 
-<h3 id="selection-method-credibility">
-    2.4. Selection Method 3: Credibility
-</h3>
+### 2.4. Selection Method 3: Credibility
+{:#selection-method-credibility}
 
 When using the **Credibility** source/post selection method,
 the true-post percentage to use for selecting posts is
@@ -165,9 +153,8 @@ between credibility and true-post percentage to be flatter can
 help alleviate this issue. Additionally, if many sources are
 used, then this will probably not cause an issue.
 
-<h3 id="selection-method-predefined">
-    2.5. Selection Method 4: Pre-Defined
-</h3>
+### 2.5. Selection Method 4: Pre-Defined
+{:#selection-method-predefined}
 
 The **Pre-Defined** source/post selection method allows
 specification of an exact order of sources and posts to

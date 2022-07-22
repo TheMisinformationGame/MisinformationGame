@@ -22,9 +22,10 @@ in Google Sheets, and uses functionality that is not available in
 Microsoft Excel.
 
 
-<h1 id="toc">
+
+<h2 id="toc">
     Table of Contents
-</h1>
+</h2>
 * [1. ✏ Create a new Spreadsheet](#create)
 * [2. 📜 Enter your study settings into the Spreadsheet](#configure)
     - [📄 About Worksheet](#about)
@@ -37,9 +38,9 @@ Microsoft Excel.
 * [3. 📤 Uploading your Study](#upload)
 
 
-<h1 id="create">
+<h2 id="create">
     1. ✏ Create a new Spreadsheet
-</h1>
+</h2>
 Before you can start configuring your study, you will first
 need to create a new spreadsheet for the study in Google
 Sheets. You can create a new spreadsheet by either copying
@@ -47,9 +48,9 @@ the Study Template spreadsheet that is already on Google
 Sheets, or by uploading the Study Template file.
 
 
-<h2 id="create-copy">
+<h3 id="create-copy">
     Method 1: Copy the Template (Recommended)
-</h2>
+</h3>
 You can access the Study Configuration Template Spreadsheet on Google Sheets
 from [the study configuration template page](/link/StudyTemplate).
 After you have loaded the template spreadsheet, you can select
@@ -57,9 +58,9 @@ After you have loaded the template spreadsheet, you can select
 you can make changes.
 
 
-<h2 id="create-upload">
+<h3 id="create-upload">
     Method 2: Upload the Template
-</h2>
+</h3>
 You can download the Study Template file from
 [StudyTemplate.xlsx](StudyTemplate.xlsx). This file can then
 be uploaded to your Google Sheets using the following steps:
@@ -86,9 +87,9 @@ Your spreadsheet should now contain everything you need
 to create your new study.
 
 
-<h1 id="configure">
+<h2 id="configure">
     2. 📜 Enter your study settings into the Spreadsheet
-</h1>
+</h2>
 The configuration spreadsheet may look intimidating at
 first glance, and so this section will try to break
 down the configuration spreadsheet sheet-by-sheet.
@@ -98,9 +99,9 @@ however you are free to jump back and forth as you
 configure your study.
 
 
-<h2 id="about">
+<h3 id="about">
     2.1. 📄 About Worksheet
-</h2>
+</h3>
 The _About_ sheet gives an overview of the structure of
 the spreadsheet, with a short description of each sheet in
 the spreadsheet. It also contains a legend for what the
@@ -112,26 +113,26 @@ will help when reading the rest of the configuration
 spreadsheet.
 
 
-<h2 id="overview">
+<h3 id="overview">
     2.2. 📄 Overview Worksheet
-</h2>
+</h3>
 The _Overview_ sheet provides a summary of all the settings
 that have been entered. It also collates all the errors
 between all the sheets into one place, so that you can
 easily identify if there are any errors in your
 configuration.
 
-<h3 id="overview-status">
+<h4 id="overview-status">
     2.2.1. Status
-</h3>
+</h4>
 The status of the spreadsheet gives an indication of
 whether there are any errors in the spreadsheet. If
 there are any errors in any of the sheets, an error
 will be shown here.
 
-<h3 id="overview-opened-in-sheets">
+<h4 id="overview-opened-in-sheets">
     2.2.2. Opened in Google Sheets
-</h3>
+</h4>
 This attempts to detect whether the spreadsheet was
 opened in Google Sheets, and will error if it can
 detect that it was opened in Microsoft Excel. This
@@ -139,25 +140,25 @@ detection uses a bug when converting between Google
 Sheets and Microsoft Excel, and it therefore may not
 be 100% accurate.
 
-<h3 id="overview-general">
+<h4 id="overview-general">
     2.2.3. General Settings
-</h3>
+</h4>
 This section gives an overview of the general settings
 of your study, as well as their validity in the top-left.
 The **Pages** value will show the exact order of pages
 that participants will be shown when they participate
 in your study.
 
-<h3 id="overview-sources">
+<h4 id="overview-sources">
     2.2.4. Sources
-</h3>
+</h4>
 This will show the validity of all the sources you have
 entered, and includes the number of sources that have been
 included in the _Sources_ sheet.
 
-<h3 id="overview-posts">
+<h4 id="overview-posts">
     2.2.5. Posts
-</h3>
+</h4>
 This will show the validity of all posts, as well as the
 number of true and false posts that have been included
 in the _Posts_ sheet.
@@ -173,17 +174,17 @@ a false post in this case. This could lead to a false post
 being shown, even if the true post percentage is 100%.
 
 
-<h2 id="general">
+<h3 id="general">
     2.3. 📄 General Worksheet
-</h2>
+</h3>
 The General sheet is the best place to start when creating
 a study. It contains all the most broad settings of
 studies including their name, description, and length.
 
 
-<h3 id="general-basic-settings">
+<h4 id="general-basic-settings">
     2.3.1. Basic Settings
-</h3>
+</h4>
 This section contains the most basic settings that likely
 should be changed for each study.
 
@@ -231,9 +232,9 @@ already been automatically populated from the URL they
 have been given.
 
 
-<h3 id="general-ui-settings">
+<h4 id="general-ui-settings">
     2.3.2. User Interface Settings
-</h3>
+</h4>
 This section contains the settings that change the user
 interface of The Misinformation Game for participants.
 These options change the way that participants are able
@@ -275,9 +276,9 @@ Whether to allow participants to like comments.
 Whether to allow participants to dislike comments.
 
 
-<h3 id="general-advanced-settings">
+<h4 id="general-advanced-settings">
     2.3.3. Advanced Settings
-</h3>
+</h4>
 These settings can be used to fine-tune your study.
 It is unlikely that you will need to edit these settings.
 
@@ -328,18 +329,18 @@ background is randomised are shown in [Figure 3](#fig3).
 </figure>
 
 
-<h2 id="pages">
+<h3 id="pages">
     2.4. 📄 Pages Worksheet
-</h2>
+</h3>
 The _Pages_ sheet allows you to edit the content of
 the instructions and debriefing that the users may be
 shown. It also allows you to edit the enforced delays 
 (with disabled continue button) on these pages.
 
 
-<h3 id="pages-formatting">
+<h4 id="pages-formatting">
     2.4.1. Formatting the Text
-</h3>
+</h4>
 The text on these pages can be formatted to include **bold**,
 _italic_,
 <span style="font-size: 1.2em">larger text</span>,
@@ -373,9 +374,9 @@ that links to The Misinformation Game's GitHub page,
 ```
 
 
-<h3 id="pages-intro-before-rules">
+<h4 id="pages-intro-before-rules">
     2.4.2. Introduction before game rules
-</h3>
+</h4>
 This page will be shown to participants after they have
 identified themselves, and before they are shown the
 rules of the game. This page can be used for instructions. 
@@ -383,9 +384,9 @@ It is _optional_, so if you do not wish to show participants
 an introduction before they are shown the game rules, then 
 leave this page blank.
 
-<h3 id="pages-rules">
+<h4 id="pages-rules">
     2.4.3. Game Rules
-</h3>
+</h4>
 This page will be shown to participants after they have
 viewed the introduction before the game rules page. This
 page is intended to be used to explain the rules of the game
@@ -430,18 +431,18 @@ The available placeholders are:
 - {% raw %}`{{YOUR-PROGRESS-EXAMPLE}}`{% endraw %}:
   An example Your Progress box with placeholder values.
 
-<h3 id="pages-intro-after-rules">
+<h4 id="pages-intro-after-rules">
     2.4.4. Introduction after game rules
-</h3>
+</h4>
 This page will be shown to participants after they have
 been shown the rules of the game. This page can also be 
 used for instructions. It is _optional_, so if you do not 
 wish to show participants an introduction after they are 
 shown the game rules, then leave this page blank.
 
-<h3 id="pages-debriefing">
+<h4 id="pages-debriefing">
     2.4.5. Debriefing
-</h3>
+</h4>
 This page will be shown to participants after they have
 completed the study. This page is not optional. An
 example of this debriefing screen is shown below,
@@ -473,9 +474,9 @@ their completion code.
 </figure>
 
 
-<h2 id="selection">
+<h3 id="selection">
     2.5. 📄 Source & Post Selection Worksheet
-</h2>
+</h3>
 The Source & Post Selection sheet allows you to edit the
 method that is used to select the source/post pairs that
 will be shown to participants in their games. There are
@@ -486,9 +487,9 @@ In-depth descriptions of each selection method are available
 in the [Simulation documentation](/Simulation).
 
 
-<h3 id="selection-selecting-method">
+<h4 id="selection-selecting-method">
     2.5.1. Selecting a Method
-</h3>
+</h4>
 The **Source & Post Selection Method** value at the top of
 this sheet should be changed manually to the name of the method 
 to be used. This should be one of _Overall-Ratio_,
@@ -498,9 +499,9 @@ settings for all the other selection methods will be
 disabled.
 
 
-<h3 id="selection-overall-ratio">
+<h4 id="selection-overall-ratio">
     2.5.2. Method 1: Overall-Ratio
-</h3>
+</h4>
 Sources will be selected randomly, and the associated
 post will be chosen to match an overall ratio of
 true:false posts. The settings for this method are
@@ -515,9 +516,9 @@ of true posts shown to all participants collectively
 should approach this value.
 
 
-<h3 id="selection-source-ratios">
+<h4 id="selection-source-ratios">
     2.5.3. Method 2: Source-Ratios
-</h3>
+</h4>
 Sources will be selected randomly, and the associated
 post will be chosen to match the **True Post Percentage**
 defined for each source.
@@ -529,9 +530,9 @@ actual percentage of true posts that a source is selected
 to show should approach their defined **True Post Percentage**.
 
 
-<h3 id="selection-credibility">
+<h4 id="selection-credibility">
     2.5.4. Method 3: Credibility
-</h3>
+</h4>
 Sources will be selected randomly, and then a **True Post
 Percentage** will be calculated from the credibility of
 the source. The ratio will then be used to sample a true
@@ -550,9 +551,9 @@ The **True Post Percentage** to use when a source's
 credibility is zero.
 
 
-<h3 id="selection-predefined">
+<h4 id="selection-predefined">
     2.5.5. Method 4: Pre-Defined
-</h3>
+</h4>
 An exact set of source/post pairs is manually defined.
 The source/post pairs can be manually defined in the
 _Pre-Defined Source & Post Order_ sheet, alongside
@@ -572,9 +573,9 @@ The ID of the post to display (e.g. **S1**).
 These IDs can be found in the _Posts_ sheet.
 
 
-<h2 id="sources">
+<h3 id="sources">
     2.6. 📄 Sources Worksheet
-</h2>
+</h3>
 The _Sources_ sheet allows you to add all the sources that can
 be shown to participants during your study. Each source contains
 several settings to define their appearance and behaviour. An
@@ -591,9 +592,9 @@ To the right there is also a widget that can be used to
 preview the settings for your sources.
 
 
-<h3 id="sources-defaults">
+<h4 id="sources-defaults">
     2.6.1. Default Source Values
-</h3>
+</h4>
 This section defines defaults for some source parameters
 to avoid repetition in entering values that are constant
 for most sources. If one of the parameters that has a
@@ -631,9 +632,9 @@ count and credibility for a source is shown in [Figure 6](#fig6).
 </figure>
 
 
-<h3 id="sources-table">
+<h4 id="sources-table">
     2.6.2. Sources Table
-</h3>
+</h4>
 The table below the Default Source Values is where the sources 
 in the study can be added. Each row in this table represents
 one source. The **ID** and **Name** of each source is required
@@ -735,9 +736,9 @@ Only used if:
   </a> is "Source-Ratios".
 
 
-<h2 id="posts">
+<h3 id="posts">
     2.7. 📄 Posts Worksheet
-</h2>
+</h3>
 The _Posts_ sheet allows you to add all the posts that could
 be shown to participants during the game. Each post can
 only be shown to a participant once, and will never be
@@ -749,9 +750,9 @@ the right there is also a table to display the total
 number of true and false posts that you have entered.
 
 
-<h3 id="posts-default-values">
+<h4 id="posts-default-values">
     2.7.1. Default Post Values
-</h3>
+</h4>
 This section defines separate defaults for true posts and 
 false posts. This is done to reduce the effort in creating
 consistent behaviour for true and false posts. For example,
@@ -764,9 +765,9 @@ a default distribution for the number of reactions to display
 for _likes_, _dislikes_, _shares_, or _flags_ for posts.
 
 
-<h3 id="posts-table">
+<h4 id="posts-table">
     2.7.2. Posts Table
-</h3>
+</h4>
 The table below the Default Post Values allows you to enter
 all the posts that may be shown to participants during the
 study. Each row in the table represents one post. The
@@ -909,9 +910,9 @@ Only used if:
 </ul>
 
 
-<h1 id="upload">
+<h2 id="upload">
     3. 📤 Uploading your Study
-</h1>
+</h2>
 Once you have completed configuring your study, it is recommended
 you first check the **Overview** sheet to make sure that
 everything looks correct, and doesn't contain any errors.
