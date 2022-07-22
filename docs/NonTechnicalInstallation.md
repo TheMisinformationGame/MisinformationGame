@@ -4,9 +4,9 @@ showPath: true
 showBackToTop: true
 ---
 
-<h1 id="intro">
-    Installation (Non-Technical Guide)
-</h1>
+# Installation (Non-Technical Guide)
+{:#intro .no_toc}
+
 This document outlines a step-by-step process to install and host your own instance of the Misinformation
 Game. At the end of this guide, you will have your own website to use to run studies using the Misinformation
 Game software.
@@ -19,28 +19,17 @@ again to update your instance. If you are comfortable installing software and us
 then the technical installation guide will likely be easier and quicker to follow.
 
 
-<h1 id="toc">
-    Table of Contents
-</h1>
-* [1. Download the Codebase From GitHub](#download-codebase)
-* [2. Install Visual Studio Code](#install-vscode)
-* [3. Install Node.js and NPM](#install-nodejs)
-    - [3.1. Verify that Node.js and NPM were successfully installed](#verify-nodejs-install)
-* [4. Create your Firebase Project](#create-firebase-project)
-    - [4.1. Enable the Firebase Firestore Database](#enable-firebase-firestore)
-    - [4.2. Enable Firebase Storage](#enable-firebase-storage)
-    - [4.3. Enable Firebase Authentication](#enable-firebase-auth)
-    - [4.4. Configure your Firebase Project as a Web-App](#enable-firebase-webapp)
-* [5. Deploying the Website](#deploying)
-    - [5.1. Opening and Setting Up the Code](#opening-codebase)
-    - [5.2. Install Git Bash](#install-git-bash)
-    - [5.3. Running the Deployment Script](#running-deployment-script)
-* [6. Conclusion](#conclusion)
+
+## Table of Contents
+{:#toc .no_toc}
+* toc
+{:toc}
 
 
-<h1 id="download-codebase">
-    1. Download the Codebase From GitHub
-</h1>
+
+## 1. Download the Codebase From GitHub
+{:#download-codebase}
+
 The Misinformation Game must be deployed using its source code. To download and save the codebase onto your
 device, you can access it from [GitHub](https://github.com/TheMisinformationGame/MisinformationGame).
 
@@ -55,9 +44,10 @@ device, which will contain the source code of the Misinformation Game to use in 
 </figure>
 
 
-<h1 id="install-vscode">
-    2. Install Visual Studio Code
-</h1>
+
+## 2. Install Visual Studio Code
+{:#install-vscode}
+
 _If you already have Visual Studio Code installed, then you may skip this step._
 
 This installation guide demonstrates the installation process of downloading the Visual Studio Code on
@@ -82,9 +72,10 @@ and then click **Next**.
 been completed, you may progress to section 3 of this guide.
 
 
-<h1 id="install-nodejs">
-    3. Install Node.js and NPM
-</h1>
+
+## 3. Install Node.js and NPM
+{:#install-nodejs}
+
 The next step in the process is to download [Node.js](https://nodejs.org) and [NPM](https://www.npmjs.com/).
 The former is required to run the installation code, and the latter is required to install dependencies of
 the Misinformation Game.
@@ -116,9 +107,10 @@ The default selections include all the components we require, so click **Next**.
 **Step 7:** Click **Install**. Once the installation finishes, click **Finish**.
 
 
-<h2 id="verify-nodejs-install">
-    3.1. Verify that Node.js and NPM were successfully installed
-</h2>
+
+### 3.1. Verify that Node.js and NPM were successfully installed
+{:#verify-nodejs-install}
+
 To verify your install, in Windows, open the application “Command Prompt” or "Terminal". In the window, you
 will need to type commands `node -v` and `npm -v`. You can see the commands and their expected outputs in
 <a href="#fig3">Figure 3</a>. The versions that you have installed may differ from these versions. The guide
@@ -131,9 +123,9 @@ should continue to work, but in case it does not, it may be good to install thes
 
 
 
-<h1 id="create-firebase-project">
-    4. Create your Firebase Project
-</h1>
+## 4. Create your Firebase Project
+{:#create-firebase-project}
+
 Firebase is a technology platform made by Google, which provides a platform to host websites. The
 Misinformation Game makes use of Firebase for its hosting, authentication, and data storage.
 Therefore, to host your instance of the Misinformation Game, your own Firebase instance will
@@ -173,9 +165,9 @@ disable it, as it doesn't provide any functionality that is used by the Misinfor
 host the Misinformation Game. However, some additional set-up is still required to get it ready.
 
 
-<h2 id="enable-firebase-firestore">
-    4.1. Enable the Firebase Firestore Database
-</h2>
+### 4.1. Enable Firebase Firestore
+{:#enable-firebase-firestore}
+
 The Misinformation Game uses the Firestore Database to store users, studies, and study results. Therefore,
 you will need to enable it.
 
@@ -210,9 +202,9 @@ Once you have selected a location, click **Enable**.
 </figure>
 
 
-<h2 id="enable-firebase-storage">
-    4.2. Enable Firebase Storage
-</h2>
+### 4.2. Enable Firebase Storage
+{:#enable-firebase-storage}
+
 Any images that are embedded within studies will be stored within Firebase Storage. Therefore, Storage
 should be enabled.
 
@@ -234,9 +226,9 @@ then you will need to first enable the Firestore Database as explained in an ear
 </figure>
 
 
-<h2 id="enable-firebase-auth">
-    4.3. Enable Firebase Authentication
-</h2>
+### 4.3. Enable Firebase Authentication
+{:#enable-firebase-auth}
+
 The Misinformation Game uses Firebase Authentication to authenticate administrators. Administrators
 are the users that are given access to upload studies and download their results. This authentication
 is not used for participants in your studies.
@@ -272,9 +264,9 @@ Figure 11 below. This contact email is required by Google's authentication servi
 will be explained later in this guide, as it requires additional set-up to be performed first.
 
 
-<h2 id="enable-firebase-webapp">
-    4.4. Configure your Firebase Project as a Web-App
-</h2>
+### 4.4. Configure your Firebase Project as a Web-App
+{:#enable-firebase-webapp}
+
 Firebase supports mobile apps as well as websites. We must configure the project as a web-app.
 
 **Step 1:** Click **Project Overview** on the left of the project page, as shown in Figure 12 below.
@@ -308,16 +300,17 @@ bottom-right of this code block that can be pressed to copy it, as shown in Figu
 **Step 7:** Once you have saved the configuration information file, click **Continue to console**.
 
 
-<h1 id="deploying">
-    5. Deploying the Website
-</h1>
+
+## 5. Deploying the Website
+{:#deploying}
+
 The next step of the process is to deploy the Misinformation Game to your Firebase project.
 This step will require the software that we installed earlier (Visual Studio Code, Node.js, and NPM).
 
 
-<h2 id="opening-codebase">
-    5.1. Opening and Setting Up the Code
-</h2>
+### 5.1. Opening and Setting Up the Code
+{:#opening-codebase}
+
 Step 1: Open the Visual Studio Code app. <br/>
 Step 2: Click on File > Open Folder and find the extracted project folder that you saved in section 2.1. <br/>
 Step 3: Once the folder is open, you will see a screen similar to <a href="#fig14">Figure 14</a>. On the left
@@ -341,9 +334,9 @@ Step 6: Finally, save the file by pressing _Ctrl + S_ on your keyboard.
 </figure>
 
 
-<h2 id="install-git-bash">
-    5.2. Install Git Bash
-</h2>
+### 5.2. Install Git Bash
+{:#install-git-bash}
+
 Windows users will also need to install Git Bash. You can download it from the below link, by clicking
 the Windows icon, as seen in <a href="#fig16">Figure 16</a>.
 https://git-scm.com/download/win
@@ -358,9 +351,9 @@ of the default settings. After this you should have a working Git for Windows in
 computer.
 
 
-<h2 id="running-deployment-script">
-    5.3. Running the Deployment Script
-</h2>
+### 5.3. Running the Deployment Script
+{:#running-deployment-script}
+
 Now the environment is completely set up and ready for you to edit and to deploy. To deploy a version of
 this application on the internet, follow the below steps.
 
@@ -459,9 +452,8 @@ You can access the website on your browser at the domain \[Your Project ID\].web
 
 
 
-<h1 id="conclusion">
-    6. Conclusion
-</h1>
+## 6. Conclusion
+{:#conclusion}
 
 You should now have a fully deployed instance of the Misinformation Game! You may now sign in to your
 instance of The Misinformation Game, and register yourself as an administrator, through the process

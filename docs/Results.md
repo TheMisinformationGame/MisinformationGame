@@ -4,9 +4,9 @@ showPath: true
 showBackToTop: false
 ---
 
-<h1 id="intro">
-    The Results Spreadsheet
-</h1>
+# The Results Spreadsheet
+{:#intro}
+
 The results for studies can be downloaded from the Admin
 Dashboard, by selecting your study, and then selecting
 **Download Results**. The results are downloaded as a
@@ -34,17 +34,17 @@ is split into four worksheets:
    and their completion codes.
 
 
-<h3 id="example-results">
-    Example Results
-</h3>
+### Example Results
+{:#example-results}
+
 If you wish to view some example results from a user experience
 study ran using the Misinformation Game, then they may be accessed
 from [the example results page](/link/ExampleResults).
 
 
-<h1 id="overview">
-    1. Overview Worksheet
-</h1>
+
+## 1. Overview Worksheet
+{:#example-results}
 
 **Study ID:** The identification number used in the URL of
 the study to identify it. It is unique for each study.
@@ -59,9 +59,10 @@ the study.
 the results were downloaded, in UTC time.
 
 
-<h1 id="posts">
-    2. Posts Worksheet
-</h1>
+
+## 2. Posts Worksheet
+{:#posts}
+
 **Session ID:** The session ID can be used to uniquely
 identify the reactions of a participant in their play-through
 of the game. The session ID is always available, and it is
@@ -125,9 +126,10 @@ credibility after they reacted to this post.
 follower number after they reacted to this post.
 
 
-<h1 id="comments">
-    3. Comments Worksheet
-</h1>
+
+## 3. Comments Worksheet
+{:#comments}
+
 **Session ID:** The session ID can be used to uniquely
 identify one play-through of the game by a participant. This
 session ID is the same session ID as used in the **Results**
@@ -177,9 +179,10 @@ milliseconds. _Note:_ A blank value indicates that there
 was no reaction to the comment.
 
 
-<h1 id="participants">
-    4. Participants Worksheet
-</h1>
+
+## 4. Participants Worksheet
+{:#participants}
+
 **Session ID:** The session ID can be used to uniquely
 identify one play-through of the game by a participant. This
 session ID is the same session ID as used in the **Results**

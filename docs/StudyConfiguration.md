@@ -4,9 +4,8 @@ showPath: true
 showBackToTop: true
 ---
 
-<h1 id="intro">
-    Study Configuration Guide
-</h1>
+# Study Configuration Guide
+{:#intro .no_toc}
 
 Studies in The Misinformation Game are configured through the
 use of Google Sheets spreadsheets. These spreadsheets contain
@@ -23,24 +22,16 @@ Microsoft Excel.
 
 
 
-<h2 id="toc">
-    Table of Contents
-</h2>
-* [1. ✏ Create a new Spreadsheet](#create)
-* [2. 📜 Enter your study settings into the Spreadsheet](#configure)
-    - [📄 About Worksheet](#about)
-    - [📄 Overview Worksheet](#overview)
-    - [📄 General Worksheet](#general)
-    - [📄 Pages Worksheet](#pages)
-    - [📄 Source & Post Selection Worksheet](#selection)
-    - [📄 Sources Worksheet](#sources)
-    - [📄 Posts Worksheet](#posts)
-* [3. 📤 Uploading your Study](#upload)
+# Table of Contents
+{:#intro .no_toc}
+* toc
+{:toc}
 
 
-<h2 id="create">
-    1. ✏ Create a new Spreadsheet
-</h2>
+
+## 1. Create a new Configuration Spreadsheet
+{:#create}
+
 Before you can start configuring your study, you will first
 need to create a new spreadsheet for the study in Google
 Sheets. You can create a new spreadsheet by either copying
@@ -48,9 +39,9 @@ the Study Template spreadsheet that is already on Google
 Sheets, or by uploading the Study Template file.
 
 
-<h3 id="create-copy">
-    Method 1: Copy the Template (Recommended)
-</h3>
+### Method 1: Copy the Template (Recommended)
+{:#create-copy}
+
 You can access the Study Configuration Template Spreadsheet on Google Sheets
 from [the study configuration template page](/link/StudyTemplate).
 After you have loaded the template spreadsheet, you can select
@@ -58,9 +49,10 @@ After you have loaded the template spreadsheet, you can select
 you can make changes.
 
 
-<h3 id="create-upload">
-    Method 2: Upload the Template
-</h3>
+
+### Method 2: Upload the Template
+{:#create-upload}
+
 You can download the Study Template file from
 [StudyTemplate.xlsx](StudyTemplate.xlsx). This file can then
 be uploaded to your Google Sheets using the following steps:
@@ -87,9 +79,10 @@ Your spreadsheet should now contain everything you need
 to create your new study.
 
 
-<h2 id="configure">
-    2. 📜 Enter your study settings into the Spreadsheet
-</h2>
+
+## 2. Enter your Settings into the Configuration Spreadsheet
+{:#configure}
+
 The configuration spreadsheet may look intimidating at
 first glance, and so this section will try to break
 down the configuration spreadsheet sheet-by-sheet.
@@ -99,9 +92,10 @@ however you are free to jump back and forth as you
 configure your study.
 
 
-<h3 id="about">
-    2.1. 📄 About Worksheet
-</h3>
+
+### 2.1. About Worksheet
+{:#configure}
+
 The _About_ sheet gives an overview of the structure of
 the spreadsheet, with a short description of each sheet in
 the spreadsheet. It also contains a legend for what the
@@ -113,26 +107,25 @@ will help when reading the rest of the configuration
 spreadsheet.
 
 
-<h3 id="overview">
-    2.2. 📄 Overview Worksheet
-</h3>
+
+### 2.2. Overview Worksheet
+{:#overview}
+
 The _Overview_ sheet provides a summary of all the settings
 that have been entered. It also collates all the errors
 between all the sheets into one place, so that you can
 easily identify if there are any errors in your
 configuration.
 
-<h4 id="overview-status">
-    2.2.1. Status
-</h4>
+#### 2.2.1. Status
+{:#overview-status}
 The status of the spreadsheet gives an indication of
 whether there are any errors in the spreadsheet. If
 there are any errors in any of the sheets, an error
 will be shown here.
 
-<h4 id="overview-opened-in-sheets">
-    2.2.2. Opened in Google Sheets
-</h4>
+#### 2.2.2. Opened in Google Sheets
+{:#overview-opened-in-sheets}
 This attempts to detect whether the spreadsheet was
 opened in Google Sheets, and will error if it can
 detect that it was opened in Microsoft Excel. This
@@ -140,25 +133,22 @@ detection uses a bug when converting between Google
 Sheets and Microsoft Excel, and it therefore may not
 be 100% accurate.
 
-<h4 id="overview-general">
-    2.2.3. General Settings
-</h4>
+#### 2.2.3. General Settings
+{:#overview-general}
 This section gives an overview of the general settings
 of your study, as well as their validity in the top-left.
 The **Pages** value will show the exact order of pages
 that participants will be shown when they participate
 in your study.
 
-<h4 id="overview-sources">
-    2.2.4. Sources
-</h4>
+#### 2.2.4. Sources
+{:#overview-sources}
 This will show the validity of all the sources you have
 entered, and includes the number of sources that have been
 included in the _Sources_ sheet.
 
-<h4 id="overview-posts">
-    2.2.5. Posts
-</h4>
+#### 2.2.5. Posts
+{:#overview-posts}
 This will show the validity of all posts, as well as the
 number of true and false posts that have been included
 in the _Posts_ sheet.
@@ -174,31 +164,33 @@ a false post in this case. This could lead to a false post
 being shown, even if the true post percentage is 100%.
 
 
-<h3 id="general">
-    2.3. 📄 General Worksheet
-</h3>
+
+### 2.3. General Worksheet
+{:#general}
+
 The General sheet is the best place to start when creating
 a study. It contains all the most broad settings of
 studies including their name, description, and length.
 
-
-<h4 id="general-basic-settings">
-    2.3.1. Basic Settings
-</h4>
+#### 2.3.1. Basic Settings
+{:#general-basic-settings}
 This section contains the most basic settings that likely
 should be changed for each study.
 
-<h6 id="general-name"><span class="param-name">Name</span></h6>
+##### Name
+{:#general-name .no_toc}
 The name that is used for the browser tab title for
 participants in this study. This name is also used to
 identify the study in your admin dashboard.
 
-<h6 id="general-description"><span class="param-name">Description</span></h6>
+##### Description
+{:#general-description .no_toc}
 The description of your study is used to include
 information about the study in your admin dashboard.
 This description is not shown to participants.
 
-<h6 id="general-prompt"><span class="param-name">Prompt</span></h6>
+##### Prompt
+{:#general-prompt .no_toc}
 The prompt text to be shown to participants before they
 start the study. An example prompt is shown in [Figure 1](#fig1).
 
@@ -207,23 +199,27 @@ start the study. An example prompt is shown in [Figure 1](#fig1).
     <figcaption><a href="#fig1">Figure 1.</a> Screenshot of an example prompt</figcaption>
 </figure>
 
-<h6 id="general-length"><span class="param-name">Length of Game</span></h6>
+##### Length of Game
+{:#general-length .no_toc}
 The exact number of posts to show to participants before
 they complete the study. The length of studies must
 be at least 1 post.
 
-<h6 id="general-require-reactions"><span class="param-name">Require Reactions</span></h6>
+##### Require Reactions
+{:#general-require-reactions .no_toc}
 Whether to require participants to react to every post.
 Participants will still be able to skip posts, but to
 do so they will have to explicitly select "Skip Post"
 as their reaction.
 
-<h6 id="general-require-comments"><span class="param-name">Require Comments</span></h6>
+##### Require Comments
+{:#general-require-comments .no_toc}
 Whether comments made by the participants are required
 for each post (enter "required"), optional for each post, or disabled
 entirely.
 
-<h6 id="general-require-identification"><span class="param-name">Require Participant Identification</span></h6>
+##### Require Participant Identification
+{:#general-require-identification .no_toc}
 Whether participants will be required to provide a
 participant ID before starting the study. If this value
 is true, then participants will be shown an identification
@@ -232,73 +228,86 @@ already been automatically populated from the URL they
 have been given.
 
 
-<h4 id="general-ui-settings">
-    2.3.2. User Interface Settings
-</h4>
+#### 2.3.2. User Interface Settings
+{:#general-ui-settings}
 This section contains the settings that change the user
 interface of The Misinformation Game for participants.
 These options change the way that participants are able
 to interact with your study.
 
-<h6 id="general-display-followers"><span class="param-name">Display Followers</span></h6>
+##### Display Followers
+{:#general-display-followers .no_toc}
 Whether to show followers to participants. This includes
 the followers of both sources and participants.
 
-<h6 id="general-display-credibility"><span class="param-name">Display Credibility</span></h6>
+##### Display Credibility
+{:#general-display-credibility .no_toc}
 Whether to show credibility to participants. This includes
 the credibility of both sources and participants.
 
-<h6 id="general-display-progress"><span class="param-name">Display Progress</span></h6>
+##### Display Progress
+{:#general-display-progress .no_toc}
 Whether to show participants the number of posts they
 have reacted to, and how many they have remaining
 (e.g. "Post 51 of 100").
 
-<h6 id="general-display-reaction-counts"><span class="param-name">Display Number of Reactions</span></h6>
+##### Display Number of Reactions
+{:#general-display-reaction-counts .no_toc}
 Whether to show the ostensible number of prior reactions
 to posts and comments adjacent to the reaction buttons.
 
-<h6 id="general-post-likes-enabled"><span class="param-name">Post Likes Enabled</span></h6>
+##### Post Likes Enabled
+{:#general-post-likes-enabled .no_toc}
 Whether to allow participants to like posts.
 
-<h6 id="general-post-dislikes-enabled"><span class="param-name">Post Dislikes Enabled</span></h6>
+##### Post Dislikes Enabled
+{:#general-post-dislikes-enabled .no_toc}
 Whether to allow participants to dislike posts.
 
-<h6 id="general-post-shares-enabled"><span class="param-name">Post Shares Enabled</span></h6>
+##### Post Shares Enabled
+{:#general-post-shares-enabled .no_toc}
 Whether to allow participants to share posts.
 
-<h6 id="general-post-flags-enabled"><span class="param-name">Post Flags Enabled</span></h6>
+##### Post Flags Enabled
+{:#general-post-flags-enabled .no_toc}
 Whether to allow participants to flag posts.
 
-<h6 id="general-comment-likes-enabled"><span class="param-name">Comment Likes Enabled</span></h6>
+##### Comment Likes Enabled
+{:#general-comment-likes-enabled .no_toc}
 Whether to allow participants to like comments.
 
-<h6 id="general-comment-dislikes-enabled"><span class="param-name">Comment Dislikes Enabled</span></h6>
+##### Comment Dislikes Enabled
+{:#general-comment-dislikes-enabled .no_toc}
 Whether to allow participants to dislike comments.
 
 
-<h4 id="general-advanced-settings">
-    2.3.3. Advanced Settings
-</h4>
+#### 2.3.3. Advanced Settings
+{:#general-advanced-settings}
+
 These settings can be used to fine-tune your study.
 It is unlikely that you will need to edit these settings.
 
-<h6 id="general-minimum-comment-length"><span class="param-name">Minimum Comment Length</span></h6>
+##### Minimum Comment Length
+{:#general-minimum-comment-length .no_toc}
 The minimum number of characters that participants must
 enter for their comments. The minimum length of comments
 must be at least 1 character.
 
-<h6 id="general-prompt-continue-delay"><span class="param-name">Prompt Continue Delay (Seconds)</span></h6>
+##### Prompt Continue Delay (Seconds)
+{:#general-prompt-continue-delay .no_toc}
 The period of time in which participants are not able
 to continue past the prompt page to start the game.
 This delay cannot be negative, but it can be zero.
 
-<h6 id="general-next-post-delay"><span class="param-name">Next Post Delay (Seconds)</span></h6>
+##### Next Post Delay (Seconds)
+{:#general-next-post-delay .no_toc}
 The period of time after the current post is shown
 in which participants are not able to continue to
 the next post. This delay cannot be negative, but
 it can be zero.
 
-<h6 id="general-generate-completion-code"><span class="param-name">Generate Completion Code</span></h6>
+##### Generate Completion Code
+{:#general-generate-completion-code .no_toc}
 Whether to generate and display a completion code
 to participants once they have completed the study.
 An example debriefing page that includes a generated
@@ -309,13 +318,15 @@ completion code for a participant is shown in [Figure 2](#fig2).
     <figcaption><a href="#fig2">Figure 2.</a> Screenshot of an example debriefing page with a completion code</figcaption>
 </figure>
 
-<h6 id="general-completion-code-digits"><span class="param-name">Completion Code Digits</span></h6>
+##### Completion Code Digits
+{:#general-completion-code-digits .no_toc}
 The number of digits to generate for the completion
 code (e.g. If this value is 4, then completion codes
 from 1000 to 9999 will be generated). The number of
 digits in completion codes must be at least 1.
 
-<h6 id="general-generate-random-default-avatars"><span class="param-name">Generate Random Default Avatars</span></h6>
+##### Generate Random Default Avatars
+{:#general-generate-random-default-avatars .no_toc}
 Whether to use a random background colour for the
 default source avatars. If set to "No", the default
 avatars of sources will all have a white background.
@@ -329,18 +340,19 @@ background is randomised are shown in [Figure 3](#fig3).
 </figure>
 
 
-<h3 id="pages">
-    2.4. 📄 Pages Worksheet
-</h3>
+
+### 2.4. Pages Worksheet
+{:#pages}
+
 The _Pages_ sheet allows you to edit the content of
 the instructions and debriefing that the users may be
 shown. It also allows you to edit the enforced delays 
 (with disabled continue button) on these pages.
 
 
-<h4 id="pages-formatting">
-    2.4.1. Formatting the Text
-</h4>
+#### 2.4.1. Formatting the Text
+{:#pages-formatting}
+
 The text on these pages can be formatted to include **bold**,
 _italic_,
 <span style="font-size: 1.2em">larger text</span>,
@@ -374,9 +386,9 @@ that links to The Misinformation Game's GitHub page,
 ```
 
 
-<h4 id="pages-intro-before-rules">
-    2.4.2. Introduction before game rules
-</h4>
+#### 2.4.2. Introduction before game rules
+{:#pages-intro-before-rules}
+
 This page will be shown to participants after they have
 identified themselves, and before they are shown the
 rules of the game. This page can be used for instructions. 
@@ -384,9 +396,10 @@ It is _optional_, so if you do not wish to show participants
 an introduction before they are shown the game rules, then 
 leave this page blank.
 
-<h4 id="pages-rules">
-    2.4.3. Game Rules
-</h4>
+
+#### 2.4.3. Game Rules
+{:#pages-rules}
+
 This page will be shown to participants after they have
 viewed the introduction before the game rules page. This
 page is intended to be used to explain the rules of the game
@@ -431,18 +444,20 @@ The available placeholders are:
 - {% raw %}`{{YOUR-PROGRESS-EXAMPLE}}`{% endraw %}:
   An example Your Progress box with placeholder values.
 
-<h4 id="pages-intro-after-rules">
-    2.4.4. Introduction after game rules
-</h4>
+
+#### 2.4.4. Introduction after game rules
+{:#pages-intro-after-rules}
+
 This page will be shown to participants after they have
 been shown the rules of the game. This page can also be 
 used for instructions. It is _optional_, so if you do not 
 wish to show participants an introduction after they are 
 shown the game rules, then leave this page blank.
 
-<h4 id="pages-debriefing">
-    2.4.5. Debriefing
-</h4>
+
+#### 2.4.5. Debriefing
+{:#pages-debriefing}
+
 This page will be shown to participants after they have
 completed the study. This page is not optional. An
 example of this debriefing screen is shown below,
@@ -474,9 +489,10 @@ their completion code.
 </figure>
 
 
-<h3 id="selection">
-    2.5. 📄 Source & Post Selection Worksheet
-</h3>
+
+### 2.5. Source & Post Selection Worksheet
+{:#selection}
+
 The Source & Post Selection sheet allows you to edit the
 method that is used to select the source/post pairs that
 will be shown to participants in their games. There are
@@ -487,9 +503,9 @@ In-depth descriptions of each selection method are available
 in the [Simulation documentation](/Simulation).
 
 
-<h4 id="selection-selecting-method">
-    2.5.1. Selecting a Method
-</h4>
+#### 2.5.1. Selecting a Method
+{:#selection-selecting-method}
+
 The **Source & Post Selection Method** value at the top of
 this sheet should be changed manually to the name of the method 
 to be used. This should be one of _Overall-Ratio_,
@@ -499,15 +515,16 @@ settings for all the other selection methods will be
 disabled.
 
 
-<h4 id="selection-overall-ratio">
-    2.5.2. Method 1: Overall-Ratio
-</h4>
+#### 2.5.2. Method 1: Overall-Ratio
+{:#selection-overall-ratio}
+
 Sources will be selected randomly, and the associated
 post will be chosen to match an overall ratio of
 true:false posts. The settings for this method are
 available in the **Overall-Ratio Settings** section.
 
-<h6 id="selection-overall-ratio-tpp"><span class="param-name">True Post Percentage</span></h6>
+##### selection-overall-ratio-tpp
+{:#aaa .no_toc}
 The percentage of true posts to display to users. This
 percentage is used to probabilistically sample posts.
 Therefore, the actual percentage for each participant
@@ -516,9 +533,9 @@ of true posts shown to all participants collectively
 should approach this value.
 
 
-<h4 id="selection-source-ratios">
-    2.5.3. Method 2: Source-Ratios
-</h4>
+#### 2.5.3. Method 2: Source-Ratios
+{:#selection-source-ratios}
+
 Sources will be selected randomly, and the associated
 post will be chosen to match the **True Post Percentage**
 defined for each source.
@@ -530,9 +547,9 @@ actual percentage of true posts that a source is selected
 to show should approach their defined **True Post Percentage**.
 
 
-<h4 id="selection-credibility">
-    2.5.4. Method 3: Credibility
-</h4>
+#### 2.5.4. Method 3: Credibility
+{:#selection-credibility}
+
 Sources will be selected randomly, and then a **True Post
 Percentage** will be calculated from the credibility of
 the source. The ratio will then be used to sample a true
@@ -542,40 +559,46 @@ true-post percentage to be used is a linear relationship.
 The parameters of the linear relationship between the two
 can be configured under the **Credibility Settings** section.
 
-<h6 id="selection-credibility-slope"><span class="param-name">Linear Slope</span></h6>
+##### Linear Slope
+{:#selection-credibility-slope .no_toc}
 The increase in the **True Post Percentage** for every unit
 increase in a source's credibility.
 
-<h6 id="selection-credibility-intercept"><span class="param-name">Linear Intercept</span></h6>
+##### Linear Intercept
+{:#selection-credibility-intercept .no_toc}
 The **True Post Percentage** to use when a source's
 credibility is zero.
 
 
-<h4 id="selection-predefined">
-    2.5.5. Method 4: Pre-Defined
-</h4>
+#### 2.5.5. Method 4: Pre-Defined
+{:#selection-predefined}
+
 An exact set of source/post pairs is manually defined.
 The source/post pairs can be manually defined in the
 _Pre-Defined Source & Post Order_ sheet, alongside
 other settings for this method.
 
-<h6 id="selection-predefined-randomise"><span class="param-name">Randomise Order</span></h6>
+##### Randomise Order
+{:#selection-predefined-randomise .no_toc}
 Whether the presentation order of the pairs should
 be randomised. Otherwise, the pairs will be shown
 in the exact order specified.
 
-<h6 id="selection-predefined-source-id"><span class="param-name">Source ID</span></h6>
+##### Source ID
+{:#selection-predefined-source-id .no_toc}
 The ID of the source to be used for the post (e.g. **S1**).
 These IDs can be found in the _Sources_ sheet.
 
-<h6 id="selection-predefined-post-id"><span class="param-name">Post ID</span></h6>
+##### Post ID
+{:#selection-predefined-post-id .no_toc}
 The ID of the post to display (e.g. **S1**).
 These IDs can be found in the _Posts_ sheet.
 
 
-<h3 id="sources">
-    2.6. 📄 Sources Worksheet
-</h3>
+
+### 2.6. Sources Worksheet
+{:#sources}
+
 The _Sources_ sheet allows you to add all the sources that can
 be shown to participants during your study. Each source contains
 several settings to define their appearance and behaviour. An
@@ -592,9 +615,9 @@ To the right there is also a widget that can be used to
 preview the settings for your sources.
 
 
-<h4 id="sources-defaults">
-    2.6.1. Default Source Values
-</h4>
+#### 2.6.1. Default Source Values
+{:#sources-defaults}
+
 This section defines defaults for some source parameters
 to avoid repetition in entering values that are constant
 for most sources. If one of the parameters that has a
@@ -632,9 +655,9 @@ count and credibility for a source is shown in [Figure 6](#fig6).
 </figure>
 
 
-<h4 id="sources-table">
-    2.6.2. Sources Table
-</h4>
+#### 2.6.2. Sources Table
+{:#sources-table}
+
 The table below the Default Source Values is where the sources 
 in the study can be added. Each row in this table represents
 one source. The **ID** and **Name** of each source is required
@@ -643,7 +666,8 @@ settings are optional, and if they are omitted the default settings
 are used instead. If an **Avatar** for a source is omitted, it will
 use a default based upon the **Name** of the source instead.
 
-<h6 id="sources-id"><span class="param-name">Source ID</span></h6>
+##### Source ID
+{:#sources-id .no_toc}
 The ID's of sources are used to uniquely identify them. For example,
 the ID of a source will be used to reference it in the results of
 a study. The ID's of the sources should be of the form `Sx`, where
@@ -651,11 +675,13 @@ a study. The ID's of the sources should be of the form `Sx`, where
 template sheet, all the IDs are already filled in, and you should not
 have to edit them.
 
-<h6 id="sources-name"><span class="param-name">Name</span></h6>
+##### Name
+{:#sources-name .no_toc}
 The name of the source will be shown to participants when this source
 is used alongside a post.
 
-<h6 id="sources-avatar"><span class="param-name">Avatar</span></h6>
+##### Avatar
+{:#sources-avatar .no_toc}
 The avatar of a source is an optional image that is displayed in a circle
 alongside the source. If the avatar is not square, it will be cropped.
 The avatar images are only shown at small sizes, and therefore are
@@ -678,7 +704,8 @@ be able to find the image to use for the avatar.
     </figcaption>
 </figure>
 
-<h6 id="sources-max-posts"><span class="param-name">Max Posts</span></h6>
+##### Max Posts
+{:#sources-max-posts .no_toc}
 The maximum posts for a source allows you to set a hard limit on the number
 of times a source is shown to the participant. This value can either be an
 integer greater than or equal to zero, or the text `Unlimited` to represent
@@ -696,7 +723,8 @@ be selected, you can use high values of Max Posts (e.g. a
 source with Max Posts = 100 will be selected 10x more than a 
 source with Max Posts = 10).
 
-<h6 id="sources-initial-followers"><span class="param-name">Initial Followers</span></h6>
+##### Initial Followers
+{:#sources-initial-followers .no_toc}
 This optional value lets you set an exact initial
 follower count for this source. However, the actual
 follower count of the source may differ throughout
@@ -710,8 +738,8 @@ Only used if:
       General > UI Settings > Display Followers
   </a> is true.
 
-
-<h6 id="sources-initial-credibility"><span class="param-name">Initial Credibility</span></h6>
+##### Initial Credibility
+{:#sources-initial-credibility .no_toc}
 This optional value lets you set an exact initial
 credibility number for this source. However, the actual
 credibility number of the source may differ throughout
@@ -723,7 +751,8 @@ Only used if:
       General > UI Settings > Display Credibility
   </a> is true.
 
-<h6 id="sources-true-post-percentage"><span class="param-name">True Post Percentage</span></h6>
+##### True Post Percentage
+{:#sources-true-post-percentage .no_toc}
 When using the _Source-Ratios_ source/post selection method,
 this value is used to define the percentage of true posts that
 this source should show. After this source is selected, this
@@ -736,9 +765,10 @@ Only used if:
   </a> is "Source-Ratios".
 
 
-<h3 id="posts">
-    2.7. 📄 Posts Worksheet
-</h3>
+
+### 2.7. Posts Worksheet
+{:#posts}
+
 The _Posts_ sheet allows you to add all the posts that could
 be shown to participants during the game. Each post can
 only be shown to a participant once, and will never be
@@ -750,9 +780,8 @@ the right there is also a table to display the total
 number of true and false posts that you have entered.
 
 
-<h4 id="posts-default-values">
-    2.7.1. Default Post Values
-</h4>
+#### 2.7.1. Default Post Values
+{:#posts-default-values}
 This section defines separate defaults for true posts and 
 false posts. This is done to reduce the effort in creating
 consistent behaviour for true and false posts. For example,
@@ -765,9 +794,8 @@ a default distribution for the number of reactions to display
 for _likes_, _dislikes_, _shares_, or _flags_ for posts.
 
 
-<h4 id="posts-table">
-    2.7.2. Posts Table
-</h4>
+#### 2.7.2. Posts Table
+{:#posts-table}
 The table below the Default Post Values allows you to enter
 all the posts that may be shown to participants during the
 study. Each row in the table represents one post. The
@@ -779,7 +807,8 @@ comments, are optional. If the changes to followers and
 credibility are omitted, the default settings will be
 used instead.
 
-<h6 id="posts-post-id"><span class="param-name">Post ID</span></h6>
+##### Post ID
+{:#posts-post-id .no_toc}
 The ID of each post is used to uniquely identify
 the post. This ID should be of the form `Px` where x is
 an increasing integer (e.g. P1, P2, P3, etc...). This ID
@@ -787,7 +816,8 @@ will be used in the results to refer to this specific post.
 In the template sheet, all the IDs are already pre-filled,
 and there should be no need to edit them.
 
-<h6 id="posts-headline"><span class="param-name">Headline</span></h6>
+##### Headline
+{:#posts-headline .no_toc}
 The headline of the post is used to provide a title above the
 content of the post. This headline is optional, and if it is
 not included then only the content of the post will be shown.
@@ -799,7 +829,8 @@ in [Figure 8](#fig8).
     <figcaption><a href="#fig8">Figure 8.</a> Diagram highlighting the post's headline and content</figcaption>
 </figure>
 
-<h6 id="posts-content"><span class="param-name">Content</span></h6>
+##### Content
+{:#posts-content .no_toc}
 The content of the post is used to provide a  more substantial
 piece of text, or an image to display to participants. The content 
 is optional, and if it is not included then only the headline of
@@ -830,26 +861,30 @@ be able to find the image to use for the content.
     </figcaption>
 </figure>
 
-<h6 id="posts-is-true"><span class="param-name">Is True</span></h6>
+##### Is True
+{:#posts-is-true .no_toc}
 This should be set to whether the post should be considered true or false.
 This value is used for the post selection, and for choosing the default
 settings to use for the post. This value is never shown to participants.
 
-<h6 id="posts-changes-to-followers"><span class="param-name">Changes to Followers</span></h6>
+##### Changes to Followers
+{:#posts-changes-to-followers .no_toc}
 These settings allow you to set the exact change to a participant's followers
 after they _like_, _dislike_, _share_, or _flag_ a post. This value can be a
 decimal number, however participant's followers are rounded before being displayed.
 If this value is not provided for a particular post, the change is sampled from
 the default normal distribution instead.
 
-<h6 id="posts-changes-to-credibility"><span class="param-name">Changes to Credibility</span></h6>
+##### Changes to Credibility
+{:#posts-changes-to-credibility .no_toc}
 These settings allow you to set the exact change to a participant's credibility
 after they _like_, _dislike_, _share_, or _flag_ a post. This value can be a
 decimal number, however a participant's credibility is rounded before being displayed.
 If this value is not provided for a particular post, the change is sampled from
 the default normal distribution instead.
 
-<h6 id="posts-number-of-reactions"><span class="param-name">Number of Reactions</span></h6>
+##### Number of Reactions
+{:#posts-number-of-reactions .no_toc}
 These settings allow you to set the ostensible number of prior reactions to
 display for each post. These numbers are displayed below the available reactions
 of the post or comment. If this value is not provided for a particular post, the
@@ -865,7 +900,8 @@ Only used if:
     </a> is true for each specific reaction.</li>
 </ul>
 
-<h6 id="posts-comments"><span class="param-name">Comments</span></h6>
+##### Comments
+{:#posts-comments .no_toc}
 Up to three optional comments can be configured for each post. Each comment must
 include both a _Source Name_ and a _Message_, which are described below. An
 example comment is shown in [Figure 10](#fig10).
@@ -875,13 +911,16 @@ example comment is shown in [Figure 10](#fig10).
     <figcaption> <a href="#fig10">Figure 10.</a> Screenshot of an example comment in the game</figcaption>
 </figure>
 
-<h6 id="posts-comment-source-name"><span class="param-name">Comment Source Name</span></h6>
+##### Comment Source Name
+{:#posts-comment-source-name .no_toc}
 The name of the source to display as having made the comments.
 
-<h6 id="posts-comment-message"><span class="param-name">Comment Message</span></h6>
+##### Comment Message
+{:#posts-comment-message .no_toc}
 The text to display as the content of the comments.
 
-<h6 id="posts-comment-likes"><span class="param-name">Comment Likes</span></h6>
+##### Comment Likes
+{:#posts-comment-likes .no_toc}
 The number of likes to display for comments. These likes will only be shown if
 comments are enabled, comment likes are enabled, and displaying the number of
 reactions is enabled.
@@ -896,7 +935,8 @@ Only used if:
     </a> is true.</li>
 </ul>
 
-<h6 id="posts-comment-dislikes"><span class="param-name">Comment Dislikes</span></h6>
+##### Comment Dislikes
+{:#posts-comment-dislikes .no_toc}
 The number of dislikes to display for comments.
 
 Only used if:
@@ -910,9 +950,10 @@ Only used if:
 </ul>
 
 
-<h2 id="upload">
-    3. 📤 Uploading your Study
-</h2>
+
+## 3. Upload your Study
+{:#upload}
+
 Once you have completed configuring your study, it is recommended
 you first check the **Overview** sheet to make sure that
 everything looks correct, and doesn't contain any errors.

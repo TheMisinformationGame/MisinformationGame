@@ -4,30 +4,24 @@ showPath: true
 showBackToTop: true
 ---
 
-<h1 id="intro">
-    Registering Administrators
-</h1>
+# Registering Administrators
+{:#intro .no_toc}
+
 In order for users to upload their own studies, they must first
 be registered as administrators. This document outlines the
 process for a user to be granted administrator privileges.
 
 
-<h2 id="toc">
-    Table of Contents
-</h2>
-* [1. User Registration](#user-registration)
-* [2. Finding User IDs](#user-registration)
-    - [2.1. Finding your own User ID](#find-own-user-id)
-    - [2.2. Finding User IDs through the Firebase Console](#find-other-user-id)
-* [3. Admin Registration](#admin-registration)
-    - [3.1. Accessing the Firestore Database](#access-firestore)
-    - [3.2. Registering the First Administrator](#admin-registration-first)
-    - [3.3. Registering Additional Administrators](#admin-registration-additional)
+## Table of Contents
+{:#toc .no_toc}
+* toc
+{:toc}
 
 
-<h2 id="user-registration">
-    1. User Registration
-</h2>
+
+## 1. User Registration
+{:#user-registration}
+
 Users must register with your instance of The Misinformation Game
 before they can be registered as administrators. This must be
 done using a Google account. The process to register as a user
@@ -73,9 +67,8 @@ to register users as administrators is described under [Admin Registration](#adm
 
 
 
-<h2 id="find-user-id">
-    2. Finding User IDs
-</h2>
+## 2. Finding User IDs
+{:#find-user-id}
 
 Administrators are registered by adding their User ID to a collection in the
 Firestore Database of your instance of The Misinformation Game. Therefore, before
@@ -85,9 +78,10 @@ If you are finding your own User ID, then you may refer to the process in the
 User ID of another user, then you may refer to the process in the
 [Finding another user's User ID section](#find-other-user-id).
 
-<h3 id="find-own-user-id">
-    2.1. Finding your own User ID
-</h3>
+
+### 2.1. Finding your own User ID
+{:#find-own-user-id}
+
 Your User ID is displayed in the top-right
 of the admin dashboard underneath your name, as highlighted
 in [Figure 4](#fig4). It should be a long string of letters
@@ -100,9 +94,10 @@ and numbers that looks similar to `rdp1zSjlgiMTAj4t42ve4sE84CvL`.
     </figcaption>
 </figure>
 
-<h3 id="find-other-user-id">
-    2.2. Finding User IDs through the Firebase Console
-</h3>
+
+### 2.2. Finding User IDs through the Firebase Console
+{:#find-other-user-id}
+
 If you are registering another user as an administrator, then it may be easier
 to obtain their User ID manually through the Firebase Console. This can be done
 by accessing the **Build -> Authentication** tab on the left of the Firebase Console.
@@ -125,17 +120,17 @@ in [Figure 5](#fig5).
 
 
 
-<h2 id="admin-registration">
-    3. Admin Registration
-</h2>
+## 3. Admin Registration
+{:#admin-registration}
+
 Administrators must be manually registered through the
 [Firebase Console](https://console.firebase.google.com)
 for your instance of The Misinformation Game. The process
 to do this is described in the sections below.
 
-<h3 id="access-firestore">
-    3.1. Accessing the Firestore Database
-</h3>
+
+### 3.1. Accessing the Firestore Database
+{:#access-firestore}
 
 Administrators are registered by manually adding entries to the Firestore
 database. The Firestore database can be accessed through the **Build ->
@@ -149,9 +144,10 @@ shown in [Figure 6](#fig6).
     </figcaption>
 </figure>
 
-<h3 id="admin-registration-first">
-    3.2. Registering the First Administrator
-</h3>
+
+### 3.2. Registering the First Administrator
+{:#admin-registration-first}
+
 When you register your first administrator, you must create the "Admins"
 collection within your Firestore database. The process to do this is
 described below. If you already have an "Admins" collection, then you should
@@ -209,9 +205,8 @@ error should be gone. You may now upload and manage your studies as described un
 the [Managing Studies documentation](ManagingStudies)!
 
 
-<h3 id="admin-registration-additional">
-    3.3. Registering Additional Administrators
-</h3>
+### 3.3. Registering Additional Administrators
+{:#admin-registration-additional}
 
 When existing administrators have already been added to your instance of The
 Misinformation Game, the Admins collection will have already been created in

@@ -4,9 +4,8 @@ showPath: true
 showBackToTop: true
 ---
 
-<h1 id="intro">
-    Development Environment
-</h1>
+# Development Environment
+{:#intro .no_toc}
 
 This document describes how to set up your development environment to
 work on The Misinformation Game and host it locally for testing. If you
@@ -15,9 +14,15 @@ would like to run the documentation website locally, see the
 
 
 
-<h2 id="running-locally">
-    1. Running the Development Environment on your Local Computer
-</h2>
+## Table of Contents
+{:#toc .no_toc}
+* toc
+{:toc}
+
+
+
+## 1. Running the Development Environment on your Local Computer
+{:#running-locally}
 
 The default config files related to the development environment of
 The Misinformation Game have all been pre-configured to run on your
@@ -27,9 +32,9 @@ to work. The process to run the development environment on another
 server is described in the
 [Development on an External Server section](#running-on-server).
 
-<h3 id="install-dependencies">
-    1.1. Install Dependencies
-</h3>
+
+### 1.1. Install Dependencies
+{:#install-dependencies}
 
 Similarly to when deploying The Misinformation Game, the NPM dependencies
 for the project must be installed. This can be done using the following
@@ -40,9 +45,9 @@ sudo npm install -g firebase-tools
 npm run build
 ```
 
-<h3 id="connect-firebase">
-    1.2. Connect to a Firebase Project
-</h3>
+
+### 1.2. Connect to a Firebase Project
+{:#connect-firebase}
 
 Firebase requires that you connect it to a Firebase project, even when
 running the project locally for testing. You can create a new project by
@@ -59,9 +64,9 @@ npx firebase login
 npx firebase use --add
 ```
 
-<h3 id="run-emulators">
-    1.3. Run Firebase Emulators
-</h3>
+
+### 1.3. Run Firebase Emulators
+{:#run-emulators}
 
 The Firebase emulators will emulate the Firebase authentication, database,
 and storage for you. However, the state of these systems will not be saved
@@ -75,9 +80,9 @@ After you have run this command, you can access the Firebase Emulator Suite
 backend at https://localhost:9000. Every time you restart this emulator, all
 the data stored within it will be discarded.
 
-<h3 id="run-website">
-    1.4. Run Development Website
-</h3>
+
+### 1.4. Run Development Website
+{:#run-website}
 
 While the Firebase Emulator provides its own hosting of the website, using
 NPM to host the development website is advised, as it will update your website
@@ -94,9 +99,8 @@ in the page you are viewing.
 
 
 
-<h2 id="running-on-server">
-    2. Development on an External Server
-</h2>
+## 2. Development on an External Server
+{:#running-on-server}
 
 If you wish to run the development environment on an external server, you will
 need to update a couple of config files to update how The Misinformation Game

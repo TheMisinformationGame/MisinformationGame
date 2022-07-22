@@ -4,9 +4,8 @@ showPath: true
 showBackToTop: true
 ---
 
-<h1 id="intro">
-    Technical Overview
-</h1>
+# Technical Overview
+{:#intro .no_toc}
 
 This document provides an overview of the technical
 implementation of this project. This mainly focuses
@@ -28,11 +27,15 @@ major data flows through the application.
     </figcaption>
 </figure>
 
+## Table of Contents
+{:#toc .no_toc}
+* toc
+{:toc}
 
 
-<h2 id="frontend">
-    1. Frontend
-</h2>
+
+## 1. Frontend
+{:#frontend}
 
 The frontend of The Misinformation Game is implemented as
 a single-page application (SPA). Under the hood this is
@@ -59,17 +62,16 @@ and post images will be downloaded as they are needed from
 
 
 
-<h2 id="backend">
-    2. Backend
-</h2>
+## 2. Backend
+{:#backend}
 
 The backend of The Misinformation Game is powered by
 [Firebase](https://firebase.google.com/), which provides
 a lot of the functionality we need out of the box.
 
-<h3 id="firebase-firestore">
-    2.1. Firebase Firestore
-</h3>
+
+### 2.1. Firebase Firestore
+{:#firebase-firestore}
 
 We use
 [Firebase Firestore](https://firebase.google.com/docs/firestore)
@@ -80,9 +82,9 @@ using Firestore security rules that stop unauthorised
 users from reading or changing data that they don't have
 access to.
 
-<h3 id="firebase-storage">
-    2.2. Firebase Storage
-</h3>
+
+### 2.2. Firebase Storage
+{:#firebase-storage}
 
 We use
 [Firebase Storage](https://firebase.google.com/docs/storage)
@@ -92,9 +94,9 @@ for the content of posts. Firebase Storage uses a similar
 security rules mechanism as Firestore to secure the reads
 and writes to the images that are stored.
 
-<h3 id="firebase-auth">
-    2.3. Firebase Authentication
-</h3>
+
+### 2.3. Firebase Authentication
+{:#firebase-auth}
 
 Firebase provides in-built
 [Firebase Authentication](https://firebase.google.com/docs/auth)
@@ -105,9 +107,8 @@ user accounts, emails, and passwords ourselves.
 
 
 
-<h2 id="study-config-spreadsheet">
-    3. Study Configuration Spreadsheet
-</h2>
+## 3. Study Configuration Spreadsheet
+{:#study-config-spreadsheet}
 
 Studies are configured by editing a template
 spreadsheet that was created using
@@ -137,9 +138,8 @@ participants.
 
 
 
-<h2 id="results">
-    4. Generation of Results
-</h2>
+## 4. Generation of Results
+{:#results}
 
 The results of The Misinformation Game are downloaded from
 [Firestore](https://firebase.google.com/docs/firestore)

@@ -4,13 +4,19 @@ showPath: true
 showBackToTop: false
 ---
 
-# Qualtrics Integration 
+# Qualtrics Integration
+{:#intro .no_toc}
+
 If you are using the Qualtrics Online Survey Platform to direct
 users to your Misinformation Game site, you can directly input
 information such as the user's ID through the Misinformation 
-Game URL. 
+Game URL 
 
-## 1. Setting up the survey 
+
+
+## 1. Setting up the survey
+{:#setting-up-survey}
+
 In Qualtrics you will need to set up the survey as follows: 
 - First, create a question which asks for the user's ID
 - Second, create a page break

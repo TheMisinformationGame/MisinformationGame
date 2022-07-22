@@ -30,17 +30,6 @@ body {
   text-decoration: none;
 }
 
-.param-name {
-  display: inline-block;
-  color: black;
-  font-weight: 800;
-}
-.param-name::after {
-  display: inline-block;
-  content: ":";
-  text-decoration: none;
-}
-
 .param-links {
   margin-top: -0.6rem;
 }
@@ -67,6 +56,37 @@ a.back-to-top, .content-wrapper a.back-to-top {
 }
 .content-wrapper a:hover {
   color: $brand-color-darker;
+}
+
+ul#markdown-toc {
+  display: inline-block;
+  background-color: #fcfcfc;
+  border: 1px solid #666666;
+  border-radius: 0.4rem;
+  padding: 1.2rem 2rem 0.5rem;
+  margin: 0.4rem 0 0;
+  overflow: hidden;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+ul#markdown-toc a {
+  text-decoration: none;
+}
+ul#markdown-toc > li > a {
+  font-weight: bold;
+  font-size: 1.125em;
+}
+ul#markdown-toc > li > ul > li {
+  margin-bottom: 0.6rem;
+}
+ul#markdown-toc > li > ul > li > a{
+  font-weight: bold;
+}
+ul#markdown-toc > li > ul > li > ul {
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+ul#markdown-toc > li > ul > li > ul > li {
+  margin-bottom: 0.4rem;
 }
 
 .content-wrapper {

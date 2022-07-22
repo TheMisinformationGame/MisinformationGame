@@ -4,9 +4,8 @@ showPath: true
 showBackToTop: false
 ---
 
-<h1 id="intro">
-    How to Play The Misinformation Game
-</h1>
+# How to Play The Misinformation Game
+{:#intro .no_toc}
 
 **This is a copy of the default rules page that will be shown to
 participants before they start participating in a study.**
@@ -19,9 +18,8 @@ that can be accessed from [the example game page](/link/ExampleGame).
 
 
 
-<h2 id="rules">
-    How to Participate
-</h2>
+## How to Participate
+{:#rules}
 
 You will be shown a series of posts, which you are encouraged to interact with.
 

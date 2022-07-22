@@ -5,9 +5,8 @@ showPath: false
 permalink: /
 ---
 
-<h1 id="intro">
-    The Misinformation Game
-</h1>
+# The Misinformation Game
+{:#intro}
 
 The Misinformation Game is a social media simulator built to study
 people's behaviour when they interact with social media. To achieve
@@ -26,9 +25,8 @@ social media related questions.
 
 
 
-<h2 id="example-game">
-    Example Game
-</h2>
+## Example Game
+{:#example-game}
 
 If you would like to test playing through a study created using
 the Misinformation Game, you can access an example game from
@@ -44,9 +42,8 @@ You can enter any ID to access the example game.
 
 
 
-<h2 id="example-results">
-    Example Results
-</h2>
+## Example Results
+{:#example-results}
 
 If you would like to view an example of the results that can be
 gathered when using the Misinformation Game, the results of a user
@@ -55,9 +52,8 @@ experience study are available from
 
 
 
-<h2 id="getting-started">
-    Getting Started
-</h2>
+## Getting Started
+{:#getting-started}
 
 The Misinformation Game contains many configuration options
 to tailor the game for specific research purposes. To find
@@ -82,9 +78,8 @@ guide should be easier to follow.
 
 
 
-<h2 id="usage-docs">
-    Usage Documentation
-</h2>
+## Usage Documentation
+{:#usage-docs}
 
 - [How to Play](/HowToPlay) -
   The default guide given to participants before they start a study.
@@ -92,14 +87,13 @@ guide should be easier to follow.
 - [Including Images in Studies](/Images) - Recommendations for including images in studies.
 - [Registering Administrators](/Administrators) - How to securely assign administrator privileges.
 - [Managing Studies](/ManagingStudies) - How to upload, enable, disable, and delete your studies.
-- [Integration with Qualtrics](/QualtricsIntegration) - How to integrate a study into Qualtrics.
+- [Qualtrics Integration](/QualtricsIntegration) - How to integrate a study into Qualtrics.
 - [Results](/Results) - A reference guide on the results that are recorded by the game.
 
 
 
-<h2 id="hosting-docs">
-    Hosting Documentation
-</h2>
+## Hosting Documentation
+{:#hosting-docs}
 
 - [Firebase Pricing](/FirebasePricing) - A guide to estimate the hosting costs of running a study.
 - [Non-Technical Installation Guide](/NonTechnicalInstallation) -
@@ -111,9 +105,8 @@ guide should be easier to follow.
 
 
 
-<h2 id="system-docs">
-    System Documentation
-</h2>
+## System Documentation
+{:#system-docs}
 
 - [Technical Overview](/TechnicalOverview) - A broad overview of the tech-stack used by the game.
 - [Simulation](/Simulation) - An in-depth description of the simulation behind the game.
@@ -125,9 +118,8 @@ guide should be easier to follow.
 
 
 
-<h2 id="other-links">
-    Other Useful Links
-</h2>
+## Other Useful Links
+{:#other-links}
 
 - [Source Code](https://github.com/TheMisinformationGame/MisinformationGame) -
   The Misinformation Game is open-source!

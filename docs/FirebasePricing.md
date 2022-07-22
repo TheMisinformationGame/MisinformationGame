@@ -4,9 +4,8 @@ showPath: true
 showBackToTop: true
 ---
 
-<h1 id="intro">
-    Firebase Pricing
-</h1>
+# Firebase Pricing
+{:#intro .no_toc}
 
 The Misinformation Game is hosted using Firebase as its
 backend. This document analyses the pricing information
@@ -15,25 +14,15 @@ Misinformation Game.
 
 
 
-<h2 id="toc">
-    Table of Contents
-</h2>
-
-* [1. Summary](#summary)
-* [2. The Structure of Firebase Pricing](#structure)
-* [3. Firebase's Current Pricing](#current-pricing)
-* [4. Firebase Service Usage Estimates](#usage-estimates)
-* [5. Fixed Costs](#fixed-costs)
-* [6. Variable Costs](#variable-costs)
-    - [6.1. Example Cost Estimate: Study with Text Posts](#variable-costs-text)
-    - [6.2. Example Cost Estimate: Study with Image Posts](#variable-costs-images)
-* [7. Reducing Image Sizes](#reducing-image-sizes)
+# Table of Contents
+{:#toc .no_toc}
+* toc
+{:toc}
 
 
 
-<h2 id="summary">
-    1. Summary
-</h2>
+## 1. Summary
+{:#summary}
 
 In summary, studies with many posts that contain images
 will likely run into the free tier usage limits. Therefore,
@@ -50,9 +39,8 @@ The Misinformation Game.
 
 
 
-<h2 id="structure">
-    2. The Structure of Firebase Pricing
-</h2>
+## 2. The Structure of Firebase Pricing
+{:#structure}
 
 Firebase separates the costs for each of its backend services.
 The Misinformation Game makes use of its **Hosting**,
@@ -64,9 +52,8 @@ of their backend services beyond the free tier limits.
 
 
 
-<h2 id="current-pricing">
-    3. Firebase's Current Pricing
-</h2>
+## 3. Firebase's Current Pricing
+{:#current-pricing}
 
 At the time of writing this document, Firebase charges
 the following amounts for its backend services when
@@ -77,9 +64,10 @@ they should hopefully give a good estimate.
 Up-to-date pricing can be found in Firebase's own
 [pricing reference](https://firebase.google.com/pricing).
 
-<h3 id="current-pricing-hosting">
-    3.1. Firebase Hosting Pricing
-</h3>
+
+### 3.1. Firebase Hosting Pricing
+{:#current-pricing-hosting}
+
 Firebase Hosting is the backend service that sends
 the website to participants. This does not include sending
 the images within studies.
@@ -89,9 +77,10 @@ the images within studies.
 | Storage        | 10 GB            | $0.026/GB          |
 | Data transfer  | 360 MB/day       | $0.15/GB           |
 
-<h3 id="current-pricing-firestore">
-    3.2. Firebase Firestore Pricing
-</h3>
+
+### 3.2. Firebase Firestore Pricing
+{:#current-pricing-firestore}
+
 Firebase Firestore is the backend service that stores
 the metadata about studies, and stores the results of studies.
 
@@ -103,9 +92,10 @@ the metadata about studies, and stores the results of studies.
 | Document reads        | 50K/day          | $0.038/100k        |
 | Document deletes      | 20K/day          | $0.013/100k        |
 
-<h3 id="current-pricing-storage">
-    3.3. Firebase Storage Pricing
-</h3>
+
+### 3.3. Firebase Storage Pricing
+{:#current-pricing-storage}
+
 Firebase Storage is the backend service where the
 images that are contained within studies are stored. This
 service is used to send the images within studies to
@@ -120,9 +110,8 @@ participants.
 
 
 
-<h2 id="usage-estimates">
-    4. Firebase Service Usage Estimates
-</h2>
+## 4. Firebase Service Usage Estimates
+{:#usage-estimates}
 
 The Misinformation Game uses quite predictable patterns
 when accessing the backend services. Therefore, we can
@@ -138,15 +127,14 @@ participants and administrators may take.
 
 
 
-<h2 id="fixed-costs">
-    5. Fixed Costs
-</h2>
+## 5. Fixed Costs
+{:#fixed-costs}
+
 Every study has some fixed costs per participant, which do not change
 with the size of the study.
 
-<h4 id="fixed-costs-hosting">
-    Firebase Hosting Costs
-</h4>
+#### Firebase Hosting Costs
+{:#fixed-costs-hosting .no_toc}
 Each participant will have to download approximately
 500KB to load the website. Under the Firebase pricing
 information above, the free tier allows 360MB/day
@@ -157,9 +145,8 @@ participants above this number, the **Paid Tier** of
 hosting will allow an additional 13,000 participants
 per $1 spent.
 
-<h4 id="fixed-costs-firestore">
-    Firebase Firestore Costs
-</h4>
+#### Firebase Firestore Costs
+{:#fixed-costs-firestore .no_toc}
 Each participant will have to download the settings of
 the study once, and upload their results once. Therefore,
 under the free tier, 20 thousand participants can
@@ -169,24 +156,23 @@ that may take part in a study.
 
 
 
-<h2 id="variable-costs">
-    6. Variable Costs
-</h2>
+## 6. Variable Costs
+{:#variable-costs}
 
 The content and number of sources and posts that are shown to
 the participants of a study will affect the cost per participant.
 This section will attempt to demonstrate this with two example studies:
 one study with text posts, and one study with image posts.
 
-<h3 id="variable-costs-text">
-    6.1. Example Cost Estimate: Study with Text Posts
-</h3>
+
+### 6.1. Example Cost Estimate: Study with Text Posts
+{:#variable-costs-text}
+
 The first example study we will consider is a study with
 100 text posts, and 30 sources.
 
-<h4 id="variable-costs-text-storage">
-    Firebase Storage Costs
-</h4>
+#### Firebase Storage Costs
+{:#variable-costs-text-storage .no_toc}
 Each participant will have to download the source avatar
 for each source that they are shown. If we assume each
 participant is shown every source, then they would have
@@ -199,15 +185,15 @@ For any participants above this number, the **Paid
 Tier** of Cloud Storage will allow an additional
 5500 participants per $1 spent.
 
-<h3 id="variable-costs-images">
-    6.2. Example Cost Estimate: Study with Image Posts
-</h3>
+
+### 6.2. Example Cost Estimate: Study with Image Posts
+{:#variable-costs-images}
+
 The second example study we will consider is a study
 with 100 image posts, and 30 sources.
 
-<h4 id="variable-costs-images-storage">
-    Firebase Storage Costs
-</h4>
+#### Firebase Storage Costs
+{:#variable-costs-images-storage .no_toc}
 Each participant will have to download the source avatar
 for each source they are shown, as well as the image
 for every post that they are shown. If we assume again
@@ -225,9 +211,8 @@ per $1 spent.
 
 
 
-<h2 id="reducing-image-sizes">
-    7. Reducing Image Sizes
-</h2>
+## 7. Reducing Image Sizes
+{:#reducing-image-sizes}
 
 From the analysis above, it becomes clear that most of
 the cost of hosting studies using The Misinformation

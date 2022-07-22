@@ -5,6 +5,7 @@ showBackToTop: false
 ---
 
 # Updating your Instance of The Misinformation Game
+{:#intro .no_toc}
 
 This guide will show you how to update your instance of
 The Misinformation Game to the latest version from this
@@ -13,7 +14,10 @@ of the Misinformation Game that were deployed following
 the [technical installation guide](/TechnicalInstallation).
 
 
+
 ## 1. Run the automatic update script
+{:#run-automatic-script}
+
 Updates can be automatically downloaded by running
 the automatic `update.sh` script from the root
 directory of the source code.
@@ -37,7 +41,11 @@ Once you have confirmed, the script should run
 quickly to download the new updates and apply
 them to your source code.
 
+
+
 ## 2. Deploy the new updates
+{:#deploy-updates}
+
 Once you have downloaded the updates, you can run
 the `deploy.sh` script again to deploy the new
 updates to your instance of The Misinformation Game.

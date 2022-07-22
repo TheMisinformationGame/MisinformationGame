@@ -4,19 +4,19 @@ showPath: true
 showBackToTop: true
 ---
 
-<h1 id="intro">
-    Documentation Development Environment
-</h1>
+# Documentation Development Environment
+{:#intro .no_toc}
 
 This document describes how to set up your development
 environment to work on The Misinformation Game documentation
 website, and host  it locally for testing.
 
 
+<!-- TODO: Split this into installation & running sections -->
 
-<h3 id="change-working-directory">
-    1. Set ./docs as the Current Working Directory
-</h3>
+
+## 1. Set ./docs as the Current Working Directory
+{:#change-working-directory}
 
 You must navigate your terminal to the ./docs directory
 to run the documentation website. If you have cloned the
@@ -32,9 +32,9 @@ cd ./docs
 ```
 
 
-<h3 id="install-ruby">
-    2. Install Ruby Version 2.7
-</h3>
+
+## 2. Install Ruby Version 2.7
+{:#install-ruby}
 
 The documentation uses an old version of [Jekyll](https://jekyllrb.com/)
 that is supported by [GitHub Pages](https://pages.github.com/). This
@@ -50,9 +50,9 @@ rvm install 2.7
 ```
 
 
-<h3 id="activate-ruby">
-    3. Activate Ruby Version 2.7
-</h3>
+
+## 3. Activate Ruby Version 2.7
+{:#activate-ruby}
 
 You can activate Ruby 2.7 so that it can be used by Jekyll using the following command,
 
@@ -61,9 +61,9 @@ rvm use 2.7
 ```
 
 
-<h3 id="install-jekyll-dependencies">
-    4. Install Jekyll Dependencies
-</h3>
+
+## 4. Install Jekyll Dependencies
+{:#install-jekyll-dependencies}
 
 You may now install GitHub Pages version of Jekyll, and its dependencies,
 using the following command,
@@ -73,9 +73,9 @@ bundle install
 ```
 
 
-<h3 id="run-jekyll">
-    5. Run Jekyll!
-</h3>
+
+## 5. Run Jekyll!
+{:#run-jekyll}
 
 You now have all the dependencies installed to run the development website!
 The following command will start the documentation website locally, which

@@ -5,6 +5,7 @@ sitemap: false
 ---
 
 # Example Results
+{:#intro .no_toc}
 
 These example results were gathered from a user experience study that was conducted
 for the Misinformation Game. These results are indicative of the type of results
@@ -14,6 +15,7 @@ the results of studies will slightly differ when different study settings are us
 The study that was used to gather these results is not yet available.
 
 ## Access
+{:#access}
 
 You may access the example results from the following URL:
 

@@ -5,6 +5,7 @@ sitemap: false
 ---
 
 # Example Game Configuration Spreadsheet
+{:#intro .no_toc}
 
 The example game configuration spreadsheet should be used as an example
 to help contextualise the settings in the
@@ -18,6 +19,7 @@ should be used instead). More documentation on the spreadsheets can be
 found in the [Study Configuration documentation](/StudyConfiguration).
 
 ## Access
+{:#access}
 
 You may access the example study configuration spreadsheet
 from the following URLs:

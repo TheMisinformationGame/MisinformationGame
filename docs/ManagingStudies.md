@@ -4,29 +4,25 @@ showPath: true
 showBackToTop: true
 ---
 
-<h1 id="intro">
-    Managing Studies
-</h1>
+# Managing Studies
+{:#intro .no_toc}
+
 This document outlines the general processes to manage
 your studies using The Misinformation Game after you
 have uploaded them.
 
 
-<h2 id="toc">
-    Table of Contents
-</h2>
 
-* [1. Accessing a Study's Admin View](#accessing-study-admin-view)
-* [2. Enabling and Disabling your Study](#enable-disable-studies)
-* [3. Downloading Results](#download-results)
-* [4. Updating your Study](#update-study)
-* [5. Deleting your Study](#delete-study)
-* [6. Accessing the Study URL for Participants](#access-study-url)
+## Table of Contents
+{:#toc .no_toc}
+* toc
+{:toc}
 
 
-<h2 id="accessing-study-admin-view">
-    1. Accessing a Study's Admin View
-</h2>
+
+## 1. Accessing a Study's Admin View
+{:#accessing-study-admin-view}
+
 To manage your study, you must first navigate to the
 admin dashboard page, as shown in [Figure 1](#fig1).
 
@@ -45,9 +41,10 @@ you can manage your study, as shown in [Figure 2](#fig2).
 </figure>
 
 
-<h2 id="enable-disable-studies">
-    2. Enabling and Disabling your Study
-</h2>
+
+## 2. Enabling and Disabling your Study
+{:#enable-disable-studies}
+
 In a Study's _Admin View_, there will be either
 a button to **Enable Study** in green, or a button to
 **Disable Study** in orange. Pressing these buttons will ask
@@ -64,9 +61,10 @@ test runs through the study while it was disabled, and the
 participant's runs through the study after you enabled it.
 
 
-<h2 id="download-results">
-    3. Downloading Results
-</h2>
+
+## 3. Downloading Results
+{:#download-results}
+
 You can download the results of your study from its
 _Admin View_ by clicking the **Download Results** button.
 This will download the results of your study as an Excel
@@ -74,9 +72,10 @@ spreadsheet. More information on the format of these results
 can be found in the [Results](/Results) documentation.
 
 
-<h2 id="update-study">
-    4. Updating your Study
-</h2>
+
+## 4. Updating your Study
+{:#update-study}
+
 If you have found changes you wish to make to your
 study after you tested playing through it, you may
 wish to upload a new version of your study. This
@@ -89,9 +88,10 @@ participants are taking part in your study, as it
 is possible that it will break their game.
 
 
-<h2 id="delete-study">
-    5. Deleting your Study
-</h2>
+
+## 5. Deleting your Study
+{:#delete-study}
+
 Once you have finished conducting your study and you
 have downloaded the results of your study, you may
 wish to delete your study from The Misinformation Game.
@@ -102,9 +102,11 @@ its settings, all its images, and all its results. The
 results will not be recoverable after the study has been
 deleted.
 
-<h2 id="access-study-url">
-    6. Accessing the Study URL for Participants
-</h2>
+
+
+## 6. Accessing the Study URL for Participants
+{:#access-study-url}
+
 The URL to send to participants is shown below the name
 of the study at the top of its _Admin View_. This
 URL can also be used for you to access your game to test
