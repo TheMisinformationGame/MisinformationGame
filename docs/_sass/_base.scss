@@ -65,7 +65,7 @@ body {
   font-family: $base-font-family;
 }
 body img {
-  margin: 5px auto auto auto;
+  margin: 0.4rem auto auto auto;
   display: block;
   max-height: 360px;
   max-width: 800px;
@@ -93,6 +93,9 @@ body img.inline-img {
   margin-right: 0;
 }
 
+figure img {
+  max-width: 100%;
+}
 figure figcaption {
   text-align: center;
   font-style: italic;
