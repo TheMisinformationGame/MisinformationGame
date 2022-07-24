@@ -230,14 +230,18 @@ they have very different file sizes.
 **Original Image:**
 <figure id="fig1">
     <img src="diagrams/example-image-1600x1000.jpg" alt="figure 1" height="1000" />
-    <figcaption><a href="#fig1">Figure 1.</a> Photo with a resolution of 1600x1000, and a file size of 295KB.</figcaption>
+    <figcaption>
+        <a href="#fig1">Figure 1.</a> Photo with a resolution of 1600x1000, and a file size of 295KB.
+    </figcaption>
 </figure>
 
 
 **Scaled-Down and Compressed Image:**
 <figure id="fig2">
     <img src="diagrams/example-image-800x500-compressed.jpg" alt="figure 2" height="500" />
-    <figcaption><a href="#fig2">Figure 2.</a> Compressed photo with a resolution of 800x500, and a file size of 74KB.</figcaption>
+    <figcaption>
+        <a href="#fig2">Figure 2.</a> Compressed photo with a resolution of 800x500, and a file size of 74KB.
+    </figcaption>
 </figure>
 
 As you can see above, the quality of both images appears

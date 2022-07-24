@@ -82,13 +82,17 @@ affecting the quality of the images very much.
 **Original Image:**
 <figure id="fig1">
     <img src="diagrams/example-image-1600x1000.jpg" alt="figure 1" height="1000" />
-    <figcaption><a href="#fig1">Figure 1.</a> Photo with a resolution of 1600x1000, and a file size of 295KB.</figcaption>
+    <figcaption>
+        <a href="#fig1">Figure 1.</a> Photo with a resolution of 1600x1000, and a file size of 295KB.
+    </figcaption>
 </figure>
 
 **Scaled-Down Image:**
 <figure id="fig2">
     <img src="diagrams/example-image-800x500.jpg" alt="figure 2" height="500" />
-    <figcaption><a href="#fig2">Figure 2.</a> Photo with a resolution of 800x500, and a file size of 88KB.</figcaption>
+    <figcaption>
+        <a href="#fig2">Figure 2.</a> Photo with a resolution of 800x500, and a file size of 88KB.
+    </figcaption>
 </figure>
 
 
@@ -116,13 +120,17 @@ images can save some bandwidth without affecting the quality of the images very 
 **Original Image:**
 <figure id="fig3">
     <img src="diagrams/example-image-800x500.jpg" alt="figure 3" height="500" />
-    <figcaption><a href="#fig3">Figure 3.</a> Photo with a resolution of 800x500, and a file size of 88KB.</figcaption>
+    <figcaption>
+        <a href="#fig3">Figure 3.</a> Photo with a resolution of 800x500, and a file size of 88KB.
+    </figcaption>
 </figure>
 
 **Compressed Image:**
 <figure id="fig4">
     <img src="diagrams/example-image-800x500-compressed.jpg" alt="figure 4" height="500" />
-    <figcaption><a href="#fig4">Figure 4.</a> Compressed photo with a resolution of 800x500, and a file size of 74KB.</figcaption>
+    <figcaption>
+        <a href="#fig4">Figure 4.</a> Compressed photo with a resolution of 800x500, and a file size of 74KB.
+    </figcaption>
 </figure>
 
 

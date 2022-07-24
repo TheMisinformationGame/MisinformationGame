@@ -28,7 +28,9 @@ admin dashboard page, as shown in [Figure 1](#fig1).
 
 <figure id="fig1">
     <img src="screenshots/example-admin-dashboard-no-border.png" alt="figure 1" height="523" />
-    <figcaption><a href="#fig1">Figure 1.</a> Screenshot of an example admin dashboard</figcaption>
+    <figcaption>
+        <a href="#fig1">Figure 1.</a> Screenshot of an example admin dashboard.
+    </figcaption>
 </figure>
 
 From this screen, you can then select the study that
@@ -37,7 +39,9 @@ you can manage your study, as shown in [Figure 2](#fig2).
 
 <figure id="fig2">
     <img src="screenshots/example-admin-study-no-border.png" alt="figure 2" height="821" />
-    <figcaption><a href="#fig2">Figure 2.</a> Screenshot of an example study's admin view</figcaption>
+    <figcaption>
+        <a href="#fig2">Figure 2.</a> Screenshot of an example study's admin view.
+    </figcaption>
 </figure>
 
 

@@ -35,7 +35,9 @@ You can enter any ID to access the example game.
 
 <figure id="fig1">
     <img src="screenshots/example-game.png" alt="figure 1" height="582" />
-    <figcaption><a href="#fig1">Figure 1.</a> Screenshot of the user interface within a game</figcaption>
+    <figcaption>
+        <a href="#fig1">Figure 1.</a> Screenshot of the user interface within a game.
+    </figcaption>
 </figure>
 
 <p class="spacer"></p>

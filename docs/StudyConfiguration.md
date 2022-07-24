@@ -196,7 +196,9 @@ start the study. An example prompt is shown in [Figure 1](#fig1).
 
 <figure id="fig1">
     <img src="screenshots/example-prompt-no-border.png" alt="figure 1" height="501" />
-    <figcaption><a href="#fig1">Figure 1.</a> Screenshot of an example prompt</figcaption>
+    <figcaption>
+        <a href="#fig1">Figure 1.</a> Screenshot of an example prompt.
+    </figcaption>
 </figure>
 
 ##### Length of Game
@@ -315,7 +317,9 @@ completion code for a participant is shown in [Figure 2](#fig2).
 
 <figure id="fig2">
     <img src="screenshots/example-debriefing-no-border.png" alt="figure 2" height="276" />
-    <figcaption><a href="#fig2">Figure 2.</a> Screenshot of an example debriefing page with a completion code</figcaption>
+    <figcaption>
+        <a href="#fig2">Figure 2.</a> Screenshot of an example debriefing page with a completion code.
+    </figcaption>
 </figure>
 
 ##### Completion Code Digits
@@ -336,7 +340,9 @@ background is randomised are shown in [Figure 3](#fig3).
 
 <figure id="fig3">
     <img src="screenshots/example-default-random-avatars.png" alt="figure 3" height="140" />
-    <figcaption><a href="#fig3">Figure 3.</a> The possible random source avatar background colours</figcaption>
+    <figcaption>
+        <a href="#fig3">Figure 3.</a> The possible random source avatar background colours.
+    </figcaption>
 </figure>
 
 
@@ -485,7 +491,9 @@ their completion code.
 
 <figure id="fig4">
     <img src="screenshots/example-debriefing-no-border.png" alt="figure 4" height="276" />
-    <figcaption><a href="#fig4">Figure 4.</a> Screenshot of an example debriefing page with a completion code</figcaption>
+    <figcaption>
+        <a href="#fig4">Figure 4.</a> Screenshot of an example debriefing page with a completion code.
+    </figcaption>
 </figure>
 
 
@@ -606,7 +614,9 @@ example source for a post is shown in [Figure 5](#fig5).
 
 <figure id="fig5">
     <img src="screenshots/example-source.png" alt="figure 5" height="76" />
-    <figcaption><a href="#fig5">Figure 5.</a> Screenshot of an example source in the game</figcaption>
+    <figcaption>
+        <a href="#fig5">Figure 5.</a> Screenshot of an example source in the game.
+    </figcaption>
 </figure>
 
 The top of the _sources_ sheet contains documentation
@@ -651,7 +661,9 @@ count and credibility for a source is shown in [Figure 6](#fig6).
 
 <figure id="fig6">
     <img src="screenshots/example-config-source-preview.png" alt="figure 6" height="484" />
-    <figcaption><a href="#fig6">Figure 6.</a> Screenshot of the distributions preview for an example source</figcaption>
+    <figcaption>
+        <a href="#fig6">Figure 6.</a> Screenshot of the distributions preview for an example source.
+    </figcaption>
 </figure>
 
 
@@ -700,7 +712,7 @@ be able to find the image to use for the avatar.
     <img src="diagrams/inserting-image.png" alt="figure 7" height="549" />
     <figcaption>
         <a href="#fig7">Figure 7.</a> Diagram demonstrating how to insert an
-        image into a study configuration spreadsheet
+        image into a study configuration spreadsheet.
     </figcaption>
 </figure>
 
@@ -826,7 +838,9 @@ in [Figure 8](#fig8).
 
 <figure id="fig8">
     <img src="diagrams/post-headline-content.png" alt="figure 8" height="495" />
-    <figcaption><a href="#fig8">Figure 8.</a> Diagram highlighting the post's headline and content</figcaption>
+    <figcaption>
+        <a href="#fig8">Figure 8.</a> Diagram highlighting the post's headline and content.
+    </figcaption>
 </figure>
 
 ##### Content
@@ -857,7 +871,7 @@ be able to find the image to use for the content.
     <img src="diagrams/inserting-image.png" alt="figure 9" height="549" />
     <figcaption>
         <a href="#fig9">Figure 9.</a> Diagram demonstrating how to insert an
-        image into a study configuration spreadsheet
+        image into a study configuration spreadsheet.
     </figcaption>
 </figure>
 
@@ -908,7 +922,9 @@ example comment is shown in [Figure 10](#fig10).
 
 <figure id="fig10">
     <img src="screenshots/example-comment.png" alt="figure 10" height="123" />
-    <figcaption> <a href="#fig10">Figure 10.</a> Screenshot of an example comment in the game</figcaption>
+    <figcaption>
+        <a href="#fig10">Figure 10.</a> Screenshot of an example comment in the game.
+    </figcaption>
 </figure>
 
 ##### Comment Source Name

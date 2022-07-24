@@ -40,7 +40,9 @@ device, which will contain the source code of the Misinformation Game to use in 
 
 <figure id="fig1">
     <img src="diagrams/non-technical-installation-guide/1-download-codebase.png" alt="figure 1" height="557" />
-    <figcaption><a href="#fig1">Figure 1.</a> Downloading the source code from GitHub</figcaption>
+    <figcaption>
+        <a href="#fig1">Figure 1.</a> Downloading the source code from GitHub.
+    </figcaption>
 </figure>
 
 
@@ -88,7 +90,9 @@ is highlighted in <a href="#fig2">Figure 2</a>.
 
 <figure id="fig2">
     <img src="diagrams/non-technical-installation-guide/2-download-nodejs-installer.png" alt="figure 2" height="360" />
-    <figcaption><a href="#fig2">Figure 2.</a> Downloading the Windows installer of Node.js</figcaption>
+    <figcaption>
+        <a href="#fig2">Figure 2.</a> Downloading the Windows installer of Node.js.
+    </figcaption>
 </figure>
 
 **Step 1:** Once the installer has downloaded, run it.
@@ -118,7 +122,9 @@ should continue to work, but in case it does not, it may be good to install thes
 
 <figure id="fig3">
     <img src="diagrams/non-technical-installation-guide/3-check-node-version.png" alt="figure 3" height="147" />
-    <figcaption><a href="#fig3">Figure 3.</a> Expected Node.js and NPM library versions</figcaption>
+    <figcaption>
+        <a href="#fig3">Figure 3.</a> Expected Node.js and NPM library versions.
+    </figcaption>
 </figure>
 
 
@@ -141,7 +147,9 @@ the Misinformation Game.
 
 <figure id="fig4">
     <img src="diagrams/non-technical-installation-guide/4-create-firebase-project.png" alt="figure 4" height="179" />
-    <figcaption><a href="#fig4">Figure 4.</a> Create a Firebase project</figcaption>
+    <figcaption>
+        <a href="#fig4">Figure 4.</a> Create a Firebase project.
+    </figcaption>
 </figure>
 
 **Step 3:** Enter a name for your project. The name of your project will be used to determine the URL that
@@ -150,7 +158,9 @@ are not influenced by the URL. Once you have selected a name, click **Continue**
 
 <figure id="fig4a">
     <img src="diagrams/firebase-project-creation.png" alt="figure 4a" height="515" />
-    <figcaption><a href="#fig4a">Figure 4a.</a> Select the name of your Firebase project</figcaption>
+    <figcaption>
+        <a href="#fig4a">Figure 4a.</a> Select the name of your Firebase project.
+    </figcaption>
 </figure>
 
 **Step 4:** In the next step you can choose to disable Google Analytics. We recommend that you
@@ -158,7 +168,9 @@ disable it, as it doesn't provide any functionality that is used by the Misinfor
 
 <figure id="fig4b">
     <img src="diagrams/disabling-analytics.png" alt="figure 4b" height="348" />
-    <figcaption><a href="#fig4b">Figure 4b.</a> Disable analytics in your Firebase project</figcaption>
+    <figcaption>
+        <a href="#fig4b">Figure 4b.</a> Disable analytics in your Firebase project.
+    </figcaption>
 </figure>
 
 **Step 5:** Click **Create project**. You have now created a Firebase project that can be used to
@@ -176,14 +188,18 @@ The option to select is shown in <a href="#fig5">Figure 5</a>.
 
 <figure id="fig5">
     <img src="diagrams/non-technical-installation-guide/5-open-firestore-database.png" alt="figure 5" height="301" />
-    <figcaption><a href="#fig5">Figure 5.</a> Open the Firestore database</figcaption>
+    <figcaption>
+        <a href="#fig5">Figure 5.</a> Open the Firestore database.
+    </figcaption>
 </figure>
 
 **Step 2:** On the _'Firestore'_ page, click **Create database**. This button is shown in <a href="#fig6">Figure 6</a>.
 
 <figure id="fig6">
     <img src="diagrams/non-technical-installation-guide/6-create-firestore-database.png" alt="figure 6" height="212" />
-    <figcaption><a href="#fig6">Figure 6.</a> Open the Firestore database</figcaption>
+    <figcaption>
+        <a href="#fig6">Figure 6.</a> Open the Firestore database.
+    </figcaption>
 </figure>
 
 **Step 3:** You will be asked what rules you would like to set for the project’s database. These will be
@@ -198,7 +214,9 @@ Once you have selected a location, click **Enable**.
 
 <figure id="fig7">
     <img src="diagrams/non-technical-installation-guide/7-blank-firestore-database.png" alt="figure 7" height="375" />
-    <figcaption><a href="#fig7">Figure 7.</a> Blank Firestore database</figcaption>
+    <figcaption>
+        <a href="#fig7">Figure 7.</a> Blank Firestore database.
+    </figcaption>
 </figure>
 
 
@@ -213,7 +231,9 @@ The option to select is shown in <a href="#fig8">Figure 8</a>.
 
 <figure id="fig8">
     <img src="diagrams/non-technical-installation-guide/8-blank-storage.png" alt="figure 8" height="218" />
-    <figcaption><a href="#fig8">Figure 8.</a> Blank Firebase storage</figcaption>
+    <figcaption>
+        <a href="#fig8">Figure 8.</a> Blank Firebase storage.
+    </figcaption>
 </figure>
 
 **Step 2:** Your storage should now be set up. If you see a page that looks like Figure 8 above, then
@@ -222,7 +242,9 @@ then you will need to first enable the Firestore Database as explained in an ear
 
 <figure id="fig9">
     <img src="diagrams/non-technical-installation-guide/9-uninitialised-storage.png" alt="figure 9" height="372" />
-    <figcaption><a href="#fig9">Figure 9.</a> Firebase storage before it is enabled</figcaption>
+    <figcaption>
+        <a href="#fig9">Figure 9.</a> Firebase storage before it is enabled.
+    </figcaption>
 </figure>
 
 
@@ -239,7 +261,9 @@ The option to select is shown in <a href="#fig10">Figure 10</a> below.
 
 <figure id="fig10">
     <img src="diagrams/non-technical-installation-guide/10-auth-setup-pt1.png" alt="figure 10" height="232" />
-    <figcaption><a href="#fig10">Figure 10.</a> Accessing Firebase authentication to enable it</figcaption>
+    <figcaption>
+        <a href="#fig10">Figure 10.</a> Accessing Firebase authentication to enable it.
+    </figcaption>
 </figure>
 
 **Step 2:** Click **Get started**.
@@ -257,7 +281,9 @@ Figure 11 below. This contact email is required by Google's authentication servi
 
 <figure id="fig11">
     <img src="diagrams/non-technical-installation-guide/11-auth-setup-pt2.png" alt="figure 11" height="423" />
-    <figcaption><a href="#fig11">Figure 11.</a> Enabling Firebase Google authentication</figcaption>
+    <figcaption>
+        <a href="#fig11">Figure 11.</a> Enabling Firebase Google authentication.
+    </figcaption>
 </figure>
 
 **Step 7:** The next stage of authentication is to give yourself administrator rights. This step
@@ -276,7 +302,9 @@ The icon should resemble &lt;/&gt;.
 
 <figure id="fig12">
     <img src="diagrams/non-technical-installation-guide/12-webapp-setup-pt1.png" alt="figure 12" height="308" />
-    <figcaption><a href="#fig12">Figure 12.</a> Accessing Firebase web-app setup</figcaption>
+    <figcaption>
+        <a href="#fig12">Figure 12.</a> Accessing Firebase web-app setup.
+    </figcaption>
 </figure>
 
 **Step 3:** Register your app by giving the app a name. Any name is okay. The **“Hosting”** settings
@@ -294,7 +322,9 @@ bottom-right of this code block that can be pressed to copy it, as shown in Figu
 
 <figure id="fig13">
     <img src="diagrams/non-technical-installation-guide/13-webapp-setup-pt2.png" alt="figure 13" height="446" />
-    <figcaption><a href="#fig13">Figure 13.</a> Accessing your Firebase web-app config</figcaption>
+    <figcaption>
+        <a href="#fig13">Figure 13.</a> Accessing your Firebase web-app config.
+    </figcaption>
 </figure>
 
 **Step 7:** Once you have saved the configuration information file, click **Continue to console**.
@@ -318,7 +348,9 @@ of the screen, you will notice the “Explorer” area. We will be using this se
 
 <figure id="fig14">
     <img src="diagrams/non-technical-installation-guide/14-default-visual-studio-screen.png" alt="figure 14" height="454" />
-    <figcaption><a href="#fig14">Figure 14.</a> Default Visual Studio View</figcaption>
+    <figcaption>
+        <a href="#fig14">Figure 14.</a> Default Visual Studio View.
+    </figcaption>
 </figure>
 
 Step 4: In the “Explorer” section, click the “config” toggle and find and click on the “firebase-config.js”
@@ -330,7 +362,9 @@ Step 6: Finally, save the file by pressing _Ctrl + S_ on your keyboard.
 
 <figure id="fig15">
     <img src="diagrams/non-technical-installation-guide/15-edit-firebase-config.png" alt="figure 15" height="543" />
-    <figcaption><a href="#fig15">Figure 15.</a> Firebase configuration file in the source code</figcaption>
+    <figcaption>
+        <a href="#fig15">Figure 15.</a> Firebase configuration file in the source code.
+    </figcaption>
 </figure>
 
 
@@ -343,7 +377,9 @@ https://git-scm.com/download/win
 
 <figure id="fig16">
     <img src="diagrams/non-technical-installation-guide/16-download-git-installer.png" alt="figure 16" height="300" />
-    <figcaption><a href="#fig16">Figure 16.</a> Downloading the git installer</figcaption>
+    <figcaption>
+        <a href="#fig16">Figure 16.</a> Downloading the git installer.
+    </figcaption>
 </figure>
 
 After downloading, double-click on the executable. Follow the installation process and do not change any
@@ -362,7 +398,9 @@ bottom of the application and look like <a href="#fig17">Figure 17</a>.
 
 <figure id="fig17">
     <img src="diagrams/non-technical-installation-guide/17-visual-studio-command-prompt.png" alt="figure 17" height="410" />
-    <figcaption><a href="#fig17">Figure 17.</a> Opening the Visual Studio command prompt</figcaption>
+    <figcaption>
+        <a href="#fig17">Figure 17.</a> Opening the Visual Studio command prompt.
+    </figcaption>
 </figure>
 
 Step 1.5: If you are on Windows, you will also need to change to the Git Bash terminal. As seen in
@@ -370,14 +408,18 @@ Step 1.5: If you are on Windows, you will also need to change to the Git Bash te
 
 <figure id="fig18">
     <img src="diagrams/non-technical-installation-guide/18-switch-to-git-bash.png" alt="figure 18" height="199" />
-    <figcaption><a href="#fig18">Figure 18.</a> Switching the command prompt to Git Bash</figcaption>
+    <figcaption>
+        <a href="#fig18">Figure 18.</a> Switching the command prompt to Git Bash.
+    </figcaption>
 </figure>
 
 This will open a terminal that looks like <a href="#fig19">Figure 19</a>.
 
 <figure id="fig19">
     <img src="diagrams/non-technical-installation-guide/19-blank-git-bash.png" alt="figure 19" height="160" />
-    <figcaption><a href="#fig19">Figure 19.</a> Visual Studio command prompt in Git Bash mode</figcaption>
+    <figcaption>
+        <a href="#fig19">Figure 19.</a> Visual Studio command prompt in Git Bash mode.
+    </figcaption>
 </figure>
 
 Step 2: In the terminal at the bottom of the screen run the following command: `./deploy.sh`
@@ -388,7 +430,9 @@ all the necessary packages and deploy the app. Please note that this process may
 
 <figure id="fig20">
     <img src="diagrams/non-technical-installation-guide/20-start-deployment.png" alt="figure 20" height="182" />
-    <figcaption><a href="#fig20">Figure 20.</a> Beginning the deployment process</figcaption>
+    <figcaption>
+        <a href="#fig20">Figure 20.</a> Beginning the deployment process.
+    </figcaption>
 </figure>
 
 During this deployment process you will be asked many questions which require a response. These questions
@@ -400,7 +444,9 @@ and then press Enter to continue. This is seen in <a href="#fig21">Figure 21</a>
 
 <figure id="fig21">
     <img src="diagrams/non-technical-installation-guide/21-deploy--select-firebase-project.png" alt="figure 21" height="153" />
-    <figcaption><a href="#fig21">Figure 21.</a> Selecting the Firebase project in the deployment process</figcaption>
+    <figcaption>
+        <a href="#fig21">Figure 21.</a> Selecting the Firebase project in the deployment process.
+    </figcaption>
 </figure>
 
 Question 3: You will then be asked to give an alias to this project. This can be whatever you would like.
@@ -413,7 +459,9 @@ then press Enter to continue. This is seen in <a href="#fig22">Figure 22</a>.
 
 <figure id="fig22">
     <img src="diagrams/non-technical-installation-guide/22-deploy--select-cloud-project.png" alt="figure 22" height="138" />
-    <figcaption><a href="#fig22">Figure 22.</a> Selecting the cloud project in the deployment process</figcaption>
+    <figcaption>
+        <a href="#fig22">Figure 22.</a> Selecting the cloud project in the deployment process.
+    </figcaption>
 </figure>
 
 Question 6: Next you will be asked to make a domain name. <br/>
@@ -423,12 +471,16 @@ the Project ID from Firebase by clicking on the “Gear” icon on the left and 
 
 <figure id="fig23">
     <img src="diagrams/non-technical-installation-guide/23-deploy--access-project-settings.png" alt="figure 23" height="267" />
-    <figcaption><a href="#fig23">Figure 23.</a> Accessing the Firebase project settings</figcaption>
+    <figcaption>
+        <a href="#fig23">Figure 23.</a> Accessing the Firebase project settings.
+    </figcaption>
 </figure>
 
 <figure id="fig24">
     <img src="diagrams/non-technical-installation-guide/24-deploy--copy-project-id.png" alt="figure 24" height="241" />
-    <figcaption><a href="#fig24">Figure 24.</a> The Project ID on the project settings page</figcaption>
+    <figcaption>
+        <a href="#fig24">Figure 24.</a> The Project ID on the project settings page.
+    </figcaption>
 </figure>
 
 The URL must be in the format of “<projectID>. appspot.com.” For example, “test-15cff.appspot.com” is
@@ -436,7 +488,9 @@ a valid domain. See <a href="#fig25">Figure 25</a> for an example. After enterin
 
 <figure id="fig25">
     <img src="diagrams/non-technical-installation-guide/25-deploy--enter-project-id.png" alt="figure 25" height="122" />
-    <figcaption><a href="#fig25">Figure 25.</a> Entering a Firebase project's domain name</figcaption>
+    <figcaption>
+        <a href="#fig25">Figure 25.</a> Entering a Firebase project's domain name.
+    </figcaption>
 </figure>
 
 Step 4: The site is now fully deployed and ready to be accessed. You will see something similar to
@@ -444,7 +498,9 @@ Step 4: The site is now fully deployed and ready to be accessed. You will see so
 
 <figure id="fig26">
     <img src="diagrams/non-technical-installation-guide/26-deploy--success.png" alt="figure 26" height="129" />
-    <figcaption><a href="#fig26">Figure 26.</a> Command prompt after a successful deployment</figcaption>
+    <figcaption>
+        <a href="#fig26">Figure 26.</a> Command prompt after a successful deployment.
+    </figcaption>
 </figure>
 
 You can access the website on your browser at the domain \[Your Project ID\].web.app.
