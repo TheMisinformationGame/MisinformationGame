@@ -7,16 +7,14 @@ showBackToTop: true
 # Installation (Non-Technical Guide)
 {:#intro .no_toc}
 
-This document outlines a step-by-step process to install and host your own instance of the Misinformation
-Game. At the end of this guide, you will have your own website to use to run studies using the Misinformation
-Game software.
+This document outlines a step-by-step process to install and host your own instance of The Misinformation
+Game. At the end of this guide, you will have hosted your own instance of The Misinformation
+Game to run studies.
 
 This guide is aimed to require less technical knowledge than the
-[technical installation guide](/TechnicalInstallation), and as such it requires more time and has a few
-limitations. One major limitation of this process is that it does not allow easily updating the Misinformation
-Game as explained in the [updating guide](/Updating). Instead, this same process will need to be followed
-again to update your instance. If you are comfortable installing software and using the command line,
-then the technical installation guide will likely be easier and quicker to follow.
+[technical installation guide](/TechnicalInstallation), and as such it requires more time. If you are
+comfortable installing software and using the command line, then the technical installation guide will
+likely be easier and quicker to follow.
 
 
 
@@ -31,17 +29,29 @@ then the technical installation guide will likely be easier and quicker to follo
 {:#download-codebase}
 
 The Misinformation Game must be deployed using its source code. To download and save the codebase onto your
-device, you can access it from [GitHub](https://github.com/TheMisinformationGame/MisinformationGame).
+device, you can access it from [GitHub](https://github.com/TheMisinformationGame/MisinformationGame). The
+buttons you need to click to download the source code are highlighted in [Figure 1](#fig1).
 
-On this page you will need to click on the green _“Code”_ button and then on the _“Download Zip”_ button as
-seen in [Figure 1](#fig1). This will then prompt you to download a zip file of the code,
-which you can save anywhere on your computer. The Zip archive should then be extracted into a folder on your
-device, which will contain the source code of the Misinformation Game to use in future steps.
+**Step 1:** Open the [MisinformationGame repository](https://github.com/TheMisinformationGame/MisinformationGame)
+on GitHub.
+
+**Step 2:** Click the green **Code** button at the top right. This should open a _'Clone'_ menu, as shown in
+[Figure 1](#fig1).
+
+**Step 3:** Click the **Download ZIP** button from the _'Clone'_ menu. This should start a download of the
+source code of The Misinformation Game.
+
+**Step 4:** Extract the ZIP archive to a directory on your computer (the specific directory does not matter).
+
+**Step 5:** You should now have a directory in your file system that contains the source code of The
+Misinformation Game! This will be used in later steps to configure and deploy your own Misinformation Game
+instance.
 
 <figure id="fig1">
-    <img src="diagrams/non-technical-installation-guide/1-download-codebase.png" alt="figure 1" height="557" />
+    <img src="diagrams/downloading-codebase-zip.png" alt="figure 1" height="557" />
     <figcaption>
-        <a href="#fig1">Figure 1.</a> Downloading the source code from GitHub.
+        <a href="#fig1">Figure 1.</a> Diagram demonstrating the process of downloading the source code
+        from GitHub.
     </figcaption>
 </figure>
 
@@ -52,26 +62,29 @@ device, which will contain the source code of the Misinformation Game to use in 
 
 _If you already have Visual Studio Code installed, then you may skip this step._
 
-This installation guide demonstrates the installation process of downloading the Visual Studio Code on
-Windows. Should you be using a Mac, the installation process should be similar, but in case you encounter
-any difficulties, you can follow the
-[Visual Studio Code installation guide for Mac](https://code.visualstudio.com/docs/setup/mac).
+This guide uses Visual Studio Code (VSCode) to allow you to access and modify the source code, and to allow
+you to run command-line scripts in a cross-platform way. This section
+describes the process to install VSCode on Windows, although the process should be similar on Mac or Linux.
+In-depth guides to install VSCode can also be found for most operating systems in the official
+[VSCode documentation](https://code.visualstudio.com/docs/setup/setup-overview).
 
-**Step 1:** Download Visual Studio Code from [the Visual Studio Code website](https://code.visualstudio.com/download).
+**Step 1:** Download Visual Studio Code from the [VSCode downloads page](https://code.visualstudio.com/download).
 
 **Step 2:** Open the downloaded file to begin the installation process.
 
 **Step 3:** Read the license agreement and click **Next** if you agree.
 
-**Step 4:** On the _'Select Destination Location'_ page, click **Next**.
+**Step 4:** On the _Select Destination Location_ page, click **Next**.
 
-**Step 5:** On the _'Select Start Menu Folder'_ page, click **Next**.
+**Step 5:** On the _Select Start Menu Folder_ page, click **Next**.
 
-**Step 6:** On the _'Additional Tasks'_ page, select **"Add to PATH (requires shell restart)"**,
+**Step 6:** On the _Additional Tasks_ page, select **Add to PATH (requires shell restart)**,
 and then click **Next**.
 
-**Step 7:** On the _'Ready to Install'_ page, click **Install**. Once the installation has
-been completed, you may progress to section 3 of this guide.
+**Step 7:** On the _Ready to Install_ page, click **Install**.
+
+**Step 8:** Wait for the installation to complete. If no errors are displayed, then
+you have successfully installed VSCode!
 
 
 
@@ -79,31 +92,22 @@ been completed, you may progress to section 3 of this guide.
 {:#install-nodejs}
 
 The next step in the process is to download [Node.js](https://nodejs.org) and [NPM](https://www.npmjs.com/).
-The former is required to run the installation code, and the latter is required to install dependencies of
-the Misinformation Game.
+Node.js is required to run the installation code, and NPM is required to install the dependencies of
+the Misinformation Game. These tools can both be installed at once using the Node.js installer.
 
-**Step 1:** Download the installer for both of these tools from
-[https://nodejs.org/en/download/](https://nodejs.org/en/download/).
-Select the platform-specific installer you require by clicking the **"Windows Installer"**
-or the **"macOS Installer"** buttons on the download page. The **"Windows Installer"** button
-is highlighted in [Figure 2](#fig2).
+**Step 1:** Download the Node.js installer from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
+Select the platform-specific installer you require by clicking the **Windows Installer** or the
+**macOS Installer** buttons on the download page. Additional operating system installers are listed
+further down the page.
 
-<figure id="fig2">
-    <img src="diagrams/non-technical-installation-guide/2-download-nodejs-installer.png" alt="figure 2" height="360" />
-    <figcaption>
-        <a href="#fig2">Figure 2.</a> Downloading the Windows installer of Node.js.
-    </figcaption>
-</figure>
+**Step 2:** Open the downloaded file to begin the installation process. If you are asked whether you wish
+to run the software, then accept by clicking **Run**.
 
-**Step 1:** Once the installer has downloaded, run it.
-
-**Step 2:** If you are asked whether you wish to run the software, then accept by clicking **“Run”**.
-
-**Step 3:** Begin the installation by clicking **Next**.
+**Step 3:** On the _Introduction_ page, begin the installation by clicking **Next**.
 
 **Step 4:** Read the license agreement and click **Next** if you agree.
 
-**Step 5:** On the _'Installation Location'_ page, click **Next**.
+**Step 5:** On the _Installation Location_ page, click **Next**.
 
 **Step 6:** The next page will ask you to select the components that you wish to install.
 The default selections include all the components we require, so click **Next**.
@@ -112,20 +116,23 @@ The default selections include all the components we require, so click **Next**.
 
 
 
-### 3.1. Verify that Node.js and NPM were successfully installed
+### 3.1. Verify that Node.js and NPM were installed correctly (Optional)
 {:#verify-nodejs-install}
 
-To verify your install, in Windows, open the application “Command Prompt” or "Terminal". In the window, you
-will need to type commands `node -v` and `npm -v`. You can see the commands and their expected outputs in
-[Figure 3](#fig3). The versions that you have installed may differ from these versions. The guide
-should continue to work, but in case it does not, it may be good to install these specific versions if you can.
+Optionally, you may verify that Node.js and NPM were successfully installed through the
+command line.
 
-<figure id="fig3">
-    <img src="diagrams/non-technical-installation-guide/3-check-node-version.png" alt="figure 3" height="147" />
-    <figcaption>
-        <a href="#fig3">Figure 3.</a> Expected Node.js and NPM library versions.
-    </figcaption>
-</figure>
+**Step 1:** Open a command-line program,
+- **On Windows:** Open the application _Command Prompt_.
+- **On Mac:** Open the application _Terminal_.
+
+**Step 2:** Verify that Node.js installed correctly by typing the command `node -v` followed
+by pressing enter. This command should output the version of Node.js that was installed
+(e.g. `v14.17.4`). If it displays an error, then Node.js may not have been installed correctly.
+
+**Step 3:** Verify that NPM installed correctly by typing the command `npm -v` followed
+by pressing enter. This command should output the version of NPM that was installed
+(e.g. `6.14.14`). If it displays an error, then NPM may not have been installed correctly.
 
 
 
@@ -134,47 +141,53 @@ should continue to work, but in case it does not, it may be good to install thes
 
 Firebase is a technology platform made by Google, which provides a platform to host websites. The
 Misinformation Game makes use of Firebase for its hosting, authentication, and data storage.
-Therefore, to host your instance of the Misinformation Game, your own Firebase instance will
-be required. A Google account is required in order to use Firebase. If you do not have a Google
-account, you can create one at
+Therefore, to host your instance of the Misinformation Game, you will need to create your own
+Firebase instance to host the game. A Google account is required in order to use Firebase. If
+you do not have a Google account, you can create one at
 [https://accounts.google.com/signup/v2/webcreateaccount](https://accounts.google.com/signup/v2/webcreateaccount).
 
-**Step 1:** Sign in to your Google account in [Firebase Console](https://console.firebase.google.com/).
+**Step 1:** Sign in to the [Firebase Console](https://console.firebase.google.com/) using your Google account.
 
-**Step 2:** Once you have signed in, you should see a similar page as shown in [Figure 4](#fig4).
-Click **Create a project**. You will now be prompted for information related to your instance of
-the Misinformation Game.
+**Step 2:** Once you have signed in, you should see a similar page as shown in [Figure 2](#fig2).
+If you do not see this page, then you should be able to access it at
+[https://console.firebase.google.com](https://console.firebase.google.com). On this page, click
+**Create a project**. If you have previously created a Firebase project, then you will need to
+click **Add project** instead.
 
-<figure id="fig4">
-    <img src="diagrams/non-technical-installation-guide/4-create-firebase-project.png" alt="figure 4" height="179" />
+<figure id="fig2">
+    <img src="diagrams/non-technical-installation-guide/4-create-firebase-project.png" alt="figure 2" height="179" />
     <figcaption>
-        <a href="#fig4">Figure 4.</a> Create a Firebase project.
+        <a href="#fig2">Figure 2.</a> Diagram highlighting how to create a new Firebase project.
     </figcaption>
 </figure>
 
-**Step 3:** Enter a name for your project. The name of your project will be used to determine the URL that
-your study participants will access. Therefore, you may wish to choose an ambiguous name, so that participants
-are not influenced by the URL. Once you have selected a name, click **Continue**.
+**Step 3:** You should now be shown a form asking you to enter the name for your new project.
+Enter a name for your project. The name of your project will be used to determine the URL that
+your study participants will access. Therefore, you may wish to choose an ambiguous name, so that
+participants are not influenced by the URL. The name and ID fields are highlighted in [Figure 3](#fig3).
+Once you have selected a name, click **Continue**.
 
-<figure id="fig4a">
-    <img src="diagrams/firebase-project-creation.png" alt="figure 4a" height="515" />
+<figure id="fig3">
+    <img src="diagrams/firebase-project-creation.png" alt="figure 3" height="515" />
     <figcaption>
-        <a href="#fig4a">Figure 4a.</a> Select the name of your Firebase project.
+        <a href="#fig3">Figure 3.</a> Diagram labelling the fields in the Firebase project creation form.
     </figcaption>
 </figure>
 
 **Step 4:** In the next step you can choose to disable Google Analytics. We recommend that you
-disable it, as it doesn't provide any functionality that is used by the Misinformation Game.
+disable it, as it doesn't provide any functionality that is used by the Misinformation Game. The
+toggle to disable Google Analytics is highlighted in [Figure 4](#fig4).
 
-<figure id="fig4b">
-    <img src="diagrams/disabling-analytics.png" alt="figure 4b" height="348" />
+<figure id="fig4">
+    <img src="diagrams/disabling-analytics.png" alt="figure 4" height="348" />
     <figcaption>
-        <a href="#fig4b">Figure 4b.</a> Disable analytics in your Firebase project.
+        <a href="#fig4">Figure 4.</a> Disable analytics in your Firebase project.
     </figcaption>
 </figure>
 
 **Step 5:** Click **Create project**. You have now created a Firebase project that can be used to
-host the Misinformation Game. However, some additional set-up is still required to get it ready.
+host the Misinformation Game. However, some additional set-up is still required to deploy the
+source code of The Misinformation Game to your new project.
 
 
 ### 4.1. Enable Firebase Firestore
