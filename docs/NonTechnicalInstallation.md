@@ -193,25 +193,29 @@ source code of The Misinformation Game to your new project.
 ### 4.1. Enable Firebase Firestore
 {:#enable-firebase-firestore}
 
-The Misinformation Game uses the Firestore Database to store users, studies, and study results. Therefore,
-you will need to enable it.
+The Misinformation Game uses Firebase's Firestore Database to store users, studies, and study results.
+Therefore, you will need to enable it.
 
 **Step 1:** Select **Firestore Database** under the **Build** tab on the left of the project page.
-The option to select is shown in [Figure 5](#fig5).
+The buttons to click are highlighted in [Figure 5](#fig5).
 
 <figure id="fig5">
-    <img src="diagrams/non-technical-installation-guide/5-open-firestore-database.png" alt="figure 5" height="301" />
+    <img src="diagrams/accessing-firestore-for-create.png" alt="figure 5" height="529" />
     <figcaption>
-        <a href="#fig5">Figure 5.</a> Open the Firestore database.
+        <a href="#fig5">Figure 5.</a> Diagram highlighting the buttons to click to
+        access the Firestore Database.
     </figcaption>
 </figure>
 
-**Step 2:** On the _'Firestore'_ page, click **Create database**. This button is shown in [Figure 6](#fig6).
+**Step 2:** On the _Cloud Firestore_ page, click the **Create database** button. This button is
+shown in [Figure 6](#fig6). If a table is shown instead (as in [Figure 7](#fig7)), then the
+Firestore database has already been enabled.
 
 <figure id="fig6">
-    <img src="diagrams/non-technical-installation-guide/6-create-firestore-database.png" alt="figure 6" height="212" />
+    <img src="diagrams/enabling-firestore.png" alt="figure 6" height="475" />
     <figcaption>
-        <a href="#fig6">Figure 6.</a> Open the Firestore database.
+        <a href="#fig6">Figure 6.</a> Diagram highlighting the button to click to enable
+        Firestore database for your Firebase instance.
     </figcaption>
 </figure>
 
@@ -227,9 +231,9 @@ Once you have selected a location, click **Enable**.
 shown in [Figure 7](#fig7).
 
 <figure id="fig7">
-    <img src="diagrams/non-technical-installation-guide/7-blank-firestore-database.png" alt="figure 7" height="375" />
+    <img src="screenshots/empty-firestore-database.png" alt="figure 7" height="375" />
     <figcaption>
-        <a href="#fig7">Figure 7.</a> Blank Firestore database.
+        <a href="#fig7">Figure 7.</a> Screenshot of an empty Firestore database.
     </figcaption>
 </figure>
 
@@ -237,14 +241,14 @@ shown in [Figure 7](#fig7).
 ### 4.2. Enable Firebase Storage
 {:#enable-firebase-storage}
 
-Any images that are embedded within studies will be stored within Firebase Storage. Therefore, Storage
-should be enabled.
+Any images that are embedded within studies will be stored within Firebase Storage. Therefore, Firebase Storage
+will need to be enabled for your Firebase project.
 
 **Step 1:** Select **Storage** under the **Build** tab on the left of the project page.
-The option to select is shown in [Figure 8](#fig8).
+The buttons to click are highlighted in [Figure 8](#fig8).
 
 <figure id="fig8">
-    <img src="diagrams/non-technical-installation-guide/8-blank-storage.png" alt="figure 8" height="218" />
+    <img src="diagrams/accessing-firebase-storage.png" alt="figure 8" height="218" />
     <figcaption>
         <a href="#fig8">Figure 8.</a> Blank Firebase storage.
     </figcaption>
@@ -254,11 +258,12 @@ The option to select is shown in [Figure 8](#fig8).
 then this has been successful. However, if you see the **Get started** page as shown in [Figure 9](#fig9),
 then you will need to first enable the Firestore Database as explained in the
 [Enable Firebase Firestore section](#enable-firebase-firestore) of this guide.
+This should automatically enable Firebase Storage when you start Firestore in **production mode**.
 
 <figure id="fig9">
-    <img src="diagrams/non-technical-installation-guide/9-uninitialised-storage.png" alt="figure 9" height="372" />
+    <img src="screenshots/storage-get-started.png" alt="figure 9" height="372" />
     <figcaption>
-        <a href="#fig9">Figure 9.</a> Firebase storage before it is enabled.
+        <a href="#fig9">Figure 9.</a> Screenshot of the Firebase Storage page before it is enabled.
     </figcaption>
 </figure>
 
