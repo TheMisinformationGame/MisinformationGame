@@ -708,7 +708,7 @@ class GameFinished extends MountAwareComponent {
             <div className="w-full bg-white shadow items-center">
                 <div className="px-10 py-8 max-w-full text-center">
                     <p className="block text-xl mb-4">
-                        Congratulations! You have completed the study.
+                        Congratulations! You have completed the simulation.
                     </p>
 
                     {/* Allow the user to continue if their results have been saved. */}
@@ -991,7 +991,7 @@ export class GameScreen extends ActiveGameScreen {
                             }}
                             nextPostText={
                                 finished ?
-                                    "The study is complete!" :
+                                    "The simulation is complete!" :
                                 nextPostEnabled ?
                                     (this.state.reactionsAllowed ? "Continue to next post" : "Please wait to continue")
                                     : nextPostError
