@@ -19,7 +19,7 @@ for participants. This customisability is a core focus of The
 Misinformation Game, to facilitate the research of a wide array of
 social media related questions.
 
-**Preprint Paper:** [PsyArXiv](https://zpr.io/ZsV8ZBqxqsyz)
+**Preprint Paper:** [PsyArXiv](https://psyarxiv.com/628wc/)
 
 **Source Code:** [MisinformationGame Repository on GitHub](https://github.com/TheMisinformationGame/MisinformationGame)
 
@@ -125,7 +125,7 @@ guide should be easier to follow.
 
 - [Source Code](https://github.com/TheMisinformationGame/MisinformationGame) -
   The Misinformation Game is open-source!
-- [The (Mis)information Game Paper](https://zpr.io/ZsV8ZBqxqsyz) -
+- [The (Mis)information Game Paper](https://psyarxiv.com/628wc/) -
   A pre-print paper about The Misinformation Game, including a user experiency study.
 - [Issue Tracker](https://github.com/TheMisinformationGame/MisinformationGame/issues) -
   If you find any issues, please report them here.
