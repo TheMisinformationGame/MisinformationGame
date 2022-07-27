@@ -29,7 +29,7 @@ social media related questions.
 {:#example-game}
 
 If you would like to test playing through a study created using
-the Misinformation Game, you can access an example game from
+The Misinformation Game, you can access an example game from
 [the example game page](/link/ExampleGame).
 You can enter any ID to access the example game.
 
@@ -48,7 +48,7 @@ You can enter any ID to access the example game.
 {:#example-results}
 
 If you would like to view an example of the results that can be
-gathered when using the Misinformation Game, the results of a user
+gathered when using The Misinformation Game, the results of a user
 experience study are available from
 [the example results page](/link/ExampleResults).
 
@@ -132,7 +132,7 @@ guide should be easier to follow.
 - [Example Game](/link/ExampleGame) -
   Test out The Misinformation Game with an example game.
 - [Example Results](/link/ExampleResults) -
-  View the results of a user experience study ran using the Misinformation Game.
+  View the results of a user experience study ran using The Misinformation Game.
 - [Study Configuration Template Spreadsheet](/link/StudyTemplate) -
   The template spreadsheet that should be edited to create your own study.
 - [Example Game Configuration Spreadsheet](/link/ExampleStudy) -

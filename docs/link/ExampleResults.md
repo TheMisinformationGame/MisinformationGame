@@ -8,8 +8,8 @@ sitemap: false
 {:#intro .no_toc}
 
 These example results were gathered from a user experience study that was conducted
-for the Misinformation Game. These results are indicative of the type of results
-that will be provided for studies ran using the Misinformation Game. However,
+for The Misinformation Game. These results are indicative of the type of results
+that will be provided for studies ran using The Misinformation Game. However,
 the results of studies will slightly differ when different study settings are used.
 
 The study that was used to gather these results is not yet available.

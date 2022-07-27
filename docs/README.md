@@ -17,7 +17,7 @@ about the repositories is below:
 
 ## 1) The /docs/ directory in the MisinformationGame repository
 
-The `/docs/` directory is the right place to be to edit the MisinformationGame
+The `/docs/` directory is the right place to be to edit The Misinformation Game's
 documentation. The files you will most likely want to edit end in `.md`, and
 are Markdown documents. The specific Markdown compiler that we use is
 [Kramdown](https://kramdown.gettalong.org/index.html). A quick-reference
@@ -40,9 +40,9 @@ This is the repository that GitHub fetches from to update the documentation
 website. Therefore, to see your changes on the live website, your changes
 will need to be added here as well.
 
-We use the MisinformationGame `/docs/` directory as the ground-truth for
-the documentation. Therefore, no changes should be made here directly.
-Instead, if you have made changes to the documentation in the `/docs/`
+We use the MisinformationGame repository's `/docs/` directory as the ground-truth for
+the documentation. No changes should be made in the themisinformationgame.github.io
+repository directly. Instead, if you have made changes to the documentation in the `/docs/`
 directory of the
 [MisinformationGame repository](https://github.com/TheMisinformationGame/MisinformationGame),
 they can be added here using the following procedure:

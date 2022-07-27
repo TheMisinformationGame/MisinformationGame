@@ -93,7 +93,7 @@ you have successfully installed VSCode!
 
 The next step in the process is to download [Node.js](https://nodejs.org) and [NPM](https://www.npmjs.com/).
 Node.js is required to run the installation code, and NPM is required to install the dependencies of
-the Misinformation Game. These tools can both be installed at once using the Node.js installer.
+The Misinformation Game. These tools can both be installed at once using the Node.js installer.
 
 **Step 1:** Download the Node.js installer from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
 Select the platform-specific installer you require by clicking the **Windows Installer** or the
@@ -141,7 +141,7 @@ by pressing enter. This command should output the version of NPM that was instal
 
 Firebase is a technology platform made by Google, which provides a platform to host websites. The
 Misinformation Game makes use of Firebase for its hosting, authentication, and data storage.
-Therefore, to host your instance of the Misinformation Game, you will need to create your own
+Therefore, to host your instance of The Misinformation Game, you will need to create your own
 Firebase instance to host the game. A Google account is required in order to use Firebase. If
 you do not have a Google account, you can create one at
 [https://accounts.google.com/signup/v2/webcreateaccount](https://accounts.google.com/signup/v2/webcreateaccount).
@@ -175,7 +175,7 @@ Once you have selected a name, click **Continue**.
 </figure>
 
 **Step 4:** In the next step you can choose to disable Google Analytics. We recommend that you
-disable it, as it doesn't provide any functionality that is used by the Misinformation Game. The
+disable it, as it doesn't provide any functionality that is used by The Misinformation Game. The
 toggle to disable Google Analytics is highlighted in [Figure 4](#fig4).
 
 <figure id="fig4">
@@ -186,7 +186,7 @@ toggle to disable Google Analytics is highlighted in [Figure 4](#fig4).
 </figure>
 
 **Step 5:** Click **Create project**. You have now created a Firebase project that can be used to
-host the Misinformation Game. However, some additional set-up is still required to deploy the
+host The Misinformation Game. However, some additional set-up is still required to deploy the
 source code of The Misinformation Game to your new project.
 
 
@@ -336,7 +336,7 @@ can be ignored, as we will configure those separately later in this guide.
 Select **"Use npm"**.
 
 **Step 6:** Copy the larger block of code to a text file on your computer. This configuration
-will be required to link the Misinformation Game to your project later. When it is required later,
+will be required to link The Misinformation Game to your project later. When it is required later,
 this code will be referred to as the **"Configuration Information File"**. There is a button in the
 bottom-right of this code block that can be pressed to copy it, as shown in [Figure 13](#fig13).
 
@@ -354,7 +354,7 @@ bottom-right of this code block that can be pressed to copy it, as shown in [Fig
 ## 5. Deploying the Website
 {:#deploying}
 
-The next step of the process is to deploy the Misinformation Game to your Firebase project.
+The next step of the process is to deploy The Misinformation Game to your Firebase project.
 This step will require the software that we installed earlier (Visual Studio Code, Node.js, and NPM).
 
 
@@ -533,7 +533,7 @@ You can access the website on your browser at the domain \[Your Project ID\].web
 ## 6. Conclusion
 {:#conclusion}
 
-You should now have a fully deployed instance of the Misinformation Game! You may now sign in to your
+You should now have a fully deployed instance of The Misinformation Game! You may now sign in to your
 instance of The Misinformation Game, and register yourself as an administrator, through the process
 described in the [Registering Administrators documentation](/Administrators).
 

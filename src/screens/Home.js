@@ -30,7 +30,7 @@ function Home() {
                         The Misinformation Game is a social media simulator built to study people’s
                         behaviour when they interact with social media. To achieve this, The Misinformation
                         Game simulates a social media feed for research participants. You may read more
-                        about the Misinformation Game in&nbsp;
+                        about The Misinformation Game in&nbsp;
                         <a href="https://themisinformationgame.github.io/">its documentation</a>.
                     </p>
                     <p className="text-lg mb-2">

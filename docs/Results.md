@@ -38,7 +38,7 @@ is split into four worksheets:
 {:#example-results}
 
 If you wish to view some example results from a user experience
-study ran using the Misinformation Game, then they may be accessed
+study ran using The Misinformation Game, then they may be accessed
 from [the example results page](/link/ExampleResults).
 
 
