@@ -223,6 +223,31 @@ function breakLines(text) {
 }
 
 
+export function convertRichTextPieceToHTML(richTextPiece) {
+    const css = constructCSS(richTextPiece.cssParams);
+    let html = "";
+
+    // Only surround text in a <span> when required.
+    // This is helpful when including HTML in the text.
+    if (css.length > 0) {
+        html += "<span style=\"" + css + "\">"
+    }
+
+    const lines = breakLines(richTextPiece.text);
+    for (let lineIndex = 0; lineIndex < lines.length; ++lineIndex) {
+        if (lineIndex > 0) {
+            html += "<br/>";
+        }
+        html += lines[lineIndex];
+    }
+
+    if (css.length > 0) {
+        html += "</span>";
+    }
+    return html;
+}
+
+
 /**
  * Converts Google Sheets rich text to HTML for displaying
  * in the browser.
@@ -243,25 +268,17 @@ export function convertRichTextToHTML(richText, themeColours) {
     let html = "";
     for (let index = 0; index < pieces.length; ++index) {
         const piece = pieces[index];
-        const css = constructCSS(piece.cssParams);
-
-        // Only surround text in a <span> when required.
-        // This is helpful when including HTML.
-        if (css.length > 0) {
-            html += "<span style=\"" + css + "\">"
-        }
-
-        const lines = breakLines(piece.text);
-        for (let lineIndex = 0; lineIndex < lines.length; ++lineIndex) {
-            if (lineIndex > 0) {
-                html += "<br/>";
-            }
-            html += lines[lineIndex];
-        }
-
-        if (css.length > 0) {
-            html += "</span>";
-        }
+        html += convertRichTextPieceToHTML(piece);
     }
     return html;
+}
+
+
+/**
+ * Converts the plain text to HTML.
+ * This just involves adding line breaks.
+ */
+export function convertPlainTextToHTML(text) {
+    const plainRichTextPiece = new RichTextPiece(text, {});
+    return convertRichTextPieceToHTML(plainRichTextPiece);
 }

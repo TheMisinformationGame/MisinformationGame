@@ -3,8 +3,8 @@ import {
     areCellsBlank,
     ExcelBoolean,
     ExcelImage, ExcelLimit,
-    ExcelNumber, ExcelPercentage,
-    ExcelString, ExcelTextOrImage, isCellBlank,
+    ExcelNumber, ExcelPercentage, ExcelHTML,
+    ExcelString, ExcelHTMLOrImage, isCellBlank,
     readCell, readCellWithDefault,
     WorkbookColumn,
     WorkbookLoc
@@ -109,19 +109,19 @@ const V1 = {
     },
 
     pages: {
-        preIntro: new WorkbookLoc("Introduction before Game Rules", "Pages", "B4", ExcelString),
+        preIntro: new WorkbookLoc("Introduction before Game Rules", "Pages", "B4", ExcelHTML),
         preIntroDelaySeconds: new WorkbookLoc(
             "Introduction before Game Rules Continue Delay (Seconds)", "Pages", "D3", ExcelNumber
         ),
-        rules: new WorkbookLoc("Game Rules", "Pages", "B19", ExcelString),
+        rules: new WorkbookLoc("Game Rules", "Pages", "B19", ExcelHTML),
         rulesDelaySeconds: new WorkbookLoc(
             "Game Rules Continue Delay (Seconds)", "Pages", "D18", ExcelNumber
         ),
-        postIntro: new WorkbookLoc("Introduction after Game Rules", "Pages", "B34", ExcelString),
+        postIntro: new WorkbookLoc("Introduction after Game Rules", "Pages", "B34", ExcelHTML),
         postIntroDelaySeconds: new WorkbookLoc(
             "Introduction after Game Rules Continue Delay (Seconds)", "Pages", "D33", ExcelNumber
         ),
-        debrief: new WorkbookLoc("Debrief", "Pages", "B48", ExcelString),
+        debrief: new WorkbookLoc("Debrief", "Pages", "B48", ExcelHTML),
     },
 
     sourcePostSelection: {
@@ -186,7 +186,7 @@ const V1 = {
         valueColumns: "EIMNOPQRSTUVWXY",
         id: new WorkbookColumn("ID", "Posts", "D", ExcelString),
         headline: new WorkbookColumn("Headline", "Posts", "E", ExcelString),
-        content: new WorkbookColumn("Content", "Posts", "I", ExcelTextOrImage),
+        content: new WorkbookColumn("Content", "Posts", "I", ExcelHTMLOrImage),
         isTrue: new WorkbookColumn("Is True", "Posts", "M", ExcelBoolean),
         changesToFollowers: {
             min: -1e9, // Effectively unlimited
@@ -215,7 +215,7 @@ const V1 = {
         comment: {
             valueColumns: ["Z", "AB", "AG", "AH"],
             sourceName: new WorkbookColumn("Comment Source Name", "Posts", "Z", ExcelString),
-            message: new WorkbookColumn("Comment Message", "Posts", "AB", ExcelString),
+            message: new WorkbookColumn("Comment Message", "Posts", "AB", ExcelHTML),
             likes: new WorkbookColumn("Comment Likes", "Posts", "AG", ExcelNumber),
             dislikes: new WorkbookColumn("Comment Dislikes", "Posts", "AH", ExcelNumber)
         },

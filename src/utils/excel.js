@@ -1,5 +1,5 @@
 import {doNonNullCheck, doTypeCheck, isOfType} from "./types";
-import {convertRichTextToHTML} from "./richText";
+import {convertPlainTextToHTML, convertRichTextToHTML} from "./richText";
 
 const Excel = require("exceljs");
 
@@ -66,7 +66,7 @@ export class ExcelType {
             case Excel.ValueType.Formula:
                 return "a formula";
             case Excel.ValueType.SharedString:
-                return "a shared string";
+                return "shared text";
             case Excel.ValueType.RichText:
                 return "formatted text"
             case Excel.ValueType.Boolean:
@@ -102,6 +102,15 @@ class ExcelStringType extends ExcelType {
         if (type === Excel.ValueType.Boolean || type === Excel.ValueType.Number || type === Excel.ValueType.Date)
             return String(value);
         return undefined;
+    }
+}
+
+class ExcelHTMLType extends ExcelStringType {
+    readCellValue(cell) {
+        if (cell.type === this.exceljsType)
+            return convertPlainTextToHTML(cell.value);
+
+        return this.coerceType(cell.value, cell.type);
     }
 }
 
@@ -149,9 +158,9 @@ class ExcelImageType extends ExcelType {
     }
 }
 
-class ExcelTextOrImageType extends ExcelType {
+class ExcelHTMLOrImageType extends ExcelType {
     imageType = new ExcelImageType();
-    textType = new ExcelStringType();
+    textType = new ExcelHTMLType();
 
     constructor() {
         super(Excel.ValueType.Null, "text or an image");
@@ -196,12 +205,13 @@ class ExcelLimitType extends ExcelType {
 }
 
 export const ExcelString = new ExcelStringType();
+export const ExcelHTML = new ExcelHTMLType();
 export const ExcelNumber = new ExcelType(Excel.ValueType.Number, "a number");
 export const ExcelLimit = new ExcelLimitType();
 export const ExcelPercentage = new ExcelType(Excel.ValueType.Number, "a percentage");
 export const ExcelBoolean = new ExcelBooleanType();
 export const ExcelImage = new ExcelImageType();
-export const ExcelTextOrImage = new ExcelTextOrImageType();
+export const ExcelHTMLOrImage = new ExcelHTMLOrImageType();
 
 
 export class WorkbookLoc {
