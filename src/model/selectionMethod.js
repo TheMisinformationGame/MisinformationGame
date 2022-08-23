@@ -139,8 +139,9 @@ export class CredibilitySelectionMethod extends SourcePostSelectionMethod {
 }
 
 /**
- * A method of selecting source and post pairs where the order of sources
- * and posts is pre-defined and repeated the same for every participant.
+ * A method of selecting source and post pairs where the set of source/post
+ * pairs is pre-defined. The order may then also be fixed, or randomised
+ * for every participant.
  */
 export class PredefinedSelectionMethod extends SourcePostSelectionMethod {
     randomiseOrder; // Boolean
