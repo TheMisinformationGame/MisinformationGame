@@ -157,7 +157,7 @@ used, then this will probably not cause an issue.
 {:#selection-method-predefined}
 
 The **Pre-Defined** source/post selection method allows
-specification of an exact order of sources and posts to
+specification of an exact set of source/post pairs to
 be shown to participants. Every participant is always
 shown the exact same set of source/post pairs that is
 pre-defined in the configuration spreadsheet. The order
