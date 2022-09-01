@@ -228,7 +228,7 @@ function constructWorkbook(study, results, problems) {
         const duration = game.endTime - game.startTime;
         const startTime = createDateFromUnixEpochTimeSeconds(game.startTime);
         const endTime = createDateFromUnixEpochTimeSeconds(game.endTime);
-        const studyModTime = createDateFromUnixEpochTimeSeconds(game.study.lastModifiedTime);
+        const studyModTime = createDateFromUnixEpochTimeSeconds(game.studyModTime);
         participantWorksheet.addRow({
             participantID: game.participant.participantID,
             sessionID: game.sessionID,
@@ -272,7 +272,7 @@ function constructWorkbook(study, results, problems) {
  */
 export async function downloadResults(study) {
     const problems = {};
-    const results = await readAllCompletedStudyResults(study.id, problems);
+    const results = await readAllCompletedStudyResults(study, problems);
     const workbook = constructWorkbook(study, results, problems);
 
     const buffer = await workbook.xlsx.writeBuffer();

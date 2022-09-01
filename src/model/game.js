@@ -641,8 +641,9 @@ export class GameParticipant {
  * Provides the logic for running a game.
  */
 export class Game {
-    sessionID; // String
     study; // Study
+    studyModTime; // Number (UNIX Epoch Time in Seconds)
+    sessionID; // String
     startTime; // Number (UNIX Epoch Time in Seconds)
     endTime; // Number (UNIX Epoch Time in Seconds), or null
     states; // GameState[]
@@ -652,9 +653,12 @@ export class Game {
 
     saveResultsToDatabasePromise; // Promise, not saved
 
-    constructor(sessionID, study, startTime, endTime, states, participant, dismissedPrompt, completionCode) {
-        doTypeCheck(sessionID, "string", "Game Session ID")
+    constructor(study, studyModTime, sessionID, startTime, endTime,
+                states, participant, dismissedPrompt, completionCode) {
+
         doTypeCheck(study, Study, "Game Study");
+        doTypeCheck(studyModTime, "number", "Game Study Modification Time");
+        doTypeCheck(sessionID, "string", "Game Session ID")
         doTypeCheck(startTime, "number", "Game Start Time");
         doNullableTypeCheck(endTime, "number", "Game End Time");
         doTypeCheck(states, Array, "Game States");
@@ -663,6 +667,7 @@ export class Game {
         doNullableTypeCheck(completionCode, "string", "Game Completion Code");
         this.sessionID = sessionID;
         this.study = study;
+        this.studyModTime = studyModTime;
         this.startTime = startTime;
         this.endTime = endTime || null;
         this.states = states;
@@ -897,9 +902,9 @@ export class Game {
 
     toJSON() {
         const json = {
-            "sessionID": this.sessionID,
             "studyID": this.study.id,
-            "study": this.study.toJSON(),
+            "studyModTime": this.studyModTime,
+            "sessionID": this.sessionID,
             "startTime": this.startTime,
             "endTime": this.endTime,
             "states": Game.statesToJSON(this.states),
@@ -910,12 +915,18 @@ export class Game {
         return json;
     }
 
-    static fromJSON(json) {
-        const studyID = json["studyID"];
-        const study = Study.fromJSON(studyID, json["study"]);
+    static fromJSON(json, study) {
+        // We used to store the whole study settings in the results.
+        let studyModTime;
+        if (json["study"] !== undefined) {
+            const legacyStudy = Study.fromJSON(json["studyID"], json["study"]);
+            studyModTime = legacyStudy.lastModifiedTime;
+        } else {
+            studyModTime = json["studyModTime"]
+        }
         return new Game(
+            study, studyModTime,
             json["sessionID"],
-            study,
             json["startTime"],
             json["endTime"],
             Game.statesFromJSON(json["states"], study),
@@ -935,7 +946,11 @@ export class Game {
         doTypeCheck(study, Study, "Game Study");
         const sessionID = generateUID();
         const participant = new GameParticipant(null, 50, 0);
-        const game = new Game(sessionID, study, getUnixEpochTimeSeconds(), null, [], participant, false);
+        const game = new Game(
+            study, study.lastModifiedTime, sessionID,
+            getUnixEpochTimeSeconds(),
+            null, [], participant, false
+        );
         game.calculateAllStates();
         game.saveLocally();
         return game;
@@ -959,7 +974,7 @@ export function getGameChangesToAndFromJSON(game) {
     const reconstructedGame = Game.fromJSON(reconstructedJSON);
 
     // Do the diff on the JSON created from each, as
-    // doing it on the full objects is too slow. Its
+    // doing it on the full objects is too slow. It's
     // not ideal, but it should be good enough.
     return odiff(jsonObject, reconstructedGame.toJSON());
 }

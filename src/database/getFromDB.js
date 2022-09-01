@@ -108,24 +108,23 @@ export async function readStudyImage(path) {
 }
 
 /**
- * Reads all of the results of the study with ID {@param studyID}
- * into an Array of Game objects.
+ * Reads all results of the study {@param study} into an Array of Game objects.
  *
  * If any errors are encountered, the session IDs of the errored
  * results will be added to the map {@param problems}.
  */
-export async function readAllCompletedStudyResults(studyID, problems) {
+export async function readAllCompletedStudyResults(study, problems) {
     if (!auth.currentUser)
         throw new Error("User is not authenticated");
 
     const games = [];
-    const snapshot = await db.collection("Studies").doc(studyID)
+    const snapshot = await db.collection("Studies").doc(study.id)
                              .collection("Results").get();
     for(let index = 0; index < snapshot.docs.length; ++index) {
         const doc = snapshot.docs[index];
         const json = doc.data();
         try {
-            games.push(Game.fromJSON(json));
+            games.push(Game.fromJSON(json, study));
         } catch (err) {
             // Try fetch the participant ID to include.
             let participantID;
