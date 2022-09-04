@@ -4,16 +4,19 @@
  */
 
 import {db, storageRef} from './firebase';
+import {compressJson} from "./compressJson";
+import {STUDY_UNCOMPRESSED_KEYS} from "../model/study";
+import sizeof from "firestore-size";
 
 /**
  * Uploads the configuration for the study {@param study}.
  * @return Promise<void> a Promise for the completion of the upload.
  */
 export function uploadStudyConfiguration(study) {
-    let studyCol = db.collection("Studies");
-    let studyDoc = studyCol.doc(study.id);
-    console.log(study.toJSON());
-    return studyDoc.set(study.toJSON());
+    const studyCol = db.collection("Studies");
+    const studyDoc = studyCol.doc(study.id);
+    const compressedJson = compressJson(study.toJSON(), STUDY_UNCOMPRESSED_KEYS);
+    return studyDoc.set(compressedJson);
 }
 
 /**
@@ -89,7 +92,9 @@ export function uploadImagesToStorage(imageDict, progressFn) {
  * Save the game results {@param game} to the results of study {@param study}.
  */
 export function postResults(study, game) {
+    const resultsJSON = game.toJSON();
+    const compressedJSON = compressJson(resultsJSON);
     return db.collection("Studies").doc(study.id)
              .collection("Results").doc(game.sessionID)
-             .set(game.toJSON());
+             .set(compressedJSON);
 }

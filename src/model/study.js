@@ -6,6 +6,15 @@ import {randDigits, randElement} from "../utils/random";
 import {odiff} from "../utils/odiff";
 import {getUnixEpochTimeSeconds} from "../utils/time";
 
+/**
+ * The JSON objects that are uploaded to Firebase
+ * are compressed. However, these values need to
+ * not be compressed, so are skipped. This is
+ * because they are used to query for studies,
+ * or are updated by the program.
+ */
+export const STUDY_UNCOMPRESSED_KEYS = ["authorID", "enabled"];
+
 
 export const SOURCE_AVAILABLE_SOURCE_STYLES = [
     {backgroundColor: "#74ebd5"},

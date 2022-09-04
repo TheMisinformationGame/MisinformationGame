@@ -9,6 +9,7 @@ import {getDataManager} from "./manager";
 import { postResults } from "../database/postToDB";
 import {generateUID} from "../utils/uid";
 import {getUnixEpochTimeSeconds} from "../utils/time";
+import {compressJson, decompressJson} from "../database/compressJson";
 
 
 /**
@@ -399,7 +400,7 @@ export class GameCommentReaction {
 }
 
 /**
- * Stores all of the interactions of a user with a post.
+ * Stores all the interactions of a user with a post.
  */
 export class GamePostInteraction {
     postShowTime; // Number (UNIX Milliseconds)
@@ -966,16 +967,16 @@ export class Game {
  */
 export function getGameChangesToAndFromJSON(game) {
     // Convert to JSON.
-    const jsonObject = game.toJSON();
+    const jsonObject = compressJson(game.toJSON());
     const jsonString = JSON.stringify(jsonObject);
 
     // Convert from JSON.
-    const reconstructedJSON = JSON.parse(jsonString);
-    const reconstructedGame = Game.fromJSON(reconstructedJSON);
+    const reconstructedJSON = decompressJson(JSON.parse(jsonString));
+    const reconstructedGame = Game.fromJSON(reconstructedJSON, game.study);
 
     // Do the diff on the JSON created from each, as
     // doing it on the full objects is too slow. It's
     // not ideal, but it should be good enough.
-    return odiff(jsonObject, reconstructedGame.toJSON());
+    return odiff(jsonObject, compressJson(reconstructedGame.toJSON()));
 }
 

@@ -7,6 +7,7 @@ import {auth, db, storage} from "./firebase";
 import {BrokenStudy, Study} from "../model/study";
 import {StudyImage} from "../model/images";
 import {Game} from "../model/game";
+import {decompressJson} from "./compressJson";
 
 
 /**
@@ -34,7 +35,8 @@ export async function readStudySettings(studyID) {
                 reject(new Error("Could not find the study with ID " + studyID));
                 return;
             }
-            resolve(studyOrBrokenFromJson(studyID, snapshot.data()));
+            const json = decompressJson(snapshot.data())
+            resolve(studyOrBrokenFromJson(studyID, json));
         }).catch(error => {
             if (error.code === "permission-denied") {
                 reject(new Error("This study has been disabled."));
@@ -56,7 +58,7 @@ export async function readAllStudies() {
 
     const snapshot = await db.collection('Studies')
                              .where("authorID", "==", auth.currentUser.uid).get();
-    return snapshot.docs.map((doc) => studyOrBrokenFromJson(doc.id, doc.data()));
+    return snapshot.docs.map((doc) => studyOrBrokenFromJson(doc.id, decompressJson(doc.data())));
 }
 
 /**
@@ -122,7 +124,7 @@ export async function readAllCompletedStudyResults(study, problems) {
                              .collection("Results").get();
     for(let index = 0; index < snapshot.docs.length; ++index) {
         const doc = snapshot.docs[index];
-        const json = doc.data();
+        const json = decompressJson(doc.data());
         try {
             games.push(Game.fromJSON(json, study));
         } catch (err) {
