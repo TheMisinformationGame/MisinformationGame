@@ -6,7 +6,6 @@
 import {db, storageRef} from './firebase';
 import {compressJson} from "./compressJson";
 import {STUDY_UNCOMPRESSED_KEYS} from "../model/study";
-import sizeof from "firestore-size";
 
 /**
  * Uploads the configuration for the study {@param study}.
