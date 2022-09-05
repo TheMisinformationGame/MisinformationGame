@@ -248,7 +248,7 @@ class Comment extends Component {
                             </div>
                             <p className="w-full text-lg ml-1" style={{whiteSpace: "pre-wrap"}}>{comment.message}</p>
                         </div>
-                        <div className="flex flex-row-reverse flex-grow-0 p-1 pr-0 w-1/5">
+                        <div className="flex flex-row-reverse flex-grow-0 p-1 pr-0">
                             {commentReactions}
                         </div>
                     </div>
@@ -541,7 +541,8 @@ class PostReactionsRow extends Component {
                              reactionCount={reactionCount}
                              childClassName={transforms}
                              title={titles[reaction]}
-                             className="mr-1" fontSize={fontSize}>
+                             className="mr-1"
+                             fontSize={fontSize}>
 
                     {icons[reaction]}
                 </ReactButton>
@@ -550,8 +551,8 @@ class PostReactionsRow extends Component {
 
         return (
             <div className={"text-lg flex flex-wrap flex-row pt-1 px-2 " +
-                            (study.displayNumberOfReactions ? " pb-6 mb-0.5 " : " mb-1 ")}>
-                <div className="flex flex-grow">
+                            (study.displayNumberOfReactions ? " mb-0.5 " : " mb-1 ")}>
+                <div className={"flex flex-grow" + (study.displayNumberOfReactions ? " pb-6 " : "")}>
                     {buttons}
                 </div>
 
