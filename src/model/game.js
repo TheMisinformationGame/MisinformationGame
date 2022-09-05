@@ -177,12 +177,6 @@ export class GamePost {
         return new GamePost(this.study, this.post, this.numberOfReactions, this.comments, true);
     }
 
-    addUsedSources(usedSources) {
-        for (let index = 0; index < this.post.comments.length; ++index) {
-            usedSources.add(this.post.comments[index].sourceID);
-        }
-    }
-
     static commentsToJSON(comments) {
         const commentsJSON = [];
         for (let index = 0; index < comments.length; ++index) {
@@ -275,82 +269,20 @@ export class GameState {
 
     currentSource; // GameSource
     currentPost; // GamePost
-    sources; // GameSource[]
-    posts; // GamePost[]
 
-    constructor(study, currentSource, currentPost, sources, posts) {
+    constructor(study, currentSource, currentPost) {
         doTypeCheck(study, Study, "Game's Study");
         doTypeCheck(currentSource, GameSource, "Game's Current Source");
         doTypeCheck(currentPost, GamePost, "Game's Current Post");
-        doTypeCheck(sources, Array, "Game's Sources");
-        doTypeCheck(posts, Array, "Game's Posts");
         this.study = study;
         this.currentSource = currentSource;
         this.currentPost = currentPost;
-        this.sources = sources;
-        this.posts = posts;
-    }
-
-    findSource(id) {
-        for (let index = 0; index < this.sources.length; ++index) {
-            const source = this.sources[index];
-            if (source.source.id === id)
-                return source;
-        }
-        throw new Error("Could not find source with ID " + id);
-    }
-
-    addUsedSourcesAndPosts(usedSources, usedPosts) {
-        usedSources.add(this.currentSource.source.id);
-        usedPosts.add(this.currentPost.post.id);
-        this.currentPost.addUsedSources(usedSources);
-        for (let index = 0; index < this.sources.length; ++index) {
-            usedSources.add(this.sources[index].source.id);
-        }
-        for (let index = 0; index < this.posts.length; ++index) {
-            usedPosts.add(this.posts[index].post.id);
-            this.posts[index].addUsedSources(usedSources);
-        }
-    }
-
-    static sourcesToJSON(sources) {
-        const sourcesJSON = [];
-        for (let index = 0; index < sources.length; ++index) {
-            sourcesJSON.push(sources[index].toJSON());
-        }
-        return sourcesJSON;
-    }
-
-    static postsToJSON(posts) {
-        const postsJSON = [];
-        for (let index = 0; index < posts.length; ++index) {
-            postsJSON.push(posts[index].toJSON());
-        }
-        return postsJSON;
-    }
-
-    static sourcesFromJSON(json, study) {
-        const sources = [];
-        for (let index = 0; index < json.length; ++index) {
-            sources.push(GameSource.fromJSON(json[index], study));
-        }
-        return sources;
-    }
-
-    static postsFromJSON(json, study) {
-        const posts = [];
-        for (let index = 0; index < json.length; ++index) {
-            posts.push(GamePost.fromJSON(json[index], study));
-        }
-        return posts;
     }
 
     toJSON() {
         return {
             "currentSource": this.currentSource.toJSON(),
-            "currentPost": this.currentPost.toJSON(),
-            "sources": GameState.sourcesToJSON(this.sources),
-            "posts": GameState.postsToJSON(this.posts)
+            "currentPost": this.currentPost.toJSON()
         };
     }
 
@@ -359,8 +291,8 @@ export class GameState {
             study,
             GameSource.fromJSON(json["currentSource"], study),
             GamePost.fromJSON(json["currentPost"], study),
-            GameState.sourcesFromJSON(json["sources"], study),
-            GameState.postsFromJSON(json["posts"], study)
+            null,
+            null
         );
     }
 }
@@ -648,6 +580,8 @@ export class Game {
     startTime; // Number (UNIX Epoch Time in Seconds)
     endTime; // Number (UNIX Epoch Time in Seconds), or null
     states; // GameState[]
+    latestStatePosts; // GameSource[], or null
+    latestStateSources; // GamePost[], or null
     participant; // GameParticipant
     dismissedPrompt; // Boolean
     completionCode; // String
@@ -672,6 +606,8 @@ export class Game {
         this.startTime = startTime;
         this.endTime = endTime || null;
         this.states = states;
+        this.latestStatePosts = null;
+        this.latestStateSources = null;
         this.participant = participant;
         this.dismissedPrompt = dismissedPrompt;
         this.completionCode = completionCode;
@@ -807,19 +743,6 @@ export class Game {
         }
     }
 
-    /**
-     * Returns all source and post IDs used in this game.
-     * @return [string[], string[]] containing [Source IDs, Post IDs]
-     */
-    findUsedSourcesAndPosts() {
-        const usedSources = new Set();
-        const usedPosts = new Set();
-        for (let index = 0; index < this.states.length; ++index) {
-            this.states[index].addUsedSourcesAndPosts(usedSources, usedPosts);
-        }
-        return [[...usedSources.values()], [...usedPosts.values()]];
-    }
-
     calculateAllStates() {
         while (this.states.length < this.study.length) {
             this.calculateNextState();
@@ -831,12 +754,9 @@ export class Game {
             throw new Error("Already calculated all states for study");
 
         // Get or create the sources and posts arrays.
-        let currentSources, currentPosts;
-        if (this.states.length > 0) {
-            const currentState = this.states[this.states.length - 1];
-            currentSources = currentState.sources;
-            currentPosts = currentState.posts;
-        } else {
+        let currentSources = this.latestStateSources;
+        let currentPosts = this.latestStatePosts;
+        if (currentSources === null || currentPosts === null) {
             currentSources = [];
             currentPosts = [];
             for (let index = 0; index < this.study.sources.length; ++index) {
@@ -880,8 +800,10 @@ export class Game {
         }
 
         // Create the new state.
-        const newState = new GameState(this.study, selectedSource, selectedPost, nextSources, nextPosts);
+        const newState = new GameState(this.study, selectedSource, selectedPost);
         this.states.push(newState);
+        this.latestStateSources = nextSources;
+        this.latestStatePosts = nextPosts;
         return newState;
     }
 
