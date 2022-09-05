@@ -34,7 +34,7 @@ export function loadTestStudy(name, callback) {
 }
 
 test('load the template study', done => {
-    loadTestStudy("StudyTemplate.xlsx", (err, study) => {
+    loadTestStudy("../docs/StudyTemplate.xlsx", (err, study) => {
         if (err) {
             done(err);
             return;
