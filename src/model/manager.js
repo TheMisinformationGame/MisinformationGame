@@ -310,7 +310,7 @@ class DataManager {
                 const gameJSON = localStorage.getItem("game");
                 if (gameJSON) {
                     try {
-                        game = Game.fromJSON(JSON.parse(gameJSON));
+                        game = Game.fromJSON(JSON.parse(gameJSON), study);
                     } catch (err) {
                         console.error(err);
                         // We don't report this to the user, but

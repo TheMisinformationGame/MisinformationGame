@@ -24,7 +24,11 @@ service cloud.firestore {
 
       match /Results/{result} {
         allow create, update: if true;
+
         allow read: if request.auth != null
+                       && request.auth.uid == get(/databases/$(database)/documents/Studies/$(study)).data.authorID;
+
+        allow delete: if request.auth != null
                        && request.auth.uid == get(/databases/$(database)/documents/Studies/$(study)).data.authorID;
       }
     }

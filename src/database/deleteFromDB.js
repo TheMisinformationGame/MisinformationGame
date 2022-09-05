@@ -65,22 +65,57 @@ function deleteStudyConfiguration(study) {
 }
 
 /**
- * Deletes a study and all of the images stored for it
+ * Deletes the results of the given study, {@param study}.
+ */
+function deleteStudyResults(study) {
+    return new Promise((resolve, reject) => {
+        db.collection("Studies").doc(study.id).collection("Results").get().then(snapshot => {
+            const promises = [];
+            snapshot.forEach(doc => {
+                promises.push(doc.ref.delete());
+            });
+            Promise.all(promises).then(resolve).catch(reject);
+        }).catch(error => {
+                reject(error);
+        });
+    });
+}
+
+/**
+ * Deletes a study and all the images stored for it
  * from Firebase Storage and Firestore.
  */
 export function deleteStudy(study) {
-    // TODO : Delete results as well.
-
     return new Promise((resolve, reject) => {
         let paths = (study instanceof BrokenStudy ? [] : study.getAllStoragePaths());
-        deletePathsFromStorage(paths).then(() => {
+
+        // 3. Delete study configuration.
+        function delStudyConfig() {
             deleteStudyConfiguration(study).then(resolve).catch(reject);
+        }
+
+        // 2. Delete study results.
+        function delStudyResults() {
+            deleteStudyResults(study).then(() => {
+                delStudyConfig();
+            }).catch(error => {
+                // Just print the error and continue...
+                // This might leave hanging results in
+                // the database, but oh well.
+                console.error(error);
+                delStudyConfig();
+            });
+        }
+
+        // 1. Delete study images.
+        deletePathsFromStorage(paths).then(() => {
+            delStudyResults();
         }).catch(error => {
             // Just print the error and continue...
             // This might leave hanging images in
             // the database, but oh well.
             console.error(error);
-            deleteStudyConfiguration(study).then(resolve).catch(reject);
+            delStudyResults();
         });
     });
 }
