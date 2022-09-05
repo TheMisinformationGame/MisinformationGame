@@ -36,7 +36,10 @@ if [ "$CONFIRMATION" != "YES" ]; then
 fi
 
 # If the current directory isn't a git repository, make it one.
-if [ "$(pwd)" != "$(git rev-parse --show-toplevel)" ]; then
+inside_git_repo="$(git rev-parse --is-inside-work-tree 2>/dev/null)"
+if [ "$inside_git_repo" ]; then
+  echo "Source code is already a git repository."
+else
   echo "Converting your source code into a git repository..."
 
   # Initialise this directory as a git repository.
@@ -44,7 +47,7 @@ if [ "$(pwd)" != "$(git rev-parse --show-toplevel)" ]; then
   git checkout -b main || { echo "Unable to create main branch!" ; exit 1; }
   git add --all || { echo "Unable to add initial contents of repository!" ; exit 1; }
   git commit -m "Backup repository before setting up git" || { echo "Unable to backup repository!" ; exit 1; }
-  git remote add origin git@github.com:TheMisinformationGame/MisinformationGame.git || { echo "Unable to link this repository to The Misinformation Game's repository on GitHub!" ; exit 1; }
+  git remote add origin https://github.com/TheMisinformationGame/MisinformationGame || { echo "Unable to link this repository to The Misinformation Game's repository on GitHub!" ; exit 1; }
 
   # Backup the current state of the repository.
   git checkout -b git-setup-backup || { echo "Unable to backup repository!" ; exit 1; }
