@@ -111,6 +111,7 @@ export class GameIdentification extends ActiveGameScreen {
 
                     <ContinueButton to={target}
                                     condition={GameIdentification.isValidValue(this.state.value)}
+                                    disabledTooltip="Enter your access ID to continue"
                                     onClick={() => this.setState({...this.state, displayError: true})}
                                     active={this.state.submitOnEnterUp} />
                 </div>

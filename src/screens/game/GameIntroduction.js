@@ -74,7 +74,7 @@ export class GameIntroductionScreen extends ActiveGameScreen {
                 <div className="m-1 bg-white p-10 max-w-4xl ml-auto mr-auto">
                     <p dangerouslySetInnerHTML={{__html: content}} />
                 </div>
-                <ContinueBanner to={target} condition={true} delay={delay} />
+                <ContinueBanner to={target} condition={true} delay={delay} requireScrollToBottom={true} />
             </div>
         );
     }

@@ -3,7 +3,7 @@ import {Component} from "react";
 
 export class ConditionalLink extends Component {
     render() {
-        if (this.props.condition) {
+        if (this.props.condition && this.props.to) {
             return (<Link to={this.props.to} className={this.props.className} title={this.props.tooltip}>
                 {this.props.children}
             </Link>);
