@@ -19,10 +19,12 @@ export class GameRules extends GameIntroductionScreen {
         const dislike = <ThumbDownIcon className="text-gray-700 mr-2" key="dislike" />;
         const share = (
             <span className="inline-block transform scale-125" key="share">
-                <ReplyIcon className="text-gray-700 mr-2 transform flip-x" />
+                <ReplyIcon className="text-gray-700 mr-2 transform flip-x -translate-y-0.5 -scale-x-1"
+                           style={{fontSize: "1.7rem"}}/>
             </span>
         );
-        const flag = <FlagIcon className="text-gray-700 mr-2" key="flag" />;
+        const flag = <FlagIcon key="flag" className="text-gray-700 mr-2"
+                               style={{fontSize: "1.6rem", marginLeft: "-0.15rem", marginTop: "-0.15rem"}} />;
 
         rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{LIKE}}", () => like).content;
         rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{DISLIKE}}", () => dislike).content;
@@ -49,7 +51,7 @@ export class GameRules extends GameIntroductionScreen {
                 }
                 content = <>
                     <div>{buttons}</div>
-                    <span className="text-gray-700" key="skip">
+                    <span className="text-gray-700" style={{marginTop: "0.1rem"}} key="skip">
                         Skip Post
                     </span>
                 </>;
@@ -57,7 +59,7 @@ export class GameRules extends GameIntroductionScreen {
                 content = <span className="italic">There are no enabled reactions for posts</span>;
             }
             return <div className="inline-block w-full mb-2">
-                <div className="w-full flex justify-between max-w-xs px-2 py-1 mt-4
+                <div className="w-full flex justify-between max-w-xs px-3 py-1 mt-4
                                    rounded-md shadow border border-gray-400">
                     {content}
                 </div>
@@ -89,7 +91,7 @@ export class GameRules extends GameIntroductionScreen {
                 content = <span className="italic">There are no enabled reactions for comments</span>;
             }
             return <div className="inline-block w-full mb-2">
-                <div className="inline-block px-2 py-1 mt-4 rounded-md shadow border border-gray-400">
+                <div className="inline-block pr-2 pl-3 py-1 mt-4 rounded-md shadow border border-gray-400">
                     {content}
                 </div>
             </div>;
