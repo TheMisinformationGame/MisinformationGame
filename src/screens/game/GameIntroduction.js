@@ -82,7 +82,7 @@ export class GameIntroductionScreen extends ActiveGameScreen {
 
 export class GamePreIntroduction extends GameIntroductionScreen {
     getContent(study) {
-        return study.preIntro;
+        return study.pagesSettings.preIntro;
     }
 
     getTarget(study) {
@@ -90,13 +90,13 @@ export class GamePreIntroduction extends GameIntroductionScreen {
     }
 
     getContinueDelaySeconds(study) {
-        return study.preIntroDelaySeconds;
+        return study.pagesSettings.preIntroDelaySeconds;
     }
 }
 
 export class GamePostIntroduction extends GameIntroductionScreen {
     getContent(study) {
-        return study.postIntro;
+        return study.pagesSettings.postIntro;
     }
 
     getTarget(study) {
@@ -104,6 +104,6 @@ export class GamePostIntroduction extends GameIntroductionScreen {
     }
 
     getContinueDelaySeconds(study) {
-        return study.postIntroDelaySeconds;
+        return study.pagesSettings.postIntroDelaySeconds;
     }
 }

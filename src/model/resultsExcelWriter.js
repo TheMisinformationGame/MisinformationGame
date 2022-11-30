@@ -47,14 +47,14 @@ function setWorksheetColumns(worksheet, columnSpecs) {
  * Creates the workbook to store the results into.
  */
 function constructWorkbook(study, results, problems) {
-    const showFollowers = study.displayFollowers;
-    const showCredibility = study.displayCredibility;
-    const showPostLikes = study.postEnabledReactions.like;
-    const showPostDislikes = study.postEnabledReactions.dislike;
-    const showPostShares = study.postEnabledReactions.share;
-    const showPostFlags = study.postEnabledReactions.flag;
-    const showCommentLikes = study.commentEnabledReactions.like;
-    const showCommentDislikes = study.commentEnabledReactions.dislike;
+    const showFollowers = study.uiSettings.displayFollowers;
+    const showCredibility = study.uiSettings.displayCredibility;
+    const showPostLikes = study.uiSettings.postEnabledReactions.like;
+    const showPostDislikes = study.uiSettings.postEnabledReactions.dislike;
+    const showPostShares = study.uiSettings.postEnabledReactions.share;
+    const showPostFlags = study.uiSettings.postEnabledReactions.flag;
+    const showCommentLikes = study.uiSettings.commentEnabledReactions.like;
+    const showCommentDislikes = study.uiSettings.commentEnabledReactions.dislike;
 
     const workbook = new excel.Workbook();
 
@@ -68,7 +68,7 @@ function constructWorkbook(study, results, problems) {
     ];
     coverWorksheet.addRow({
         studyId: study.id,
-        studyName: study.name,
+        studyName: study.basicSettings.name,
         participants: results.length + Object.keys(problems).length,
         date: formatUTCDate(new Date())
     });
@@ -217,7 +217,7 @@ function constructWorkbook(study, results, problems) {
     setWorksheetColumns(participantWorksheet, [
         {header: "Session ID", key: "sessionID", width: 24},
         {header: "Participant ID", key: "participantID", width: 24},
-        {header: "Completion Code", key: "completionCode", width: 24, enabled: study.genCompletionCode},
+        {header: "Completion Code", key: "completionCode", width: 24, enabled: study.advancedSettings.genCompletionCode},
         {header: "Duration (Seconds)", key: "gameDuration", width: 24},
         {header: "Game Start Time (UTC)", key: "gameStartTime", width: 30},
         {header: "Game Finish Time (UTC)", key: "gameEndTime", width: 30},
@@ -281,7 +281,7 @@ export async function downloadResults(study) {
     });
 
     // Remove characters that could potentially interfere with user's file systems.
-    const safeStudyName = study.name.replace(/[^a-z0-9]/gi, '_');
+    const safeStudyName = study.basicSettings.name.replace(/[^a-z0-9]/gi, '_');
     FileSaver.saveAs(blob, "results--" + safeStudyName + ".xlsx");
     return problems;
 }

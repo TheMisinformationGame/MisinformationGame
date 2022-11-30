@@ -646,14 +646,14 @@ export class Game {
      * Returns whether there are no more posts to show to the participant.
      */
     isFinished() {
-        return this.participant.postInteractions.length >= this.study.length;
+        return this.participant.postInteractions.length >= this.study.basicSettings.length;
     }
 
     /**
      * Returns the stage of the game that the user should be shown right now.
      */
     getCurrentStage() {
-        if (!this.participant.participantID && this.study.requireIdentification)
+        if (!this.participant.participantID && this.study.basicSettings.requireIdentification)
             return "identification";
         if (this.isFinished())
             return "debrief";
@@ -728,7 +728,7 @@ export class Game {
 
         // Generate a completion code when the game is finished.
         if (this.isFinished()) {
-            if (this.study.genCompletionCode) {
+            if (this.study.advancedSettings.genCompletionCode) {
                 this.completionCode = this.study.generateRandomCompletionCode();
             }
             this.endTime = getUnixEpochTimeSeconds();
@@ -744,13 +744,13 @@ export class Game {
     }
 
     calculateAllStates() {
-        while (this.states.length < this.study.length) {
+        while (this.states.length < this.study.basicSettings.length) {
             this.calculateNextState();
         }
     }
 
     calculateNextState() {
-        if (this.states.length >= this.study.length)
+        if (this.states.length >= this.study.basicSettings.length)
             throw new Error("Already calculated all states for study");
 
         // Get or create the sources and posts arrays.

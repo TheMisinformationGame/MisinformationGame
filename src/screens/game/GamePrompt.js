@@ -11,7 +11,8 @@ export class GamePrompt extends Component {
                  style={{minHeight: "100vh"}}>
 
                 <div className="m-4 max-w-2xl">
-                    <p className="text-center text-4xl" dangerouslySetInnerHTML={{__html: study.prompt}} />
+                    <p className="text-center text-4xl"
+                       dangerouslySetInnerHTML={{__html: study.basicSettings.prompt}} />
 
                     {/* Used for reserving space below the continue button. */}
                     <div className="h-16" />
@@ -20,7 +21,7 @@ export class GamePrompt extends Component {
                 <ContinueBanner to={null}
                                 condition={true}
                                 onClick={this.props.onClick}
-                                delay={study.reactDelaySeconds}/>
+                                delay={study.promptDelaySeconds}/>
             </div>
         );
      }

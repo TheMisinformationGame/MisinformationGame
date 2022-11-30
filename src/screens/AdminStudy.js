@@ -251,7 +251,7 @@ class AdminStudy extends MountAwareComponent {
                     <span className="inline-block w-4 h-4 mb-1 mr-2 bg-green-500 rounded-full"
                           title="Study is Enabled" />}
 
-                    {study.name}
+                    {study.basicSettings.name}
                 </h1>
 
                 {/* If not broken, the game URL for this study. */}
@@ -285,7 +285,7 @@ class AdminStudy extends MountAwareComponent {
                 {/* Description. */}
                 <p className="mt-2">
                     <b className="block">Description:&nbsp;</b>
-                    <span dangerouslySetInnerHTML={{__html: study.description}} />
+                    <span dangerouslySetInnerHTML={{__html: study.basicSettings.description}} />
                 </p>
 
                 {/* Actions. */}

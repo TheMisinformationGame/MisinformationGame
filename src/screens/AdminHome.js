@@ -20,10 +20,10 @@ class StudySummary extends Component {
                 <div className="rounded-xl border border-red-800 p-3 bg-white shadow">
                     <Link to={`/admin/${study.id}`}
                           className="text-red-500 text-lg font-bold hover:text-red-700 hover:underline">
-                        {study.name}
+                        {study.basicSettings.name}
                     </Link>
 
-                    <p dangerouslySetInnerHTML={{__html: study.description}} />
+                    <p dangerouslySetInnerHTML={{__html: study.basicSettings.description}} />
                     <ErrorLabel className="mt-3" value={[<b>This study is broken:</b>, study.error]} />
                 </div>
             );
@@ -43,10 +43,10 @@ class StudySummary extends Component {
                                  (study.enabled ? "text-green-600 hover:text-green-700" :
                                                   "text-blue-600 hover:text-blue-700")}>
 
-                    {study.name}
+                    {study.basicSettings.name}
                 </Link>
-                
-                <p dangerouslySetInnerHTML={{__html: study.description}} />
+
+                <p dangerouslySetInnerHTML={{__html: study.basicSettings.description}} />
             </div>
         );
     }

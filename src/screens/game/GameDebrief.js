@@ -113,10 +113,10 @@ export class GameDebrief extends ActiveGameScreen {
     }
 
     renderWithStudyAndGame(study, game) {
-        let debriefHTML = study.debrief;
+        let debriefHTML = study.pagesSettings.debrief;
         let placeCompletionCodeAtEnd = false;
 
-        if (study.genCompletionCode) {
+        if (study.advancedSettings.genCompletionCode) {
             let ret = replaceHTMLPlaceholder(debriefHTML, "{{COMPLETION-CODE}}", () => {
                 return <CompletionCodeWidget completionCode={game.completionCode} requireConfirmation={false} />;
             }, 1);

@@ -13,7 +13,7 @@ import {ExampleCommentEntryBox} from "./GameInterface";
  */
 export class GameRules extends GameIntroductionScreen {
     getContent(study) {
-        let rulesHTML = study.rules;
+        let rulesHTML = study.pagesSettings.rules;
 
         const like = <ThumbUpIcon className="text-gray-700 mr-2" key="like" />;
         const dislike = <ThumbDownIcon className="text-gray-700 mr-2" key="dislike" />;
@@ -104,9 +104,9 @@ export class GameRules extends GameIntroductionScreen {
         rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{YOUR-PROGRESS-EXAMPLE}}", () => {
             return <div className="inline-block w-full mb-2">
                 <ParticipantProgress
-                    displayFollowers={study.displayFollowers}
-                    displayCredibility={study.displayCredibility}
-                    displayProgress = {study.displayProgress}
+                    displayFollowers={study.uiSettings.displayFollowers}
+                    displayCredibility={study.uiSettings.displayCredibility}
+                    displayProgress = {study.uiSettings.displayProgress}
                     overrideFollowers={13}
                     overrideCredibility={56}
                     hideTooltip={true}
@@ -125,6 +125,6 @@ export class GameRules extends GameIntroductionScreen {
     }
 
     getContinueDelaySeconds(study) {
-        return study.rulesDelaySeconds;
+        return study.pagesSettings.rulesDelaySeconds;
     }
 }

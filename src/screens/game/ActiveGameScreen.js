@@ -72,7 +72,7 @@ export class ActiveGameScreen extends ActiveStudyScreen {
      * Overwrite this to run code once the game loads.
      */
     afterGameLoaded(game) {
-        document.title = game.study.name;
+        document.title = game.study.basicSettings.name;
         this.updateQueryParams(game);
     }
 

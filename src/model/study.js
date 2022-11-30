@@ -320,108 +320,132 @@ export class BrokenStudy {
     }
 }
 
-
 /**
- * Holds the entire specification of a study.
+ * The basic settings of a study.
  */
-export class Study {
-    id; // String
-    authorID; // String
-    authorName; // String
+export class StudyBasicSettings {
     name; // String
     description; // String
-    lastModifiedTime; // Number (UNIX Epoch Time in Seconds)
-    enabled; // Boolean
 
     prompt; // String
-    promptDelaySeconds; // Number
     length; // Number
 
     requireReactions; // Boolean
-    reactDelaySeconds; // Number
     requireComments; // String
-    minimumCommentLength; // Number
     requireIdentification; // Boolean
 
-    displayFollowers; // Boolean
-    displayCredibility; // Boolean
-    displayProgress; // Boolean
-    displayNumberOfReactions; // Boolean
-
-    postEnabledReactions; // {String: Boolean}
-    commentEnabledReactions; // {String: Boolean}
-
-    genCompletionCode; // Boolean
-    completionCodeDigits; // Number
-    genRandomDefaultAvatars; // Boolean
-
-    preIntro; // HTML String
-    preIntroDelaySeconds; // Number
-    rules; // HTML String
-    rulesDelaySeconds; // Number
-    postIntro; // HTML String
-    postIntroDelaySeconds; // Number
-    debrief; // HTML String
-
-    sourcePostSelectionMethod; // SourcePostSelectionMethod
-    sources; // Source[]
-    posts; // Post[]
-
-    /**
-     * This is a really long constructor, although it is only called
-     * twice (once from the excel reader, and once from the JSON reader).
-     * Additionally, all the parameters are required. Therefore, this
-     * is simpler than a builder would be. Perhaps grouping the parameters
-     * into functional groups could assist in simplifying this, although
-     * that seems like a lot of work for little gain.
-     */
     constructor(
-            id, authorID, authorName,
-            name, description, lastModifiedTime, enabled,
-            prompt, promptDelaySeconds, length,
-            requireReactions, reactDelaySeconds,
-            requireComments, minimumCommentLength,
-            requireIdentification,
-            displayFollowers, displayCredibility,
-            displayProgress, displayNumberOfReactions,
-            postEnabledReactions, commentEnabledReactions,
-            genCompletionCode, completionCodeDigits,
-            genRandomDefaultAvatars,
-            preIntro, preIntroDelaySeconds,
-            rules, rulesDelaySeconds,
-            postIntro, postIntroDelaySeconds,
-            debrief, sourcePostSelectionMethod,
-            sources, posts) {
+            name, description, prompt, length,
+            requireReactions, requireComments, requireIdentification) {
 
+        doTypeCheck(name, "string", "Study Name");
+        doTypeCheck(description, "string", "Study Description");
+        doTypeCheck(prompt, "string", "Study Prompt");
+        doTypeCheck(length, "number", "Study Length");
+
+        doTypeCheck(requireComments, "string", "requireComments");
         if (requireComments) {
             requireComments = requireComments.toLowerCase();
         }
-
-        doTypeCheck(id, "string", "Study ID");
-        doTypeCheck(authorID, "string", "Study Author's ID");
-        doTypeCheck(authorName, "string", "Study Author's Name");
-        doTypeCheck(name, "string", "Study Name");
-        doTypeCheck(description, "string", "Study Description");
-        doNullableTypeCheck(lastModifiedTime, "number", "The last time the study was modified");
-        doNullableTypeCheck(enabled, "boolean", "Whether the study is enabled");
-
-        doTypeCheck(prompt, "string", "Study Prompt");
-        doTypeCheck(promptDelaySeconds, "number", "Study Prompt Continue Delay");
-        doTypeCheck(length, "number", "Study Length");
-
-        doTypeCheck(requireReactions, "boolean", "Whether the study requires reactions to posts");
-        doTypeCheck(reactDelaySeconds, "number", "Study Reaction Delay");
         doEnumCheck(
             requireComments, ["required", "optional", "disabled"],
             "Whether comments are required, optional, or disabled"
         );
-        doTypeCheck(minimumCommentLength, "number", "Minimum Comment Length");
+
+        doTypeCheck(requireReactions, "boolean", "Whether the study requires reactions to posts");
         doTypeCheck(requireIdentification, "boolean", "Whether the study requires identification");
+
+        this.name = name;
+        this.description = description;
+        this.prompt = prompt;
+        this.length = length;
+        this.requireComments = requireComments;
+        this.requireReactions = requireReactions;
+        this.requireIdentification = requireIdentification;
+    }
+
+    toJSON() {
+        return {
+            "name": this.name,
+            "description": this.description,
+            "prompt": this.prompt,
+            "length": this.length,
+            "requireComments": this.requireComments,
+            "requireReactions": this.requireReactions,
+            "requireIdentification": this.requireIdentification
+        };
+    }
+
+    static fromJSON(json) {
+        return new StudyBasicSettings(
+            json["name"], json["description"], json["prompt"], json["length"],
+            json["requireReactions"], json["requireComments"], json["requireIdentification"]
+        )
+    }
+
+    /**
+     * Create the basic settings for a version-2 study.
+     */
+    static createV2(
+            name, description, prompt, promptDelaySeconds, length,
+            requireReactions, requireComments, requireIdentification) {
+
+        return new StudyBasicSettings(
+            name, description, prompt, promptDelaySeconds, length,
+            requireReactions, requireComments, requireIdentification
+        )
+    }
+
+    /**
+     * Create the basic settings for a version-1 study.
+     */
+    static createV1(
+            name, description, prompt, promptDelaySeconds, length,
+            requireReactions, requireComments, requireIdentification) {
+
+        return StudyBasicSettings.createV2(
+            name, description, prompt, promptDelaySeconds, length,
+            requireReactions, requireComments, requireIdentification
+        )
+    }
+}
+
+/**
+ * The user interface settings of a study.
+ */
+export class StudyUserInterfaceSettings {
+    displayPostsInFeed; // Boolean
+    feedScrollStyle; // String
+    displayFollowers; // Boolean
+    displayCredibility; // Boolean
+    displayProgress; // Boolean
+    displayNumberOfReactions; // Boolean
+    allowMultipleReactions; // Boolean
+
+    postEnabledReactions; // {String: Boolean}
+    commentEnabledReactions; // {String: Boolean}
+
+    constructor(
+        displayPostsInFeed, feedScrollStyle, displayFollowers,
+        displayCredibility, displayProgress, displayNumberOfReactions,
+        allowMultipleReactions, postEnabledReactions, commentEnabledReactions) {
+
+        doTypeCheck(displayPostsInFeed, "boolean", "Whether to display posts in a feed");
+
+        doTypeCheck(feedScrollStyle, "string", "feedScrollStyle");
+        if (feedScrollStyle) {
+            feedScrollStyle = feedScrollStyle.toLowerCase();
+        }
+        doEnumCheck(
+            feedScrollStyle, ["free", "snap"],
+            "Whether the feed scroll style is free or snap"
+        );
 
         doTypeCheck(displayFollowers, "boolean", "Whether to display followers");
         doTypeCheck(displayCredibility, "boolean", "Whether to display credibility");
         doTypeCheck(displayProgress, "boolean", "Whether to display progress");
         doTypeCheck(displayNumberOfReactions, "boolean", "Whether to display number of reactions");
+        doTypeCheck(allowMultipleReactions, "boolean", "Whether to allow selection of multiple reactions");
 
         doTypeCheck(postEnabledReactions, "object", "The reactions enabled for posts");
         doTypeCheck(postEnabledReactions["like"], "boolean", "Whether likes are enabled for posts");
@@ -432,9 +456,175 @@ export class Study {
         doTypeCheck(commentEnabledReactions["like"], "boolean", "Whether likes are enabled for comments");
         doTypeCheck(commentEnabledReactions["dislike"], "boolean", "Whether likes are enabled for comments");
 
+        this.displayPostsInFeed = displayPostsInFeed;
+        this.feedScrollStyle = feedScrollStyle;
+        this.displayFollowers = displayFollowers;
+        this.displayCredibility = displayCredibility;
+        this.displayProgress = displayProgress;
+        this.displayNumberOfReactions = displayNumberOfReactions;
+        this.allowMultipleReactions = allowMultipleReactions;
+
+        this.postEnabledReactions = postEnabledReactions;
+        this.commentEnabledReactions = commentEnabledReactions;
+    }
+
+    toJSON() {
+        return {
+            "displayPostsInFeed": this.displayPostsInFeed,
+            "feedScrollStyle": this.feedScrollStyle,
+            "displayFollowers": this.displayFollowers,
+            "displayCredibility": this.displayCredibility,
+            "displayProgress": this.displayProgress,
+            "displayNumberOfReactions": this.displayNumberOfReactions,
+            "allowMultipleReactions": this.allowMultipleReactions,
+            "postEnabledReactions": this.postEnabledReactions,
+            "commentEnabledReactions": this.commentEnabledReactions,
+        };
+    }
+
+    static fromJSON(json) {
+        const displayPostsInFeed = json["displayPostsInFeed"],
+              feedScrollStyle = json["feedScrollStyle"],
+              allowMultipleReactions = json["allowMultipleReactions"];
+
+        return new StudyUserInterfaceSettings(
+            (displayPostsInFeed === undefined ? false : displayPostsInFeed),
+            (feedScrollStyle === undefined ? "free" : feedScrollStyle),
+            json["displayFollowers"], json["displayCredibility"],
+            json["displayProgress"], json["displayNumberOfReactions"],
+            (allowMultipleReactions === undefined ? false : allowMultipleReactions),
+            json["postEnabledReactions"], json["commentEnabledReactions"]
+        )
+    }
+
+    /**
+     * Create the user interface settings for a version-2 study.
+     */
+    static createV2(
+        displayPostsInFeed, feedScrollStyle, displayFollowers,
+        displayCredibility, displayProgress, displayNumberOfReactions,
+        allowMultipleReactions, postEnabledReactions, commentEnabledReactions) {
+
+        return new StudyUserInterfaceSettings(
+            displayPostsInFeed, feedScrollStyle, displayFollowers,
+            displayCredibility, displayProgress, displayNumberOfReactions,
+            allowMultipleReactions, postEnabledReactions, commentEnabledReactions
+        )
+    }
+
+    /**
+     * Create the user interface settings for a version-1 study.
+     */
+    static createV1(
+        displayFollowers, displayCredibility, displayProgress,
+        displayNumberOfReactions, postEnabledReactions, commentEnabledReactions) {
+
+        return StudyUserInterfaceSettings.createV2(
+            false, "free", displayFollowers,
+            displayCredibility, displayProgress, displayNumberOfReactions,
+            false, postEnabledReactions, commentEnabledReactions
+        )
+    }
+}
+
+/**
+ * The advanced settings of a study.
+ */
+export class StudyAdvancedSettings {
+    minimumCommentLength; // Number
+    promptDelaySeconds; // Number
+    reactDelaySeconds; // Number
+
+    genCompletionCode; // Boolean
+    completionCodeDigits; // Number
+    genRandomDefaultAvatars; // Boolean
+
+    constructor(
+        minimumCommentLength, promptDelaySeconds, reactDelaySeconds,
+        genCompletionCode, completionCodeDigits, genRandomDefaultAvatars) {
+
+        doTypeCheck(minimumCommentLength, "number", "Minimum Comment Length");
+        doTypeCheck(promptDelaySeconds, "number", "Study Prompt Continue Delay");
+        doTypeCheck(reactDelaySeconds, "number", "Study Reaction Delay");
+
         doTypeCheck(genCompletionCode, "boolean", "Whether the study generates a completion code");
         doTypeCheck(completionCodeDigits, "number", "Study Completion Code Digits");
         doTypeCheck(genRandomDefaultAvatars, "boolean", "Whether the study generates random default avatars for sources");
+
+        this.minimumCommentLength = minimumCommentLength;
+        this.promptDelaySeconds = promptDelaySeconds;
+        this.reactDelaySeconds = reactDelaySeconds;
+
+        this.genCompletionCode = genCompletionCode;
+        this.completionCodeDigits = completionCodeDigits;
+        this.genRandomDefaultAvatars = genRandomDefaultAvatars;
+    }
+
+    toJSON() {
+        return {
+            "minimumCommentLength": this.minimumCommentLength,
+            "promptDelaySeconds": this.promptDelaySeconds,
+            "reactDelaySeconds": this.reactDelaySeconds,
+            "genCompletionCode": this.genCompletionCode,
+            "completionCodeDigits": this.completionCodeDigits,
+            "genRandomDefaultAvatars": this.genRandomDefaultAvatars
+        };
+    }
+
+    static fromJSON(json) {
+        const randDefaultAvatars = json["genRandomDefaultAvatars"];
+        return new StudyAdvancedSettings(
+            json["minimumCommentLength"], json["promptDelaySeconds"],
+            json["reactDelaySeconds"], json["genCompletionCode"],
+            json["completionCodeDigits"],
+            (randDefaultAvatars === undefined ? true : randDefaultAvatars)
+        )
+    }
+
+    /**
+     * Create the advanced settings for a version-2 study.
+     */
+    static createV2(
+        minimumCommentLength, promptDelaySeconds, reactDelaySeconds,
+        genCompletionCode, completionCodeDigits, genRandomDefaultAvatars) {
+
+        return new StudyAdvancedSettings(
+            minimumCommentLength, promptDelaySeconds, reactDelaySeconds,
+            genCompletionCode, completionCodeDigits, genRandomDefaultAvatars
+        )
+    }
+
+    /**
+     * Create the advanced settings for a version-1 study.
+     */
+    static createV1(
+        minimumCommentLength, promptDelaySeconds, reactDelaySeconds,
+        genCompletionCode, completionCodeDigits, genRandomDefaultAvatars) {
+
+        return StudyAdvancedSettings.createV2(
+            minimumCommentLength, promptDelaySeconds, reactDelaySeconds,
+            genCompletionCode, completionCodeDigits, genRandomDefaultAvatars
+        )
+    }
+}
+
+/**
+ * Settings regarding the content pages of the study.
+ */
+export class StudyPagesSettings {
+    preIntro; // HTML String
+    preIntroDelaySeconds; // Number
+    rules; // HTML String
+    rulesDelaySeconds; // Number
+    postIntro; // HTML String
+    postIntroDelaySeconds; // Number
+    debrief; // HTML String
+
+    constructor(
+            preIntro, preIntroDelaySeconds,
+            rules, rulesDelaySeconds,
+            postIntro, postIntroDelaySeconds,
+            debrief) {
 
         doTypeCheck(preIntro, "string", "Study Introduction before Game Rules");
         doTypeCheck(preIntroDelaySeconds, "number", "Study Introduction before Game Rules Continue Delay");
@@ -444,41 +634,6 @@ export class Study {
         doTypeCheck(postIntroDelaySeconds, "number", "Study Introduction after Game Rules Continue Delay");
         doTypeCheck(debrief, "string", "Study Debrief");
 
-        doTypeCheck(sourcePostSelectionMethod, SourcePostSelectionMethod, "Study Source/Post Selection Method");
-        doTypeCheck(sources, Array, "Study Sources");
-        doTypeCheck(posts, Array, "Study Posts");
-
-        this.id = id;
-        this.authorID = authorID;
-        this.authorName = authorName;
-        this.name = name;
-        this.description = description;
-        this.lastModifiedTime = lastModifiedTime || 0;
-        this.enabled = enabled || false;
-
-        this.prompt = prompt;
-        this.promptDelaySeconds = promptDelaySeconds;
-        this.length = length;
-
-        this.requireReactions = requireReactions;
-
-        this.reactDelaySeconds = reactDelaySeconds;
-        this.requireComments = requireComments;
-        this.minimumCommentLength = minimumCommentLength;
-        this.requireIdentification = requireIdentification;
-
-        this.displayFollowers = displayFollowers;
-        this.displayCredibility = displayCredibility;
-        this.displayProgress = displayProgress;
-        this.displayNumberOfReactions = displayNumberOfReactions;
-
-        this.postEnabledReactions = postEnabledReactions;
-        this.commentEnabledReactions = commentEnabledReactions;
-
-        this.genCompletionCode = genCompletionCode;
-        this.completionCodeDigits = completionCodeDigits;
-        this.genRandomDefaultAvatars = genRandomDefaultAvatars;
-
         this.preIntro = preIntro;
         this.preIntroDelaySeconds = preIntroDelaySeconds;
         this.rules = rules;
@@ -486,6 +641,115 @@ export class Study {
         this.postIntro = postIntro;
         this.postIntroDelaySeconds = postIntroDelaySeconds;
         this.debrief = debrief;
+    }
+
+    toJSON() {
+        return {
+            "preIntro": this.preIntro,
+            "preIntroDelaySeconds": this.preIntroDelaySeconds,
+            "rules": this.rules,
+            "rulesDelaySeconds": this.rulesDelaySeconds,
+            "postIntro": this.postIntro,
+            "postIntroDelaySeconds": this.postIntroDelaySeconds,
+            "debrief": this.debrief
+        };
+    }
+
+    static fromJSON(json) {
+        const rules = json["rules"],
+              rulesDelaySeconds = json["rulesDelaySeconds"];
+
+        return new StudyPagesSettings(
+            json["preIntro"], json["preIntroDelaySeconds"],
+            (rules === undefined ? "" : rules),
+            (rulesDelaySeconds === undefined ? 0 : rulesDelaySeconds),
+            json["postIntro"], json["postIntroDelaySeconds"],
+            json["debrief"]
+        )
+    }
+
+    /**
+     * Create the pages settings for a version-2 study.
+     */
+    static createV2(
+            preIntro, preIntroDelaySeconds, rules, rulesDelaySeconds,
+            postIntro, postIntroDelaySeconds, debrief) {
+
+        return new StudyPagesSettings(
+            preIntro, preIntroDelaySeconds, rules, rulesDelaySeconds,
+            postIntro, postIntroDelaySeconds, debrief
+        )
+    }
+
+    /**
+     * Create the pages settings for a version-1 study.
+     */
+    static createV1(
+        preIntro, preIntroDelaySeconds, rules, rulesDelaySeconds,
+        postIntro, postIntroDelaySeconds, debrief) {
+
+        return StudyPagesSettings.createV2(
+            preIntro, preIntroDelaySeconds, rules, rulesDelaySeconds,
+            postIntro, postIntroDelaySeconds, debrief
+        )
+    }
+}
+
+/**
+ * Holds the entire specification of a study.
+ */
+export class Study {
+    id; // String
+    authorID; // String
+    authorName; // String
+    lastModifiedTime; // Number (UNIX Epoch Time in Seconds)
+    enabled; // Boolean
+
+    basicSettings; // StudyBasicSettings
+    uiSettings; // StudyUserInterfaceSettings
+    advancedSettings; // StudyAdvancedSettings
+    pagesSettings; // StudyPagesSettings
+
+    sourcePostSelectionMethod; // SourcePostSelectionMethod
+    sources; // Source[]
+    posts; // Post[]
+
+    constructor(
+            id, authorID, authorName,
+            lastModifiedTime, enabled,
+            basicSettings,
+            uiSettings,
+            advancedSettings,
+            pagesSettings,
+            sourcePostSelectionMethod,
+            sources, posts) {
+
+
+        doTypeCheck(id, "string", "Study ID");
+        doTypeCheck(authorID, "string", "Study Author's ID");
+        doTypeCheck(authorName, "string", "Study Author's Name");
+        doNullableTypeCheck(lastModifiedTime, "number", "The last time the study was modified");
+        doNullableTypeCheck(enabled, "boolean", "Whether the study is enabled");
+
+        doTypeCheck(basicSettings, StudyBasicSettings, "General > Basic settings");
+        doTypeCheck(uiSettings, StudyUserInterfaceSettings, "General > User Interface Settings");
+        doTypeCheck(advancedSettings, StudyAdvancedSettings, "General > Advanced Settings");
+        doTypeCheck(pagesSettings, StudyPagesSettings, "Pages Settings");
+
+        doTypeCheck(sourcePostSelectionMethod, SourcePostSelectionMethod, "Study Source/Post Selection Method");
+        doTypeCheck(sources, Array, "Study Sources");
+        doTypeCheck(posts, Array, "Study Posts");
+
+        this.id = id;
+        this.authorID = authorID;
+        this.authorName = authorName;
+        this.lastModifiedTime = lastModifiedTime || 0;
+        this.enabled = enabled || false;
+
+        this.basicSettings = basicSettings;
+        this.uiSettings = uiSettings;
+        this.advancedSettings = advancedSettings;
+        this.pagesSettings = pagesSettings;
 
         this.sourcePostSelectionMethod = sourcePostSelectionMethod;
         this.sources = sources;
@@ -503,19 +767,19 @@ export class Study {
     }
 
     getPostEnabledReactions() {
-        return Study.convertEnabledReactionsToList(this.postEnabledReactions);
+        return Study.convertEnabledReactionsToList(this.uiSettings.postEnabledReactions);
     }
 
     getCommentEnabledReactions() {
-        return Study.convertEnabledReactionsToList(this.commentEnabledReactions);
+        return Study.convertEnabledReactionsToList(this.uiSettings.commentEnabledReactions);
     }
 
     areUserCommentsRequired() {
-        return this.requireComments === "required";
+        return this.basicSettings.requireComments === "required";
     }
 
     areUserCommentsOptional() {
-        return this.requireComments === "optional";
+        return this.basicSettings.requireComments === "optional";
     }
 
     areUserCommentsEnabled() {
@@ -562,10 +826,10 @@ export class Study {
      * Generates a random completion code string for this study.
      */
     generateRandomCompletionCode() {
-        if (!this.genCompletionCode)
+        if (!this.advancedSettings.genCompletionCode)
             throw new Error("Completion codes are disabled for this study");
 
-        return randDigits(this.completionCodeDigits);
+        return randDigits(this.advancedSettings.completionCodeDigits);
     }
 
     /**
@@ -635,36 +899,18 @@ export class Study {
      */
     toJSON() {
         return {
+            "version": 1,
+
             "authorID": this.authorID,
             "authorName": this.authorName,
-            "name": this.name,
-            "description": this.description,
             "lastModifiedTime": this.lastModifiedTime,
             "enabled": this.enabled,
-            "prompt": this.prompt,
-            "promptDelaySeconds": this.promptDelaySeconds,
-            "length": this.length,
-            "requireReactions": this.requireReactions,
-            "reactDelaySeconds": this.reactDelaySeconds,
-            "requireComments": this.requireComments,
-            "minimumCommentLength": this.minimumCommentLength,
-            "requireIdentification": this.requireIdentification,
-            "displayFollowers": this.displayFollowers,
-            "displayCredibility": this.displayCredibility,
-            "displayProgress": this.displayProgress,
-            "displayNumberOfReactions": this.displayNumberOfReactions,
-            "postEnabledReactions": this.postEnabledReactions,
-            "commentEnabledReactions": this.commentEnabledReactions,
-            "genCompletionCode": this.genCompletionCode,
-            "completionCodeDigits": this.completionCodeDigits,
-            "genRandomDefaultAvatars": this.genRandomDefaultAvatars,
-            "preIntro": this.preIntro,
-            "preIntroDelaySeconds": this.preIntroDelaySeconds,
-            "rules": this.rules,
-            "rulesDelaySeconds": this.rulesDelaySeconds,
-            "postIntro": this.postIntro,
-            "postIntroDelaySeconds": this.postIntroDelaySeconds,
-            "debrief": this.debrief,
+
+            "basicSettings": this.basicSettings.toJSON(),
+            "uiSettings": this.uiSettings.toJSON(),
+            "advancedSettings": this.advancedSettings.toJSON(),
+            "pagesSettings": this.pagesSettings.toJSON(),
+
             "sourcePostSelectionMethod": this.sourcePostSelectionMethod.toJSON(),
             "sources": Study.sourcesToJSON(this.sources),
             "posts": Study.postsToJSON(this.posts)
@@ -672,25 +918,39 @@ export class Study {
     }
 
     static fromJSON(id, json) {
-        const randDefaultAvatars = json["genRandomDefaultAvatars"];
+        let version = json["version"];
+        if (version === undefined) {
+            version = 1;
+        } else if (version !== 1 && version !== 2) {
+            throw new Error("Unknown study version " + version)
+        }
+
+        let basicSettingsJSON = json["basicSettings"],
+            uiSettingsJSON = json["uiSettings"],
+            advancedSettingsJSON = json["advancedSettings"],
+            pagesSettingsJSON = json["pagesSettings"];
+
+        // Old versions had these in the top-level object.
+        if (basicSettingsJSON === undefined) {
+            basicSettingsJSON = json;
+        }
+        if (uiSettingsJSON === undefined) {
+            uiSettingsJSON = json;
+        }
+        if (advancedSettingsJSON === undefined) {
+            advancedSettingsJSON = json;
+        }
+        if (pagesSettingsJSON === undefined) {
+            pagesSettingsJSON = json;
+        }
+
         return new Study(
             id, json["authorID"], json["authorName"],
-            json["name"], json["description"],
             json["lastModifiedTime"], json["enabled"],
-            json["prompt"], json["promptDelaySeconds"],
-            json["length"],
-            json["requireReactions"], json["reactDelaySeconds"],
-            json["requireComments"], json["minimumCommentLength"],
-            json["requireIdentification"],
-            json["displayFollowers"], json["displayCredibility"],
-            json["displayProgress"], json["displayNumberOfReactions"],
-            json["postEnabledReactions"], json["commentEnabledReactions"],
-            json["genCompletionCode"], json["completionCodeDigits"],
-            (randDefaultAvatars === undefined ? true : randDefaultAvatars),
-            json["preIntro"], json["preIntroDelaySeconds"],
-            json["rules"] || "", json["rulesDelaySeconds"] || 0,
-            json["postIntro"], json["postIntroDelaySeconds"],
-            json["debrief"],
+            StudyBasicSettings.fromJSON(basicSettingsJSON),
+            StudyUserInterfaceSettings.fromJSON(uiSettingsJSON),
+            StudyAdvancedSettings.fromJSON(advancedSettingsJSON),
+            StudyPagesSettings.fromJSON(pagesSettingsJSON),
             SourcePostSelectionMethod.fromJSON(json["sourcePostSelectionMethod"]),
             Study.sourcesFromJSON(json["sources"]),
             Study.postsFromJSON(json["posts"])

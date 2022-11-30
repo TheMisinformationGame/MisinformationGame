@@ -28,7 +28,7 @@ class SourceElement extends Component {
         const source = this.props.source;
         const text_xl = (small ? "text-lg" : "text-xl");
 
-        const sourceStyle = (source.study.genRandomDefaultAvatars ? source.source.style : {});
+        const sourceStyle = (source.study.advancedSettings.genRandomDefaultAvatars ? source.source.style : {});
         return (
             <div className={"flex " + (this.props.className || "")}>
                 <div className={"mr-2 " + (small ? "h-8" : "h-12")}>
@@ -54,13 +54,13 @@ class SourceElement extends Component {
                         </div>}
                 </div>
                 <div>
-                    <div className={"flex " + (small || source.study.displayFollowers ? "" : "pt-1")}>
+                    <div className={"flex " + (small || source.study.uiSettings.displayFollowers ? "" : "pt-1")}>
                         <p className={text_xl}>{source.source.name}</p>
-                        {source.study.displayCredibility &&
+                        {source.study.uiSettings.displayCredibility &&
                             <CredibilityLabel credibility={source.credibility} className={text_xl} />}
                     </div>
 
-                    {!small && source.study.displayFollowers &&
+                    {!small && source.study.uiSettings.displayFollowers &&
                         <div className="flex">
                             <p className="text-sm">
                                 {Math.round(source.followers)}&nbsp;followers
@@ -183,11 +183,11 @@ class Comment extends Component {
         };
         for (let index = 0; index < reactions.length; ++index) {
             const reaction = reactions[index];
-            if (!study.commentEnabledReactions[reaction])
+            if (!study.uiSettings.commentEnabledReactions[reaction])
                 continue;
 
             let reactionCount;
-            if (study.displayNumberOfReactions) {
+            if (study.uiSettings.displayNumberOfReactions) {
                 reactionCount = comment.numberOfReactions[reaction].sample();
             } else {
                 reactionCount = undefined;
@@ -321,7 +321,7 @@ class CommentSubmissionRow extends MountAwareComponent {
     };
 
     isValidValue(value) {
-        const requiredLength = this.props.study.minimumCommentLength;
+        const requiredLength = this.props.study.advancedSettings.minimumCommentLength;
         return value && value.trim().length >= requiredLength;
     }
 
@@ -406,7 +406,7 @@ class CommentSubmissionRow extends MountAwareComponent {
 
     render() {
         const study = this.props.study;
-        const requiredLength = study.minimumCommentLength;
+        const requiredLength = study.advancedSettings.minimumCommentLength;
 
         const value = this.state.value;
         const isError = (!value || value.length < requiredLength);
@@ -516,7 +516,7 @@ class PostReactionsRow extends Component {
         };
         for (let index = 0; index < reactions.length; ++index) {
             const reaction = reactions[index];
-            if (!study.postEnabledReactions[reaction])
+            if (!study.uiSettings.postEnabledReactions[reaction])
                 continue;
 
             let transforms, fontSize;
@@ -528,7 +528,7 @@ class PostReactionsRow extends Component {
             }
 
             let reactionCount;
-            if (study.displayNumberOfReactions) {
+            if (study.uiSettings.displayNumberOfReactions) {
                 reactionCount = post.numberOfReactions[reaction];
             } else {
                 reactionCount = undefined;
@@ -551,8 +551,8 @@ class PostReactionsRow extends Component {
 
         return (
             <div className={"text-lg flex flex-wrap flex-row pt-1 px-2 " +
-                            (study.displayNumberOfReactions ? " mb-0.5 " : " mb-1 ")}>
-                <div className={"flex flex-grow" + (study.displayNumberOfReactions ? " pb-6 " : "")}>
+                            (study.uiSettings.displayNumberOfReactions ? " mb-0.5 " : " mb-1 ")}>
+                <div className={"flex flex-grow" + (study.uiSettings.displayNumberOfReactions ? " pb-6 " : "")}>
                     {buttons}
                 </div>
 
@@ -931,18 +931,18 @@ export class GameScreen extends ActiveGameScreen {
         const madeUserComment = (this.state.interactions.comment !== null);
 
         const currentPostNumber = participant.postInteractions.length;
-        const totalPosts = game.study.length;
+        const totalPosts = game.study.basicSettings.length;
         const progressPercentage = Math.round(currentPostNumber / totalPosts * 100);
 
         let nextPostEnabled = false;
         let nextPostError = "";
         if (this.state.commentHasBeenEdited) {
-            if (study.requireReactions && !madePostReaction) {
+            if (study.basicSettings.requireReactions && !madePostReaction) {
                 nextPostError = "Please react to the post";
             } else {
                 nextPostError = "Please complete your comment";
             }
-        } else if (study.requireReactions && study.areUserCommentsRequired()) {
+        } else if (study.basicSettings.requireReactions && study.areUserCommentsRequired()) {
             if (!madePostReaction) {
                 nextPostError = "Please react to the post";
             } else if (!madeUserComment) {
@@ -950,7 +950,7 @@ export class GameScreen extends ActiveGameScreen {
             } else {
                 nextPostEnabled = true;
             }
-        } else if (study.requireReactions) {
+        } else if (study.basicSettings.requireReactions) {
             nextPostEnabled = madePostReaction;
             nextPostError = "React to the post to continue";
         } else if (study.areUserCommentsRequired()) {
@@ -975,9 +975,9 @@ export class GameScreen extends ActiveGameScreen {
                     {/* Progress. */}
                     {participant && !error &&
                         <ParticipantProgress
-                            displayFollowers={study.displayFollowers}
-                            displayCredibility={study.displayCredibility}
-                            displayProgress = {study.displayProgress}
+                            displayFollowers={study.uiSettings.displayFollowers}
+                            displayCredibility={study.uiSettings.displayCredibility}
+                            displayProgress = {study.uiSettings.displayProgress}
                             fancyPositioning={true}
                             participant={participant}
                             overrideFollowers={this.state.overrideFollowers}
@@ -986,7 +986,7 @@ export class GameScreen extends ActiveGameScreen {
                             progressPercentage = {progressPercentage}
                             onNextPost={() => {
                                 const reaction = this.state.interactions.postReaction;
-                                if (!study.requireReactions || reaction !== null) {
+                                if (!study.basicSettings.requireReactions || reaction !== null) {
                                     this.onNextPost(game);
                                 }
                             }}
