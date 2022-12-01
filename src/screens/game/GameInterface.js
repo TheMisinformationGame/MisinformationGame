@@ -84,8 +84,8 @@ class ReactButton extends Component {
 
     render() {
         const reaction = this.props.reaction;
-        const selectionExists = (this.props.selected !== null);
-        const selected = (reaction === this.props.selected);
+        const grayOut = this.props.grayOut;
+        const selected = this.props.selected;
 
         let reactionCount = this.props.reactionCount;
         if (typeof(reactionCount) === "number" && selected) {
@@ -100,7 +100,7 @@ class ReactButton extends Component {
                      " " + this.getPositioningClassName() + " " +
                      (selected ? " bg-gray-100 font-semibold " : " hover:bg-gray-100 ") +
                      (this.props.enabled ? " cursor-pointer " : "") +
-                     (this.props.enabled && (selected || !selectionExists) ?
+                     (this.props.enabled && (selected || !grayOut) ?
                          (selected ? " text-blue-700 " : " text-gray-700 ")
                          : " text-gray-500 ") +
                      (this.props.className  || "")}
@@ -172,7 +172,7 @@ class Comment extends Component {
 
         const onReact = this.props.onReact;
         const enabled = this.props.enabled;
-        const selected = this.props.selectedReaction;
+        const interaction = this.props.interaction;
 
         const reactions = ["dislike", "like"];
         const commentReactions = [];
@@ -197,7 +197,11 @@ class Comment extends Component {
                 <CommentReactButton
                         reaction={reaction}
                         key={reaction}
-                        selected={selected}
+                        selected={interaction !== null && interaction.hasReaction(reaction)}
+                        grayOut={
+                            !study.uiSettings.allowMultipleReactions &&
+                            interaction !== null && interaction.reactions.length > 0
+                        }
                         onReact={onReact}
                         enabled={enabled}
                         reactionCount={reactionCount}
@@ -496,7 +500,7 @@ class PostReactionsRow extends Component {
     render() {
         const onReact = this.props.onReact;
         const enabled = this.props.enabled;
-        const selected = this.props.selectedReaction;
+        const interactions = this.props.interactions;
         const study = this.props.study;
         const post = this.props.post;
 
@@ -536,7 +540,12 @@ class PostReactionsRow extends Component {
 
             buttons.push(
                 <ReactButton reaction={reaction} key={reaction}
-                             selected={selected} onReact={onReact}
+                             selected={interactions.hasPostReaction(reaction)}
+                             grayOut={
+                                 (!study.uiSettings.allowMultipleReactions || interactions.hasPostReaction("skip")) &&
+                                 interactions.postReactions.length > 0
+                             }
+                             onReact={onReact}
                              enabled={enabled}
                              reactionCount={reactionCount}
                              childClassName={transforms}
@@ -556,8 +565,14 @@ class PostReactionsRow extends Component {
                     {buttons}
                 </div>
 
-                <ReactButton reaction="skip" selected={selected} onReact={onReact} enabled={enabled}
-                             className="w-32" fontSize="1.25rem" childClassName="transform translate-y-1">
+                <ReactButton reaction="skip"
+                             selected={interactions.hasPostReaction("skip")}
+                             grayOut={interactions.postReactions.length > 0}
+                             onReact={onReact}
+                             enabled={enabled}
+                             className="w-32"
+                             fontSize="1.25rem"
+                             childClassName="transform translate-y-1">
                     <p>Skip Post</p>
                 </ReactButton>
             </div>
@@ -596,7 +611,7 @@ class PostComponent extends Component {
                          onReact={r => this.props.onCommentReact(index, r)}
                          enabled={this.props.enableReactions}
                          editable={false}
-                         selectedReaction={interactions.findCommentReactionString(index)} />
+                         interaction={interactions.findCommentReaction(index)} />
             );
         }
 
@@ -634,7 +649,7 @@ class PostComponent extends Component {
                     <PostReactionsRow
                         onReact={this.props.onPostReact}
                         enabled={this.props.enableReactions}
-                        selectedReaction={interactions.postReaction}
+                        interactions={interactions}
                         study={state.study}
                         post={state.currentPost} />
                 </div>
@@ -771,17 +786,21 @@ export class GameScreen extends ActiveGameScreen {
         this.updateGameState(this.state.game, this.state.error, true);
     }
 
-    onPostReaction(reaction) {
+    onPostReaction(reaction, study) {
         this.setState({
             ...this.state,
-            interactions: this.state.interactions.withToggledPostReaction(reaction)
+            interactions: this.state.interactions.withToggledPostReaction(
+                reaction, study.uiSettings.allowMultipleReactions
+            )
         });
     }
 
-    onCommentReaction(commentIndex, reaction) {
+    onCommentReaction(commentIndex, reaction, study) {
         this.setState({
             ...this.state,
-            interactions: this.state.interactions.withToggledCommentReaction(commentIndex, reaction)
+            interactions: this.state.interactions.withToggledCommentReaction(
+                commentIndex, reaction, study.uiSettings.allowMultipleReactions
+            )
         });
     }
 
@@ -927,7 +946,7 @@ export class GameScreen extends ActiveGameScreen {
         const error = this.state.error;
         const finished = game.isFinished();
 
-        const madePostReaction = (this.state.interactions.postReaction !== null);
+        const madePostReaction = (this.state.interactions.postReactions.length > 0);
         const madeUserComment = (this.state.interactions.comment !== null);
 
         const currentPostNumber = participant.postInteractions.length;
@@ -985,8 +1004,8 @@ export class GameScreen extends ActiveGameScreen {
                             nextPostEnabled={nextPostEnabled && this.state.reactionsAllowed && this.state.inputEnabled}
                             progressPercentage = {progressPercentage}
                             onNextPost={() => {
-                                const reaction = this.state.interactions.postReaction;
-                                if (!study.basicSettings.requireReactions || reaction !== null) {
+                                const reactions = this.state.interactions.postReactions;
+                                if (!study.basicSettings.requireReactions || reactions.length > 0) {
                                     this.onNextPost(game);
                                 }
                             }}
@@ -1012,8 +1031,8 @@ export class GameScreen extends ActiveGameScreen {
                         {state && !error &&
                             <PostComponent
                                 state={state}
-                                onPostReact={r => this.onPostReaction(r)}
-                                onCommentReact={(i, r) => this.onCommentReaction(i, r)}
+                                onPostReact={r => this.onPostReaction(r, study)}
+                                onCommentReact={(i, r) => this.onCommentReaction(i, r, study)}
                                 onCommentSubmit={value => this.onCommentSubmit(value)}
                                 onCommentEditedStatusUpdate={edited => this.onCommentEditedStatusUpdate(edited)}
                                 onCommentEdit={() => this.onCommentEdit()}

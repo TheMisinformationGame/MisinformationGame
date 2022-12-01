@@ -297,36 +297,208 @@ export class GameState {
     }
 }
 
+
+function toggleReactionPresenceInArray(currentReactions, reaction, allowMultipleReactions) {
+    // Skips are always mutually exclusive to other reactions.
+    if (reaction === "skip") {
+        if (detectReactionPresenceInArray(currentReactions, "skip"))
+            return [];
+        else
+            return ["skip"];
+    }
+
+    // Attempt to find and remove the reaction.
+    const newReactions = [];
+    let foundReaction = false;
+    for (let index = 0; index < currentReactions.length; ++index) {
+        const currentReaction = currentReactions[index];
+        if (currentReaction === reaction) {
+            foundReaction = true;
+        } else if (currentReaction !== "skip") {
+            newReactions.push(currentReaction);
+        }
+    }
+    if (foundReaction)
+        return newReactions;
+    if (!allowMultipleReactions)
+        return [reaction];
+
+    newReactions.push(reaction);
+    return newReactions;
+}
+
+function detectReactionPresenceInArray(reactions, reaction) {
+    for (let index = 0; index < reactions.length; ++index) {
+        if (reactions[index] === reaction)
+            return true;
+    }
+    return false;
+}
+
+
+/**
+ * Keeps track of how long it took participants to interact with something.
+ */
+export class InteractionTimer {
+    showTime; // Number (UNIX Milliseconds)
+    firstInteractTime; // Number? (UNIX Milliseconds)
+    lastInteractTime; // Number? (UNIX Milliseconds)
+    hideTime; // Number? (UNIX Milliseconds)
+
+    constructor(showTime, firstInteractTime, lastInteractTime, hideTime) {
+        doTypeCheck(showTime, "number", "Time of Appearance");
+        doNullableTypeCheck(firstInteractTime, "number", "Time of First Interaction");
+        doNullableTypeCheck(lastInteractTime, "number", "Time of Last Interaction");
+        doNullableTypeCheck(hideTime, "number", "Time of Disappearance");
+        this.showTime = showTime;
+        this.firstInteractTime = firstInteractTime || null;
+        this.lastInteractTime = lastInteractTime || null;
+        this.hideTime = hideTime || null;
+    }
+
+    static create(showTime) {
+        return new InteractionTimer(showTime, null, null, null);
+    }
+
+    static start() {
+        return InteractionTimer.create(Date.now());
+    }
+
+    getTimeToFirstInteractMS() {
+        if (this.firstInteractTime === null)
+            return NaN;
+
+        return this.firstInteractTime - this.showTime;
+    }
+
+    getTimeToLastInteractMS() {
+        if (this.lastInteractTime === null)
+            return NaN;
+
+        return this.lastInteractTime - this.showTime;
+    }
+
+    getDwellTimeMS() {
+        if (this.hideTime === null)
+            return NaN;
+
+        return this.hideTime - this.showTime;
+    }
+
+    withNewInteraction() {
+        if (this.hideTime !== null)
+            throw new Error("The interactions have already been marked as hidden");
+
+        const time = Date.now();
+        return new InteractionTimer(
+            this.showTime,
+            (this.firstInteractTime !== null ? this.firstInteractTime : time),
+            time,
+            null
+        );
+    }
+
+    complete() {
+        return new InteractionTimer(
+            this.showTime, this.firstInteractTime, this.lastInteractTime, Date.now()
+        );
+    }
+
+    toJSON() {
+        return {
+            "showTime": this.showTime,
+            "firstInteractTime": this.firstInteractTime,
+            "lastInteractTime": this.lastInteractTime,
+            "hideTime": this.hideTime
+        };
+    }
+
+    static fromJSON(json) {
+        return new InteractionTimer(
+            json["showTime"],
+            json["firstInteractTime"],
+            json["lastInteractTime"],
+            json["hideTime"]
+        );
+    }
+}
+
+
 /**
  * Stores the reaction of a user to a comment.
  */
-export class GameCommentReaction {
+export class GameCommentInteraction {
     commentIndex; // Number
-    reaction; // String
-    reactTimeMS; // Number
+    reactions; // String[]
+    timer; // InteractionTimer
 
-    constructor(commentIndex, reaction, reactTimeMS) {
+    constructor(commentIndex, reactions, timer) {
         doTypeCheck(commentIndex, "number", "Comment ID for Comment Reaction");
-        doTypeCheck(reaction, "string", "Comment Reaction");
-        doTypeCheck(reactTimeMS, "number", "Comment Reaction Time")
+        doArrayTypeCheck(reactions, "string", "Comment Reaction");
+        doTypeCheck(timer, InteractionTimer, "Comment Reaction Timer")
         this.commentIndex = commentIndex;
-        this.reaction = reaction;
-        this.reactTimeMS = reactTimeMS;
+        this.reactions = reactions;
+        this.timer = timer;
+    }
+
+    static create(commentIndex, commentReaction, postShowTime) {
+        return new GameCommentInteraction(
+            commentIndex, [commentReaction],
+            InteractionTimer.create(postShowTime).withNewInteraction()
+        )
+    }
+
+    complete() {
+        return new GameCommentInteraction(
+            this.commentIndex,
+            this.reactions,
+            this.timer.complete()
+        )
+    }
+
+    withToggledReaction(reaction, allowMultipleReactions) {
+        return this.withReactions(toggleReactionPresenceInArray(
+            this.reactions, reaction, allowMultipleReactions
+        ));
+    }
+
+    hasReaction(reaction) {
+        return detectReactionPresenceInArray(this.reactions, reaction);
+    }
+
+    withReactions(reactions) {
+        return new GameCommentInteraction(
+            this.commentIndex,
+            reactions,
+            this.timer.withNewInteraction()
+        );
     }
 
     toJSON() {
         return {
             "commentID": this.commentIndex,
-            "reaction": this.reaction,
-            "reactTimeMS": this.reactTimeMS
+            "reactions": this.reactions,
+            "timer": this.timer.toJSON()
         };
     }
 
-    static fromJSON(json) {
-        return new GameCommentReaction(
+    static fromJSON(json, showTime) {
+        const reactions = json["reactions"],
+              reaction = json["reaction"],
+              timerJSON = json["timer"],
+              reactTimeMS = json["reactTimeMS"];
+
+        let timer;
+        if (timerJSON !== undefined) {
+            timer = InteractionTimer.fromJSON(timerJSON);
+        } else {
+            timer = new InteractionTimer(showTime, reactTimeMS, reactTimeMS, null);
+        }
+
+        return new GameCommentInteraction(
             json["commentID"],
-            json["reaction"],
-            json["reactTimeMS"]
+            (reactions !== undefined ? reactions : (reaction ? [reaction] : [])),
+            timer
         );
     }
 }
@@ -335,88 +507,86 @@ export class GameCommentReaction {
  * Stores all the interactions of a user with a post.
  */
 export class GamePostInteraction {
-    postShowTime; // Number (UNIX Milliseconds)
-
-    postReaction; // String?
-    commentReactions; // GameCommentReaction[]
+    postReactions; // String[]
+    commentReactions; // GameCommentInteraction[]
     comment; // String?
+    timer; // InteractionTimer
 
-    firstInteractTimeMS; // Number? (Milliseconds)
-    lastInteractTimeMS; // Number? (Milliseconds)
-
-    constructor(postShowTime, postReaction, commentReactions, comment, firstInteractTimeMS, lastInteractTimeMS) {
-        doTypeCheck(postShowTime, "number", "Time the Post was Shown");
-        doNullableTypeCheck(postReaction, "string", "Reaction to Post");
-        doArrayTypeCheck(commentReactions, GameCommentReaction, "Reactions to Comments");
+    constructor(postReactions, commentReactions, comment, timer) {
+        doArrayTypeCheck(postReactions, "string", "Reactions to Post");
+        doArrayTypeCheck(commentReactions, GameCommentInteraction, "Reactions to Comments");
         doNullableTypeCheck(comment, "string", "Participant's Comment");
-        doNullableTypeCheck(firstInteractTimeMS, "number", "First Time to Interact with Post");
-        doNullableTypeCheck(lastInteractTimeMS, "number", "Last Time to Interact with Post");
-        this.postShowTime = postShowTime;
-        this.postReaction = postReaction;
+        doNullableTypeCheck(timer, InteractionTimer, "Post Reaction Timer");
+        this.postReactions = postReactions;
         this.commentReactions = commentReactions;
         this.comment = comment;
-        this.firstInteractTimeMS = firstInteractTimeMS || null;
-        this.lastInteractTimeMS = lastInteractTimeMS || null;
+        this.timer = timer;
     }
 
     static empty() {
-        return new GamePostInteraction(Date.now(), null, [], null, -1, -1);
+        return new GamePostInteraction([], [], null, InteractionTimer.start());
     }
 
-    withUpdatedInteractTime() {
-        const timeMS = Date.now() - this.postShowTime;
-        const firstInteractTimeMS = (this.firstInteractTimeMS === null ? timeMS : this.firstInteractTimeMS);
-        const lastInteractTimeMS = timeMS;
+    complete() {
+        const completedCommentReactions = [];
+        for (let index = 0; index < this.commentReactions.length; ++index) {
+            completedCommentReactions.push(this.commentReactions[index].complete())
+        }
         return new GamePostInteraction(
-            this.postShowTime, this.postReaction, this.commentReactions,
-            this.comment, firstInteractTimeMS, lastInteractTimeMS
+            this.postReactions,
+            completedCommentReactions,
+            this.comment,
+            this.timer.complete()
         );
     }
 
     withComment(comment) {
         return new GamePostInteraction(
-            this.postShowTime,
-            this.postReaction,
+            this.postReactions,
             this.commentReactions,
-            comment
-        ).withUpdatedInteractTime();
+            comment,
+            this.timer.withNewInteraction()
+        );
     }
 
-    withToggledPostReaction(postReaction) {
-        // We want clicking the same reaction twice to toggle it.
-        if (this.postReaction === postReaction) {
-            postReaction = null;
-        }
-        return this.withPostReaction(postReaction);
+    withToggledPostReaction(postReaction, allowMultipleReactions) {
+        return this.withPostReactions(toggleReactionPresenceInArray(
+            this.postReactions, postReaction, allowMultipleReactions
+        ));
     }
 
-    withPostReaction(postReaction) {
+    hasPostReaction(postReaction) {
+        return detectReactionPresenceInArray(this.postReactions, postReaction);
+    }
+
+    withPostReactions(postReactions) {
         return new GamePostInteraction(
-            this.postShowTime,
-            postReaction,
+            postReactions,
             this.commentReactions,
-            this.comment
-        ).withUpdatedInteractTime();
+            this.comment,
+            this.timer.withNewInteraction()
+        );
     }
 
-    withToggledCommentReaction(commentIndex, commentReaction) {
-        doNullableTypeCheck(commentReaction, "string", "Comment Reaction");
+    withToggledCommentReaction(commentIndex, commentReaction, allowMultipleReactions) {
+        doTypeCheck(commentReaction, "string", "Comment Reaction");
 
         const existing = this.findCommentReaction(commentIndex);
-        if (existing === null || existing.reaction !== commentReaction) {
-            return this.withCommentReaction(
-                commentIndex,
-                new GameCommentReaction(
-                    commentIndex, commentReaction, Date.now() - this.postShowTime
-                )
-            );
+        if (existing === null) {
+            // First time interacting with the comment.
+            return this.withCommentReaction(commentIndex, GameCommentInteraction.create(
+                commentIndex, commentReaction, this.timer.showTime
+            ));
         } else {
-            return this.withCommentReaction(commentIndex, null);
+            // New interaction with a comment that had previous interactions.
+            return this.withCommentReaction(commentIndex, existing.withToggledReaction(
+                commentReaction, allowMultipleReactions
+            ));
         }
     }
 
     withCommentReaction(commentIndex, commentReaction) {
-        doNullableTypeCheck(commentReaction, GameCommentReaction, "Comment Reaction");
+        doNullableTypeCheck(commentReaction, GameCommentInteraction, "Comment Reaction");
 
         const commentReactions = [];
         for (let index = 0; index < this.commentReactions.length; ++index) {
@@ -430,11 +600,11 @@ export class GamePostInteraction {
         }
 
         return new GamePostInteraction(
-            this.postShowTime,
-            this.postReaction,
+            this.postReactions,
             commentReactions,
-            this.comment
-        ).withUpdatedInteractTime();
+            this.comment,
+            this.timer.withNewInteraction()
+        );
     }
 
     findCommentReaction(commentIndex) {
@@ -445,11 +615,6 @@ export class GamePostInteraction {
                 return commentReaction;
         }
         return null;
-    }
-
-    findCommentReactionString(commentIndex) {
-        const reaction = this.findCommentReaction(commentIndex);
-        return reaction === null ? null : reaction.reaction;
     }
 
     static commentReactionsToJSON(commentReactions) {
@@ -463,30 +628,46 @@ export class GamePostInteraction {
     static commentReactionsFromJSON(json) {
         const commentReactions = [];
         for (let index = 0; index < json.length; ++index) {
-            commentReactions.push(GameCommentReaction.fromJSON(json[index]));
+            commentReactions.push(GameCommentInteraction.fromJSON(json[index]));
         }
         return commentReactions;
     }
 
     toJSON() {
         return {
-            "postShowTime": this.postShowTime,
-            "postReaction": this.postReaction,
+            "postReactions": this.postReactions,
             "commentReactions": GamePostInteraction.commentReactionsToJSON(this.commentReactions),
             "comment": this.comment,
-            "firstInteractTimeMS": this.firstInteractTimeMS,
-            "lastInteractTimeMS": this.lastInteractTimeMS
+            "timer": this.timer.toJSON()
         };
     }
 
     static fromJSON(json) {
+        const timerJSON = json["timer"],
+              postShowTime = json["postShowTime"],
+              firstInteractTimeMS = json["firstInteractTimeMS"],
+              lastInteractTimeMS = json["lastInteractTimeMS"];
+
+        let timer;
+        if (timerJSON !== undefined) {
+            timer = InteractionTimer.fromJSON(timerJSON);
+        } else {
+            timer = new InteractionTimer(
+                postShowTime,
+                (firstInteractTimeMS ? postShowTime + firstInteractTimeMS : null),
+                (lastInteractTimeMS ? postShowTime + lastInteractTimeMS : null),
+                null
+            );
+        }
+
+        const postReactions = json["postReactions"],
+              postReaction = json["postReaction"];
+
         return new GamePostInteraction(
-            json["postShowTime"],
-            json["postReaction"],
+            (postReactions !== undefined ? postReactions : (postReaction ? [postReaction] : [])),
             GamePostInteraction.commentReactionsFromJSON(json["commentReactions"]),
             json["comment"],
-            json["firstInteractTimeMS"],
-            json["lastInteractTimeMS"]
+            timer
         );
     }
 }
@@ -714,17 +895,24 @@ export class Game {
     advanceState(interactions) {
         doTypeCheck(interactions, GamePostInteraction, "Interaction with the Current Post")
 
-        const postReaction = interactions.postReaction;
-        if (postReaction === "skip" || postReaction === null) {
-            this.participant.addReaction(interactions, 0, 0);
-        } else {
-            const post = this.getCurrentState().currentPost.post;
-            this.participant.addReaction(
-                interactions,
-                post.changesToCredibility[postReaction].sample(),
-                post.changesToFollowers[postReaction].sample()
-            );
+        // Mark that the post is no longer accessible.
+        interactions = interactions.complete();
+
+        // Calculate and apply the changes to participant's credibility and followers.
+        const postReactions = interactions.postReactions;
+        let credibilityChange = 0,
+            followerChange = 0;
+
+        const post = this.getCurrentState().currentPost.post;
+        for (let index = 0; index < postReactions.length; ++index) {
+            const reaction = postReactions[index];
+            if (reaction === "skip")
+                continue;
+
+            credibilityChange += post.changesToCredibility[reaction].sample();
+            followerChange += post.changesToFollowers[reaction].sample();
         }
+        this.participant.addReaction(interactions, credibilityChange, followerChange);
 
         // Generate a completion code when the game is finished.
         if (this.isFinished()) {
@@ -882,7 +1070,7 @@ export class Game {
 
 /**
  * Converts {@param game} to JSON and back, and
- * returns an array with all of the changes between
+ * returns an array with all changes between
  * the original game and the reconstructed one.
  * This should return an empty array if everything
  * is working correctly.

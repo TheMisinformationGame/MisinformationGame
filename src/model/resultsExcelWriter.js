@@ -94,10 +94,17 @@ function constructWorkbook(study, results, problems) {
         {header: "Post Shares", key: "postShares", width: 20, enabled: showPostShares},
         {header: "Post Flags", key: "postFlags", width: 20, enabled: showPostFlags},
 
-        {header: "Reaction", key: "reaction", width: 12},
+        {header: "Liked Post", key: "likedPost", width: 20, enabled: showPostLikes},
+        {header: "Disliked Post", key: "dislikedPost", width: 20, enabled: showPostDislikes},
+        {header: "Shared Post", key: "sharedPost", width: 20, enabled: showPostShares},
+        {header: "Flagged Post", key: "flaggedPost", width: 20, enabled: showPostFlags},
+        {header: "Skipped Post", key: "skippedPost", width: 20},
         {header: "User Comment", key: "comment", width: 20, enabled: study.areUserCommentsEnabled()},
+
+        {header: "Dwell Time (MS)", key: "dwellTime", width: 22},
         {header: "First Time to Interact (MS)", key: "firstInteractTime", width: 32},
         {header: "Last Time to Interact (MS)", key: "lastInteractTime", width: 32},
+
         {header: "Credibility Change", key: "credibilityChange", width: 22, enabled: showCredibility},
         {header: "Follower Change", key: "followerChange", width: 22, enabled: showFollowers},
 
@@ -137,10 +144,17 @@ function constructWorkbook(study, results, problems) {
                 postShares: (shares === undefined ? "" : shares),
                 postFlags: (flags === undefined ? "" : flags),
 
-                reaction: interaction.postReaction || "",
+                likedPost: interaction.hasPostReaction("like"),
+                dislikedPost: interaction.hasPostReaction("dislike"),
+                sharedPost: interaction.hasPostReaction("share"),
+                flaggedPost: interaction.hasPostReaction("flag"),
+                skippedPost: interaction.hasPostReaction("skip"),
                 comment: interaction.comment || "",
-                firstInteractTime: interaction.firstInteractTimeMS,
-                lastInteractTime: interaction.lastInteractTimeMS,
+
+                dwellTime: interaction.timer.getDwellTimeMS(),
+                firstInteractTime: interaction.timer.getTimeToFirstInteractMS(),
+                lastInteractTime: interaction.timer.getTimeToLastInteractMS(),
+
                 credibilityChange: afterCredibility - beforeCredibility,
                 followerChange: afterFollowers - beforeFollowers,
 
@@ -172,8 +186,11 @@ function constructWorkbook(study, results, problems) {
         {header: "Comment Likes", key: "commentLikes", width: 24, enabled: showCommentLikes},
         {header: "Comment Dislikes", key: "commentDislikes", width: 24, enabled: showCommentDislikes},
 
-        {header: "Reaction", key: "reaction", width: 12},
-        {header: "Reaction Time (ms)", key: "reactTime", width: 24},
+        {header: "Liked Comment", key: "likedComment", width: 20, enabled: showPostLikes},
+        {header: "Disliked Comment", key: "dislikedComment", width: 20, enabled: showPostDislikes},
+
+        {header: "First Time to Interact (MS)", key: "firstInteractTime", width: 32},
+        {header: "Last Time to Interact (MS)", key: "lastInteractTime", width: 32},
     ]);
     for (let index = 0 ; index < results.length; index++){
         const game = results[index];
@@ -187,7 +204,7 @@ function constructWorkbook(study, results, problems) {
                 const comment = state.currentPost.comments[commentIndex];
                 const likes = comment.numberOfReactions.like;
                 const dislikes = comment.numberOfReactions.dislike;
-                const reaction = interaction.findCommentReaction(commentIndex);
+                const cInteraction = interaction.findCommentReaction(commentIndex);
                 commentsWorksheet.addRow({
                     sessionID: game.sessionID,
                     participantID: participant.participantID || "",
@@ -199,8 +216,11 @@ function constructWorkbook(study, results, problems) {
                     commentLikes: (likes === undefined ? "" : likes),
                     commentDislikes: (dislikes === undefined ? "" : dislikes),
 
-                    reaction: (reaction ? reaction.reaction : ""),
-                    reactTime: (reaction ? reaction.reactTimeMS : "")
+                    likedComment: cInteraction !== null && cInteraction.hasReaction("like"),
+                    dislikedComment: cInteraction !== null && cInteraction.hasReaction("dislike"),
+
+                    firstInteractTime: (cInteraction !== null ? cInteraction.timer.getTimeToFirstInteractMS() : ""),
+                    lastInteractTime: (cInteraction !== null ? cInteraction.timer.getTimeToLastInteractMS() : "")
                 });
                 containsAnyComments = true;
             }
