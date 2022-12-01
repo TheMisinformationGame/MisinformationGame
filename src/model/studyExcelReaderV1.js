@@ -62,7 +62,7 @@ function generateV1ReactionDistributionsSpec(isTrue, firstRow, firstCol, quantit
 /**
  * Specification of the default distributions for posts.
  */
-function generateV1PostDefaultsSpec(isTrue, firstRow) {
+export function generateV1PostDefaultsSpec(isTrue, firstRow) {
     return {
         changesToFollowers: generateV1ReactionDistributionsSpec(isTrue, firstRow, "D", "Changes to Followers"),
         changesToCredibility: generateV1ReactionDistributionsSpec(isTrue, firstRow, "H", "Changes to Credibility"),
@@ -344,7 +344,7 @@ function readV1FollowersDistribution(workbook, row, defaults) {
 
     // Followers can fall anywhere within 5 standard deviations
     // of the mean. This helps us to avoid extreme values.
-    return new TruncatedNormalDistribution(
+    return TruncatedNormalDistribution.createNoSkew(
         mean, stdDev,
         Math.max(0, mean - 5 * stdDev),
         mean + 5 * stdDev
@@ -362,7 +362,7 @@ function readV1CredibilityDistribution(workbook, row, defaults) {
     }
 
     // Credibility can fall anywhere from 0 to 100.
-    return new TruncatedNormalDistribution(mean, stdDev, 0, 100);
+    return TruncatedNormalDistribution.createNoSkew(mean, stdDev, 0, 100);
 }
 
 /**
@@ -427,7 +427,7 @@ function readV1ReactionValue(workbook, reaction, spec, row, defaults, enabledRea
         return defaults[reaction];
 
     const value = readCell(workbook, loc);
-    return new TruncatedNormalDistribution(value, 0, spec.min, spec.max);
+    return TruncatedNormalDistribution.createNoSkew(value, 0, spec.min, spec.max);
 }
 
 function readV1ReactionValues(workbook, spec, row, defaults, enabledReactions) {
@@ -474,7 +474,7 @@ function range(fromInclusive, toExclusive) {
 }
 
 function readV1PostChangeDistDefault(workbook, defaultsSpec, min, max) {
-    return new TruncatedNormalDistribution(
+    return TruncatedNormalDistribution.createNoSkew(
         readCell(workbook, defaultsSpec.mean),
         readCell(workbook, defaultsSpec.stdDev),
         min, max
