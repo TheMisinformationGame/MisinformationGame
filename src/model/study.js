@@ -387,11 +387,11 @@ export class StudyBasicSettings {
      * Create the basic settings for a version-2 study.
      */
     static createV2(
-            name, description, prompt, promptDelaySeconds, length,
+            name, description, prompt, length,
             requireReactions, requireComments, requireIdentification) {
 
         return new StudyBasicSettings(
-            name, description, prompt, promptDelaySeconds, length,
+            name, description, prompt, length,
             requireReactions, requireComments, requireIdentification
         )
     }
@@ -400,11 +400,11 @@ export class StudyBasicSettings {
      * Create the basic settings for a version-1 study.
      */
     static createV1(
-            name, description, prompt, promptDelaySeconds, length,
+            name, description, prompt, length,
             requireReactions, requireComments, requireIdentification) {
 
         return StudyBasicSettings.createV2(
-            name, description, prompt, promptDelaySeconds, length,
+            name, description, prompt, length,
             requireReactions, requireComments, requireIdentification
         )
     }

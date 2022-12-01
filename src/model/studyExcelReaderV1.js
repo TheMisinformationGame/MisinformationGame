@@ -73,7 +73,7 @@ export function generateV1PostDefaultsSpec(isTrue, firstRow) {
 /**
  * The location of all study parameter cells for version-1 studies.
  */
-const V1 = {
+export const V1 = {
     general: {
         basic: {
             name: new WorkbookLoc("Name", "General", "D4", ExcelString),
@@ -295,7 +295,7 @@ function readV1PredefinedSourcePostPairs(workbook) {
     return pairs;
 }
 
-function readV1SourcePostSelectionMethod(workbook, length) {
+export function readV1SourcePostSelectionMethod(workbook, length) {
     const method = readCell(workbook, V1.sourcePostSelection.method);
     if (method === "Overall-Ratio") {
         return new OverallRatioSelectionMethod(
@@ -522,7 +522,7 @@ function readV1PostDefaults(workbook, defaultsSpec, enabledReactions) {
 /**
  * Returns a Promise to a list of posts read from the workbook.
  */
-function readV1Posts(workbook, study) {
+export function readV1Posts(workbook, study) {
     const posts = [];
     const enabledReactions = study.uiSettings.postEnabledReactions;
     const trueDefaults = readV1PostDefaults(workbook, V1.post.trueDefaults, enabledReactions);
@@ -633,7 +633,7 @@ function readV1StudyPagesSettings(workbook) {
 }
 
 /**
- * Returns a Promise of a version 1 Study object for the study
+ * Returns a Promise of a version-1 Study object for the study
  * configured in the spreadsheet {@param workbook}.
  */
 export function readV1Study(workbook) {

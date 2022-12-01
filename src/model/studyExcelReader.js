@@ -2,6 +2,7 @@ import {
     ExcelNumber, readCell, WorkbookLoc
 } from "../utils/excel";
 import {readV1Study} from "./studyExcelReaderV1";
+import {readV2Study} from "./studyExcelReaderV2";
 
 
 const versionCell = new WorkbookLoc("Version", "About", "M2", ExcelNumber);
@@ -16,6 +17,8 @@ export function readStudyWorkbook(workbook) {
 
         if (version === 1) {
             return readV1Study(workbook);
+        } else if (version === 2) {
+            return readV2Study(workbook);
         } else {
             return Promise.reject(new Error("Unknown study version " + version));
         }
