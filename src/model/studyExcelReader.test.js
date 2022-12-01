@@ -47,7 +47,7 @@ test('load the template study', done => {
 });
 
 test('load an example study', done => {
-    loadTestStudy("ExampleStudy-V1.xlsx", (err, study) => {
+    loadTestStudy("../docs/ExampleStudy-V1.xlsx", (err, study) => {
         if (err) {
             done(err);
             return;
