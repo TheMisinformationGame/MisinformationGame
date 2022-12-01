@@ -4,7 +4,7 @@
  */
 import {doTypeCheck} from "./types";
 
-function randUniform01Exclusive() {
+export function randUniform01Exclusive() {
     let value;
     do {
         value = Math.random();
