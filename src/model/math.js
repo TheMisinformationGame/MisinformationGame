@@ -66,21 +66,31 @@ export class TruncatedNormalDistribution {
         // We generate a discrete cumulative density function for sampling,
         // as it is an easy, and accurate enough, approximation.
         this.cdf = [];
-        this.cdfBuckets = 100;
+        if (stdDeviation > 0) {
+            this.cdfBuckets = 100;
 
-        // Generate the values within the truncation range.
-        let cumulativeSum = 0.0;
-        for (let index = 0; index < this.cdfBuckets; ++index) {
-            const x = min + (max - min) * (index / (this.cdfBuckets - 1)),
-                  y = TruncatedNormalDistribution.skewNormPDF(x, mean, stdDeviation, skewShape);
+            // Generate the values within the truncation range.
+            console.log();
+            console.log(mean, stdDeviation, skewShape, min, max);
+            let cumulativeSum = 0.0;
+            for (let index = 0; index < this.cdfBuckets; ++index) {
+                const x = min + (max - min) * (index / (this.cdfBuckets - 1)),
+                      y = TruncatedNormalDistribution.skewNormPDF(x, mean, stdDeviation, skewShape);
 
-            cumulativeSum += y;
-            this.cdf.push(cumulativeSum);
-        }
+                console.log(index, "-", x, y, "(", cumulativeSum, ")");
 
-        // Normalise the values to [0, 1].
-        for (let index = 0; index < this.cdfBuckets; ++index) {
-            this.cdf[index] = this.cdf[index] / cumulativeSum;
+                cumulativeSum += y;
+                this.cdf.push(cumulativeSum);
+            }
+
+            // Normalise the values to [0, 1].
+            console.log();
+            for (let index = 0; index < this.cdfBuckets; ++index) {
+                this.cdf[index] = this.cdf[index] / cumulativeSum;
+                console.log(index, "-", this.cdf[index]);
+            }
+        } else {
+            this.cdfBuckets = 0;
         }
     }
 
@@ -113,15 +123,10 @@ export class TruncatedNormalDistribution {
     /**
      * Retrieves a value from the cumulative density function of a
      * standard normal distribution (mean 0, standard deviation 1).
-     * This is very accurate for values greater than -1, but is
-     * inaccurate very inaccurate for values less than -1.5.
      */
     static normCDF(x) {
-        // The Zelen & Severo approximation severely falls off beyond -1.5.
-        if (x <= -1.5) {
-            const estimate = 0.0671 + 0.08 * (x + 1.5);
-            return Math.max(0.0025, estimate);
-        }
+        // The approximation is only really accurate in the range x > 0.
+        const effectiveX = Math.abs(x);
 
         // The Zelen & Severo approximation.
         const b0 = 0.2316419,
@@ -131,16 +136,22 @@ export class TruncatedNormalDistribution {
               b4 = -1.821255978,
               b5 = 1.330274429;
 
-        const t = 1.0 / (1 + b0 * x),
+        const t = 1.0 / (1 + b0 * effectiveX),
               t2 = t * t,
               t3 = t2 * t,
               t4 = t3 * t,
               t5 = t4 * t;
 
-        const estimate = 1.0 - TruncatedNormalDistribution.normPDF(x) *
+        let estimate = TruncatedNormalDistribution.normPDF(effectiveX) *
             (b1 * t + b2 * t2 + b3 *  t3 + b4 * t4 + b5 * t5);
 
-        return Math.max(0, Math.min(1, estimate));
+        // Just in case.
+        estimate = Math.max(0, Math.min(1, estimate));
+
+        if (x < 0)
+            return estimate;
+
+        return 1.0 - estimate;
     }
 
     /**

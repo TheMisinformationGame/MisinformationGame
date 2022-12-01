@@ -342,12 +342,12 @@ function readV1FollowersDistribution(workbook, row, defaults) {
         stdDev = 0;
     }
 
-    // Followers can fall anywhere within 5 standard deviations
+    // Followers can fall anywhere within 3 standard deviations
     // of the mean. This helps us to avoid extreme values.
     return TruncatedNormalDistribution.createNoSkew(
         mean, stdDev,
-        Math.max(0, mean - 5 * stdDev),
-        mean + 5 * stdDev
+        Math.max(0, mean - 3 * stdDev),
+        mean + 3 * stdDev
     );
 }
 
