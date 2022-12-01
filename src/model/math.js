@@ -113,9 +113,17 @@ export class TruncatedNormalDistribution {
     /**
      * Retrieves a value from the cumulative density function of a
      * standard normal distribution (mean 0, standard deviation 1).
-     * This uses the Zelen & Severo approximation.
+     * This is very accurate for values greater than -1, but is
+     * inaccurate very inaccurate for values less than -1.5.
      */
     static normCDF(x) {
+        // The Zelen & Severo approximation severely falls off beyond -1.5.
+        if (x <= -1.5) {
+            const estimate = 0.0671 + 0.08 * (x + 1.5);
+            return Math.max(0.0025, estimate);
+        }
+
+        // The Zelen & Severo approximation.
         const b0 = 0.2316419,
               b1 = 0.319381530,
               b2 = -0.356563782,
@@ -129,8 +137,10 @@ export class TruncatedNormalDistribution {
               t4 = t3 * t,
               t5 = t4 * t;
 
-        return 1.0 - TruncatedNormalDistribution.normPDF(x) *
+        const estimate = 1.0 - TruncatedNormalDistribution.normPDF(x) *
             (b1 * t + b2 * t2 + b3 *  t3 + b4 * t4 + b5 * t5);
+
+        return Math.max(0, Math.min(1, estimate));
     }
 
     /**
