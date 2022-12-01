@@ -65,29 +65,28 @@ export class TruncatedNormalDistribution {
 
         // We generate a discrete cumulative density function for sampling,
         // as it is an easy, and accurate enough, approximation.
-        this.cdf = [];
+        this.cdfX = [];
+        this.cdfY = [];
         if (stdDeviation > 0) {
-            this.cdfBuckets = 100;
+            this.cdfBuckets = 500;
 
             // Generate the values within the truncation range.
-            console.log();
-            console.log(mean, stdDeviation, skewShape, min, max);
+            const effectiveMin = Math.max(min, mean - 3 * stdDeviation)
+            const effectiveMax = Math.min(max, mean + 3 * stdDeviation)
+
             let cumulativeSum = 0.0;
             for (let index = 0; index < this.cdfBuckets; ++index) {
-                const x = min + (max - min) * (index / (this.cdfBuckets - 1)),
+                const x = effectiveMin + (effectiveMax - effectiveMin) * (index / (this.cdfBuckets - 1)),
                       y = TruncatedNormalDistribution.skewNormPDF(x, mean, stdDeviation, skewShape);
 
-                console.log(index, "-", x, y, "(", cumulativeSum, ")");
-
                 cumulativeSum += y;
-                this.cdf.push(cumulativeSum);
+                this.cdfX.push(x);
+                this.cdfY.push(cumulativeSum);
             }
 
             // Normalise the values to [0, 1].
-            console.log();
             for (let index = 0; index < this.cdfBuckets; ++index) {
-                this.cdf[index] = this.cdf[index] / cumulativeSum;
-                console.log(index, "-", this.cdf[index]);
+                this.cdfY[index] = this.cdfY[index] / cumulativeSum;
             }
         } else {
             this.cdfBuckets = 0;
@@ -165,14 +164,13 @@ export class TruncatedNormalDistribution {
 
         // Search for the corresponding value.
         for (let index = 0; index < this.cdfBuckets; ++index) {
-            const x = this.min + (this.max - this.min) * (index / (this.cdfBuckets - 1));
-            if (y <= this.cdf[index])
-                return x;
+            if (y <= this.cdfY[index])
+                return this.cdfX[index];
         }
 
         // Just in case. This shouldn't ever be reached,
         // but you never know with floating point arithmetic.
-        return this.max;
+        return this.cdfX[this.cdfX.length - 1];
     }
 
     toJSON() {
