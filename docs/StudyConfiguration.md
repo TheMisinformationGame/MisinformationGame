@@ -54,7 +54,7 @@ you can make changes.
 {:#create-upload}
 
 You can download the Study Template file from
-[StudyTemplate.xlsx](StudyTemplate.xlsx). This file can then
+[StudyTemplate.xlsx](StudyTemplate-V1.xlsx). This file can then
 be uploaded to your Google Sheets using the following steps:
 
 **Step 1:** Access Google Sheets at
@@ -67,7 +67,7 @@ spreadsheet.
 -> **_Select a file from your device_**.
 
 **Step 4:** Use the file chooser to select the
-[StudyTemplate.xlsx](StudyTemplate.xlsx) file that you
+[StudyTemplate.xlsx](StudyTemplate-V1.xlsx) file that you
 downloaded to upload.
 
 **Step 5:** Select the **_Import Location_** to be

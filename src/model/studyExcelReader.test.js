@@ -34,7 +34,7 @@ export function loadTestStudy(name, callback) {
 }
 
 test('load the template study', done => {
-    loadTestStudy("../docs/StudyTemplate.xlsx", (err, study) => {
+    loadTestStudy("../docs/StudyTemplate-V1.xlsx", (err, study) => {
         if (err) {
             done(err);
             return;
@@ -47,7 +47,7 @@ test('load the template study', done => {
 });
 
 test('load an example study', done => {
-    loadTestStudy("ExampleStudy.xlsx", (err, study) => {
+    loadTestStudy("ExampleStudy-V1.xlsx", (err, study) => {
         if (err) {
             done(err);
             return;
@@ -60,7 +60,7 @@ test('load an example study', done => {
 });
 
 test('load an example study with missing avatar images', done => {
-    loadTestStudy("ExampleStudy-MissingAvatars.xlsx", (err, study) => {
+    loadTestStudy("ExampleStudy-MissingAvatars-V1.xlsx", (err, study) => {
         if (err) {
             done(err);
             return;
