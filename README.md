@@ -1,4 +1,5 @@
 ![The Misinformation Game](docs/assets/img/banner.png)
+------------------------------------------------------
 
 The Misinformation Game is a social media simulator built to study
 people's behaviour when they interact with social media. To achieve
