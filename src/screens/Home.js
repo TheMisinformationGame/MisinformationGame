@@ -17,7 +17,7 @@ function Home() {
     return (
         <div className="text-center min-h-screen bg-gray-100">
             <GithubCorner />
-            <div className="flex flex-col items-center justify-center min-h-screen">
+            <div className="flex flex-col items-center min-h-screen py-16">
 
                 <a href="https://themisinformationgame.github.io/">
                     <img src={Logo} alt="Misinformation Game Logo"
@@ -25,8 +25,8 @@ function Home() {
                 </a>
 
                 <div className="max-w-2xl text-left">
-                    <h1 className="text-5xl mb-2">The Misinformation Game</h1>
-                    <p className="text-lg mb-4">
+                    <h1 className="text-5xl mb-4">The Misinformation Game</h1>
+                    <p className="text-lg mb-6">
                         The Misinformation Game is a social media simulator built to study people’s
                         behaviour when they interact with social media. To achieve this, The Misinformation
                         Game simulates a social media feed for research participants. You may read more
