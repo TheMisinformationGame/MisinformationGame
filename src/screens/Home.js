@@ -21,7 +21,7 @@ function Home() {
 
                 <a href="https://themisinformationgame.github.io/">
                     <img src={Logo} alt="Misinformation Game Logo"
-                         className="fixed left-2 top-2 h-16" />
+                         className="absolute left-2 top-2 h-16" />
                 </a>
 
                 <div className="max-w-2xl text-left">
