@@ -45,17 +45,19 @@ export class ParticipantProgress extends Component {
                 this.props.onNextPost();
             }
         };
-        return (
+        return (<div className={(fancyPositioning ?
+                " fixed md:sticky z-10 inline-block w-full " +
+                " md:w-80 md:max-w-xs box-border " +
+                " bottom-0 md:bottom-auto md:top-0 left-1/2 md:left-0 " : "")}>
+
             <div className={
-                "w-full bg-white " + (fancyPositioning ?
+                "bg-white " + (fancyPositioning ?
                     /* If we are on the game screen we need to do a lot. */
-                    " fixed md:static md:max-w-xs md:mt-2 lg:mt-5 " +
-                    " bottom-0 md:bottom-auto md:top-0 left-1/2 md:left-0 " +
+                    " block w-full md:mt-2 lg:mt-5 " +
                     " transform -translate-x-1/2 md:translate-x-0 " +
-                    " z-10 transform -translate-x-1/2 md:translate-x-0 " +
                     " md:rounded-xl shadow-2xl md:shadow-xl md:border md:border-gray-400 "
                     : /* Or, if we aren't on the game screen, then only a little. */
-                    " static max-w-xs rounded-xl border border-gray-400 shadow ")}>
+                    " static w-80 max-w-xs rounded-xl border border-gray-400 shadow ")}>
 
                 <div className={
                     "p-2 px-4 pb-3 " + (fancyPositioning ? "border-t border-gray-400 md:border-none" : "")}>
@@ -101,6 +103,6 @@ export class ParticipantProgress extends Component {
                     </div>
                 </div>
             </div>
-        );
+        </div>);
     }
 }
