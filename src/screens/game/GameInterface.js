@@ -131,7 +131,7 @@ class ReactButton extends Component {
 
 class CommentReactButton extends ReactButton {
     getPositioningClassName() {
-        return "h-9 w-11 pt-1.5 pb-0.5 px-3";
+        return "h-9 w-11 pt-1.5 pb-0.5 px-3 mr-1";
     }
 
     getReactionCountClassName() {
