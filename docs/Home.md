@@ -5,8 +5,11 @@ showPath: false
 permalink: /
 ---
 
-# The Misinformation Game
-{:#intro}
+<p class="logo-banner">
+    <img src="assets/img/banner.png" alt="The Misinformation Game Logo" />
+</p>
+
+--------
 
 The Misinformation Game is a social media simulator built to study
 people's behaviour when they interact with social media. To achieve
