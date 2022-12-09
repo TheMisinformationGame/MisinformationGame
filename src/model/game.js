@@ -266,15 +266,18 @@ export class GamePost {
 export class GameState {
     // The study is not saved as part of the game states, it is only here for convenience.
     study; // Study
+    indexInGame; // Number
 
     currentSource; // GameSource
     currentPost; // GamePost
 
-    constructor(study, currentSource, currentPost) {
+    constructor(study, indexInGame, currentSource, currentPost) {
         doTypeCheck(study, Study, "Game's Study");
+        doTypeCheck(indexInGame, "number", "Index of State in the Game")
         doTypeCheck(currentSource, GameSource, "Game's Current Source");
         doTypeCheck(currentPost, GamePost, "Game's Current Post");
         this.study = study;
+        this.indexInGame = indexInGame;
         this.currentSource = currentSource;
         this.currentPost = currentPost;
     }
@@ -286,9 +289,10 @@ export class GameState {
         };
     }
 
-    static fromJSON(json, study) {
+    static fromJSON(json, study, indexInGame) {
         return new GameState(
             study,
+            indexInGame,
             GameSource.fromJSON(json["currentSource"], study),
             GamePost.fromJSON(json["currentPost"], study),
             null,
@@ -766,6 +770,7 @@ export class Game {
     participant; // GameParticipant
     dismissedPrompt; // Boolean
     completionCode; // String
+    displayPostsWindowSize; // Number
 
     saveResultsToDatabasePromise; // Promise, not saved
 
@@ -792,6 +797,7 @@ export class Game {
         this.participant = participant;
         this.dismissedPrompt = dismissedPrompt;
         this.completionCode = completionCode;
+        this.displayPostsWindowSize = (study.uiSettings.displayPostsInFeed ? 5 : 1);
 
         this.saveResultsToDatabasePromise = null;
     }
@@ -843,31 +849,41 @@ export class Game {
         return "introduction";
     }
 
-    getCurrentState() {
+    getCurrentStates() {
         if (this.isFinished())
             throw new Error("The game has been finished!");
 
-        return this.states[this.participant.postInteractions.length];
+        const states = [];
+        const startIndex = this.participant.postInteractions.length
+        const limit = Math.min(this.states.length, startIndex + this.displayPostsWindowSize);
+        for (let index = startIndex; index < limit; ++index) {
+            states.push(this.states[index]);
+        }
+        return states;
     }
 
     /**
      * Preloads the images required for the current state.
      */
-    preloadCurrentState() {
+    preloadCurrentStates() {
         if (this.isFinished())
             return;
-        this.preloadState(this.getCurrentState());
+
+        const states = this.getCurrentStates();
+        for (let index = 0; index < states.length; ++index) {
+            this.preloadState(states[index]);
+        }
     }
 
     /**
-     * Preloads the images required for the next state.
+     * Preloads the images required for the next states.
      */
     preloadNextState() {
-        const nextStateIndex = this.participant.postInteractions.length + 1;
-        if (nextStateIndex >= this.states.length)
+        const nextIndex = this.participant.postInteractions.length + this.displayPostsWindowSize;
+        if (nextIndex >= this.states.length)
             return;
 
-        this.preloadState(this.states[nextStateIndex]);
+        this.preloadState(this.states[nextIndex]);
     }
 
     /**
@@ -988,7 +1004,7 @@ export class Game {
         }
 
         // Create the new state.
-        const newState = new GameState(this.study, selectedSource, selectedPost);
+        const newState = new GameState(this.study, this.states.length, selectedSource, selectedPost);
         this.states.push(newState);
         this.latestStateSources = nextSources;
         this.latestStatePosts = nextPosts;
@@ -1006,7 +1022,7 @@ export class Game {
     static statesFromJSON(json, study) {
         const states = [];
         for (let index = 0; index < json.length; ++index) {
-            states.push(GameState.fromJSON(json[index], study));
+            states.push(GameState.fromJSON(json[index], study, index));
         }
         return states;
     }

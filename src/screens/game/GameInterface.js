@@ -584,6 +584,7 @@ class PostReactionsRow extends Component {
 class PostComponent extends Component {
     render() {
         const state = this.props.state;
+        const isFeedStyle = this.props.isFeedStyle;
         const interactions = this.props.interactions;
         const post = state.currentPost.post;
         const commentComponents = [];
@@ -629,7 +630,7 @@ class PostComponent extends Component {
         }
 
         return (
-            <div className="flex flex-col">
+            <div className={"flex flex-col " + (isFeedStyle ? "mt-6" : "")}>
                 <div className="bg-white shadow">
                     {/* The source of the post. */}
                     <div className="flex p-2 bg-white">
@@ -754,7 +755,7 @@ export class GameScreen extends ActiveGameScreen {
         super(props);
         this.defaultState = {
             ...this.defaultState,
-            currentState: null,
+            currentStates: null,
 
             error: null,
             reactionsAllowed: false,
@@ -907,7 +908,7 @@ export class GameScreen extends ActiveGameScreen {
     updateGameState(game, error, setDismissedPrompt) {
         const state = {
             ...this.state,
-            currentState: (game && !game.isFinished() ? game.getCurrentState() : null),
+            currentStates: (game && !game.isFinished() ? game.getCurrentStates() : null),
 
             error: error,
             reactionsAllowed: (!this.state.dismissedPrompt && !game),
@@ -940,7 +941,7 @@ export class GameScreen extends ActiveGameScreen {
         if (stage === "identification")
             return (<Redirect to={"/study/" + study.id + "/id" + window.location.search} />);
 
-        const state = this.state.currentState;
+        const states = this.state.currentStates;
         const participant = game.participant;
         const displayPrompt = !this.state.dismissedPrompt;
         const error = this.state.error;
@@ -977,6 +978,29 @@ export class GameScreen extends ActiveGameScreen {
             nextPostError = "Comment on the post to continue";
         } else {
             nextPostEnabled = true;
+        }
+
+        // Generate the post components.
+        const postComponents = [];
+        if (!error && states !== null) {
+            for (let index = 0; index < states.length; ++index) {
+                const state = states[index];
+                postComponents.push(
+                    <PostComponent
+                        key={"state-" + state.indexInGame}
+                        state={state}
+                        isFeedStyle={study.uiSettings.displayPostsInFeed}
+                        onPostReact={r => this.onPostReaction(r, study)}
+                        onCommentReact={(i, r) => this.onCommentReaction(i, r, study)}
+                        onCommentSubmit={value => this.onCommentSubmit(value)}
+                        onCommentEditedStatusUpdate={edited => this.onCommentEditedStatusUpdate(edited)}
+                        onCommentEdit={() => this.onCommentEdit()}
+                        onCommentDelete={() => this.onCommentDelete()}
+                        enableReactions={this.state.reactionsAllowed && this.state.inputEnabled}
+                        interactions={this.state.interactions}
+                        lastComment={this.state.lastComment}/>
+                );
+            }
         }
 
         return (
@@ -1028,21 +1052,10 @@ export class GameScreen extends ActiveGameScreen {
                          style={{minHeight: "100vh"}}>
 
                         {/* Post, reactions, and comments. */}
-                        {state && !error &&
-                            <PostComponent
-                                state={state}
-                                onPostReact={r => this.onPostReaction(r, study)}
-                                onCommentReact={(i, r) => this.onCommentReaction(i, r, study)}
-                                onCommentSubmit={value => this.onCommentSubmit(value)}
-                                onCommentEditedStatusUpdate={edited => this.onCommentEditedStatusUpdate(edited)}
-                                onCommentEdit={() => this.onCommentEdit()}
-                                onCommentDelete={() => this.onCommentDelete()}
-                                enableReactions={this.state.reactionsAllowed && this.state.inputEnabled}
-                                interactions={this.state.interactions}
-                                lastComment={this.state.lastComment}/>}
+                        {postComponents}
 
                         {/* If the game is finished, display a game completed prompt. */}
-                        {!state && finished && <GameFinished study={study} game={game} />}
+                        {(!states || states.length === 0) && finished && <GameFinished study={study} game={game} />}
 
                         {/* If there is an error, display it here. */}
                         {error && <ErrorLabel value={error} />}
