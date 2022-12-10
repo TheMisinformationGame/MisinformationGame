@@ -914,7 +914,7 @@ export class Game {
 
         const states = this.getCurrentStates();
         for (let index = 0; index < states.length; ++index) {
-            this.preloadState(states[index]);
+            setTimeout(this.preloadState.bind(this, states[index]), index * 200);
         }
     }
 

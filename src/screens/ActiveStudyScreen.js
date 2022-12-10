@@ -51,7 +51,7 @@ export class SimpleActiveStudyScreen extends ActiveStudyScreen {
         // Preload the game.
         if (this.preloadGame) {
             manager.getActiveGame().then((game) => {
-                game.preloadCurrentState();
+                game.preloadCurrentStates();
             }).catch(err => {
                 console.error(err);
                 this.setStateIfMounted({...this.state, studyLoadError: err.message, studyLoading: false});
