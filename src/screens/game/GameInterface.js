@@ -21,6 +21,7 @@ import {GamePostInteractionStore} from "../../model/game";
 import {UserComment} from "../../model/study";
 import {ConfirmationDialog} from "../../components/ConfirmationDialog";
 import smoothscroll from 'smoothscroll-polyfill';
+import {getUnixEpochTimeSeconds} from "../../utils/time";
 
 
 // We want to ensure that we have smooth element scrollIntoView behaviour.
@@ -778,6 +779,8 @@ export class GameScreen extends ActiveGameScreen {
             inputEnabled: true,
         };
         this.state = this.defaultState;
+        this.scrollListener = null;
+        this.scrollDebounceEnd = 0;
     }
 
     afterGameLoaded(game) {
@@ -785,6 +788,24 @@ export class GameScreen extends ActiveGameScreen {
         setTimeout(() => {
             this.updateGameState(game, null);
         });
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+        this.scrollListener = this.onScroll.bind(this);
+        document.addEventListener("scroll", this.scrollListener);
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        if (this.scrollListener !== null) {
+            document.removeEventListener("scroll", this.scrollListener);
+            this.scrollListener = null;
+        }
+        if (this.scrollDebounceTimer !== null) {
+            clearTimeout(this.scrollDebounceTimer);
+            this.scrollDebounceTimer = null;
+        }
     }
 
     onPromptContinue() {
@@ -865,23 +886,56 @@ export class GameScreen extends ActiveGameScreen {
         return this.state.interactions.get(this.getHighestState().indexInGame);
     }
 
-    onNextPost(game) {
+    getNextStateElement() {
+        const states = this.state.currentStates;
+        if (states === null || states.length < 2)
+            return;
+
+        return document.getElementById("post-" + states[1].indexInGame);
+    }
+
+    onScroll() {
+        const time = Date.now();
+        if (time < this.scrollDebounceEnd)
+            return;
+
+        const game = this.state.game;
+        const element = this.getNextStateElement();
+        if (!game || !element || !this.state.inputEnabled)
+            return;
+
+        // Once the participant has scrolled such that the previous
+        // post is completely off the screen, process it.
+        const bounds = element.getBoundingClientRect();
+        if (bounds.top <= 0) {
+            const delay = 1000;
+            this.scrollDebounceEnd = time + delay;
+            this.onNextPost(game, true);
+
+            // Just in case, set up a timer in case the participant
+            // scrolled past many posts quickly.
+            if (this.scrollDebounceTimer !== null) {
+                clearTimeout(this.scrollDebounceTimer);
+            }
+            this.scrollDebounceTimer = setTimeout(() => {
+                this.scrollDebounceTimer = null;
+                this.onScroll();
+            }, delay);
+        }
+    }
+
+    onNextPost(game, fromScroll) {
         const currentState = this.getHighestState();
 
         // Scroll the next post into view, if possible.
-        if (this.state.currentStates.length >= 2) {
-            const nextStateID = "post-" + this.state.currentStates[1].indexInGame;
-            const nextStateElement = document.getElementById(nextStateID);
-            if (nextStateElement) {
-                // We only want to scroll down, not up.
-                const bounds = nextStateElement.getBoundingClientRect();
-                if (bounds.top > 0) {
-                    nextStateElement.scrollIntoView({
-                        behavior: "smooth"
-                    });
-                }
-            } else {
-                console.error("Could not find " + nextStateID + " to scroll into view");
+        const nextStateElement = this.getNextStateElement();
+        if (nextStateElement) {
+            // We only want to scroll down, not up.
+            const bounds = nextStateElement.getBoundingClientRect();
+            if (bounds.top > 0) {
+                nextStateElement.scrollIntoView({
+                    behavior: "smooth"
+                });
             }
         }
 
@@ -904,9 +958,21 @@ export class GameScreen extends ActiveGameScreen {
         const animateTimeMS = 500;
         const remainTimeMS = 1000;
 
+        // If the participant scrolled the next post into view,
+        // we don't want to let them scroll back.
+        const currentStates = this.state.currentStates;
+        let newStates = currentStates;
+        if (fromScroll) {
+            newStates = [];
+            for (let index = 1; index < currentStates.length; ++index) {
+                newStates.push(currentStates[index]);
+            }
+        }
+
         // Show the change in followers and credibility.
         this.setState({
             ...this.state,
+            currentStates: newStates,
             overrideFollowers: beforeFollowers,
             overrideCredibility: beforeCredibility,
             followerChange: followerChange,
@@ -937,6 +1003,7 @@ export class GameScreen extends ActiveGameScreen {
                 setTimeout(() => {
                     this.setStateIfMounted({
                         ...this.state,
+                        currentStates: newStates,
                         overrideFollowers: followers,
                         overrideCredibility: credibility,
                         followerChange: followerChange,
@@ -1091,7 +1158,7 @@ export class GameScreen extends ActiveGameScreen {
 
                                 const reactions = this.getHighestInteractions().postReactions;
                                 if (!study.basicSettings.requireReactions || reactions.length > 0) {
-                                    this.onNextPost(game);
+                                    this.onNextPost(game, false);
                                 }
                             }}
                             nextPostText={
