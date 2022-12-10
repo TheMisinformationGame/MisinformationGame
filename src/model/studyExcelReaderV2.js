@@ -196,21 +196,33 @@ function readV2Sources(workbook, study) {
     return Promise.all(sources);
 }
 
-function readV2StudyBasicSettings(workbook) {
+function readV2StudyBasicSettings(workbook, displayPostsInFeed) {
+    let requireReactions = false,
+        requireComments = readCell(workbook, V2.general.basic.requireComments);
+
+    // Some settings are incompatible with the feed style.
+    if (displayPostsInFeed) {
+        if (requireComments.toLowerCase() === "required") {
+            requireComments = "optional";
+        }
+    } else {
+        requireReactions = readCell(workbook, V2.general.basic.requireReactions);
+    }
+
     return StudyBasicSettings.createV2(
         readCell(workbook, V2.general.basic.name),
         readCell(workbook, V2.general.basic.description),
         readCell(workbook, V2.general.basic.prompt),
         readCell(workbook, V2.general.basic.length),
-        readCell(workbook, V2.general.basic.requireReactions),
-        readCell(workbook, V2.general.basic.requireComments),
+        requireReactions,
+        requireComments,
         readCell(workbook, V2.general.basic.requireIdentification),
     );
 }
 
-function readV2StudyUserInterfaceSettings(workbook) {
+function readV2StudyUserInterfaceSettings(workbook, displayPostsInFeed) {
     return StudyUserInterfaceSettings.createV2(
-        readCell(workbook, V2.general.userInterface.displayPostsInFeed),
+        displayPostsInFeed,
         readCell(workbook, V2.general.userInterface.feedScrollStyle),
         readCell(workbook, V2.general.userInterface.displayFollowers),
         readCell(workbook, V2.general.userInterface.displayCredibility),
@@ -262,8 +274,9 @@ function readV2StudyPagesSettings(workbook) {
  */
 export function readV2Study(workbook) {
     // First, read the basic settings of the spreadsheet.
-    const basicSettings = readV2StudyBasicSettings(workbook),
-          uiSettings = readV2StudyUserInterfaceSettings(workbook),
+    const displayPostsInFeed = readCell(workbook, V2.general.userInterface.displayPostsInFeed);
+    const basicSettings = readV2StudyBasicSettings(workbook, displayPostsInFeed),
+          uiSettings = readV2StudyUserInterfaceSettings(workbook, displayPostsInFeed),
           advancedSettings = readV2StudyAdvancedSettings(workbook, basicSettings),
           pagesSettings = readV2StudyPagesSettings(workbook);
 

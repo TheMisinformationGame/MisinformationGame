@@ -344,9 +344,7 @@ export class StudyBasicSettings {
         doTypeCheck(length, "number", "Study Length");
 
         doTypeCheck(requireComments, "string", "requireComments");
-        if (requireComments) {
-            requireComments = requireComments.toLowerCase();
-        }
+        requireComments = requireComments.toLowerCase();
         doEnumCheck(
             requireComments, ["required", "optional", "disabled"],
             "Whether comments are required, optional, or disabled"
