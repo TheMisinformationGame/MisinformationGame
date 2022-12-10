@@ -508,6 +508,49 @@ export class GameCommentInteraction {
 }
 
 /**
+ * Stores the interactions of a user with a set of posts.
+ * This is intended to be used to help when displaying
+ * posts in a feed, by allowing interactions with multiple
+ * posts at once.
+ */
+export class GamePostInteractionStore {
+    postInteractions; // {Number: GamePostInteraction}
+
+    constructor(template) {
+        this.postInteractions = {};
+        if (template !== undefined) {
+            const templateInteractions = template.postInteractions;
+            for (let key in templateInteractions) {
+                if (!templateInteractions.hasOwnProperty(key))
+                    continue;
+
+                this.postInteractions[key] = templateInteractions[key];
+            }
+        }
+    }
+
+    static empty() {
+        return new GamePostInteractionStore();
+    }
+
+    get(postIndex) {
+        let postInteraction = this.postInteractions[postIndex];
+        if (postInteraction !== undefined)
+            return postInteraction;
+
+        postInteraction = GamePostInteraction.empty();
+        this.postInteractions[postIndex] = postInteraction;
+        return postInteraction;
+    }
+
+    update(postIndex, postInteraction) {
+        const copy = new GamePostInteractionStore(this);
+        copy.postInteractions[postIndex] = postInteraction;
+        return copy;
+    }
+}
+
+/**
  * Stores all the interactions of a user with a post.
  */
 export class GamePostInteraction {
@@ -903,23 +946,24 @@ export class Game {
     }
 
     /**
-     * Advances to the next state in the game after the
-     * participant interacted with a post.
+     * Advances to the next state in the game after the participant interacted with the
+     * highest current post. The highest current post is the visible post if not in
+     * feed-mode, or the first visible post in feed-mode.
      *
-     * @param interactions the interactions that the participant made with the post.
+     * @param interaction the interactions that the participant made with the highest current post.
      */
-    advanceState(interactions) {
-        doTypeCheck(interactions, GamePostInteraction, "Interaction with the Current Post")
+    advanceState(interaction) {
+        doTypeCheck(interaction, GamePostInteraction, "Interaction with the Current Post")
 
         // Mark that the post is no longer accessible.
-        interactions = interactions.complete();
+        interaction = interaction.complete();
 
         // Calculate and apply the changes to participant's credibility and followers.
-        const postReactions = interactions.postReactions;
+        const postReactions = interaction.postReactions;
         let credibilityChange = 0,
             followerChange = 0;
 
-        const post = this.getCurrentState().currentPost.post;
+        const post = this.getCurrentStates()[0].currentPost.post;
         for (let index = 0; index < postReactions.length; ++index) {
             const reaction = postReactions[index];
             if (reaction === "skip")
@@ -928,7 +972,7 @@ export class Game {
             credibilityChange += post.changesToCredibility[reaction].sample();
             followerChange += post.changesToFollowers[reaction].sample();
         }
-        this.participant.addReaction(interactions, credibilityChange, followerChange);
+        this.participant.addReaction(interaction, credibilityChange, followerChange);
 
         // Generate a completion code when the game is finished.
         if (this.isFinished()) {

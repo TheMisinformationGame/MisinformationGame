@@ -17,7 +17,7 @@ import {ActiveGameScreen} from "./ActiveGameScreen";
 import {Redirect} from "react-router-dom";
 import {MountAwareComponent} from "../../components/MountAwareComponent";
 import {ParticipantProgress} from "../../components/ParticipantProgress";
-import {GamePostInteraction} from "../../model/game";
+import {GamePostInteraction, GamePostInteractionStore} from "../../model/game";
 import {UserComment} from "../../model/study";
 import {ConfirmationDialog} from "../../components/ConfirmationDialog";
 
@@ -760,7 +760,7 @@ export class GameScreen extends ActiveGameScreen {
             error: null,
             reactionsAllowed: false,
 
-            interactions: GamePostInteraction.empty(),
+            interactions: GamePostInteractionStore.empty(),
             lastComment: null,
             commentHasBeenEdited: false,
 
@@ -787,62 +787,89 @@ export class GameScreen extends ActiveGameScreen {
         this.updateGameState(this.state.game, this.state.error, true);
     }
 
-    onPostReaction(reaction, study) {
+    onPostReaction(postIndex, reaction, study) {
+        const inters = this.state.interactions;
         this.setState({
             ...this.state,
-            interactions: this.state.interactions.withToggledPostReaction(
+            interactions: inters.update(postIndex, inters.get(postIndex).withToggledPostReaction(
                 reaction, study.uiSettings.allowMultipleReactions
-            )
+            ))
         });
     }
 
-    onCommentReaction(commentIndex, reaction, study) {
+    onCommentReaction(postIndex, commentIndex, reaction, study) {
+        const inters = this.state.interactions;
         this.setState({
             ...this.state,
-            interactions: this.state.interactions.withToggledCommentReaction(
+            interactions: inters.update(postIndex, inters.get(postIndex).withToggledCommentReaction(
                 commentIndex, reaction, study.uiSettings.allowMultipleReactions
-            )
+            ))
         });
     }
 
-    onCommentSubmit(comment) {
+    onCommentSubmit(postIndex, comment) {
+        const inters = this.state.interactions;
         this.setState({
             ...this.state,
             lastComment: null,
-            interactions: this.state.interactions.withComment(comment),
+            interactions: inters.update(postIndex, inters.get(postIndex).withComment(comment)),
             commentHasBeenEdited: false
         });
     }
 
-    onCommentEdit() {
+    onCommentEdit(postIndex) {
+        const inters = this.state.interactions;
         this.setState({
             ...this.state,
             lastComment: this.state.interactions.comment,
-            interactions: this.state.interactions.withComment(null),
+            interactions: inters.update(postIndex, inters.get(postIndex).withComment(null)),
             commentHasBeenEdited: false
         });
     }
 
-    onCommentDelete() {
+    onCommentDelete(postIndex) {
+        const inters = this.state.interactions;
         this.setState({
             ...this.state,
             lastComment: null,
-            interactions: this.state.interactions.withComment(null),
+            interactions: inters.update(postIndex, inters.get(postIndex).withComment(null)),
             commentHasBeenEdited: false
         });
     }
 
-    onCommentEditedStatusUpdate(hasBeenEdited) {
+    onCommentEditedStatusUpdate(postIndex, hasBeenEdited) {
         this.setState({
             ...this.state,
             commentHasBeenEdited: hasBeenEdited
         });
     }
 
+    getHighestState() {
+        const currentStates = this.state.currentStates;
+        if (currentStates === undefined)
+            throw new Error("There are no current states!");
+
+        const currentState = this.state.currentStates[0];
+        if (currentState === undefined)
+            throw new Error("There is no current state!");
+
+        return currentState;
+    }
+
+    getHighestInteractions() {
+        return this.state.interactions.get(this.getHighestState().indexInGame);
+    }
+
     onNextPost(game) {
+        const currentState = this.state.currentStates[0];
+        if (currentState === undefined)
+            throw new Error("There is no current state!");
+
+        const interaction = this.state.interactions.get(currentState.indexInGame);
+
         const beforeFollowers = Math.round(game.participant.followers);
         const beforeCredibility = Math.round(game.participant.credibility);
-        game.advanceState(this.state.interactions);
+        game.advanceState(interaction);
 
         const followerChange = Math.round(game.participant.followers) - beforeFollowers;
         const credibilityChange = Math.round(game.participant.credibility) - beforeCredibility;
@@ -913,7 +940,6 @@ export class GameScreen extends ActiveGameScreen {
             error: error,
             reactionsAllowed: (!this.state.dismissedPrompt && !game),
 
-            interactions: GamePostInteraction.empty(),
             lastComment: null,
 
             overrideFollowers: null,
@@ -947,37 +973,46 @@ export class GameScreen extends ActiveGameScreen {
         const error = this.state.error;
         const finished = game.isFinished();
 
-        const madePostReaction = (this.state.interactions.postReactions.length > 0);
-        const madeUserComment = (this.state.interactions.comment !== null);
+        const interactions = this.state.interactions;
 
         const currentPostNumber = participant.postInteractions.length;
         const totalPosts = game.study.basicSettings.length;
         const progressPercentage = Math.round(currentPostNumber / totalPosts * 100);
 
-        let nextPostEnabled = false;
+        let nextPostEnabled = (states !== null && states.length > 0);
         let nextPostError = "";
-        if (this.state.commentHasBeenEdited) {
-            if (study.basicSettings.requireReactions && !madePostReaction) {
-                nextPostError = "Please react to the post";
-            } else {
-                nextPostError = "Please complete your comment";
-            }
-        } else if (study.basicSettings.requireReactions && study.areUserCommentsRequired()) {
-            if (!madePostReaction) {
-                nextPostError = "Please react to the post";
-            } else if (!madeUserComment) {
+        if (!study.uiSettings.displayPostsInFeed && states !== null && states.length > 0) {
+            if (states.length > 1)
+                throw new Error("It is unexpected to be in non-feed mode with more than one state active");
+
+            const postInteraction = interactions.get(states[0].indexInGame)
+            const madePostReaction = (postInteraction.postReactions.length > 0);
+            const madeUserComment = (postInteraction.comment !== null);
+
+            nextPostEnabled = false;
+            if (this.state.commentHasBeenEdited) {
+                if (study.basicSettings.requireReactions && !madePostReaction) {
+                    nextPostError = "Please react to the post";
+                } else {
+                    nextPostError = "Please complete your comment";
+                }
+            } else if (study.basicSettings.requireReactions && study.areUserCommentsRequired()) {
+                if (!madePostReaction) {
+                    nextPostError = "Please react to the post";
+                } else if (!madeUserComment) {
+                    nextPostError = "Comment on the post to continue";
+                } else {
+                    nextPostEnabled = true;
+                }
+            } else if (study.basicSettings.requireReactions) {
+                nextPostEnabled = madePostReaction;
+                nextPostError = "React to the post to continue";
+            } else if (study.areUserCommentsRequired()) {
+                nextPostEnabled = madeUserComment;
                 nextPostError = "Comment on the post to continue";
             } else {
                 nextPostEnabled = true;
             }
-        } else if (study.basicSettings.requireReactions) {
-            nextPostEnabled = madePostReaction;
-            nextPostError = "React to the post to continue";
-        } else if (study.areUserCommentsRequired()) {
-            nextPostEnabled = madeUserComment;
-            nextPostError = "Comment on the post to continue";
-        } else {
-            nextPostEnabled = true;
         }
 
         // Generate the post components.
@@ -985,19 +1020,20 @@ export class GameScreen extends ActiveGameScreen {
         if (!error && states !== null) {
             for (let index = 0; index < states.length; ++index) {
                 const state = states[index];
+                const postIndex = state.indexInGame;
                 postComponents.push(
                     <PostComponent
                         key={"state-" + state.indexInGame}
                         state={state}
                         isFeedStyle={study.uiSettings.displayPostsInFeed}
-                        onPostReact={r => this.onPostReaction(r, study)}
-                        onCommentReact={(i, r) => this.onCommentReaction(i, r, study)}
-                        onCommentSubmit={value => this.onCommentSubmit(value)}
-                        onCommentEditedStatusUpdate={edited => this.onCommentEditedStatusUpdate(edited)}
-                        onCommentEdit={() => this.onCommentEdit()}
-                        onCommentDelete={() => this.onCommentDelete()}
+                        onPostReact={r => this.onPostReaction(postIndex, r, study)}
+                        onCommentReact={(i, r) => this.onCommentReaction(postIndex, i, r, study)}
+                        onCommentSubmit={value => this.onCommentSubmit(postIndex, value)}
+                        onCommentEditedStatusUpdate={edited => this.onCommentEditedStatusUpdate(postIndex, edited)}
+                        onCommentEdit={() => this.onCommentEdit(postIndex)}
+                        onCommentDelete={() => this.onCommentDelete(postIndex)}
                         enableReactions={this.state.reactionsAllowed && this.state.inputEnabled}
-                        interactions={this.state.interactions}
+                        interactions={interactions.get(postIndex)}
                         lastComment={this.state.lastComment}/>
                 );
             }
@@ -1028,7 +1064,10 @@ export class GameScreen extends ActiveGameScreen {
                             nextPostEnabled={nextPostEnabled && this.state.reactionsAllowed && this.state.inputEnabled}
                             progressPercentage = {progressPercentage}
                             onNextPost={() => {
-                                const reactions = this.state.interactions.postReactions;
+                                if (!nextPostEnabled)
+                                    return;
+
+                                const reactions = this.getHighestInteractions().postReactions;
                                 if (!study.basicSettings.requireReactions || reactions.length > 0) {
                                     this.onNextPost(game);
                                 }
