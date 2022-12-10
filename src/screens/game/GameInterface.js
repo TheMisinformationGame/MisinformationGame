@@ -17,9 +17,14 @@ import {ActiveGameScreen} from "./ActiveGameScreen";
 import {Redirect} from "react-router-dom";
 import {MountAwareComponent} from "../../components/MountAwareComponent";
 import {ParticipantProgress} from "../../components/ParticipantProgress";
-import {GamePostInteraction, GamePostInteractionStore} from "../../model/game";
+import {GamePostInteractionStore} from "../../model/game";
 import {UserComment} from "../../model/study";
 import {ConfirmationDialog} from "../../components/ConfirmationDialog";
+import smoothscroll from 'smoothscroll-polyfill';
+
+
+// We want to ensure that we have smooth element scrollIntoView behaviour.
+smoothscroll.polyfill();
 
 
 class SourceElement extends Component {
@@ -630,7 +635,7 @@ class PostComponent extends Component {
         }
 
         return (
-            <div className={"flex flex-col " + (isFeedStyle ? "mt-6" : "")}>
+            <div id={this.props.id} className={"flex flex-col " + (isFeedStyle ? "mt-6" : "")}>
                 <div className="bg-white shadow">
                     {/* The source of the post. */}
                     <div className="flex p-2 bg-white">
@@ -861,10 +866,26 @@ export class GameScreen extends ActiveGameScreen {
     }
 
     onNextPost(game) {
-        const currentState = this.state.currentStates[0];
-        if (currentState === undefined)
-            throw new Error("There is no current state!");
+        const currentState = this.getHighestState();
 
+        // Scroll the next post into view, if possible.
+        if (this.state.currentStates.length >= 2) {
+            const nextStateID = "post-" + this.state.currentStates[1].indexInGame;
+            const nextStateElement = document.getElementById(nextStateID);
+            if (nextStateElement) {
+                // We only want to scroll down, not up.
+                const bounds = nextStateElement.getBoundingClientRect();
+                if (bounds.top > 0) {
+                    nextStateElement.scrollIntoView({
+                        behavior: "smooth"
+                    });
+                }
+            } else {
+                console.error("Could not find " + nextStateID + " to scroll into view");
+            }
+        }
+
+        // Apply the interaction the user made.
         const interaction = this.state.interactions.get(currentState.indexInGame);
 
         const beforeFollowers = Math.round(game.participant.followers);
@@ -1023,7 +1044,8 @@ export class GameScreen extends ActiveGameScreen {
                 const postIndex = state.indexInGame;
                 postComponents.push(
                     <PostComponent
-                        key={"state-" + state.indexInGame}
+                        id={"post-" + state.indexInGame}
+                        key={"post-" + state.indexInGame}
                         state={state}
                         isFeedStyle={study.uiSettings.displayPostsInFeed}
                         onPostReact={r => this.onPostReaction(postIndex, r, study)}
