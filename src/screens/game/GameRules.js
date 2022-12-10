@@ -5,7 +5,7 @@ import FlagIcon from '@material-ui/icons/Flag';
 import React from "react";
 import {ParticipantProgress} from "../../components/ParticipantProgress";
 import {GameIntroductionScreen, replaceHTMLPlaceholder} from "./GameIntroduction";
-import {ExampleCommentEntryBox} from "./GameInterface";
+import {ExampleCommentEntryBox} from "./CommentEntry";
 
 
 /**
