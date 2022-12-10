@@ -1,10 +1,13 @@
 import React, {Component} from "react";
 import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import {CredibilityLabel} from "./CredibilityLabel";
+import {CredibilityLabel} from "../../components/CredibilityLabel";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
+/**
+ * A label that indicates the change to the follower or credibility number.
+ */
 class ChangeLabel extends Component {
     render() {
         if (!this.props.change)
@@ -26,6 +29,9 @@ class ChangeLabel extends Component {
     }
 }
 
+/**
+ * The progress dialog of a participant.
+ */
 export class ParticipantProgress extends Component {
     render() {
         const participant = this.props.participant;
