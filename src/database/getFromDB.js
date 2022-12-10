@@ -8,6 +8,7 @@ import {BrokenStudy, Study} from "../model/study";
 import {StudyImage} from "../model/images";
 import {Game} from "../model/game";
 import {decompressJson} from "./compressJson";
+import {retryPromiseOperation} from "../utils/promises";
 
 
 /**
@@ -83,29 +84,42 @@ function getStudyImagePathType(path) {
 /**
  * Returns a promise to a StudyImage loaded from Firebase Storage at the path {@param path}.
  */
-export async function readStudyImage(path) {
+export function readStudyImage(path) {
+    return retryPromiseOperation(readStudyImageInternal.bind(null, path), 1000, 2);
+}
+
+async function readStudyImageInternal(path) {
     const type = getStudyImagePathType(path);
-    const url = await storage.ref(path).getDownloadURL();
-    return await new Promise((resolve, reject) => {
-        const request = new XMLHttpRequest();
-        request.open("GET", url, true);
-        request.responseType = "arraybuffer";
-        request.onload = () => {
-            const response = request.response;
-            if (response) {
-                resolve(new StudyImage(new Uint8Array(response), type));
-            } else {
-                reject(new Error("Missing response when loading StudyImage from " + path));
-            }
-        };
-        request.onerror = () => {
-            reject(new Error(
-                "Could not load StudyImage from " + path +
-                (request.status ? " (" + request.status + ")" : "") +
-                (request.statusText ? ": " + request.statusText : "")
-            ));
-        };
-        request.send(null);
+    return new Promise((resolve, reject) => {
+        return storage.ref(path).getDownloadURL().then((url) => {
+            const request = new XMLHttpRequest();
+            // Long timeout as we really don't want to hammer the backend.
+            request.timeout = 8000;
+            request.open("GET", url, true);
+            request.responseType = "arraybuffer";
+            request.onload = () => {
+                const response = request.response;
+                if (response) {
+                    resolve(new StudyImage(new Uint8Array(response), type));
+                } else {
+                    reject(new Error("Missing response when loading StudyImage from " + path));
+                }
+            };
+
+            const makeErrorListener = (errorDesc) => {
+                return () => {
+                    reject(new Error(
+                        errorDesc + " StudyImage from " + path +
+                        (request.status ? " (" + request.status + ")" : "") +
+                        (request.statusText ? ": " + request.statusText : "")
+                    ));
+                };
+            };
+            request.onerror = makeErrorListener("Could not load");
+            request.onabort = makeErrorListener("Aborted while loading");
+            request.ontimeout = makeErrorListener("Timed out while loading");
+            request.send(null);
+        });
     });
 }
 
