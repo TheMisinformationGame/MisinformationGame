@@ -77,7 +77,7 @@ export class ParticipantProgress extends Component {
                             </span>
                             <ChangeLabel change={this.props.followerChange} />
                         </p>}
-                    
+
                     {displayCredibility &&
                         <p className="text-xl">
                             <CheckCircleIcon className="align-bottom mr-1" />
@@ -90,14 +90,14 @@ export class ParticipantProgress extends Component {
                         </p>}
 
                     <div onClick={onNextPost}
-                         title={nextPostEnabled || this.props.hideTooltip ? "" :
-                             "You must react to the post before you can continue to the next post"}
-                         className={
-                             " mt-3 px-3 py-2 rounded-md text-white select-none " +
-                             (nextPostEnabled ? " cursor-pointer " : "") +
-                             (nextPostEnabled ?
-                                 " bg-blue-500 active:bg-blue-600 hover:bg-blue-600 " : " bg-gray-400 ")
-                         }>
+                          title={nextPostEnabled || this.props.hideTooltip ? "" :
+                              "You must react to the post before you can continue to the next post"}
+                          className={
+                              " mt-3 px-3 py-2 rounded-md text-white select-none " +
+                              (nextPostEnabled ? " cursor-pointer " : "") +
+                              (nextPostEnabled ?
+                                  " bg-blue-500 active:bg-blue-600 hover:bg-blue-600 " : " bg-gray-400 ")
+                          }>
 
                         {this.props.nextPostText}
                     </div>
