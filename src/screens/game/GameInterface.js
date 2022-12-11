@@ -315,7 +315,7 @@ export class GameScreen extends ActiveGameScreen {
         const states = this.state.currentStates;
         if (states && states.length > 1) {
             const state = states[states.length - 1],
-                  elemID = "post-" + state.indexInGame,
+                  elemID = "post-" + state.indexInGame + "-spacer",
                   elem = document.getElementById(elemID);
 
             if (elem) {
@@ -331,8 +331,7 @@ export class GameScreen extends ActiveGameScreen {
 
                     const newBounds = elem.getBoundingClientRect();
                     const dy = newBounds.top - originalBounds.top;
-                    if (Math.abs(dy) > originalBounds.height / 2) {
-                        console.log("Scroll " + dy);
+                    if (Math.abs(dy) > 100) {
                         window.scrollBy(0, dy);
                     }
                     if (repetitions > 0) {
@@ -551,7 +550,7 @@ export class GameScreen extends ActiveGameScreen {
 
                 // The spacers help with scroll anchoring, which helps to
                 // avoid flickering when old posts are removed.
-                postComponents.push(<div id={postSpacerID} key={postSpacerID} className="h-6"></div>)
+                postComponents.push(<div id={postSpacerID} key={postSpacerID} className="h-8"></div>)
                 postComponents.push(
                     <PostComponent
                         id={postID}
