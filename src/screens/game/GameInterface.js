@@ -30,7 +30,7 @@ class FeedEnd extends Component {
                              " bg-blue-500 active:bg-blue-600 hover:bg-blue-600"
                          }>
 
-                        Continue to Complete Simulation
+                        Click to Complete Simulation
                     </div>
                 </div>
             </div>
