@@ -380,9 +380,12 @@ export class GameScreen extends ActiveGameScreen {
         // If the participant scrolled the next post into view,
         // we don't want to let them scroll back.
         const currentStates = this.state.currentStates;
-        let newStates = currentStates;
+        let newStates = currentStates,
+            inputEnabled = false;
+
         if (fromScroll) {
             newStates = [];
+            inputEnabled = true;
             for (let index = 1; index < currentStates.length; ++index) {
                 newStates.push(currentStates[index]);
             }
@@ -397,7 +400,7 @@ export class GameScreen extends ActiveGameScreen {
             overrideCredibility: beforeCredibility,
             followerChange: followerChange,
             credibilityChange: credibilityChange,
-            inputEnabled: false
+            inputEnabled: inputEnabled
         });
 
         function roundInDir(value, direction) {
@@ -428,7 +431,7 @@ export class GameScreen extends ActiveGameScreen {
                         overrideCredibility: credibility,
                         followerChange: followerChange,
                         credibilityChange: credibilityChange,
-                        inputEnabled: false
+                        inputEnabled: inputEnabled
                     });
                 }, stage * animateTimeMS / maxStages);
             }
@@ -563,7 +566,7 @@ export class GameScreen extends ActiveGameScreen {
                         onCommentEditedStatusUpdate={edited => this.onCommentEditedStatusUpdate(postIndex, edited)}
                         onCommentEdit={() => this.onCommentEdit(postIndex)}
                         onCommentDelete={() => this.onCommentDelete(postIndex)}
-                        enableReactions={this.state.reactionsAllowed && this.state.inputEnabled}
+                        enableReactions={(index !== 0) || (this.state.reactionsAllowed && this.state.inputEnabled)}
                         interactions={interactions.get(postIndex)}
                         lastComment={this.state.lastComment}/>
                 );
