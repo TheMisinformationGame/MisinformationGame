@@ -1,13 +1,13 @@
-import {Component} from "react";
 import {ErrorLabel} from "./StatusLabel";
 import {CircularProgress} from "@material-ui/core";
 import {isOfType} from "../utils/types";
 import {StudyImage} from "../model/images";
+import {MountAwareComponent} from "./MountAwareComponent";
 
 /**
  * An image that may still be loading.
  */
-export class PromiseImage extends Component {
+export class PromiseImage extends MountAwareComponent {
     constructor(props) {
         super(props);
         this.state = {};
@@ -15,14 +15,14 @@ export class PromiseImage extends Component {
 
     load(imagePromise) {
         if (isOfType(imagePromise, StudyImage)) {
-            this.setState({
+            this.setStateIfMounted({
                 promise: imagePromise,
                 image: imagePromise
             });
             return;
         }
 
-        this.setState({
+        this.setStateIfMounted({
             promise: imagePromise,
             image: null
         });
@@ -33,12 +33,12 @@ export class PromiseImage extends Component {
                 return;
 
             // Image has loaded!
-            this.setState({
+            this.setStateIfMounted({
                 promise: imagePromise,
                 image: image
             });
         }).catch((err) => {
-            this.setState({
+            this.setStateIfMounted({
                 promise: imagePromise,
                 image: null,
                 error: err.message
