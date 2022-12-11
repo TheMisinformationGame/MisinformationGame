@@ -551,9 +551,12 @@ export class GameScreen extends ActiveGameScreen {
                       postID = "post-" + state.indexInGame,
                       postSpacerID = postID + "-spacer";
 
-                // The spacers help with scroll anchoring, which helps to
-                // avoid flickering when old posts are removed.
-                postComponents.push(<div id={postSpacerID} key={postSpacerID} className="h-8"></div>)
+                if (study.uiSettings.displayPostsInFeed) {
+                    // The spacers help with scroll anchoring, which helps to
+                    // avoid flickering when old posts are removed.
+                    postComponents.push(<div id={postSpacerID} key={postSpacerID} className="h-8"></div>)
+                }
+
                 postComponents.push(
                     <PostComponent
                         id={postID}
