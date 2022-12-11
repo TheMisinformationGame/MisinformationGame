@@ -880,6 +880,14 @@ export class Game {
     }
 
     /**
+     * Returns whether there are no states beyond the current states.
+     */
+    areNoNextStates() {
+        const nextIndex = this.participant.postInteractions.length + this.displayPostsWindowSize;
+        return nextIndex >= this.states.length;
+    }
+
+    /**
      * Returns the stage of the game that the user should be shown right now.
      */
     getCurrentStage() {

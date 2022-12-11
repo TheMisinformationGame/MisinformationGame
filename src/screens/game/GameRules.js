@@ -3,7 +3,7 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ReplyIcon from '@mui/icons-material/Reply';
 import FlagIcon from '@material-ui/icons/Flag';
 import React from "react";
-import {ParticipantProgress} from "../../components/ParticipantProgress";
+import {ParticipantProgress} from "./ParticipantProgress";
 import {GameIntroductionScreen, replaceHTMLPlaceholder} from "./GameIntroduction";
 import {ExampleCommentEntryBox} from "./CommentEntry";
 

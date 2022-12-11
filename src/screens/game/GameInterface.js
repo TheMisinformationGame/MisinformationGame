@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {GamePrompt} from "./GamePrompt";
 import {ContinueButton} from "../../components/ContinueButton";
 import {ErrorLabel, ProgressLabel} from "../../components/StatusLabel"
 import {ActiveGameScreen} from "./ActiveGameScreen";
 import {Redirect} from "react-router-dom";
 import {MountAwareComponent} from "../../components/MountAwareComponent";
-import {ParticipantProgress} from "../../components/ParticipantProgress";
+import {ParticipantProgress} from "./ParticipantProgress";
 import {GamePostInteractionStore} from "../../model/game";
 import smoothscroll from 'smoothscroll-polyfill';
 import {PostComponent} from "./Post";
@@ -13,6 +13,30 @@ import {PostComponent} from "./Post";
 
 // We want to ensure that we have smooth element scrollIntoView behaviour.
 smoothscroll.polyfill();
+
+
+/**
+ * A user interface at the bottom of the feed to allow
+ * participants to finish the study.
+ */
+class FeedEnd extends Component {
+    render() {
+        return (
+            <div className="flex flex-col mt-6 mb-64">
+                <div className="bg-white shadow">
+                    <div onClick={this.props.onContinue}
+                         className={
+                             " m-3 px-3 py-2 rounded-md text-white select-none cursor-pointer " +
+                             " bg-blue-500 active:bg-blue-600 hover:bg-blue-600"
+                         }>
+
+                        Continue to Complete Simulation
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
 
 
 /**
@@ -127,6 +151,8 @@ export class GameScreen extends ActiveGameScreen {
         this.state = this.defaultState;
         this.scrollListener = null;
         this.scrollDebounceEnd = 0;
+        this.lastScrollTop = document.documentElement.scrollTop;
+        this.scrollFixId = null;
     }
 
     afterGameLoaded(game) {
@@ -240,9 +266,16 @@ export class GameScreen extends ActiveGameScreen {
         return document.getElementById("post-" + states[1].indexInGame);
     }
 
-    onScroll() {
+    onScroll(event, skipDebounceCheck) {
         const time = Date.now();
-        if (time < this.scrollDebounceEnd)
+        if (!skipDebounceCheck && time < this.scrollDebounceEnd)
+            return;
+
+        // We only want to trigger this when scrolling down.
+        const lastScrollTop = this.lastScrollTop,
+              newScrollTop = document.documentElement.scrollTop;
+        this.lastScrollTop = newScrollTop;
+        if (lastScrollTop && newScrollTop && newScrollTop <= lastScrollTop)
             return;
 
         const game = this.state.game;
@@ -253,8 +286,8 @@ export class GameScreen extends ActiveGameScreen {
         // Once the participant has scrolled such that the previous
         // post is completely off the screen, process it.
         const bounds = element.getBoundingClientRect();
-        if (bounds.top <= 0) {
-            const delay = 1000;
+        if (bounds.top < 0) {
+            const delay = 500;
             this.scrollDebounceEnd = time + delay;
             this.onNextPost(game, true);
 
@@ -265,8 +298,49 @@ export class GameScreen extends ActiveGameScreen {
             }
             this.scrollDebounceTimer = setTimeout(() => {
                 this.scrollDebounceTimer = null;
-                this.onScroll();
+                this.onScroll(null, true);
             }, delay);
+        }
+    }
+
+    maintainScrollPosition() {
+        // Abort the previous maintenance on the scroll position.
+        if (this.scrollFixId !== null) {
+            cancelAnimationFrame(this.scrollFixId);
+        }
+
+        // Maintain the scroll position after re-rendering.
+        // Usually the scroll position won't be affected, but
+        // occasionally it gets moved a lot.
+        const states = this.state.currentStates;
+        if (states && states.length > 1) {
+            const state = states[states.length - 1],
+                  elemID = "post-" + state.indexInGame,
+                  elem = document.getElementById(elemID);
+
+            if (elem) {
+                const originalBounds = elem.getBoundingClientRect();
+
+                const fixScroll = (repetitions) => {
+                    this.scrollFixId = null;
+
+                    // Make sure the element hasn't been removed from the DOM.
+                    const elem = document.getElementById(elemID);
+                    if (!this.mounted || !elem)
+                        return;
+
+                    const newBounds = elem.getBoundingClientRect();
+                    const dy = newBounds.top - originalBounds.top;
+                    if (Math.abs(dy) > originalBounds.height / 2) {
+                        console.log("Scroll " + dy);
+                        window.scrollBy(0, dy);
+                    }
+                    if (repetitions > 0) {
+                        this.scrollFixId = requestAnimationFrame(() => fixScroll(repetitions - 1));
+                    }
+                }
+                this.scrollFixId = requestAnimationFrame(() => fixScroll(3));
+            }
         }
     }
 
@@ -313,6 +387,7 @@ export class GameScreen extends ActiveGameScreen {
             for (let index = 1; index < currentStates.length; ++index) {
                 newStates.push(currentStates[index]);
             }
+            this.maintainScrollPosition();
         }
 
         // Show the change in followers and credibility.
@@ -363,7 +438,19 @@ export class GameScreen extends ActiveGameScreen {
         // The final timeout to change to the next post.
         setTimeout(() => {
             this.updateGameState(game, null);
+            this.maintainScrollPosition();
         }, animateTimeMS + remainTimeMS);
+    }
+
+    submitAllRemaining(game) {
+        const states = this.state.currentStates;
+        for (let index = 0; index < states.length; ++index) {
+            const state = states[index].indexInGame,
+                  interaction = this.state.interactions.get(state);
+
+            game.advanceState(interaction);
+        }
+        this.updateGameState(game, null);
     }
 
     updateGameState(game, error, setDismissedPrompt) {
@@ -401,7 +488,11 @@ export class GameScreen extends ActiveGameScreen {
         if (stage === "identification")
             return (<Redirect to={"/study/" + study.id + "/id" + window.location.search} />);
 
-        const states = this.state.currentStates;
+        let states = this.state.currentStates;
+        if (!states || states.length === 0) {
+            states = null;
+        }
+
         const participant = game.participant;
         const displayPrompt = !this.state.dismissedPrompt;
         const error = this.state.error;
@@ -413,9 +504,9 @@ export class GameScreen extends ActiveGameScreen {
         const totalPosts = game.study.basicSettings.length;
         const progressPercentage = Math.round(currentPostNumber / totalPosts * 100);
 
-        let nextPostEnabled = (states !== null && states.length > 0);
+        let nextPostEnabled = (states !== null);
         let nextPostError = "";
-        if (!study.uiSettings.displayPostsInFeed && states !== null && states.length > 0) {
+        if (!study.uiSettings.displayPostsInFeed && states !== null) {
             if (states.length > 1)
                 throw new Error("It is unexpected to be in non-feed mode with more than one state active");
 
@@ -528,8 +619,12 @@ export class GameScreen extends ActiveGameScreen {
                         {/* Post, reactions, and comments. */}
                         {postComponents}
 
+                        {/* The end of the feed. */}
+                        {states !== null && study.uiSettings.displayPostsInFeed && game.areNoNextStates() &&
+                            <FeedEnd onContinue={() => this.submitAllRemaining(game)} />}
+
                         {/* If the game is finished, display a game completed prompt. */}
-                        {(!states || states.length === 0) && finished && <GameFinished study={study} game={game} />}
+                        {states === null && finished && <GameFinished study={study} game={game} />}
 
                         {/* If there is an error, display it here. */}
                         {error && <ErrorLabel value={error} />}
