@@ -42,6 +42,12 @@ echo "========================================"
 npx firebase deploy || { echo "Deploying to Firebase failed!" ; exit 1; }
 
 echo " "
+echo "==================================="
+echo "Authenticating with Google Cloud..."
+echo "==================================="
+.GoogleCloud/google-cloud-sdk/bin/gcloud auth login || { echo "Authenticating Google Cloud failed!" ; exit 1; }
+
+echo " "
 echo "============================"
 echo "Initialising Google Cloud..."
 echo "============================"
