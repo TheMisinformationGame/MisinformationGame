@@ -23,7 +23,9 @@ class ChangeLabel extends Component {
             change = this.props.change;
             colour = "#961818";
         }
-        return (<span className={"font-semibold " + (this.props.className || "")} style={{color: colour}}>
+        return (<span className={"whitespace-nowrap font-semibold " + (this.props.className || "")}
+                      style={{color: colour}}>
+
             {icon} {change}
         </span>);
     }
