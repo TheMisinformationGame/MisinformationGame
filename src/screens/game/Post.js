@@ -207,7 +207,7 @@ export class PostComponent extends Component {
         }
 
         return (
-            <div id={this.props.id} className={"flex flex-col " + (isFeedStyle ? "mt-6" : "")}>
+            <div id={this.props.id} className={"flex flex-col"}>
                 <div className="bg-white shadow">
                     {/* The source of the post. */}
                     <div className="flex p-2 bg-white">

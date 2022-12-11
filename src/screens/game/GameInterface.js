@@ -545,11 +545,17 @@ export class GameScreen extends ActiveGameScreen {
         if (!error && states !== null) {
             for (let index = 0; index < states.length; ++index) {
                 const state = states[index];
-                const postIndex = state.indexInGame;
+                const postIndex = state.indexInGame,
+                      postID = "post-" + state.indexInGame,
+                      postSpacerID = postID + "-spacer";
+
+                // The spacers help with scroll anchoring, which helps to
+                // avoid flickering when old posts are removed.
+                postComponents.push(<div id={postSpacerID} key={postSpacerID} className="h-6"></div>)
                 postComponents.push(
                     <PostComponent
-                        id={"post-" + state.indexInGame}
-                        key={"post-" + state.indexInGame}
+                        id={postID}
+                        key={postID}
                         state={state}
                         isFeedStyle={study.uiSettings.displayPostsInFeed}
                         onPostReact={r => this.onPostReaction(postIndex, r, study)}
