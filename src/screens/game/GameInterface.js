@@ -456,12 +456,13 @@ export class GameScreen extends ActiveGameScreen {
     }
 
     updateGameState(game, error, setDismissedPrompt) {
+        const displayPostsInFeed = game.study.uiSettings.displayPostsInFeed;
         const state = {
             ...this.state,
             currentStates: (game && !game.isFinished() ? game.getCurrentStates() : null),
 
             error: error,
-            reactionsAllowed: (!this.state.dismissedPrompt && !game),
+            reactionsAllowed: displayPostsInFeed || (!this.state.dismissedPrompt && !game),
 
             lastComment: null,
 
@@ -477,7 +478,7 @@ export class GameScreen extends ActiveGameScreen {
         }
 
         this.setStateIfMounted(state);
-        if ((this.state.dismissedPrompt || setDismissedPrompt) && game) {
+        if (!displayPostsInFeed && (this.state.dismissedPrompt || setDismissedPrompt) && game) {
             game.preloadNextState();
             setTimeout(() => {
                 this.setStateIfMounted({...this.state, reactionsAllowed: true});
@@ -610,11 +611,13 @@ export class GameScreen extends ActiveGameScreen {
                                 }
                             }}
                             nextPostText={
-                                finished ?
-                                    "The simulation is complete!" :
-                                nextPostEnabled ?
-                                    (this.state.reactionsAllowed ? "Continue to next post" : "Please wait to continue")
-                                    : nextPostError
+                                finished ? "The simulation is complete!" :
+                                    (nextPostEnabled ?
+                                        (this.state.reactionsAllowed ?
+                                            (study.uiSettings.displayPostsInFeed ?
+                                                "Scroll to next post" : "Continue to next post")
+                                            : "Please wait to continue")
+                                        : nextPostError)
                             }
                             followerChange={this.state.followerChange}
                             credibilityChange={this.state.credibilityChange}/>}
