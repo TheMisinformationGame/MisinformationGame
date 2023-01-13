@@ -13,3 +13,7 @@ p a {
 p a:hover, p a:active {
     color: #16418A
 }
+
+.no-overflow-anchor {
+    overflow-anchor: none;
+}

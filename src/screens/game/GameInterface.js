@@ -153,6 +153,7 @@ export class GameScreen extends ActiveGameScreen {
         this.scrollDebounceEnd = 0;
         this.lastScrollTop = document.documentElement.scrollTop;
         this.scrollFixId = null;
+        this.scrollMaintenanceTop = 0;
     }
 
     afterGameLoaded(game) {
@@ -266,17 +267,20 @@ export class GameScreen extends ActiveGameScreen {
         return document.getElementById("post-" + states[1].indexInGame);
     }
 
-    onScroll(event, skipDebounceCheck) {
+    onScroll(event, isDebouncedCheck) {
         const time = Date.now();
-        if (!skipDebounceCheck && time < this.scrollDebounceEnd)
+        if (!isDebouncedCheck && time < this.scrollDebounceEnd)
             return;
 
-        // We only want to trigger this when scrolling down.
         const lastScrollTop = this.lastScrollTop,
               newScrollTop = document.documentElement.scrollTop;
+
         this.lastScrollTop = newScrollTop;
-        if (lastScrollTop && newScrollTop && newScrollTop <= lastScrollTop)
-            return;
+        if (lastScrollTop && newScrollTop) {
+            // We only want to trigger this when scrolling down.
+            if (!isDebouncedCheck && newScrollTop <= lastScrollTop)
+                return;
+        }
 
         const game = this.state.game;
         const element = this.getNextStateElement();
@@ -287,7 +291,7 @@ export class GameScreen extends ActiveGameScreen {
         // post is completely off the screen, process it.
         const bounds = element.getBoundingClientRect();
         if (bounds.top < 0) {
-            const delay = 500;
+            const delay = 2000;
             this.scrollDebounceEnd = time + delay;
             this.onNextPost(game, true);
 
@@ -319,7 +323,7 @@ export class GameScreen extends ActiveGameScreen {
                   elem = document.getElementById(elemID);
 
             if (elem) {
-                const originalBounds = elem.getBoundingClientRect();
+                this.scrollMaintenanceTop = elem.getBoundingClientRect().top;
 
                 const fixScroll = (repetitions) => {
                     this.scrollFixId = null;
@@ -329,16 +333,20 @@ export class GameScreen extends ActiveGameScreen {
                     if (!this.mounted || !elem)
                         return;
 
-                    const newBounds = elem.getBoundingClientRect();
-                    const dy = newBounds.top - originalBounds.top;
-                    if (Math.abs(dy) > 100) {
-                        window.scrollBy(0, dy);
+                    const newTop = elem.getBoundingClientRect().top;
+                    const dy = newTop - this.scrollMaintenanceTop;
+
+                    // Hopefully a good-enough heuristic.
+                    if (Math.abs(dy) > 50) {
+                        window.scrollBy(0, Math.round(dy));
+                    } else {
+                        this.scrollMaintenanceTop += dy;
                     }
                     if (repetitions > 0) {
                         this.scrollFixId = requestAnimationFrame(() => fixScroll(repetitions - 1));
                     }
                 }
-                this.scrollFixId = requestAnimationFrame(() => fixScroll(3));
+                this.scrollFixId = requestAnimationFrame(() => fixScroll(2));
             }
         }
     }
@@ -348,7 +356,7 @@ export class GameScreen extends ActiveGameScreen {
 
         // Scroll the next post into view, if possible.
         const nextStateElement = this.getNextStateElement();
-        if (nextStateElement) {
+        if (!fromScroll && nextStateElement) {
             // We only want to scroll down, not up.
             const bounds = nextStateElement.getBoundingClientRect();
             if (bounds.top > 0) {
@@ -369,7 +377,9 @@ export class GameScreen extends ActiveGameScreen {
         const credibilityChange = Math.round(game.participant.credibility) - beforeCredibility;
 
         // If there is no change, skip any animation.
-        if (followerChange === 0 && credibilityChange === 0) {
+        // We don't do this when displaying posts in a feed,
+        // as we must wait for the next post to scroll into view.
+        if (!game.study.uiSettings.displayPostsInFeed && followerChange === 0 && credibilityChange === 0) {
             this.updateGameState(game, null);
             return;
         }
@@ -550,12 +560,17 @@ export class GameScreen extends ActiveGameScreen {
                 const state = states[index];
                 const postIndex = state.indexInGame,
                       postID = "post-" + state.indexInGame,
-                      postSpacerID = postID + "-spacer";
+                      postSpacerID = postID + "-spacer",
+                      mayBeAnchor = (study.uiSettings.displayPostsInFeed && index > 0);
 
                 if (study.uiSettings.displayPostsInFeed) {
                     // The spacers help with scroll anchoring, which helps to
                     // avoid flickering when old posts are removed.
-                    postComponents.push(<div id={postSpacerID} key={postSpacerID} className="h-8"></div>)
+                    postComponents.push(
+                        <div id={postSpacerID} key={postSpacerID}
+                             className={"h-8 " + (mayBeAnchor ? "" : "no-overflow-anchor")}>
+                        </div>
+                    )
                 }
 
                 postComponents.push(
@@ -563,7 +578,7 @@ export class GameScreen extends ActiveGameScreen {
                         id={postID}
                         key={postID}
                         state={state}
-                        isFeedStyle={study.uiSettings.displayPostsInFeed}
+                        scrollAnchor={mayBeAnchor}
                         onPostReact={r => this.onPostReaction(postIndex, r, study)}
                         onCommentReact={(i, r) => this.onCommentReaction(postIndex, i, r, study)}
                         onCommentSubmit={value => this.onCommentSubmit(postIndex, value)}

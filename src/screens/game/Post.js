@@ -161,7 +161,6 @@ class PostReactionsRow extends Component {
 export class PostComponent extends Component {
     render() {
         const state = this.props.state;
-        const isFeedStyle = this.props.isFeedStyle;
         const interactions = this.props.interactions;
         const post = state.currentPost.post;
         const commentComponents = [];
@@ -207,7 +206,7 @@ export class PostComponent extends Component {
         }
 
         return (
-            <div id={this.props.id} className={"flex flex-col"}>
+            <div id={this.props.id} className={"flex flex-col " + (this.props.scrollAnchor ? "" : "no-overflow-anchor")}>
                 <div className="bg-white shadow">
                     {/* The source of the post. */}
                     <div className="flex p-2 bg-white">
