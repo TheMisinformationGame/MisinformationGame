@@ -237,6 +237,11 @@ interface of The Misinformation Game for participants.
 These options change the way that participants are able
 to interact with your study.
 
+##### Display Posts in a Feed
+{:#general-display-feed .no_toc}
+Whether to display the posts to participants in a feed,
+instead of one at a time.
+
 ##### Display Followers
 {:#general-display-followers .no_toc}
 Whether to show followers to participants. This includes
@@ -634,17 +639,20 @@ for most sources. If one of the parameters that has a
 default is not included for a specific source, the default
 value will be used instead.
 
-The _Default Source Values_ allows you to define normal
-distributions for the initial number of followers and 
+The _Default Source Values_ allows you to define
+[skew-normal distributions](https://en.wikipedia.org/wiki/Skew_normal_distribution)
+for the initial number of followers and
 credibility scores of sources. This random sampling of
-the initial number of followers and credibility for
-sources is not available on a per-source basis. The normal
+the initial number of followers and credibility for sources
+is not available on a per-source basis. The skew-normal
 distributions for the initial credibility and followers is
-configured by setting the mean and standard deviation of
-the distributions. These values are then used to sample
-the initial credibility and followers of sources from a
-normal distribution with that mean and standard deviation
-when a new game is started.
+configured by setting the mean, standard deviation, and
+skew shape of the distributions. These values are then used
+to sample the initial credibility and followers of sources
+from a skew-normal distribution with that mean, standard
+deviation, and skew shape when a new game is started. Each
+participant is likely to see different values chosen for
+sources that are sampled in this way.
 
 The sampling of initial credibility values is truncated to
 between 0 and 100 credibility. The sampling of initial
