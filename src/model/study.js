@@ -413,7 +413,6 @@ export class StudyBasicSettings {
  */
 export class StudyUserInterfaceSettings {
     displayPostsInFeed; // Boolean
-    feedScrollStyle; // String
     displayFollowers; // Boolean
     displayCredibility; // Boolean
     displayProgress; // Boolean
@@ -424,21 +423,11 @@ export class StudyUserInterfaceSettings {
     commentEnabledReactions; // {String: Boolean}
 
     constructor(
-        displayPostsInFeed, feedScrollStyle, displayFollowers,
-        displayCredibility, displayProgress, displayNumberOfReactions,
-        allowMultipleReactions, postEnabledReactions, commentEnabledReactions) {
-
+            displayPostsInFeed, displayFollowers, displayCredibility,
+            displayProgress, displayNumberOfReactions, allowMultipleReactions,
+            postEnabledReactions, commentEnabledReactions
+    ) {
         doTypeCheck(displayPostsInFeed, "boolean", "Whether to display posts in a feed");
-
-        doTypeCheck(feedScrollStyle, "string", "feedScrollStyle");
-        if (feedScrollStyle) {
-            feedScrollStyle = feedScrollStyle.toLowerCase();
-        }
-        doEnumCheck(
-            feedScrollStyle, ["free", "snap"],
-            "Whether the feed scroll style is free or snap"
-        );
-
         doTypeCheck(displayFollowers, "boolean", "Whether to display followers");
         doTypeCheck(displayCredibility, "boolean", "Whether to display credibility");
         doTypeCheck(displayProgress, "boolean", "Whether to display progress");
@@ -455,7 +444,6 @@ export class StudyUserInterfaceSettings {
         doTypeCheck(commentEnabledReactions["dislike"], "boolean", "Whether likes are enabled for comments");
 
         this.displayPostsInFeed = displayPostsInFeed;
-        this.feedScrollStyle = feedScrollStyle;
         this.displayFollowers = displayFollowers;
         this.displayCredibility = displayCredibility;
         this.displayProgress = displayProgress;
@@ -469,7 +457,6 @@ export class StudyUserInterfaceSettings {
     toJSON() {
         return {
             "displayPostsInFeed": this.displayPostsInFeed,
-            "feedScrollStyle": this.feedScrollStyle,
             "displayFollowers": this.displayFollowers,
             "displayCredibility": this.displayCredibility,
             "displayProgress": this.displayProgress,
@@ -482,12 +469,10 @@ export class StudyUserInterfaceSettings {
 
     static fromJSON(json) {
         const displayPostsInFeed = json["displayPostsInFeed"],
-              feedScrollStyle = json["feedScrollStyle"],
               allowMultipleReactions = json["allowMultipleReactions"];
 
         return new StudyUserInterfaceSettings(
             (displayPostsInFeed === undefined ? false : displayPostsInFeed),
-            (feedScrollStyle === undefined ? "free" : feedScrollStyle),
             json["displayFollowers"], json["displayCredibility"],
             json["displayProgress"], json["displayNumberOfReactions"],
             (allowMultipleReactions === undefined ? false : allowMultipleReactions),
@@ -499,14 +484,14 @@ export class StudyUserInterfaceSettings {
      * Create the user interface settings for a version-2 study.
      */
     static createV2(
-        displayPostsInFeed, feedScrollStyle, displayFollowers,
-        displayCredibility, displayProgress, displayNumberOfReactions,
-        allowMultipleReactions, postEnabledReactions, commentEnabledReactions) {
+        displayPostsInFeed, displayFollowers, displayCredibility,
+        displayProgress, displayNumberOfReactions, allowMultipleReactions,
+        postEnabledReactions, commentEnabledReactions) {
 
         return new StudyUserInterfaceSettings(
-            displayPostsInFeed, feedScrollStyle, displayFollowers,
-            displayCredibility, displayProgress, displayNumberOfReactions,
-            allowMultipleReactions, postEnabledReactions, commentEnabledReactions
+            displayPostsInFeed, displayFollowers, displayCredibility,
+            displayProgress, displayNumberOfReactions, allowMultipleReactions,
+            postEnabledReactions, commentEnabledReactions
         )
     }
 

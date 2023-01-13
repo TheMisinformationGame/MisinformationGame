@@ -40,33 +40,32 @@ export const V2 = {
 
         userInterface: {
             displayPostsInFeed: new WorkbookLoc("Display Posts in a Feed", "General", "D14", ExcelBoolean),
-            feedScrollStyle: new WorkbookLoc("Display Posts in a Feed", "General", "D15", ExcelString),
-            displayFollowers: new WorkbookLoc("Display Followers", "General", "D16", ExcelBoolean),
-            displayCredibility: new WorkbookLoc("Display Credibility", "General", "D17", ExcelBoolean),
-            displayProgress: new WorkbookLoc("Display Progress", "General", "D18", ExcelBoolean),
-            displayNumberOfReactions: new WorkbookLoc("Display Number of Reactions", "General", "D19", ExcelBoolean),
-            allowMultipleReactions: new WorkbookLoc("Allow Multiple Reactions at Once", "General", "D20", ExcelBoolean),
+            displayFollowers: new WorkbookLoc("Display Followers", "General", "D15", ExcelBoolean),
+            displayCredibility: new WorkbookLoc("Display Credibility", "General", "D16", ExcelBoolean),
+            displayProgress: new WorkbookLoc("Display Progress", "General", "D17", ExcelBoolean),
+            displayNumberOfReactions: new WorkbookLoc("Display Number of Reactions", "General", "D18", ExcelBoolean),
+            allowMultipleReactions: new WorkbookLoc("Allow Multiple Reactions at Once", "General", "D19", ExcelBoolean),
 
             postEnabledReactions: {
-                like: new WorkbookLoc("Post Likes Enabled", "General", "D21", ExcelBoolean),
-                dislike: new WorkbookLoc("Post Dislikes Enabled", "General", "D22", ExcelBoolean),
-                share: new WorkbookLoc("Post Shares Enabled", "General", "D23", ExcelBoolean),
-                flag: new WorkbookLoc("Post Flags Enabled", "General", "D24", ExcelBoolean),
+                like: new WorkbookLoc("Post Likes Enabled", "General", "D20", ExcelBoolean),
+                dislike: new WorkbookLoc("Post Dislikes Enabled", "General", "D21", ExcelBoolean),
+                share: new WorkbookLoc("Post Shares Enabled", "General", "D22", ExcelBoolean),
+                flag: new WorkbookLoc("Post Flags Enabled", "General", "D23", ExcelBoolean),
             },
 
             commentEnabledReactions: {
-                like: new WorkbookLoc("Comment Likes Enabled", "General", "D25", ExcelBoolean),
-                dislike: new WorkbookLoc("Comment Dislikes Enabled", "General", "D26", ExcelBoolean),
+                like: new WorkbookLoc("Comment Likes Enabled", "General", "D24", ExcelBoolean),
+                dislike: new WorkbookLoc("Comment Dislikes Enabled", "General", "D25", ExcelBoolean),
             }
         },
 
         advanced: {
-            minimumCommentLength: new WorkbookLoc("Minimum Comment Length", "General", "D30", ExcelNumber),
-            promptDelaySeconds: new WorkbookLoc("Prompt Continue Delay (Seconds)", "General", "D31", ExcelNumber),
-            reactDelaySeconds: new WorkbookLoc("Reaction Delay (Seconds)", "General", "D32", ExcelNumber),
-            genCompletionCode: new WorkbookLoc("Generate Completion Code", "General", "D33", ExcelBoolean),
-            completionCodeDigits: new WorkbookLoc("Completion Code Digits", "General", "D34", ExcelNumber),
-            genRandDefaultAvatars: new WorkbookLoc("Generate Random Default Avatars", "General", "D35", ExcelBoolean),
+            minimumCommentLength: new WorkbookLoc("Minimum Comment Length", "General", "D29", ExcelNumber),
+            promptDelaySeconds: new WorkbookLoc("Prompt Continue Delay (Seconds)", "General", "D30", ExcelNumber),
+            reactDelaySeconds: new WorkbookLoc("Reaction Delay (Seconds)", "General", "D31", ExcelNumber),
+            genCompletionCode: new WorkbookLoc("Generate Completion Code", "General", "D32", ExcelBoolean),
+            completionCodeDigits: new WorkbookLoc("Completion Code Digits", "General", "D33", ExcelNumber),
+            genRandDefaultAvatars: new WorkbookLoc("Generate Random Default Avatars", "General", "D34", ExcelBoolean),
         }
     },
 
@@ -223,7 +222,6 @@ function readV2StudyBasicSettings(workbook, displayPostsInFeed) {
 function readV2StudyUserInterfaceSettings(workbook, displayPostsInFeed) {
     return StudyUserInterfaceSettings.createV2(
         displayPostsInFeed,
-        readCell(workbook, V2.general.userInterface.feedScrollStyle),
         readCell(workbook, V2.general.userInterface.displayFollowers),
         readCell(workbook, V2.general.userInterface.displayCredibility),
         readCell(workbook, V2.general.userInterface.displayProgress),
