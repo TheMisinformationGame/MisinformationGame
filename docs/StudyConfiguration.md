@@ -14,11 +14,15 @@ to be included in your study. This document aims to act as a
 reference for the [configuration spreadsheet](/link/StudyTemplate),
 to help with the configuration of your studies.
 
-**Important: The configuration spreadsheet
-<span style="text-decoration: underline">cannot</span>
-be opened in Microsoft Excel.** It is built specifically for use
-in Google Sheets, and uses functionality that is not available in
-Microsoft Excel.
+<p class="error">
+    <span style="font-weight: bold">Important! The configuration spreadsheet</span>
+    <span style="font-weight: bold; text-decoration: underline">cannot</span>
+    <span style="font-weight: bold">be opened in Microsoft Excel.</span>
+    <br/>
+    It is built specifically for use
+    in Google Sheets, and uses functionality that is not available in
+    Microsoft Excel.
+</p>
 
 
 
