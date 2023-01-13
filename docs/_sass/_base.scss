@@ -240,3 +240,35 @@ th, td {
   padding: 15px;
   text-align: left;
 }
+
+
+/**
+ * Info boxes.
+ */
+p.info,
+p.warning,
+p.error {
+  display: inline-block;
+  border-radius: 0.4rem;
+  border: 1px solid;
+  padding: 0.8rem 1rem;
+  margin: 0.4rem 0 0;
+  max-width: 600px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+p.info {
+  background-color: #f0f6fc;
+  border-color: #006be2;
+  color: #011933;
+}
+p.warning {
+  background-color: #fcf7f0;
+  border-color: #e28400;
+  color: #332101;
+}
+p.error {
+  background-color: #fcf0f1;
+  border-color: #e20000;
+  color: #330101;
+}

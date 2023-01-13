@@ -11,6 +11,13 @@ The example game may be used to help to understand the basic functionality
 and purpose of The Misinformation Game. The study configuration spreadsheet
 that was used to create the example game can be found [here](/link/ExampleStudy).
 
+<p class="warning">
+    If the game doesn't load correctly for you, then that may be caused due
+    to hosting limits. The example game is hosted under the free tier of
+    Firebase. You can read more about Firebase's limits and pricing in
+    the <a href="/FirebasePricing">Firebase Pricing Documentation</a>.
+</p>
+
 ## Access
 {:#access}
 
