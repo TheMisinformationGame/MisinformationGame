@@ -137,7 +137,6 @@ export class GameScreen extends ActiveGameScreen {
             reactionsAllowed: false,
 
             interactions: GamePostInteractionStore.empty(),
-            lastComment: null,
             commentHasBeenEdited: false,
 
             dismissedPrompt: false,
@@ -210,7 +209,6 @@ export class GameScreen extends ActiveGameScreen {
         const inters = this.state.interactions;
         this.setState({
             ...this.state,
-            lastComment: null,
             interactions: inters.update(postIndex, inters.get(postIndex).withComment(comment)),
             commentHasBeenEdited: false
         });
@@ -220,7 +218,6 @@ export class GameScreen extends ActiveGameScreen {
         const inters = this.state.interactions;
         this.setState({
             ...this.state,
-            lastComment: this.state.interactions.comment,
             interactions: inters.update(postIndex, inters.get(postIndex).withComment(null)),
             commentHasBeenEdited: false
         });
@@ -230,8 +227,7 @@ export class GameScreen extends ActiveGameScreen {
         const inters = this.state.interactions;
         this.setState({
             ...this.state,
-            lastComment: null,
-            interactions: inters.update(postIndex, inters.get(postIndex).withComment(null)),
+            interactions: inters.update(postIndex, inters.get(postIndex).withDeletedComment()),
             commentHasBeenEdited: false
         });
     }
@@ -474,8 +470,6 @@ export class GameScreen extends ActiveGameScreen {
             error: error,
             reactionsAllowed: displayPostsInFeed || (!this.state.dismissedPrompt && !game),
 
-            lastComment: null,
-
             overrideFollowers: null,
             overrideCredibility: null,
             followerChange: null,
@@ -586,8 +580,7 @@ export class GameScreen extends ActiveGameScreen {
                         onCommentEdit={() => this.onCommentEdit(postIndex)}
                         onCommentDelete={() => this.onCommentDelete(postIndex)}
                         enableReactions={(index !== 0) || (this.state.reactionsAllowed && this.state.inputEnabled)}
-                        interactions={interactions.get(postIndex)}
-                        lastComment={this.state.lastComment}/>
+                        interactions={interactions.get(postIndex)} />
                 );
             }
         }

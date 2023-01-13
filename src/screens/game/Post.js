@@ -177,7 +177,7 @@ export class PostComponent extends Component {
                          enabled={false}
                          editable={true}
                          onCommentEdit={() =>  this.props.onCommentEdit()}
-                         onCommentDelete={() => this.props.onCommentDelete()}/>);
+                         onCommentDelete={() => this.props.onCommentDelete()} />);
         }
         for (let index = 0; index < post.comments.length; ++index) {
             const comment = post.comments[index];
@@ -239,7 +239,7 @@ export class PostComponent extends Component {
                 {userCommentsEnabled && !interactions.comment && showCommentBox &&
                     <CommentSubmissionRow
                         study={state.study}
-                        initialValue={this.props.lastComment}
+                        initialValue={interactions.lastComment}
                         submit={value => this.props.onCommentSubmit(value)}
                         onCommentEditedStatusUpdate={edited => this.props.onCommentEditedStatusUpdate(edited)}
                         enabled={this.props.enableReactions} />}

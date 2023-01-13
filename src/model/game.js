@@ -556,22 +556,25 @@ export class GamePostInteractionStore {
 export class GamePostInteraction {
     postReactions; // String[]
     commentReactions; // GameCommentInteraction[]
+    lastComment; // String?
     comment; // String?
     timer; // InteractionTimer
 
-    constructor(postReactions, commentReactions, comment, timer) {
+    constructor(postReactions, commentReactions, lastComment, comment, timer) {
         doArrayTypeCheck(postReactions, "string", "Reactions to Post");
         doArrayTypeCheck(commentReactions, GameCommentInteraction, "Reactions to Comments");
+        doNullableTypeCheck(lastComment, "string", "Participant's Last Comment");
         doNullableTypeCheck(comment, "string", "Participant's Comment");
         doNullableTypeCheck(timer, InteractionTimer, "Post Reaction Timer");
         this.postReactions = postReactions;
         this.commentReactions = commentReactions;
+        this.lastComment = lastComment;
         this.comment = comment;
         this.timer = timer;
     }
 
     static empty() {
-        return new GamePostInteraction([], [], null, InteractionTimer.start());
+        return new GamePostInteraction([], [], null, null, InteractionTimer.start());
     }
 
     complete() {
@@ -582,16 +585,36 @@ export class GamePostInteraction {
         return new GamePostInteraction(
             this.postReactions,
             completedCommentReactions,
+            this.lastComment,
             this.comment,
             this.timer.complete()
         );
     }
 
     withComment(comment) {
+        let lastComment;
+        if (comment) {
+            lastComment = comment;
+        } else if (this.comment) {
+            lastComment = this.comment;
+        } else {
+            lastComment = this.lastComment;
+        }
         return new GamePostInteraction(
             this.postReactions,
             this.commentReactions,
+            lastComment,
             comment,
+            this.timer.withNewInteraction()
+        );
+    }
+
+    withDeletedComment() {
+        return new GamePostInteraction(
+            this.postReactions,
+            this.commentReactions,
+            null,
+            null,
             this.timer.withNewInteraction()
         );
     }
@@ -610,6 +633,7 @@ export class GamePostInteraction {
         return new GamePostInteraction(
             postReactions,
             this.commentReactions,
+            this.lastComment,
             this.comment,
             this.timer.withNewInteraction()
         );
@@ -649,6 +673,7 @@ export class GamePostInteraction {
         return new GamePostInteraction(
             this.postReactions,
             commentReactions,
+            this.lastComment,
             this.comment,
             this.timer.withNewInteraction()
         );
@@ -708,12 +733,14 @@ export class GamePostInteraction {
         }
 
         const postReactions = json["postReactions"],
-              postReaction = json["postReaction"];
+              postReaction = json["postReaction"],
+              comment = json["comment"];
 
         return new GamePostInteraction(
             (postReactions !== undefined ? postReactions : (postReaction ? [postReaction] : [])),
             GamePostInteraction.commentReactionsFromJSON(json["commentReactions"]),
-            json["comment"],
+            comment,
+            comment,
             timer
         );
     }

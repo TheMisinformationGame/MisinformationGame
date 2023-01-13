@@ -68,10 +68,10 @@ export class Comment extends Component {
                 <CommentReactButton
                     reaction={reaction}
                     key={reaction}
-                    selected={interaction !== null && interaction.hasReaction(reaction)}
+                    selected={interaction && interaction.hasReaction(reaction)}
                     grayOut={
                         !study.uiSettings.allowMultipleReactions &&
-                        interaction !== null && interaction.reactions.length > 0
+                        interaction && interaction.reactions.length > 0
                     }
                     onReact={onReact}
                     enabled={enabled}
