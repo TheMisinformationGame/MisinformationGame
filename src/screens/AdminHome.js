@@ -9,6 +9,7 @@ import {BrokenStudy} from "../model/study";
 import {MountAwareComponent} from "../components/MountAwareComponent";
 import {auth} from "../database/firebase";
 import {setDefaultPageTitle} from "../index";
+import {gameVersion} from "../version";
 
 
 class StudySummary extends Component {
@@ -157,7 +158,7 @@ class AdminPage extends MountAwareComponent {
                 {/* The navigation bar. */}
                 <div className="flex items-center justify-between w-full bg-white shadow">
                     <Link to="/" className="font-bold text-xl p-3">
-                        The Misinformation Game
+                        The Misinformation Game v{gameVersion}
                     </Link>
 
                     <div className="text-right px-2 py-1">
