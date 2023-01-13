@@ -246,7 +246,6 @@ th, td {
  * Info boxes.
  */
 p.info,
-p.warning,
 p.error {
   display: inline-block;
   border-radius: 0.4rem;
@@ -261,11 +260,6 @@ p.info {
   background-color: #f0f6fc;
   border-color: #006be2;
   color: #011933;
-}
-p.warning {
-  background-color: #fcf7f0;
-  border-color: #e28400;
-  color: #332101;
 }
 p.error {
   background-color: #fcf0f1;
