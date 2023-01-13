@@ -140,3 +140,17 @@ guide should be easier to follow.
   The template spreadsheet that should be edited to create your own study.
 - [Example Game Configuration Spreadsheet](/link/ExampleStudy) -
   The study configuration spreadsheet that is used to create the example game.
+
+## Cite the Misinformation Game
+
+```bibtex
+@misc{butler_lamont_wan_prike_nasim_walker_fay_ecker_2022,
+ title={The (Mis)Information Game: A Social Media Simulator},
+ url={psyarxiv.com/628wc},
+ DOI={10.31234/osf.io/628wc},
+ publisher={PsyArXiv},
+ author={Butler, Lucy and Lamont, Padraig and Wan, Dean L Y and Prike, Toby and Nasim, Mehwish and Walker, Bradley and Fay, Nicolas and Ecker, Ullrich K H},
+ year={2022},
+ month={Jul}
+}
+```
