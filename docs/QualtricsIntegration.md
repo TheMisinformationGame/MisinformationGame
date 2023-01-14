@@ -7,14 +7,18 @@ showBackToTop: false
 # Qualtrics Integration
 {:#intro .no_toc}
 
+<p class="error">
+    <span style="font-weight: bold">This page is incomplete.</span>
+    This guide only shows one method to include The Misinformation Game
+    in Qualtrics surveys, but several more options are discussed in
+    <a href="https://psyarxiv.com/628wc/">
+        The (Mis)information Game paper on PsyArXiv</a>.
+</p>
+
 If you are using the Qualtrics Online Survey Platform to direct
 users to your Misinformation Game site, then you can directly input
 information such as the user's ID through The Misinformation
 Game URL. This allows users to not have to enter their ID manually.
-
-This guide only shows one method to include The Misinformation Game
-in Qualtrics surveys, but several more options are discussed in
-[The (Mis)information Game paper on PsyArXiv](https://psyarxiv.com/628wc/).
 
 
 
