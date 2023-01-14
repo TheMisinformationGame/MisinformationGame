@@ -53,7 +53,9 @@ You can enter any ID to access the example game.
 If you would like to view an example of the results that can be
 gathered when using The Misinformation Game, the results of a user
 experience study are available from
-[the example results page](/link/ExampleResults).
+[the example results page](/link/ExampleResults). Additional
+information about the results that are made available for your
+analysis are described in the [Results Documentation](/Results).
 
 
 
@@ -63,23 +65,32 @@ experience study are available from
 The Misinformation Game contains many configuration options
 to tailor the game for specific research purposes. To find
 out whether The Misinformation Game is the right fit for
-your research, we recommend that you read through the available
-options for configuring your own study on the
+your research, we recommend that you first read through the
+[How to Play](/HowToPlay) page and try the
+[Example Game](#example-game). We then advise that you read
+the available options for configuring your own study on the
 [Study Configuration](/StudyConfiguration) page. Additionally,
 the results that are made available for your analysis are
 described on the [Results](/Results) page.
 
-To conduct a study using The Misinformation Game, you will need
-to host your own website for the game using Google Firebase.
-The steps to host your own instance of the game are described in both a
+To conduct a study using The Misinformation Game, you will
+need to host your own website for the game using
+[Google Firebase](https://cloud.google.com/firestore/docs/client/get-firebase).
+The steps to host your own instance of the game are described
+in both a
 [Non-Technical Installation Guide](/NonTechnicalInstallation)
 and a [Technical Installation Guide](/TechnicalInstallation).
-If you are proficient with the command-line and
-installing technical tools, then the technical
-installation guide will be quicker, and requires fewer
-steps. However, if you are not familiar with these
-technologies, then the non-technical installation
-guide should be easier to follow.
+If you are proficient with the command-line and installing
+technical tools, then the technical installation guide will
+be quicker, and requires fewer steps. However, if you are
+not familiar with these technologies, then the non-technical
+installation guide should be easier to follow. Additionally,
+while Firebase has a generous free tier, if you wish to run
+large studies or studies with many images, then you should
+consult the
+[Firebase Pricing Documentation](/FirebasePricing) to estimate
+your hosting costs. In our experience, the hosting costs for
+the Misinformation Game have been minimal.
 
 
 
@@ -119,7 +130,7 @@ guide should be easier to follow.
 - [Documentation Development](/DocsDevelopment) - A guide for developers to make adjustments
   to this documentation website.
 - [Original Design](/original-design) - The original, outdated, design document for the game.
-  Only relevant for those who are interested.
+  _This is only relevant for those who are interested, and not as a reference._
 
 
 
@@ -129,7 +140,7 @@ guide should be easier to follow.
 - [Source Code](https://github.com/TheMisinformationGame/MisinformationGame) -
   The Misinformation Game is open-source!
 - [The (Mis)information Game Paper](https://psyarxiv.com/628wc/) -
-  A pre-print paper about The Misinformation Game, including a user experiency study.
+  A pre-print paper about The Misinformation Game, including a user experience study.
 - [Issue Tracker](https://github.com/TheMisinformationGame/MisinformationGame/issues) -
   If you find any issues, please report them here.
 - [Example Game](/link/ExampleGame) -
