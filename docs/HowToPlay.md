@@ -7,9 +7,16 @@ showBackToTop: false
 # How to Play The Misinformation Game
 {:#intro .no_toc}
 
-**This is a copy of the default rules page that will be shown to
-participants before they start participating in a study.**
-The content of this page can be edited for your own studies.
+<p class="info">
+    <span style="font-weight: bold">
+        This is a <span style="font-style: italic">copy</span> of the
+        default rules page that will be shown to participants before
+        they start a study.
+    </span>
+    The content of this page
+    <a href="/StudyConfiguration#pages-rules">can be edited</a>
+    for your own studies.
+</p>
 
 This document contains slight modifications from the actual default rules page
 to make it readable within this documentation website. If you wish to view the actual
