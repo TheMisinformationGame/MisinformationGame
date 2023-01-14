@@ -1,7 +1,7 @@
 ---
 title: Results
 showPath: true
-showBackToTop: false
+showBackToTop: true
 ---
 
 # The Results Spreadsheet
