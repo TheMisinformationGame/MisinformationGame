@@ -27,7 +27,7 @@ to help with the configuration of your studies.
 
 
 # Table of Contents
-{:#intro .no_toc}
+{:#toc .no_toc}
 * toc
 {:toc}
 
