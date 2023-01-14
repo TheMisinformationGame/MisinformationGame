@@ -25,8 +25,11 @@ that can be served under the free tier of Firebase.
 ## 1. Choice of Image File Formats
 {:#image-format-choice}
 
-<span class="recommendation">Recommendation</span>
-Use JPEG (`.jpg`) image files where possible.
+<p class="info">
+    <span class="recommendation">Recommendation</span>
+    Use JPEG (<code class="language-plaintext highlighter-rouge">.jpg</code>)
+    image files where possible.
+</p>
 
 The most effective image file formats for compression are the modern
 image file formats such as
@@ -57,10 +60,14 @@ and The Misinformation Game does not support more efficient video formats.
 ## 2. Scale-Down your Images
 {:#scale-down-images}
 
-<span class="recommendation">Recommendation</span>
-Downscale your images to the dimensions recommended in the
-[Study Configuration](/StudyConfiguration) documentation using a tool
-such as [https://www.iloveimg.com/resize-image](https://www.iloveimg.com/resize-image#resize-options,pixels).
+<p class="info">
+    <span class="recommendation">Recommendation</span>
+    Downscale your images to the dimensions recommended in the
+    <a href="/StudyConfiguration">Study Configuration Documentation</a>
+    using a tool such as
+    <a href="https://www.iloveimg.com/resize-image#resize-options,pixels">
+        iloveimg.com</a>.
+</p>
 
 The easiest way to reduce the size of images is to downscale them to
 smaller dimensions. This reduces the number of pixels that must be stored
@@ -100,9 +107,13 @@ affecting the quality of the images very much.
 ## 3. Compress your Images
 {:#compress-images}
 
-<span class="recommendation">Recommendation</span>
-Use a tool such as [https://imagecompressor.com/](https://imagecompressor.com/)
-to compress your images.
+<p class="info">
+    <span class="recommendation">Recommendation</span>
+    Use a tool such as
+    <a href="https://imagecompressor.com">
+        imagecompressor.com</a>
+    to compress your image files before including them in a study.
+</p>
 
 Images can also be compressed without reducing their dimensions by reducing
 their quality. This compression can be done by automated tools such as
@@ -114,8 +125,9 @@ hasn't lost too much quality.
 
 As an example, the two images below in [Figure 3](#fig3) and [Figure 4](#fig4)
 should appear very similar. However, the image in Figure 4 has been compressed,
-and is 16% smaller than the image in Figure 3. This demonstrates that compressing
-images can save some bandwidth without affecting the quality of the images very much.
+and has a 16% smaller file size than the image in Figure 3. This demonstrates
+that compressing images can save some bandwidth without affecting the quality
+of the images very much.
 
 **Original Image:**
 <figure id="fig3">
