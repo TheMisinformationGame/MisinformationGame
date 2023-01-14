@@ -186,8 +186,8 @@ function constructWorkbook(study, results, problems) {
         {header: "Comment Likes", key: "commentLikes", width: 24, enabled: showCommentLikes},
         {header: "Comment Dislikes", key: "commentDislikes", width: 24, enabled: showCommentDislikes},
 
-        {header: "Liked Comment", key: "likedComment", width: 20, enabled: showPostLikes},
-        {header: "Disliked Comment", key: "dislikedComment", width: 20, enabled: showPostDislikes},
+        {header: "Liked Comment", key: "likedComment", width: 20, enabled: showCommentLikes},
+        {header: "Disliked Comment", key: "dislikedComment", width: 20, enabled: showCommentDislikes},
 
         {header: "First Time to Interact (MS)", key: "firstInteractTime", width: 32},
         {header: "Last Time to Interact (MS)", key: "lastInteractTime", width: 32},
