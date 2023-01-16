@@ -562,17 +562,14 @@ export class GameScreen extends ActiveGameScreen {
                 const state = states[index];
                 const postIndex = state.indexInGame,
                       postID = "post-" + state.indexInGame,
-                      postSpacerID = postID + "-spacer",
-                      mayBeAnchor = (study.uiSettings.displayPostsInFeed && index > 0);
+                      postSpacerID = postID + "-spacer";
 
                 if (study.uiSettings.displayPostsInFeed) {
                     // The spacers help with scroll anchoring, which helps to
                     // avoid flickering when old posts are removed.
                     postComponents.push(
-                        <div id={postSpacerID} key={postSpacerID}
-                             className={"h-8 " + (mayBeAnchor ? "" : "no-overflow-anchor")}>
-                        </div>
-                    )
+                        <div id={postSpacerID} key={postSpacerID} className={"h-8"}></div>
+                    );
                 }
 
                 postComponents.push(
@@ -580,7 +577,6 @@ export class GameScreen extends ActiveGameScreen {
                         id={postID}
                         key={postID}
                         state={state}
-                        scrollAnchor={mayBeAnchor}
                         onPostReact={r => this.onPostReaction(postIndex, r, study)}
                         onCommentReact={(i, r) => this.onCommentReaction(postIndex, i, r, study)}
                         onCommentSubmit={value => this.onCommentSubmit(postIndex, value)}
