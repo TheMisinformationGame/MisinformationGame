@@ -1,5 +1,4 @@
 import {doTypeCheck} from "../utils/types";
-import {getUnixEpochTimeSeconds} from "../utils/time";
 
 
 /**
@@ -41,7 +40,6 @@ export class ScrollAnchor {
         this.loopHandle = null;
         this.lastPostLocations = {};
         this.lastScrollY = window.scrollY;
-        this.frameNumber = 0;
     }
 
     start() {
@@ -62,17 +60,18 @@ export class ScrollAnchor {
         }
     }
 
-    loop() {
-        // 1 frame: scrollY changes by K
-        // 2 frame: boundingClientRect changes by K
-        // Is K equal to the offset of the element
-        // after the element that is removed?
+    static convertIDtoNumber(postID) {
+        const numberStr = postID.replace(/\D/g,'');
+        if (numberStr.length === 0)
+            return null;
 
+        return parseInt(numberStr);
+    }
+
+    loop() {
         this.loopHandle = null;
         if (!this.running)
             return;
-
-        this.frameNumber += 1;
 
         const feedDiv = this.getFeedDivFn();
         if (feedDiv) {
@@ -94,35 +93,36 @@ export class ScrollAnchor {
                 if (last === undefined)
                     continue;
 
-                const postIDNumberStr = postID.replace(/\D/g,'');
-                if (postIDNumberStr.length === 0)
+                const postIDNumber = ScrollAnchor.convertIDtoNumber(postID);
+                if (postIDNumber === null)
                     continue
 
                 if (highestY === null || current.y < highestY) {
                     highestPostID = postID;
-                    highestPostIDNumber = parseInt(postIDNumberStr);
+                    highestPostIDNumber = postIDNumber;
                     highestY = current.y;
                 }
             }
 
             // Detect any layout shifts above the anchor post.
             let layoutYShift = 0;
-            for (let postID in this.lastPostLocations) {
-                if (!this.lastPostLocations.hasOwnProperty(postID))
-                    continue;
+            if (highestPostIDNumber !== null) {
+                for (let postID in this.lastPostLocations) {
+                    if (!this.lastPostLocations.hasOwnProperty(postID))
+                        continue;
 
-                const previousLoc = this.lastPostLocations[postID],
-                      newLoc = postLocations[postID];
-                if (newLoc !== undefined)
-                    continue
+                    const previousLoc = this.lastPostLocations[postID],
+                        newLoc = postLocations[postID];
+                    if (newLoc !== undefined)
+                        continue
 
-                const postIDNumberStr = postID.replace(/\D/g,'');
-                if (postIDNumberStr.length === 0)
-                    continue;
+                    const postIDNumber = ScrollAnchor.convertIDtoNumber(postID);
+                    if (postIDNumber === null)
+                        continue
 
-                const postIDNumber = parseInt(postIDNumberStr);
-                if (postIDNumber < highestPostIDNumber) {
-                    layoutYShift += previousLoc.height;
+                    if (postIDNumber < highestPostIDNumber) {
+                        layoutYShift += previousLoc.height;
+                    }
                 }
             }
 
@@ -135,7 +135,7 @@ export class ScrollAnchor {
                     window.scrollBy(0, scrollYChange);
                     console.log(
                         "Correcting layout shift. Anchored to",
-                        highestPostID, " and scrolling by ", scrollYChange
+                        highestPostID, "and scrolling by", scrollYChange
                     );
                 }
             }
@@ -147,20 +147,19 @@ export class ScrollAnchor {
         this.loopHandle = requestAnimationFrame(this.loop.bind(this));
     }
 
-    scroll(event) {
-        // const dy = window.scrollY - this.lastScrollY;
-        // console.log(dy, event);
-    }
+    scroll(event) {}
 
     detectPostLocations(feedDiv) {
         const postDivs = feedDiv.children;
 
         const locations = {};
         for (let index = 0; index < postDivs.length; ++index) {
-            const postDiv = postDivs[index];
-            if (postDiv.id) {
+            const postDiv = postDivs[index],
+                  postID = postDiv.id;
+
+            if (postID && ScrollAnchor.convertIDtoNumber(postID) !== null) {
                 const rect = postDiv.getBoundingClientRect();
-                locations[postDiv.id] = new RectBBox(rect.x, rect.y, rect.width, rect.height);
+                locations[postID] = new RectBBox(rect.x, rect.y, rect.width, rect.height);
             }
         }
         return locations;
