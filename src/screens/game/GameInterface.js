@@ -9,6 +9,7 @@ import {ParticipantProgress} from "./ParticipantProgress";
 import {GamePostInteractionStore} from "../../model/game";
 import smoothscroll from 'smoothscroll-polyfill';
 import {PostComponent} from "./Post";
+import {ScrollAnchor} from "../../components/scrollAnchor";
 
 
 // We want to ensure that we have smooth element scrollIntoView behaviour.
@@ -148,6 +149,7 @@ export class GameScreen extends ActiveGameScreen {
             inputEnabled: true,
         };
         this.state = this.defaultState;
+        this.scrollAnchor = new ScrollAnchor(this.getFeedDiv.bind(this));
         this.scrollListener = null;
         this.scrollDebounceEnd = 0;
         this.lastScrollTop = document.documentElement.scrollTop;
@@ -164,12 +166,14 @@ export class GameScreen extends ActiveGameScreen {
 
     componentDidMount() {
         super.componentDidMount();
+        this.scrollAnchor.start();
         this.scrollListener = this.onScroll.bind(this);
         document.addEventListener("scroll", this.scrollListener);
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
+        this.scrollAnchor.stop();
         if (this.scrollListener !== null) {
             document.removeEventListener("scroll", this.scrollListener);
             this.scrollListener = null;
@@ -334,7 +338,7 @@ export class GameScreen extends ActiveGameScreen {
 
                     // Hopefully a good-enough heuristic.
                     if (Math.abs(dy) > 50) {
-                        window.scrollBy(0, Math.round(dy));
+                        // window.scrollBy(0, Math.round(dy));
                     } else {
                         this.scrollMaintenanceTop += dy;
                     }
@@ -490,6 +494,10 @@ export class GameScreen extends ActiveGameScreen {
         }
     }
 
+    getFeedDiv() {
+        return document.getElementById("post-feed");
+    }
+
     renderWithStudyAndGame(study, game) {
         const stage = game.getCurrentStage();
         if (stage === "identification")
@@ -634,7 +642,8 @@ export class GameScreen extends ActiveGameScreen {
                     <div className="flex-1 max-w-mini" />
 
                     {/* The posts and their associated comments. */}
-                    <div className="bg-gray-200 w-full md:max-w-xl
+                    <div id="post-feed"
+                         className="bg-gray-200 w-full md:max-w-xl
                                     md:border-l-2 md:border-r-2 md:border-gray-700 shadow-2xl"
                          style={{minHeight: "100vh"}}>
 
