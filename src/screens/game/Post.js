@@ -171,25 +171,28 @@ export class PostComponent extends Component {
         if (interactions.comment) {
             const userComment = new UserComment(interactions.comment);
             commentComponents.push(
-                <Comment comment={userComment}
-                         study={state.study}
-                         key="user.comment"
-                         enabled={false}
-                         editable={true}
-                         onCommentEdit={() =>  this.props.onCommentEdit()}
-                         onCommentDelete={() => this.props.onCommentDelete()} />);
+                <Comment
+                    className="mt-0"
+                    comment={userComment}
+                    study={state.study}
+                    key="user.comment"
+                    enabled={false}
+                    editable={true}
+                    onCommentEdit={() =>  this.props.onCommentEdit()}
+                    onCommentDelete={() => this.props.onCommentDelete()} />);
         }
         for (let index = 0; index < post.comments.length; ++index) {
             const comment = post.comments[index];
             commentComponents.push(
-                <Comment comment={comment}
-                         study={state.study}
-                         className={showCommentBox || commentComponents.length > 0 ? "mt-1" : ""}
-                         key={index + "." + comment.sourceName}
-                         onReact={r => this.props.onCommentReact(index, r)}
-                         enabled={this.props.enableReactions}
-                         editable={false}
-                         interaction={interactions.findCommentReaction(index)} />
+                <Comment
+                    comment={comment}
+                    study={state.study}
+                    className={showCommentBox || interactions.comment || index > 0 ? "mt-1" : "mt-0"}
+                    key={index + "." + comment.sourceName}
+                    onReact={r => this.props.onCommentReact(index, r)}
+                    enabled={this.props.enableReactions}
+                    editable={false}
+                    interaction={interactions.findCommentReaction(index)} />
             );
         }
 
@@ -235,11 +238,12 @@ export class PostComponent extends Component {
                 {/* The comments on the post. */}
                 <div className="flex flex-row justify-between items-end">
                     {(showCommentBox || commentComponents.length > 0) &&
-                        <p className="font-bold text-gray-500 p-1">Comments:</p>}
+                        <p className="font-bold text-gray-500 p-1 px-2">Comments:</p>}
                 </div>
 
                 {showCommentBox &&
                     <CommentSubmissionRow
+                        className="mt-0"
                         study={state.study}
                         initialValue={interactions.lastComment}
                         submit={value => this.props.onCommentSubmit(value)}
