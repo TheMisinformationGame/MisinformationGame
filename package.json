@@ -16,6 +16,7 @@
     "firebase": "^9.16.0",
     "firestore-size": "^2.0.7",
     "node": "^19.4.0",
+    "oaf-react-router": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.7.0",
@@ -51,10 +52,10 @@
     ]
   },
   "devDependencies": {
-    "autoprefixer": "^9.8.6",
-    "firebase-tools": "^9.20.0",
-    "metrohash": "latest",
-    "postcss": "^7.0.36",
+    "autoprefixer": "^10.4.13",
+    "firebase-tools": "^11.21.0",
+    "metrohash": "^2.8.0",
+    "postcss": "^8.4.21",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
   },
   "optionalDependencies": {
