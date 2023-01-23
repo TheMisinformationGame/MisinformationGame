@@ -78,6 +78,7 @@ export class ScrollAnchor {
             const postLocations = this.detectPostLocations(feedDiv),
                   dScrollY = window.scrollY - this.lastScrollY;
 
+            const postIDsByNumber = {};
             let highestPostID = null,
                 highestPostIDNumber = null,
                 highestY = null;
@@ -90,12 +91,17 @@ export class ScrollAnchor {
                 const current = postLocations[postID],
                       last = this.lastPostLocations[postID];
 
-                if (last === undefined)
+                if (last === undefined || current.y + current.height <= 0)
                     continue;
 
                 const postIDNumber = ScrollAnchor.convertIDtoNumber(postID);
                 if (postIDNumber === null)
                     continue
+
+                if (!postIDsByNumber.hasOwnProperty(postIDNumber)) {
+                    postIDsByNumber[postIDNumber] = [];
+                }
+                postIDsByNumber[postIDNumber].push(postID);
 
                 if (highestY === null || current.y < highestY) {
                     highestPostID = postID;
@@ -105,14 +111,15 @@ export class ScrollAnchor {
             }
 
             // Detect any layout shifts above the anchor post.
-            let layoutYShift = 0;
+            let scrollYChange = 0;
             if (highestPostIDNumber !== null) {
+                let layoutYShift = 0;
                 for (let postID in this.lastPostLocations) {
                     if (!this.lastPostLocations.hasOwnProperty(postID))
                         continue;
 
                     const previousLoc = this.lastPostLocations[postID],
-                        newLoc = postLocations[postID];
+                          newLoc = postLocations[postID];
                     if (newLoc !== undefined)
                         continue
 
@@ -124,19 +131,32 @@ export class ScrollAnchor {
                         layoutYShift += previousLoc.height;
                     }
                 }
-            }
 
-            // Correct layout shifts that the browser hasn't anchored correctly.
-            let scrollYChange = 0;
-            if (layoutYShift > 10) {
-                const shift = dScrollY + layoutYShift;
-                if (shift > 10) {
-                    scrollYChange = -shift;
-                    window.scrollBy(0, scrollYChange);
-                    console.log(
-                        "Correcting layout shift. Anchored to",
-                        highestPostID, "and scrolling by", scrollYChange
-                    );
+                // Correct layout shifts that the browser hasn't anchored correctly.
+                if (layoutYShift > 10) {
+                    const shift = layoutYShift + dScrollY;
+                    if (shift > 10) {
+                        scrollYChange = -shift;
+                        window.scrollBy(0, scrollYChange);
+                        console.log(
+                            "Correcting layout shift. Anchored to",
+                            highestPostID, "and scrolling by", scrollYChange,
+                            "(", dScrollY, " + ", layoutYShift, ")"
+                        );
+                    }
+                }
+
+                // If nothing has changed, exclude the top post from being used as a scroll anchor.
+                if (layoutYShift < 0.1) {
+                    const elementIDs = postIDsByNumber[highestPostIDNumber];
+                    for (let index = 0; index < elementIDs.length; ++index) {
+                        const elementID = elementIDs[index],
+                              element = document.getElementById(elementID);
+
+                        if (element != null) {
+                            element.classList.add("no-overflow-anchor");
+                        }
+                    }
                 }
             }
 
