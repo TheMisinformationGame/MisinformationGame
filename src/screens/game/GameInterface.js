@@ -23,18 +23,21 @@ smoothscroll.polyfill();
 class FeedEnd extends Component {
     render() {
         return (
-            <div className="flex flex-col mt-6 mb-64">
-                <div className="bg-white shadow">
-                    <div onClick={this.props.onContinue}
-                         className={
-                             " m-3 px-3 py-2 rounded-md text-white select-none cursor-pointer " +
-                             " bg-blue-500 active:bg-blue-600 hover:bg-blue-600"
-                         }>
+            <>
+                <div id="feed-end" className="flex flex-col mt-6">
+                    <div className="bg-white shadow">
+                        <div onClick={this.props.onContinue}
+                             className={
+                                 " m-3 px-3 py-2 rounded-md text-white select-none cursor-pointer " +
+                                 " bg-blue-500 active:bg-blue-600 hover:bg-blue-600"
+                             }>
 
-                        Click to Complete Simulation
+                            Click to Complete Simulation
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div id="feed-end-spacer" style={{"height": "60vh"}}></div>
+            </>
         );
     }
 }
