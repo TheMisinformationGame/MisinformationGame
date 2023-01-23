@@ -8,25 +8,25 @@ showBackToTop: true
 {:#intro}
 
 The results for studies can be downloaded from the Admin
-Dashboard, by selecting your study, and then selecting
+Dashboard, by selecting the study, and then selecting
 **Download Results**. The results are downloaded as a
-spreadsheet that may be opened in any spreadsheet program
+.xlsx file that may be opened in any spreadsheet program
 such as Google Sheets or Microsoft Excel. The results
 spreadsheet is split into four worksheets:
 
 1) **[The Overview Worksheet](#overview):**
-   This sheet contains information about the study that the
+   This sheet contains information about the study the
    results are from, the number of participants, and when the
    results were downloaded.
 
 2) **[The Posts Worksheet](#posts):**
-   This sheet contains all the interactions of participants with
+   This sheet contains all the interactions participants make with
    the posts that they were shown, as well as information about
    those posts.
 
 3) **[The Comments Worksheet](#comments) _(optional)_:**
    This sheet contains the reactions of participants to comments
-   on posts. If your study contains no comments, then this sheet
+   on posts. If your study contains no comments, this sheet
    will not be included.
 
 4) **[The Participants Worksheet](#participants):**
@@ -46,7 +46,7 @@ spreadsheet is split into four worksheets:
 {:#example-results}
 
 If you wish to view some example results from a user experience
-study ran using The Misinformation Game, then they may be accessed
+study ran using The Misinformation Game, they can be accessed
 from [the example results page](/link/ExampleResults).
 
 
@@ -124,23 +124,23 @@ configuration spreadsheet for the source.
 #### Source Credibility
 {:#posts-source-credibility .no_toc}
 The credibility of the source that was associated with
-a post that was shown to the participant.
+a post shown to the participant.
 
 #### Source Followers
 {:#posts-source-followers .no_toc}
 The number of followers of the source that was associated with
-a post that was shown to the participant.
+a post shown to the participant.
 
 #### Post Headline
 {:#posts-headline .no_toc}
 The [Headline](/StudyConfiguration#posts-headline) of the post
-that was shown to the participant. This is the same headline
+shown to the participant. This is the same headline
 that was specified in the configuration spreadsheet for the
 post. This will be empty if the post did not have a headline.
 
 #### Post Likes
 {:#posts-post-likes .no_toc}
-The number of like reactions to the post that was shown to
+The number of like reactions to the post shown to
 the participant. This does not include the increase to the
 number of likes if the participant liked this post. This
 column will only be included if
@@ -148,7 +148,7 @@ column will only be included if
 
 #### Post Dislikes
 {:#posts-post-dislikes .no_toc}
-The number of dislike reactions to the post that was shown
+The number of dislike reactions to the post shown
 to the participant. This does not include the increase to the
 number of dislikes if the participant disliked this post. This
 column will only be included if
@@ -156,7 +156,7 @@ column will only be included if
 
 #### Post Shares
 {:#posts-post-shares .no_toc}
-The number of share reactions to the post that was shown
+The number of share reactions to the post shown
 to the participant. This does not include the increase to the
 number of shares if the participant shared this post. This
 column will only be included if
@@ -164,7 +164,7 @@ column will only be included if
 
 #### Post Flags
 {:#posts-post-flags .no_toc}
-The number of flag reactions to the post that was shown
+The number of flag reactions to the post shown
 to the participant. This does not include the increase to the
 number of flags if the participant flagged this post. This
 column will only be included if
