@@ -12,12 +12,12 @@ permalink: /
 --------
 
 The Misinformation Game is a social media simulator built to study
-people's behaviour when they interact with social media. To achieve
+how people interact with information on social media. To achieve
 this, The Misinformation Game simulates a social media feed for
-research participants. Participants will be shown one fake social
-media post at a time, and they may then react to the post and its
+research participants. Participants are shown fake social
+media post, either one at a time or in a feed format, and they may then react to the post and its
 comments. The Misinformation Game has been designed to be highly
-customisable so that tightly controlled experiences can be created
+customisable so that a range oftightly controlled experiences can be created
 for participants. This customisability is a core focus of The
 Misinformation Game, to facilitate the research of a wide array of
 social media related questions.
@@ -31,7 +31,7 @@ social media related questions.
 ## Example Game
 {:#example-game}
 
-If you would like to test playing through a study created using
+If you would like to experience participating in a study created using
 The Misinformation Game, you can access an example game from
 [the example game page](/link/ExampleGame).
 You can enter any ID to access the example game.
@@ -50,8 +50,7 @@ You can enter any ID to access the example game.
 ## Example Results
 {:#example-results}
 
-If you would like to view an example of the results that can be
-gathered when using The Misinformation Game, the results of a user
+If you would like to view an example of the results output for studies run using The Misinformation Game, the results of a user
 experience study are available from
 [the example results page](/link/ExampleResults). Additional
 information about the results that are made available for your
