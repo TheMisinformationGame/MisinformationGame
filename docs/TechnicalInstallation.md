@@ -117,7 +117,22 @@ a screen like the one below.
 
 <img src="diagrams/created-firestore-database.png" alt="Screen after creating Firestore database" height="242" />
 
-#### 2.1.3. Enable Google Authentication
+#### 2.1.3. Enable Firebase Storage
+{:#enable-firebase-storage} Any images that are embedded within studies will be stored within Firebase Storage. Therefore, Firebase Storage will need to be enabled for your Firebase project.
+
+**Step 1:** Select **Storage** under the **Build** tab on the left of the project page.
+
+  <img src="diagrams/accessing-firebase-storage.png" alt="access firebase storage" height="218" />
+
+**Step 2:** Your storage should now be set up. If you see a page that looks like the page shown above,
+then this has been successful. However, if you see the **Get started** page,
+then you will need to first enable the Firestore Database as explained in the
+[Enable Firebase Firestore section](#enable-firebase-firestore) of this guide.
+This should automatically enable Firebase Storage when you start Firestore in **production mode**.
+
+  <img src="screenshots/storage-get-started.png" alt="firebase storage" height="240" />
+
+#### 2.1.4. Enable Google Authentication
 {:#firebase-enable-google-auth}
 The Misinformation Game uses Google accounts to
 authenticate researchers so that only they can
@@ -125,7 +140,7 @@ access their studies. To enable Google Authentication,
 navigate to **Authentication** in the Firebase console
 and click the **Get started** button.
 
-<img src="diagrams/enabling-auth-pt1.png" alt="Setting up authentication" height="240" />
+<img src="diagrams/enabling-auth-pt1.png" alt="Setting up authentication" height="218" />
 
 You should now be shown several **Sign-in providers**.
 Click on **Google** underneath **Additional providers**.
