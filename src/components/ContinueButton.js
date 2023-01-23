@@ -80,7 +80,9 @@ function isScrolledDown() {
 export class ContinueBanner extends Component {
     constructor(props) {
         super(props);
-        this.state = {scrolledDown: isScrolledDown()};
+        this.state = {
+            scrolledDown: false
+        };
         this.scrollTrackingTimer = null;
 
         // We create a new function to make sure that removing it as an
@@ -94,8 +96,9 @@ export class ContinueBanner extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
         if (this.props.requireScrollToBottom) {
-            this.scrollTrackingTimer = setInterval(this.trackScrolling, 10);
+            this.scrollTrackingTimer = setInterval(this.trackScrolling, 50);
         }
     }
 
