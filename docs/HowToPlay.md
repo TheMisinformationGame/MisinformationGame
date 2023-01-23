@@ -11,7 +11,7 @@ showBackToTop: false
     <span style="font-weight: bold">
         This is a <span style="font-style: italic">copy</span> of the
         default rules page that will be shown to participants before
-        they start a study.
+        they start a study which displays a single post per page. Rules for studies that display posts in a feed format will vary slightly from what is shown below.
     </span>
     The content of this page
     <a href="/StudyConfiguration#pages-rules">can be edited</a>
