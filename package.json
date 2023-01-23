@@ -7,7 +7,6 @@
     "@craco/craco": "^7.0.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@headlessui/react": "^1.7.7",
     "@heroicons/react": "^2.0.13",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.5",
@@ -52,11 +51,14 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
     "autoprefixer": "^10.4.13",
+    "cssnano": "^5.1.14",
     "firebase-tools": "^11.21.0",
     "metrohash": "^2.8.0",
-    "postcss": "^8.4.21",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
+    "postcss": "^8.4.21"
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"
