@@ -98,14 +98,13 @@ export class Comment extends Component {
                     Are you sure you wish to delete your comment?
                 </ConfirmationDialog>
 
-                <div className={"flex flex-col p-1 pr-2 mb-1 bg-white shadow" +
-                    (this.props.className || "")}>
+                <div className={"flex flex-col m-2 rounded-lg p-1 pr-2 bg-white " + (this.props.className || "")}>
                     <div className="flex mb-3">
                         <div className="flex-grow pl-2">
                             <div className="w-full">
                                 <div className={
                                     "inline-block underline text-gray-700 mr-2 " +
-                                    (this.props.editable ? "text-lg pt-1" : "")}>
+                                    (this.props.editable ? "pt-1" : "")}>
 
                                     {comment.sourceName}
                                 </div>

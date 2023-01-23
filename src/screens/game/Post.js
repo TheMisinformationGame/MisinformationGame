@@ -184,6 +184,7 @@ export class PostComponent extends Component {
             commentComponents.push(
                 <Comment comment={comment}
                          study={state.study}
+                         className={showCommentBox || commentComponents.length > 0 ? "mt-1" : ""}
                          key={index + "." + comment.sourceName}
                          onReact={r => this.props.onCommentReact(index, r)}
                          enabled={this.props.enableReactions}
@@ -206,8 +207,8 @@ export class PostComponent extends Component {
         }
 
         return (
-            <div id={this.props.id} className={"flex flex-col"}>
-                <div className="bg-white shadow">
+            <div id={this.props.id} className="flex flex-col bg-gray-100 shadow-md">
+                <div className="bg-white">
                     {/* The source of the post. */}
                     <div className="flex p-2 bg-white">
                         <SourceElement source={state.currentSource} />
@@ -234,15 +235,17 @@ export class PostComponent extends Component {
                 {/* The comments on the post. */}
                 <div className="flex flex-row justify-between items-end">
                     {(showCommentBox || commentComponents.length > 0) &&
-                        <p className="font-bold text-gray-600 p-1">Comments:</p>}
+                        <p className="font-bold text-gray-500 p-1">Comments:</p>}
                 </div>
-                {userCommentsEnabled && !interactions.comment && showCommentBox &&
+
+                {showCommentBox &&
                     <CommentSubmissionRow
                         study={state.study}
                         initialValue={interactions.lastComment}
                         submit={value => this.props.onCommentSubmit(value)}
                         onCommentEditedStatusUpdate={edited => this.props.onCommentEditedStatusUpdate(edited)}
                         enabled={this.props.enableReactions} />}
+
                 {commentComponents}
             </div>
         );

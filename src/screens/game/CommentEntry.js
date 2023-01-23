@@ -159,9 +159,10 @@ export class CommentSubmissionRow extends MountAwareComponent {
     render() {
         const study = this.props.study;
         const requiredLength = study.advancedSettings.minimumCommentLength;
+        const deletingComment = this.state.isEditingComment && this.state.value.trim().length <= 0;
 
         const value = this.state.value;
-        const isError = (!value || value.length < requiredLength);
+        const isError = !deletingComment && (!value || value.length < requiredLength);
         const showError = (this.state.displayError && isError);
         const error = (!value || value.length === 0 ?
             "Please write your comment in the entry box above" :
@@ -187,8 +188,7 @@ export class CommentSubmissionRow extends MountAwareComponent {
                 }?
                 </ConfirmationDialog>
 
-                <div className={"flex flex-col py-1 px-2 mb-1 bg-white shadow " +
-                    (this.props.className || "")}>
+                <div className={"flex flex-col m-2 rounded-lg py-1 px-2 bg-white " + (this.props.className || "")}>
                     <div className="flex flex-col mb-1.5">
                         <div className="flex flex-row justify-between w-full text-gray-700 mb-1">
                         <span>
@@ -218,7 +218,7 @@ export class CommentSubmissionRow extends MountAwareComponent {
                                  onClick={() => this.handleSubmitClick()}>
 
                                 {this.state.isEditingComment ?
-                                    (this.state.value.trim().length <= 0 ?
+                                    (deletingComment ?
                                         <>
                                             <DeleteForeverIcon className="-mt-1 pr-1 h-0" />
                                             Delete Comment
