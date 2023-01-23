@@ -56,6 +56,18 @@ export class ContinueButton extends MountAwareComponent {
  */
 function isScrolledDown() {
     const errorMargin = 20.0;
+
+    // Check if there is no scroll bar.
+    const docElem = document.documentElement;
+    if (docElem) {
+        const scrollHeight = docElem.scrollHeight,
+              clientHeight = docElem.clientHeight;
+
+        if (scrollHeight && clientHeight && scrollHeight - errorMargin <= clientHeight)
+            return true;
+    }
+
+    // Detect the scroll.
     const pageHeight = Math.max(
         document.body.scrollHeight, document.documentElement.scrollHeight,
         document.body.offsetHeight, document.documentElement.offsetHeight,
@@ -75,8 +87,8 @@ export class ContinueBanner extends Component {
         // event listener won't clash with other ContinueBanner instances.
         this.trackScrolling = () => {
             const scrolledDown = isScrolledDown();
-            if (this.state.scrolledDown !== scrolledDown) {
-                this.setState({scrolledDown: scrolledDown})
+            if (!this.state.scrolledDown && scrolledDown) {
+                this.setState({scrolledDown: true})
             }
         };
     }

@@ -3,7 +3,7 @@ import {GamePrompt} from "./GamePrompt";
 import {ContinueButton} from "../../components/ContinueButton";
 import {ErrorLabel, ProgressLabel} from "../../components/StatusLabel"
 import {ActiveGameScreen} from "./ActiveGameScreen";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {MountAwareComponent} from "../../components/MountAwareComponent";
 import {ParticipantProgress} from "./ParticipantProgress";
 import {GamePostInteractionStore} from "../../model/game";
@@ -504,7 +504,7 @@ export class GameScreen extends ActiveGameScreen {
     renderWithStudyAndGame(study, game) {
         const stage = game.getCurrentStage();
         if (stage === "identification")
-            return (<Redirect to={"/study/" + study.id + "/id" + window.location.search} />);
+            return (<Navigate to={"/study/" + study.id + "/id" + window.location.search} />);
 
         let states = this.state.currentStates;
         if (!states || states.length === 0) {

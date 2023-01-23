@@ -2,7 +2,7 @@ import {ErrorLabel} from '../../components/StatusLabel';
 import {getDataManager} from "../../model/manager";
 import {ContinueButton} from "../../components/ContinueButton"
 import {ActiveGameScreen} from "./ActiveGameScreen";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import React from "react";
 
 
@@ -75,7 +75,7 @@ export class GameIdentification extends ActiveGameScreen {
             return;
 
         if (this.state.submitOnEnterUp && GameIdentification.isValidValue(this.state.value)) {
-            this.props.history.push(target);
+            this.props.navigate(target);
         } else if (this.state.ignoreKeyDowns) {
             this.setState({...this.state, ignoreKeyDowns: false});
         }
@@ -89,7 +89,7 @@ export class GameIdentification extends ActiveGameScreen {
 
     renderWithStudyAndGame(study, game) {
         if (game.getCurrentStage() === "debrief")
-            return (<Redirect to={"/study/" + study.id + "/debrief" + window.location.search} />);
+            return (<Navigate to={"/study/" + study.id + "/debrief" + window.location.search} />);
 
         const target = "/study/" + study.id + window.location.search;
         return (

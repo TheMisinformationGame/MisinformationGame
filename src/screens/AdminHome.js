@@ -1,6 +1,6 @@
 import {Component} from 'react';
 import {getDataManager} from "../model/manager";
-import {Link, Redirect} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import StudyUpload from "../components/StudyUpload";
 import {ErrorLabel, ProgressLabel} from "../components/StatusLabel";
 import UploadIcon from '@mui/icons-material/Upload';
@@ -133,12 +133,12 @@ class AdminPage extends MountAwareComponent {
         manager.cacheStudy(study);
 
         // Move to the study page for the uploaded study.
-        this.props.history.push("/admin/" + study.id);
+        this.props.navigate("/admin/" + study.id);
     }
 
     render() {
         if (!auth.currentUser)
-            return (<Redirect to="/sign-in" />);
+            return (<Navigate to="/sign-in" />);
 
         const isAdmin = this.state.isAdmin;
         const readIsAdmin = this.state.isAdmin !== null;

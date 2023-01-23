@@ -1,11 +1,8 @@
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-import ReplyIcon from '@mui/icons-material/Reply';
-import FlagIcon from '@material-ui/icons/Flag';
 import React from "react";
 import {ParticipantProgress} from "./ParticipantProgress";
 import {GameIntroductionScreen, replaceHTMLPlaceholder} from "./GameIntroduction";
 import {ExampleCommentEntryBox} from "./CommentEntry";
+import {DislikeIcon, LikeIcon, ShareIcon, FlagIcon} from "../../components/ReactionIcons";
 
 
 /**
@@ -15,16 +12,10 @@ export class GameRules extends GameIntroductionScreen {
     getContent(study) {
         let rulesHTML = study.pagesSettings.rules;
 
-        const like = <ThumbUpIcon className="text-gray-700 mr-2" key="like" />;
-        const dislike = <ThumbDownIcon className="text-gray-700 mr-2" key="dislike" />;
-        const share = (
-            <span className="inline-block transform scale-125" key="share">
-                <ReplyIcon className="text-gray-700 mr-2 transform flip-x -translate-y-0.5 -scale-x-1"
-                           style={{fontSize: "1.7rem"}}/>
-            </span>
-        );
-        const flag = <FlagIcon key="flag" className="text-gray-700 mr-2"
-                               style={{fontSize: "1.6rem", marginLeft: "-0.15rem", marginTop: "-0.15rem"}} />;
+        const like = <LikeIcon key="like" />;
+        const dislike = <DislikeIcon key="dislike" />;
+        const share = <ShareIcon key="share" />;
+        const flag = <FlagIcon key="flag" />;
 
         rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{LIKE}}", () => like).content;
         rulesHTML = replaceHTMLPlaceholder(rulesHTML, "{{DISLIKE}}", () => dislike).content;

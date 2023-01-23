@@ -1,12 +1,15 @@
-import {db, storageRef} from "./firebase";
+import {db, storage} from "./firebase";
 import {BrokenStudy} from "../model/study";
+import {ref, deleteObject} from "firebase/storage";
+import {doc} from "firebase/firestore";
+import {collection, deleteDoc, getDocs} from "@firebase/firestore";
 
 /**
  * Deletes the file at {@param path} from storage.
  * @return {Promise<any>} a Promise for the completion of the deletion.
  */
 export function deletePathFromStorage(path) {
-    return storageRef.child(path).delete();
+    return deleteObject(ref(storage, path));
 }
 
 /**
@@ -61,7 +64,7 @@ export function deletePathsFromStorage(paths) {
  * if possible.
  */
 function deleteStudyConfiguration(study) {
-    return db.collection("Studies").doc(study.id).delete();
+    return deleteDoc(doc(collection(db, "Studies"), study.id));
 }
 
 /**
@@ -69,10 +72,11 @@ function deleteStudyConfiguration(study) {
  */
 function deleteStudyResults(study) {
     return new Promise((resolve, reject) => {
-        db.collection("Studies").doc(study.id).collection("Results").get().then(snapshot => {
+        const resultsCollection = collection(doc(collection(db, "Studies"), study.id), "Results");
+        getDocs(resultsCollection).then(snapshot => {
             const promises = [];
             snapshot.forEach(doc => {
-                promises.push(doc.ref.delete());
+                promises.push(deleteDoc(doc.ref));
             });
             Promise.all(promises).then(resolve).catch(reject);
         }).catch(error => {

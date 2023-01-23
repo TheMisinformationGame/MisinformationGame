@@ -1,6 +1,6 @@
-import {ActiveStudyScreen} from "../ActiveStudyScreen";
 import {getDataManager} from "../../model/manager";
 import {ErrorLabel, ProgressLabel} from "../../components/StatusLabel";
+import ActiveStudyScreen from "../ActiveStudyScreen";
 
 /**
  * Automatically sets the active study, and retrieves
@@ -19,27 +19,25 @@ export class ActiveGameScreen extends ActiveStudyScreen {
             manager.setSessionID(sessionID);
         }
 
-        // If the study and game are already loaded,
-        // then skip the delayed Promise step.
-        const knownStudy = manager.activeStudy;
+        // If the game is already loaded, then skip the delayed Promise step.
         const knownGame = manager.activeGame;
-        this.defaultState = {
-            study: knownStudy,
-            studyLoading: (knownStudy === null),
-            studyLoadError: null,
-
+        this.state = {
             game: knownGame,
             gameLoading: (knownGame === null),
             gameLoadError: null
         };
-        this.state = this.defaultState;
         this.studyUpdateListener = (study) => {
             const currentStudy = this.state.study;
-            if (!currentStudy || study.id !== currentStudy.id)
+            if (currentStudy)
                 return;
 
             // Set the new active study, and reload the active game.
-            this.setStateIfMounted({...this.defaultState, study: study, studyLoading: false,});
+            this.setStateIfMounted({
+                ...this.state,
+                game: null,
+                gameLoading: true,
+                gameLoadError: null
+            });
             this.reloadActiveGame();
         };
 
@@ -64,7 +62,7 @@ export class ActiveGameScreen extends ActiveStudyScreen {
         }
 
         if (changed) {
-            this.props.history.replace(window.location.pathname + "?" + queryParams);
+            this.props.navigate(window.location.pathname + "?" + queryParams);
         }
     }
 
@@ -77,28 +75,37 @@ export class ActiveGameScreen extends ActiveStudyScreen {
     }
 
     reloadActiveGame() {
+        this.setStateIfMounted({
+            ...this.state,
+            game: null,
+            gameLoading: true,
+            gameLoadError: null
+        });
         getDataManager().getActiveGame().then((game) => {
-            this.setStateIfMounted({...this.state, game: game, gameLoading: false});
+            this.setStateIfMounted({
+                ...this.state,
+                game: game,
+                gameLoading: false,
+                gameLoadError: null
+            });
             this.afterGameLoaded(game);
         }).catch(err => {
             console.error(err);
-            this.setStateIfMounted({...this.state, gameLoadError: err.message, gameLoading: false});
+            this.setStateIfMounted({
+                ...this.state,
+                game: null,
+                gameLoading: true,
+                gameLoadError: err.message
+            });
         });
     }
 
     componentDidMount() {
         super.componentDidMount();
 
+        // This shouldn't ever happen, but just in case.
         const manager = getDataManager();
         manager.addUpdateListener(this.studyUpdateListener);
-
-        // Load the active study.
-        manager.getActiveStudy().then(study => {
-            this.setStateIfMounted({...this.state, study: study, studyLoading: false});
-        }).catch(err => {
-            console.error(err);
-            this.setStateIfMounted({...this.state, studyLoadError: err.message, studyLoading: false});
-        });
 
         // Load the current game.
         this.reloadActiveGame();
@@ -120,22 +127,17 @@ export class ActiveGameScreen extends ActiveStudyScreen {
      * This method or the renderWithStudyAndGame method must be overridden in sub-classes.
      */
     render() {
-        const error = this.state.studyLoadError || this.state.gameLoadError;
+        const error = this.state.gameLoadError;
         if (error)
             return <ErrorLabel className="text-2xl m-2" value={error} />;
 
-        if (this.state.studyLoading)
-            return <ProgressLabel className="text-2xl m-2" value="The study is loading..." />;
         if (this.state.gameLoading)
-            return <ProgressLabel className="text-2xl m-2" value="The game is loading..." />;
+            return <ProgressLabel className="text-2xl m-2" value="The study is loading..." />;
 
-        const study = this.state.study;
         const game = this.state.game;
-        if (!study)
-            return <ErrorLabel className="text-2xl m-2" value="The study did not load correctly." />;
         if (!game)
             return <ErrorLabel className="text-2xl m-2" value="The game did not load correctly." />;
 
-        return this.renderWithStudyAndGame(study, game);
+        return this.renderWithStudyAndGame(game.study, game);
     }
 }

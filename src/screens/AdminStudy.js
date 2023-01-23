@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
-import {Link, Redirect} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import UploadIcon from "@mui/icons-material/Upload";
 import BlockIcon from '@mui/icons-material/Block';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import {SimpleActiveStudyScreen} from "./ActiveStudyScreen";
 import {isOfType} from "../utils/types";
 import {BrokenStudy} from "../model/study";
 import {ErrorLabel, Status} from "../components/StatusLabel";
@@ -21,6 +20,7 @@ import {downloadResults} from "../model/resultsExcelWriter";
 import {createDateFromUnixEpochTimeSeconds} from "../utils/time";
 import {auth} from "../database/firebase";
 import {setDefaultPageTitle} from "../index";
+import SimpleActiveStudyScreen from "./SimpleActiveStudyScreen";
 
 
 class AdminStudyActionButton extends Component {
@@ -214,7 +214,7 @@ class AdminStudy extends MountAwareComponent {
                     progress: Status.success("Success. You will be redirected shortly.")
                 });
                 setTimeout(() => {
-                    this.props.history.push("/admin");
+                    this.props.navigate("/admin");
                 }, 500);
             }).catch((error) => {
                 console.error(error);
@@ -232,7 +232,7 @@ class AdminStudy extends MountAwareComponent {
 
     render() {
         if (!auth.currentUser)
-            return (<Redirect to="/sign-in" />);
+            return (<Navigate to="/sign-in" />);
 
         const study = this.props.study;
         const modifiedTime = createDateFromUnixEpochTimeSeconds(study.lastModifiedTime);
@@ -426,7 +426,7 @@ export class AdminStudyPage extends SimpleActiveStudyScreen {
                 <div className="relative mt-3 w-full md:max-w-2xl mx-auto
                                 rounded-xl border bg-white shadow-xl border-gray-400" >
 
-                    <AdminStudy study={study} history={this.props.history} />
+                    <AdminStudy study={study} navigate={this.props.navigate} />
 
                     {/* Close button in top-right. */}
                     <Link to="/admin" className="absolute right-2 top-3 cursor-pointer">

@@ -1,5 +1,5 @@
 import {ErrorLabel} from "./StatusLabel";
-import {CircularProgress} from "@material-ui/core";
+import CircularProgress from '@mui/material/CircularProgress';
 import {isOfType} from "../utils/types";
 import {StudyImage} from "../model/images";
 import {MountAwareComponent} from "./MountAwareComponent";

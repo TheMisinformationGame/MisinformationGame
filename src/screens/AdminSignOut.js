@@ -1,5 +1,6 @@
 import {MountAwareComponent} from "../components/MountAwareComponent";
 import {auth} from "../database/firebase";
+import {signOut} from "firebase/auth";
 import StatusLabel, {Status} from "../components/StatusLabel";
 import {Button, LinkButton} from "../components/Button";
 import {setDefaultPageTitle} from "../index";
@@ -25,7 +26,7 @@ export class AdminSignOut extends MountAwareComponent {
             status: Status.progress("Signing you out...")
         });
 
-        auth.signOut().then(() => {
+        signOut(auth).then(() => {
             this.setStateIfMounted({
                 signingOut: false,
                 signedOut: true,

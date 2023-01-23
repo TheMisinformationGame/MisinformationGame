@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import {CredibilityLabel} from "../../components/CredibilityLabel";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";

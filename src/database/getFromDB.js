@@ -9,6 +9,9 @@ import {StudyImage} from "../model/images";
 import {Game} from "../model/game";
 import {decompressJson} from "./compressJson";
 import {retryPromiseOperation} from "../utils/promises";
+import {doc} from "firebase/firestore";
+import {collection, getDoc, getDocs, query, where} from "@firebase/firestore";
+import {ref, getDownloadURL} from "firebase/storage";
 
 
 /**
@@ -31,8 +34,8 @@ function studyOrBrokenFromJson(studyID, json) {
  */
 export async function readStudySettings(studyID) {
     return new Promise((resolve, reject) => {
-        db.collection('Studies').doc(studyID).get().then(snapshot => {
-            if (!snapshot.exists) {
+        getDoc(doc(collection(db, "Studies"), studyID)).then(snapshot => {
+            if (!snapshot.exists()) {
                 reject(new Error("Could not find the study with ID " + studyID));
                 return;
             }
@@ -57,8 +60,8 @@ export async function readAllStudies() {
     if (!auth.currentUser)
         throw new Error("User is not authenticated");
 
-    const snapshot = await db.collection('Studies')
-                             .where("authorID", "==", auth.currentUser.uid).get();
+    const getStudiesQuery = query(collection(db, "Studies"), where("authorID", "==", auth.currentUser.uid));
+    const snapshot = await getDocs(getStudiesQuery);
     return snapshot.docs.map((doc) => studyOrBrokenFromJson(doc.id, decompressJson(doc.data())));
 }
 
@@ -69,8 +72,8 @@ export async function readIsAdmin() {
     if (!auth.currentUser)
         throw new Error("User is not authenticated");
 
-    const snapshot = await db.collection("Admins").doc(auth.currentUser.uid).get();
-    return snapshot.exists;
+    const snapshot = await getDoc(doc(collection(db, "Admins"), auth.currentUser.uid));
+    return snapshot.exists();
 }
 
 function getStudyImagePathType(path) {
@@ -91,7 +94,7 @@ export function readStudyImage(path) {
 async function readStudyImageInternal(path) {
     const type = getStudyImagePathType(path);
     return new Promise((resolve, reject) => {
-        return storage.ref(path).getDownloadURL().then((url) => {
+        return getDownloadURL(ref(storage, path)).then((url) => {
             const request = new XMLHttpRequest();
             // Long timeout as we really don't want to hammer the backend.
             request.timeout = 8000;
@@ -134,8 +137,8 @@ export async function readAllCompletedStudyResults(study, problems) {
         throw new Error("User is not authenticated");
 
     const games = [];
-    const snapshot = await db.collection("Studies").doc(study.id)
-                             .collection("Results").get();
+    const snapshot = await getDocs(collection(doc(collection(db, "Studies"), study.id), "Results"));
+
     for(let index = 0; index < snapshot.docs.length; ++index) {
         const doc = snapshot.docs[index];
         const json = decompressJson(doc.data());
