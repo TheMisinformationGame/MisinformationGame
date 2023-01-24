@@ -70,15 +70,15 @@ export class ParticipantProgress extends Component {
                     " static w-80 max-w-xs rounded-xl border border-gray-400 shadow ")}>
 
                 <div className={
-                    "p-2 pb-3 " + (fancyPositioning ? "border-t border-gray-400 md:border-none" : "")}>
+                    "p-2 " + (fancyPositioning ? "border-t border-gray-400 md:border-none" : "")}>
 
-                    <p className="text-xl font-semibold md:mb-1.5">
+                    <p className="text-xl font-semibold mb-1.5">
                         Your Progress {stringPercent}
                     </p>
 
-                    <div className="flex md:block flex-row items-center">
+                    <div className="block">
                         {displayFollowers &&
-                            <p className="flex-1 text-xl inline-block">
+                            <p className="text-xl inline-block">
                                 <span className="inline-block">
                                     <SupervisedUserCircleIcon className="align-bottom mr-1" />
                                 </span>
@@ -92,7 +92,7 @@ export class ParticipantProgress extends Component {
                             </p>}
 
                         {displayCredibility &&
-                            <p className="flex-1 text-xl inline-block">
+                            <p className="text-xl inline-block">
                                 <span className="inline-block">
                                     <CheckCircleIcon className="align-bottom mr-1" />
                                 </span>
@@ -108,7 +108,7 @@ export class ParticipantProgress extends Component {
                           title={nextPostEnabled || this.props.hideTooltip ? "" :
                               "You must react to the post before you can continue to the next post"}
                           className={
-                              " mt-2 px-3 py-2 rounded-md text-white select-none " +
+                              " mt-1 px-3 py-2 rounded-md text-white select-none " +
                               (nextPostEnabled ? " cursor-pointer " : "") +
                               (nextPostEnabled ?
                                   " bg-blue-500 active:bg-blue-600 hover:bg-blue-600 " : " bg-gray-400 ")
