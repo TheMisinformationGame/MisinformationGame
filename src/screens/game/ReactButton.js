@@ -5,8 +5,8 @@ import React, {Component} from "react";
  * A button for a participant to react to a post or comment.
  */
 export class ReactButton extends Component {
-    getPositioningClassName() {
-        return "h-12 w-16 pt-1.5 px-4";
+    getPositioningClassName(wide) {
+        return "h-12 pt-1.5 px-4 " + (wide ? "w-32" : "w-16");
     }
 
     getReactionCountClassName() {
@@ -17,6 +17,7 @@ export class ReactButton extends Component {
         const reaction = this.props.reaction;
         const grayOut = this.props.grayOut;
         const selected = this.props.selected;
+        const wide = this.props.wide;
 
         let reactionCount = this.props.reactionCount;
         if (typeof(reactionCount) === "number" && selected) {
@@ -28,7 +29,7 @@ export class ReactButton extends Component {
                  className={
                      " relative group rounded text-center " +
                      " fill-current transition duration-100 " +
-                     " " + this.getPositioningClassName() + " " +
+                     " " + this.getPositioningClassName(wide) + " " +
                      (selected ? " bg-gray-100 font-semibold " : " hover:bg-gray-100 ") +
                      (this.props.enabled ? " cursor-pointer " : "") +
                      (this.props.enabled && (selected || !grayOut) ?

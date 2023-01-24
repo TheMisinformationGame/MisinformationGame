@@ -139,14 +139,16 @@ class PostReactionsRow extends Component {
                     {buttons}
                 </div>
 
-                <ReactButton reaction="skip"
-                             selected={interactions.hasPostReaction("skip")}
-                             grayOut={interactions.postReactions.length > 0}
-                             onReact={onReact}
-                             enabled={enabled}
-                             className="w-32"
-                             fontSize="1.25rem"
-                             childClassName="transform translate-y-1">
+                <ReactButton
+                    reaction="skip"
+                    selected={interactions.hasPostReaction("skip")}
+                    grayOut={interactions.postReactions.length > 0}
+                    onReact={onReact}
+                    enabled={enabled}
+                    wide={true}
+                    fontSize="1.25rem"
+                    childClassName="transform translate-y-1">
+
                     <p>Skip Post</p>
                 </ReactButton>
             </div>
