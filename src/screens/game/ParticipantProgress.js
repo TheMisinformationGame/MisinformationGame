@@ -11,22 +11,24 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 class ChangeLabel extends Component {
     render() {
         if (!this.props.change)
-            return null;
+            return (<span className="inline-block w-16"></span>);
 
         let icon, change, colour;
         if (this.props.change > 0) {
-            icon = <ArrowDropUpIcon className="mr-1.5" />
+            icon = <ArrowDropUpIcon  />;
             change = "+" + this.props.change;
             colour = "#006be2";
         } else {
-            icon = <ArrowDropDownIcon className="mr-1.5" />
+            icon = <ArrowDropDownIcon />;
             change = this.props.change;
             colour = "#961818";
         }
-        return (<span className={"whitespace-nowrap font-semibold " + (this.props.className || "")}
+        return (<span className={"inline-block min-w-16 whitespace-nowrap font-semibold " + (this.props.className || "")}
                       style={{color: colour}}>
 
-            {icon} {change}
+            <span className="inline-block" style={{marginRight: "-0.1em"}}>
+                {icon}
+            </span> {change}
         </span>);
     }
 }
@@ -63,45 +65,50 @@ export class ParticipantProgress extends Component {
                     /* If we are on the game screen we need to do a lot. */
                     " block w-full md:mt-2 lg:mt-5 " +
                     " transform -translate-x-1/2 md:translate-x-0 " +
-                    " md:rounded-xl shadow-2xl md:shadow-xl md:border md:border-gray-400 "
+                    " md:rounded-xl shadow-up md:shadow-xl md:border md:border-gray-400 "
                     : /* Or, if we aren't on the game screen, then only a little. */
                     " static w-80 max-w-xs rounded-xl border border-gray-400 shadow ")}>
 
                 <div className={
-                    "p-2 px-4 pb-3 " + (fancyPositioning ? "border-t border-gray-400 md:border-none" : "")}>
+                    "p-2 pb-3 " + (fancyPositioning ? "border-t border-gray-400 md:border-none" : "")}>
 
-                    <p className="text-xl font-semibold mb-2">
+                    <p className="text-xl font-semibold md:mb-1.5">
                         Your Progress {stringPercent}
                     </p>
 
-                    {displayFollowers &&
-                        <p className="text-xl">
-                            <SupervisedUserCircleIcon className="align-bottom mr-1" />
-                            <span className="inline-block text-lg w-24 transform -translate-y-0.5">
-                                Followers:
-                            </span>
-                            <span className="font-semibold">
-                                &nbsp;{Math.round(followers)}&nbsp;
-                            </span>
-                            <ChangeLabel change={this.props.followerChange} />
-                        </p>}
+                    <div className="flex md:block flex-row items-center">
+                        {displayFollowers &&
+                            <p className="flex-1 text-xl inline-block">
+                                <span className="inline-block">
+                                    <SupervisedUserCircleIcon className="align-bottom mr-1" />
+                                </span>
+                                <span className="inline-block text-lg md:w-24">
+                                    Followers:
+                                </span>
+                                <span className="font-semibold">
+                                    &nbsp;{Math.round(followers)}&nbsp;
+                                </span>
+                                <ChangeLabel change={this.props.followerChange} />
+                            </p>}
 
-                    {displayCredibility &&
-                        <p className="text-xl">
-                            <CheckCircleIcon className="align-bottom mr-1" />
-                            <span className="inline-block text-lg w-24">
-                                Credibility:
-                            </span>
-                            <CredibilityLabel credibility={credibility}
-                                              className="transform translate-y-2" />
-                            <ChangeLabel change={this.props.credibilityChange} />
-                        </p>}
+                        {displayCredibility &&
+                            <p className="flex-1 text-xl inline-block">
+                                <span className="inline-block">
+                                    <CheckCircleIcon className="align-bottom mr-1" />
+                                </span>
+                                <span className="inline-block text-lg md:w-24">
+                                    Credibility:
+                                </span>
+                                <CredibilityLabel credibility={credibility} />
+                                <ChangeLabel change={this.props.credibilityChange} />
+                            </p>}
+                    </div>
 
                     <div onClick={onNextPost}
                           title={nextPostEnabled || this.props.hideTooltip ? "" :
                               "You must react to the post before you can continue to the next post"}
                           className={
-                              " mt-3 px-3 py-2 rounded-md text-white select-none " +
+                              " mt-2 px-3 py-2 rounded-md text-white select-none " +
                               (nextPostEnabled ? " cursor-pointer " : "") +
                               (nextPostEnabled ?
                                   " bg-blue-500 active:bg-blue-600 hover:bg-blue-600 " : " bg-gray-400 ")

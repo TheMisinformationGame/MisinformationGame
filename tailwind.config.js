@@ -15,7 +15,7 @@ module.exports = {
         "mini": "1.5rem"
       },
       boxShadow: {
-        'up': '0 10px 20px 5px rgba(0, 0, 0, 0.3)',
+        'up': '0 10px 10px 5px rgba(0, 0, 0, 1)',
       }
     },
   },
