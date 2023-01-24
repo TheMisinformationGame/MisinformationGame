@@ -17,7 +17,7 @@ function Home() {
     return (
         <div className="text-center min-h-screen bg-gray-100">
             <GithubCorner />
-            <div className="flex flex-col items-center min-h-screen py-16">
+            <div className="flex flex-col items-center min-h-screen py-24 px-8">
 
                 <a href="https://themisinformationgame.github.io/">
                     <img src={Logo} alt="Misinformation Game Logo"
@@ -47,7 +47,7 @@ function Home() {
                         </div>
                     </div>
 
-                    <h2 className="text-4xl mb-4 mt-8">Other Resources</h2>
+                    <h2 className="text-4xl mb-4 mt-8">Resources</h2>
 
                     {/* The example game only exists on the example website. */}
                     {exampleGameURL !== null &&
