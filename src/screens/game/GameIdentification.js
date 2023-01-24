@@ -23,11 +23,8 @@ export class GameIdentification extends ActiveGameScreen {
         if (!game.participant.participantID)
             return;
 
-        setTimeout(() => {
-            this.setStateIfMounted({
-                ...this.state,
-                value: game.participant.participantID
-            });
+        this.setStateIfMounted(() => {
+            return {value: game.participant.participantID};
         });
     }
 
@@ -54,19 +51,25 @@ export class GameIdentification extends ActiveGameScreen {
 
         if (GameIdentification.isValidValue(this.state.value)) {
             // Set the state so the release of the enter key will submit.
-            this.setState({
-                ...this.state, displayError: true,
-                submitOnEnterUp: true, ignoreKeyDowns: true
+            this.setState(() => {
+                return {
+                    displayError: true,
+                    submitOnEnterUp: true,
+                    ignoreKeyDowns: true
+                };
             });
 
-            // If the user waits a second without releasing enter, cancel the submit.
+            // If the user waits a second without releasing enter, cancel.
             setTimeout(() => {
-                this.submitCancelTimer = null;
-                this.setStateIfMounted({...this.state, submitOnEnterUp: false});
+                this.setStateIfMounted(() => {
+                    return {submitOnEnterUp: false};
+                });
             }, 1000);
         } else {
             // If the ID is invalid, display the error.
-            this.setState({...this.state, displayError: true});
+            this.setState(() => {
+                return {displayError: true};
+            });
         }
     }
 
@@ -77,14 +80,18 @@ export class GameIdentification extends ActiveGameScreen {
         if (this.state.submitOnEnterUp && GameIdentification.isValidValue(this.state.value)) {
             this.props.navigate(target);
         } else if (this.state.ignoreKeyDowns) {
-            this.setState({...this.state, ignoreKeyDowns: false});
+            this.setState(() => {
+                return {ignoreKeyDowns: false};
+            });
         }
     }
 
     updateID(game, id) {
         game.participant.participantID = id;
         game.saveLocally();
-        this.setState({...this.state, value: id});
+        this.setState(() => {
+            return {value: id};
+        });
     }
 
     renderWithStudyAndGame(study, game) {
@@ -112,7 +119,9 @@ export class GameIdentification extends ActiveGameScreen {
                     <ContinueButton to={target}
                                     condition={GameIdentification.isValidValue(this.state.value)}
                                     disabledTooltip="Enter your access ID to continue"
-                                    onClick={() => this.setState({...this.state, displayError: true})}
+                                    onClick={() => this.setState(() => {
+                                        return {displayError: true};
+                                    })}
                                     active={this.state.submitOnEnterUp} />
                 </div>
             </div>

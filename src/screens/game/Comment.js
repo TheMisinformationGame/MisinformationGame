@@ -20,16 +20,14 @@ export class Comment extends Component {
     }
 
     showDeleteConfirmation() {
-        this.setState({
-            ...this.state,
-            showDeleteConfirmation: true
+        this.setState(() => {
+            return {showDeleteConfirmation: true};
         });
     }
 
     hideDeleteConfirmation() {
-        this.setState({
-            ...this.state,
-            showDeleteConfirmation: false
+        this.setState(() => {
+            return {showDeleteConfirmation: false};
         });
     }
 

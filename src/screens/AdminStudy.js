@@ -58,58 +58,72 @@ class AdminStudy extends MountAwareComponent {
 
     hideProgress() {
         if (this.state.deletingStudy) {
-            this.setStateIfMounted({
-                ...this.defaultState,
-                progressTitle: "Study Deletion Cancelled",
-                progress: Status.success("The deletion of this study has been cancelled.")
+            this.setStateIfMounted(() => {
+                return {
+                    ...this.defaultState,
+                    progressTitle: "Study Deletion Cancelled",
+                    progress: Status.success("The deletion of this study has been cancelled.")
+                };
             });
         } else {
-            this.setStateIfMounted({...this.defaultState});
+            this.setStateIfMounted(() => {
+                return {...this.defaultState};
+            });
         }
     }
 
     hideStudyUpdate() {
-        this.setStateIfMounted({...this.defaultState});
+        this.setStateIfMounted(() => {
+            return {...this.defaultState};
+        });
     }
 
     showError(errorTitle, errorMessage) {
-        this.setState({
-            ...this.defaultState,
-            progressTitle: errorTitle,
-            progress: Status.error(errorMessage)
+        this.setState(() => {
+            return {
+                ...this.defaultState,
+                progressTitle: errorTitle,
+                progress: Status.error(errorMessage)
+            };
         });
     }
 
     downloadResults(study) {
-        this.setState({
-            ...this.defaultState,
-            progressTitle: "Downloading results...",
-            progress: Status.progress("The results of this study are downloading...")
+        this.setState(() => {
+            return {
+                ...this.defaultState,
+                progressTitle: "Downloading results...",
+                progress: Status.progress("The results of this study are downloading...")
+            };
         });
         setTimeout(() => {
             downloadResults(study).then(() => {
                 // Successfully downloaded!
-                this.setStateIfMounted({
-                    ...this.defaultState,
-                    progressTitle: "Results downloaded",
-                    progress: Status.success([
-                        "Results downloaded!",
-                        <p className="mt-4 text-lg">
-                            There should be a dialog open where you can select where
-                            you wish to save the results spreadsheet.
-                        </p>
-                    ])
+                this.setStateIfMounted(() => {
+                    return {
+                        ...this.defaultState,
+                        progressTitle: "Results downloaded",
+                        progress: Status.success([
+                            "Results downloaded!",
+                            <p className="mt-4 text-lg">
+                                There should be a dialog open where you can select where
+                                you wish to save the results spreadsheet.
+                            </p>
+                        ])
+                    };
                 });
             }).catch((error) => {
                 // There was an error downloading the results...
                 console.error(error);
-                this.setStateIfMounted({
-                    ...this.defaultState,
-                    progressTitle: "Error downloading results",
-                    progress: Status.error([
-                        <b>There was an error:</b>,
-                        error.message
-                    ])
+                this.setStateIfMounted(() => {
+                    return {
+                        ...this.defaultState,
+                        progressTitle: "Error downloading results",
+                        progress: Status.error([
+                            <b>There was an error:</b>,
+                            error.message
+                        ])
+                    };
                 });
             });
         }, 50);
@@ -132,9 +146,11 @@ class AdminStudy extends MountAwareComponent {
             return;
         }
 
-        this.setState({
-            ...this.defaultState,
-            showStudyUpdate: true
+        this.setState(() => {
+            return {
+                ...this.defaultState,
+                showStudyUpdate: true
+            };
         });
     }
 
@@ -144,40 +160,50 @@ class AdminStudy extends MountAwareComponent {
     }
 
     updateStudyEnabled(study, enabled, title, message, completeTitle) {
-        this.setState({
-            ...this.defaultState,
-            progressTitle: title,
-            progress: Status.progress(message)
+        this.setState(() => {
+            return {
+                ...this.defaultState,
+                progressTitle: title,
+                progress: Status.progress(message)
+            };
         });
         setTimeout(() => {
             study.enabled = enabled;
             study.updateLastModifiedTime();
             uploadStudyConfiguration(study).then(() => {
                 getDataManager().clearCachedStudies();
-                this.setStateIfMounted({
-                    ...this.defaultState,
-                    progressTitle: completeTitle,
-                    progress: Status.success("Success")
+                this.setStateIfMounted(() => {
+                    return {
+                        ...this.defaultState,
+                        progressTitle: completeTitle,
+                        progress: Status.success("Success")
+                    };
                 });
             }).catch((error) => {
-                this.setStateIfMounted({
-                    ...this.defaultState,
-                    progressTitle: completeTitle,
-                    progress: Status.error([
-                        <b>There was an error:</b>,
-                        error.message
-                    ])
+                this.setStateIfMounted(() => {
+                    return {
+                        ...this.defaultState,
+                        progressTitle: completeTitle,
+                        progress: Status.error([
+                            <b>There was an error:</b>,
+                            error.message
+                        ])
+                    };
                 });
             });
         }, 50);
     }
 
     enableStudy(study) {
-        this.setState({...this.defaultState, confirmation: "enable-study"});
+        this.setState(() => {
+            return {...this.defaultState, confirmation: "enable-study"};
+        });
     }
 
     disableStudy(study) {
-        this.setState({...this.defaultState, confirmation: "disable-study"});
+        this.setState(() => {
+            return {...this.defaultState, confirmation: "disable-study"};
+        });
     }
 
     confirmEnableStudy(study) {
@@ -189,15 +215,19 @@ class AdminStudy extends MountAwareComponent {
     }
 
     deleteStudy(study) {
-        this.setState({...this.defaultState, confirmation: "delete-study"});
+        this.setState(() => {
+            return {...this.defaultState, confirmation: "delete-study"};
+        });
     }
 
     confirmDeleteStudy(study) {
-        this.setState({
-            ...this.defaultState,
-            deletingStudy: true,
-            progressTitle: "Deleting Study...",
-            progress: Status.progress("The study and its results are being deleted...")
+        this.setState(() => {
+            return {
+                ...this.defaultState,
+                deletingStudy: true,
+                progressTitle: "Deleting Study...",
+                progress: Status.progress("The study and its results are being deleted...")
+            };
         });
 
         // We give users 2 seconds to cancel the deletion by closing the dialog.
@@ -208,23 +238,27 @@ class AdminStudy extends MountAwareComponent {
 
             deleteStudy(study).then((study) => {
                 getDataManager().clearCachedStudies();
-                this.setStateIfMounted({
-                    ...this.defaultState,
-                    progressTitle: "Study Deleted",
-                    progress: Status.success("Success. You will be redirected shortly.")
+                this.setStateIfMounted(() => {
+                    return {
+                        ...this.defaultState,
+                        progressTitle: "Study Deleted",
+                        progress: Status.success("Success. You will be redirected shortly.")
+                    };
                 });
                 setTimeout(() => {
                     this.props.navigate("/admin");
                 }, 500);
             }).catch((error) => {
                 console.error(error);
-                this.setStateIfMounted({
-                    ...this.defaultState,
-                    progressTitle: "Error Deleting Study",
-                    progress: Status.error([
-                        <b>There was an error deleting the study:</b>,
-                        <span>{error.message}</span>
-                    ])
+                this.setStateIfMounted((state, props) => {
+                    return {
+                        ...this.defaultState,
+                        progressTitle: "Error Deleting Study",
+                        progress: Status.error([
+                            <b>There was an error deleting the study:</b>,
+                            <span>{error.message}</span>
+                        ])
+                    };
                 });
             });
         }, 2000);

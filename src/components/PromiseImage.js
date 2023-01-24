@@ -15,16 +15,20 @@ export class PromiseImage extends MountAwareComponent {
 
     load(imagePromise) {
         if (isOfType(imagePromise, StudyImage)) {
-            this.setStateIfMounted({
-                promise: imagePromise,
-                image: imagePromise
+            this.setStateIfMounted(() => {
+                return {
+                    promise: imagePromise,
+                    image: imagePromise
+                };
             });
             return;
         }
 
-        this.setStateIfMounted({
-            promise: imagePromise,
-            image: null
+        this.setStateIfMounted(() => {
+            return {
+                promise: imagePromise,
+                image: null
+            };
         });
 
         imagePromise.then((image) => {
@@ -33,15 +37,19 @@ export class PromiseImage extends MountAwareComponent {
                 return;
 
             // Image has loaded!
-            this.setStateIfMounted({
-                promise: imagePromise,
-                image: image
+            this.setStateIfMounted(() => {
+                return {
+                    promise: imagePromise,
+                    image: image
+                };
             });
         }).catch((err) => {
-            this.setStateIfMounted({
-                promise: imagePromise,
-                image: null,
-                error: err.message
+            this.setStateIfMounted(() => {
+                return {
+                    promise: imagePromise,
+                    image: null,
+                    error: err.message
+                };
             });
         });
     }

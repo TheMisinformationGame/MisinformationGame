@@ -27,17 +27,15 @@ export class ActiveGameScreen extends ActiveStudyScreen {
             gameLoadError: null
         };
         this.studyUpdateListener = (study) => {
-            const currentStudy = this.state.study;
-            if (currentStudy)
+            const game = this.state.game;
+            if (!game)
+                return;
+
+            const currentStudy = game.study;
+            if (currentStudy && study && currentStudy.id === study.id)
                 return;
 
             // Set the new active study, and reload the active game.
-            this.setStateIfMounted({
-                ...this.state,
-                game: null,
-                gameLoading: true,
-                gameLoadError: null
-            });
             this.reloadActiveGame();
         };
 
@@ -62,7 +60,10 @@ export class ActiveGameScreen extends ActiveStudyScreen {
         }
 
         if (changed) {
-            this.props.navigate(window.location.pathname + "?" + queryParams);
+            this.props.navigate(
+                window.location.pathname + "?" + queryParams,
+                {replace: true}
+            );
         }
     }
 
@@ -75,27 +76,32 @@ export class ActiveGameScreen extends ActiveStudyScreen {
     }
 
     reloadActiveGame() {
-        this.setStateIfMounted({
-            ...this.state,
-            game: null,
-            gameLoading: true,
-            gameLoadError: null
-        });
-        getDataManager().getActiveGame().then((game) => {
-            this.setStateIfMounted({
-                ...this.state,
-                game: game,
-                gameLoading: false,
-                gameLoadError: null
-            });
-            this.afterGameLoaded(game);
-        }).catch(err => {
-            console.error(err);
-            this.setStateIfMounted({
-                ...this.state,
+        this.setStateIfMounted(() => {
+            return {
                 game: null,
                 gameLoading: true,
-                gameLoadError: err.message
+                gameLoadError: null
+            };
+        });
+        setTimeout(() => {
+            getDataManager().getActiveGame().then((game) => {
+                this.setStateIfMounted(() => {
+                    return {
+                        game: game,
+                        gameLoading: false,
+                        gameLoadError: null
+                    };
+                });
+                this.afterGameLoaded(game);
+            }).catch(err => {
+                console.error(err);
+                this.setStateIfMounted(() => {
+                    return {
+                        game: null,
+                        gameLoading: false,
+                        gameLoadError: err.message
+                    };
+                });
             });
         });
     }
@@ -127,6 +133,7 @@ export class ActiveGameScreen extends ActiveStudyScreen {
      * This method or the renderWithStudyAndGame method must be overridden in sub-classes.
      */
     render() {
+        console.log("render", this.state);
         const error = this.state.gameLoadError;
         if (error)
             return <ErrorLabel className="text-2xl m-2" value={error} />;

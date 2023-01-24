@@ -71,19 +71,23 @@ class GameFinished extends MountAwareComponent {
             promise = game.saveToDatabase();
         }
 
-        this.setState({...this.defaultState});
+        this.setState(() => this.defaultState);
         promise.then(() => {
-            this.setStateIfMounted({
-                saving: false,
-                saved: true,
-                error: null
+            this.setStateIfMounted(() => {
+                return {
+                    saving: false,
+                    saved: true,
+                    error: null
+                };
             });
         }).catch(error => {
             console.error(error);
-            this.setStateIfMounted({
-                saving: false,
-                saved: false,
-                error: error.message
+            this.setStateIfMounted(() => {
+                return {
+                    saving: false,
+                    saved: false,
+                    error: error.message
+                };
             });
         });
     }
@@ -193,56 +197,63 @@ export class GameScreen extends ActiveGameScreen {
     }
 
     onPostReaction(postIndex, reaction, study) {
-        const inters = this.state.interactions;
-        this.setState({
-            ...this.state,
-            interactions: inters.update(postIndex, inters.get(postIndex).withToggledPostReaction(
-                reaction, study.uiSettings.allowMultipleReactions
-            ))
+        this.setState((state) => {
+            const inters = state.interactions;
+            return {
+                interactions: inters.update(postIndex, inters.get(postIndex).withToggledPostReaction(
+                    reaction, study.uiSettings.allowMultipleReactions
+                ))
+            };
         });
     }
 
     onCommentReaction(postIndex, commentIndex, reaction, study) {
-        const inters = this.state.interactions;
-        this.setState({
-            ...this.state,
-            interactions: inters.update(postIndex, inters.get(postIndex).withToggledCommentReaction(
-                commentIndex, reaction, study.uiSettings.allowMultipleReactions
-            ))
+        this.setState((state) => {
+            const inters = state.interactions;
+            return {
+                interactions: inters.update(postIndex, inters.get(postIndex).withToggledCommentReaction(
+                    commentIndex, reaction, study.uiSettings.allowMultipleReactions
+                ))
+            };
         });
     }
 
     onCommentSubmit(postIndex, comment) {
-        const inters = this.state.interactions;
-        this.setState({
-            ...this.state,
-            interactions: inters.update(postIndex, inters.get(postIndex).withComment(comment)),
-            commentHasBeenEdited: false
+        this.setState((state) => {
+            const inters = state.interactions;
+            return {
+                interactions: inters.update(postIndex, inters.get(postIndex).withComment(comment)),
+                commentHasBeenEdited: false
+            };
         });
     }
 
     onCommentEdit(postIndex) {
-        const inters = this.state.interactions;
-        this.setState({
-            ...this.state,
-            interactions: inters.update(postIndex, inters.get(postIndex).withComment(null)),
-            commentHasBeenEdited: false
+        this.setState((state) => {
+            const inters = state.interactions;
+            return {
+                interactions: inters.update(postIndex, inters.get(postIndex).withComment(null)),
+                commentHasBeenEdited: false
+            };
         });
     }
 
     onCommentDelete(postIndex) {
-        const inters = this.state.interactions;
-        this.setState({
-            ...this.state,
-            interactions: inters.update(postIndex, inters.get(postIndex).withDeletedComment()),
-            commentHasBeenEdited: false
+        this.setState((state) => {
+            const inters = state.interactions;
+            return {
+                interactions: inters.update(postIndex, inters.get(postIndex).withDeletedComment()),
+                commentHasBeenEdited: false
+            };
         });
     }
 
     onCommentEditedStatusUpdate(postIndex, hasBeenEdited) {
-        this.setState({
-            ...this.state,
-            commentHasBeenEdited: hasBeenEdited
+        // FIXME : IS THIS WRONG? IT LOOKS WRONG
+        this.setState(() => {
+            return {
+                commentHasBeenEdited: hasBeenEdited
+            };
         });
     }
 
@@ -406,14 +417,15 @@ export class GameScreen extends ActiveGameScreen {
         }
 
         // Show the change in followers and credibility.
-        this.setState({
-            ...this.state,
-            currentStates: newStates,
-            overrideFollowers: beforeFollowers,
-            overrideCredibility: beforeCredibility,
-            followerChange: followerChange,
-            credibilityChange: credibilityChange,
-            inputEnabled: inputEnabled
+        this.setState(() => {
+            return {
+                currentStates: newStates,
+                overrideFollowers: beforeFollowers,
+                overrideCredibility: beforeCredibility,
+                followerChange: followerChange,
+                credibilityChange: credibilityChange,
+                inputEnabled: inputEnabled
+            };
         });
 
         function roundInDir(value, direction) {
@@ -437,14 +449,15 @@ export class GameScreen extends ActiveGameScreen {
                 lastFollowers = followers;
                 lastCredibility = credibility;
                 setTimeout(() => {
-                    this.setStateIfMounted({
-                        ...this.state,
-                        currentStates: newStates,
-                        overrideFollowers: followers,
-                        overrideCredibility: credibility,
-                        followerChange: followerChange,
-                        credibilityChange: credibilityChange,
-                        inputEnabled: inputEnabled
+                    this.setStateIfMounted(() => {
+                        return {
+                            currentStates: newStates,
+                            overrideFollowers: followers,
+                            overrideCredibility: credibility,
+                            followerChange: followerChange,
+                            credibilityChange: credibilityChange,
+                            inputEnabled: inputEnabled
+                        };
                     });
                 }, stage * animateTimeMS / maxStages);
             }
@@ -471,7 +484,6 @@ export class GameScreen extends ActiveGameScreen {
     updateGameState(game, error, setDismissedPrompt) {
         const displayPostsInFeed = game.study.uiSettings.displayPostsInFeed;
         const state = {
-            ...this.state,
             currentStates: (game && !game.isFinished() ? game.getCurrentStates() : null),
 
             error: error,
@@ -488,11 +500,15 @@ export class GameScreen extends ActiveGameScreen {
             game.dismissedPrompt = true;
         }
 
-        this.setStateIfMounted(state);
+        this.setStateIfMounted(() => {
+            return state;
+        });
         if (!displayPostsInFeed && (this.state.dismissedPrompt || setDismissedPrompt) && game) {
             game.preloadNextState();
             setTimeout(() => {
-                this.setStateIfMounted({...this.state, reactionsAllowed: true});
+                this.setStateIfMounted(() => {
+                    return {reactionsAllowed: true};
+                });
             }, game.study.reactDelaySeconds * 1000);
         }
     }

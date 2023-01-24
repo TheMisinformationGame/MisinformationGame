@@ -88,41 +88,36 @@ class AdminPage extends MountAwareComponent {
         super.componentDidMount();
 
         const handleError = error => {
-            this.setStateIfMounted({
-                ...this.state,
-                error: error.message
+            this.setStateIfMounted(() => {
+                return {error: error.message};
             });
         };
 
         const manager = getDataManager();
         manager.getIsAdmin().then(isAdmin => {
-            this.setStateIfMounted({
-                ...this.state,
-                isAdmin: isAdmin
+            this.setStateIfMounted(() => {
+                return {isAdmin: isAdmin};
             });
             if (!isAdmin)
                 return;
 
             manager.getAllStudies().then((studies) => {
-                this.setStateIfMounted({
-                    ...this.state,
-                    studies: studies
+                this.setStateIfMounted(() => {
+                    return {studies: studies};
                 });
             }).catch(handleError);
         }).catch(handleError);
     }
 
     showStudyUpload() {
-        this.setState({
-            studies: this.state.studies,
-            showUpload: true
+        this.setState(() => {
+            return {showUpload: true};
         });
     }
 
     hideStudyUpload() {
-        this.setState({
-            studies: this.state.studies,
-            showUpload: false
+        this.setState((state, props) => {
+            return {showUpload: false};
         });
     }
 

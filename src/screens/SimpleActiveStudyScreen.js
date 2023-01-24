@@ -19,7 +19,9 @@ class SimpleActiveStudyScreen extends ActiveStudyScreen {
         this.studyUpdateListener = (study) => {
             const currentStudy = this.state.study;
             if (currentStudy && study.id === currentStudy.id) {
-                this.setStateIfMounted({...this.state, study: study, studyLoading: false});
+                this.setStateIfMounted(() => {
+                    return {study: study, studyLoadError: null, studyLoading: false};
+                });
             }
         };
     }
@@ -31,10 +33,14 @@ class SimpleActiveStudyScreen extends ActiveStudyScreen {
         manager.addUpdateListener(this.studyUpdateListener);
 
         manager.getActiveStudy().then(study => {
-            this.setStateIfMounted({...this.state, study: study, studyLoading: false});
+            this.setStateIfMounted(() => {
+                return {study: study, studyLoadError: null, studyLoading: false};
+            });
         }).catch(err => {
             console.error(err);
-            this.setStateIfMounted({...this.state, studyLoadError: err.message, studyLoading: false});
+            this.setStateIfMounted(() => {
+                return {study: null, studyLoadError: err.message, studyLoading: false};
+            });
         });
 
         // Preload the game.
@@ -43,7 +49,9 @@ class SimpleActiveStudyScreen extends ActiveStudyScreen {
                 game.preloadCurrentStates();
             }).catch(err => {
                 console.error(err);
-                this.setStateIfMounted({...this.state, studyLoadError: err.message, studyLoading: false});
+                this.setStateIfMounted(() => {
+                    return {study: null, studyLoadError: err.message, studyLoading: false};
+                });
             });
         }
     }

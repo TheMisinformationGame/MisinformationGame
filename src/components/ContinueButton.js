@@ -1,4 +1,3 @@
-import {Component} from "react";
 import {ConditionalLink} from "./ConditionalLink";
 import {MountAwareComponent} from "./MountAwareComponent";
 
@@ -13,13 +12,19 @@ export class ContinueButton extends MountAwareComponent {
         super.componentDidMount();
         const delaySeconds = this.props.delay;
         if (!delaySeconds || delaySeconds <= 0) {
-            this.setState({...this.state, disabled: false});
+            this.setState(() => {
+                return {disabled: false};
+            });
             return;
         }
 
-        this.setState({...this.state, disabled: true});
+        this.setState(() => {
+            return {disabled: true};
+        });
         setTimeout(() => {
-            this.setStateIfMounted({...this.state, disabled: false});
+            this.setStateIfMounted(() => {
+                return {disabled: false};
+            });
         }, delaySeconds * 1000);
     }
 
@@ -77,7 +82,7 @@ function isScrolledDown() {
 }
 
 
-export class ContinueBanner extends Component {
+export class ContinueBanner extends MountAwareComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -90,12 +95,15 @@ export class ContinueBanner extends Component {
         this.trackScrolling = () => {
             const scrolledDown = isScrolledDown();
             if (!this.state.scrolledDown && scrolledDown) {
-                this.setState({scrolledDown: true})
+                this.setStateIfMounted(() => {
+                    return {scrolledDown: true};
+                })
             }
         };
     }
 
     componentDidMount() {
+        super.componentDidMount();
         window.scrollTo(0, 0);
         if (this.props.requireScrollToBottom) {
             this.scrollTrackingTimer = setInterval(this.trackScrolling, 50);
@@ -103,6 +111,7 @@ export class ContinueBanner extends Component {
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         if (this.scrollTrackingTimer !== null) {
             clearInterval(this.scrollTrackingTimer);
             this.scrollTrackingTimer = null;

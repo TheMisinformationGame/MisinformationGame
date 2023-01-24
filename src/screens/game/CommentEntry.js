@@ -96,29 +96,28 @@ export class CommentSubmissionRow extends MountAwareComponent {
             return;
         }
 
-        this.setState({
-            ...this.state,
-            showDiscardConfirmation: true
+        this.setState(() => {
+            return {showDiscardConfirmation: true};
         });
     }
 
     hideDiscardConfirmation() {
-        this.setState({
-            ...this.state,
-            showDiscardConfirmation: false
+        this.setState(() => {
+            return {showDiscardConfirmation: false};
         });
     }
 
     doSubmit(value, reset) {
         if (value.trim().length <= 0 && this.state.isEditingComment) {
             this.props.submit(null);
-            this.setState({
-                ...this.state,
-                value: "",
-                enabled: false,
-                isEditingComment: false,
-                displayError: false,
-                showDiscardConfirmation: false
+            this.setState(() => {
+                return {
+                    value: "",
+                    enabled: false,
+                    isEditingComment: false,
+                    displayError: false,
+                    showDiscardConfirmation: false
+                };
             });
             return;
         }
@@ -128,12 +127,13 @@ export class CommentSubmissionRow extends MountAwareComponent {
         } else {
             this.props.submit(null);
             // If the ID is invalid, display the error.
-            this.setState({
-                ...this.state,
-                value: value,
-                enabled: value.trim().length > 0,
-                displayError: !reset,
-                showDiscardConfirmation: false
+            this.setState(() => {
+                return {
+                    value: value,
+                    enabled: value.trim().length > 0,
+                    displayError: !reset,
+                    showDiscardConfirmation: false
+                };
             });
         }
     }
@@ -148,11 +148,12 @@ export class CommentSubmissionRow extends MountAwareComponent {
             this.props.onCommentEditedStatusUpdate(edited);
         }
 
-        this.setState({
-            ...this.state,
-            value: value,
-            enabled: value.trim().length > 0,
-            lastHasEdited: edited
+        this.setState(() => {
+            return {
+                value: value,
+                enabled: value.trim().length > 0,
+                lastHasEdited: edited
+            };
         });
     }
 

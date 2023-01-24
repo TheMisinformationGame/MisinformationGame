@@ -254,6 +254,7 @@ class DataManager {
         }
 
         const studyPromise = readStudySettings(studyID).then((study) => {
+            console.log("readStudySettings", 1, studyID, study);
             this.studyPromiseGenerators[studyID] = () => Promise.resolve(study);
             if (studyID === this.activeGameStudyID) {
                 this.activeStudy = study;
@@ -300,10 +301,13 @@ class DataManager {
         }
 
         const gamePromise = this.getStudy(studyID).then((study) => {
+            console.log("getStudy", 1, studyID, study);
+
             // The active game changed while we were loading this game.
             if (studyID !== this.activeGameStudyID)
                 return;
 
+            console.log("getStudy", 2);
             // Try to load the game session from local storage.
             let game = null;
             if (typeof localStorage !== "undefined" && sessionID) {
@@ -329,6 +333,7 @@ class DataManager {
                 game = Game.createNew(study);
             }
 
+            console.log("getStudy", 3, game);
             this.sessionID = game.sessionID;
             this.activeGamePromiseGenerator = () => Promise.resolve(game);
             this.activeGame = game;

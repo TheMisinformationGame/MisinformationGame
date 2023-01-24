@@ -14,9 +14,9 @@ export class MountAwareComponent extends Component {
         this.mounted = false;
     }
 
-    setStateIfMounted(state) {
+    setStateIfMounted(updater) {
         if (!this.mounted)
             return;
-        super.setState(state);
+        super.setState(updater);
     }
 }
