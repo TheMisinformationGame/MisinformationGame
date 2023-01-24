@@ -2,7 +2,7 @@
 
 
 usage() {
-  echo "Usage: $0 [--create-gcloud-installation]" 1>&2;
+  echo "Usage: $0 [--create-gcloud-installation] [--skip-cors]" 1>&2;
   exit 1;
 }
 
@@ -10,11 +10,14 @@ usage() {
 #    Read CLI Arguments.
 # =========================
 do_install_gcloud=false
+do_skip_cors=false
 
 for var in "$@"
 do
   if [[ "$var" == "--create-gcloud-installation" ]]; then
     do_install_gcloud=true
+  elif [[ "$var" == "--skip-cors" ]]; then
+    do_skip_cors=true
   else
     usage
     exit 1
@@ -109,26 +112,28 @@ echo "Deploying the application to Firebase..."
 echo "========================================"
 npx firebase deploy || { echo "Deploying to Firebase failed!" ; exit 1; }
 
-echo " "
-echo "==================================="
-echo "Authenticating with Google Cloud..."
-echo "==================================="
-"$gcloud_command" auth login || { echo "Authenticating Google Cloud failed!" ; exit 1; }
+if [ ! "$do_skip_cors" = true ]; then
+  echo " "
+  echo "==================================="
+  echo "Authenticating with Google Cloud..."
+  echo "==================================="
+  "$gcloud_command" auth login || { echo "Authenticating Google Cloud failed!" ; exit 1; }
 
-echo " "
-echo "============================"
-echo "Initialising Google Cloud..."
-echo "============================"
-"$gcloud_command" init --skip-diagnostics || { echo "Initialising Google Cloud failed!" ; exit 1; }
+  echo " "
+  echo "============================"
+  echo "Initialising Google Cloud..."
+  echo "============================"
+  "$gcloud_command" init --skip-diagnostics || { echo "Initialising Google Cloud failed!" ; exit 1; }
 
-echo " "
-echo "==============================================="
-echo "Setting up the CORS settings for the website..."
-echo "==============================================="
-echo " "
-echo "Please enter the URL of your project as a .appspot.com domain (e.g. misinformation-game.appspot.com):"
-read -r URL || exit 1
-"$gsutil_command" cors set src/config/cors.json "gs://$URL" || { echo "Uploading CORS settings failed!" ; exit 1; }
+  echo " "
+  echo "==============================================="
+  echo "Setting up the CORS settings for the website..."
+  echo "==============================================="
+  echo " "
+  echo "Please enter the URL of your project as a .appspot.com domain (e.g. misinformation-game.appspot.com):"
+  read -r URL || exit 1
+  "$gsutil_command" cors set src/config/cors.json "gs://$URL" || { echo "Uploading CORS settings failed!" ; exit 1; }
+fi
 
 echo " "
 echo "======================"
