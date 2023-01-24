@@ -23,7 +23,7 @@ export class CredibilityLabel extends Component {
         const cred = Math.round(this.props.credibility);
         const colour = CredibilityLabel.getCredibilityColour(cred);
         return (
-            <span className="inline-block align-middle pt-1">
+            <span className="inline-block align-middle" style={{lineHeight: "0"}}>
                 <span
                     className={
                         "inline-table font-bold text-white text-center rounded-full mx-1 " +

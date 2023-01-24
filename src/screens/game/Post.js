@@ -47,9 +47,16 @@ class SourceElement extends Component {
                             </span>
                         </div>}
                 </div>
+
                 <div>
-                    <div className={"flex " + (small || source.study.uiSettings.displayFollowers ? "" : "pt-1")}>
-                        <p className={text_xl}>{source.source.name}</p>
+                    <div className={
+                            "flex flex-row items-middle " + text_xl +
+                            (small || source.study.uiSettings.displayFollowers ? "" : "pt-1")}>
+
+                        <span className="inline-block mr-1" style={{lineHeight: "1.5em"}}>
+                            {source.source.name}
+                        </span>
+
                         {source.study.uiSettings.displayCredibility &&
                             <CredibilityLabel credibility={source.credibility} className={text_xl} />}
                     </div>

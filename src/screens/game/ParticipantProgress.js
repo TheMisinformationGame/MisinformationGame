@@ -78,9 +78,9 @@ export class ParticipantProgress extends Component {
 
                     <div className="block">
                         {displayFollowers &&
-                            <p className="text-xl block">
+                            <p className="text-xl flex flex-row items-middle mt-1">
                                 <span className="inline-block">
-                                    <SupervisedUserCircleIcon className="align-bottom mr-1" />
+                                    <SupervisedUserCircleIcon className="mr-1" />
                                 </span>
                                 <span className="inline-block text-lg md:w-24">
                                     Followers:
@@ -92,9 +92,9 @@ export class ParticipantProgress extends Component {
                             </p>}
 
                         {displayCredibility &&
-                            <p className="text-xl block">
+                            <p className="text-xl flex flex-row items-middle mt-1">
                                 <span className="inline-block">
-                                    <CheckCircleIcon className="align-bottom mr-1" />
+                                    <CheckCircleIcon className="mr-1" />
                                 </span>
                                 <span className="inline-block text-lg md:w-24">
                                     Credibility:
@@ -108,7 +108,7 @@ export class ParticipantProgress extends Component {
                           title={nextPostEnabled || this.props.hideTooltip ? "" :
                               "You must react to the post before you can continue to the next post"}
                           className={
-                              " mt-1 px-3 py-2 rounded-md text-white select-none " +
+                              " mt-2 px-3 py-2 rounded-md text-white select-none " +
                               (nextPostEnabled ? " cursor-pointer " : "") +
                               (nextPostEnabled ?
                                   " bg-blue-500 active:bg-blue-600 hover:bg-blue-600 " : " bg-gray-400 ")
