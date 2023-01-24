@@ -34,25 +34,18 @@ function studyOrBrokenFromJson(studyID, json) {
  */
 export async function readStudySettings(studyID) {
     return new Promise((resolve, reject) => {
-        console.log("Promise.readStudySettings", 1, studyID);
         getDoc(doc(collection(db, "Studies"), studyID)).then(snapshot => {
-            console.log("getDoc", 1, studyID);
             if (!snapshot.exists()) {
-                console.log("getDoc", 2, studyID);
                 reject(new Error("Could not find the study with ID " + studyID));
                 return;
             }
-            console.log("getDoc", 3, studyID);
             const json = decompressJson(snapshot.data())
             resolve(studyOrBrokenFromJson(studyID, json));
         }).catch(error => {
-            console.log("getDoc.error", 1, studyID);
             if (error.code === "permission-denied") {
-                console.log("getDoc.error", 1, studyID);
                 reject(new Error("This study has been disabled."));
                 return;
             }
-            console.log("getDoc.error", 1, studyID);
             reject(error);
         })
     });

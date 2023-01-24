@@ -133,7 +133,6 @@ export class ActiveGameScreen extends ActiveStudyScreen {
      * This method or the renderWithStudyAndGame method must be overridden in sub-classes.
      */
     render() {
-        console.log("render", this.state);
         const error = this.state.gameLoadError;
         if (error)
             return <ErrorLabel className="text-2xl m-2" value={error} />;
