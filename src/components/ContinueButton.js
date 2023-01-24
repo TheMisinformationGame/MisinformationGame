@@ -55,7 +55,7 @@ export class ContinueButton extends MountAwareComponent {
  * Returns whether the page is scrolled to the bottom.
  */
 function isScrolledDown() {
-    const errorMargin = 20.0;
+    const errorMargin = 100.0;
 
     // Check if there is no scroll bar.
     const docElem = document.documentElement;
