@@ -202,7 +202,7 @@ export class PostComponent extends Component {
                 <p className="text-lg font-normal p-2 pt-0" dangerouslySetInnerHTML={{__html: post.content}} />
             );
         } else {
-            postContent = (<div className="flex justify-center bg-gray-200 max-h-60vh shadow-inner overflow-hidden">
+            postContent = (<div className="flex justify-center bg-gray-200 max-h-40vh md:max-h-60vh shadow-inner overflow-hidden">
                 <PromiseImage image={
                     getDataManager().getStudyImage(state.study, post.id, post.content)
                 } imageClassName="object-contain shadow" style={{maxHeight: "50vh"}} />
