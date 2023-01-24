@@ -11,7 +11,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 class ChangeLabel extends Component {
     render() {
         if (!this.props.change)
-            return (<span className="inline-block w-16"></span>);
+            return null;
 
         let icon, change, colour;
         if (this.props.change > 0) {
@@ -23,7 +23,7 @@ class ChangeLabel extends Component {
             change = this.props.change;
             colour = "#961818";
         }
-        return (<span className={"inline-block min-w-16 whitespace-nowrap font-semibold " + (this.props.className || "")}
+        return (<span className={"inline-block whitespace-nowrap font-semibold " + (this.props.className || "")}
                       style={{color: colour}}>
 
             <span className="inline-block" style={{marginRight: "-0.1em"}}>
@@ -78,7 +78,7 @@ export class ParticipantProgress extends Component {
 
                     <div className="block">
                         {displayFollowers &&
-                            <p className="text-xl inline-block">
+                            <p className="text-xl block">
                                 <span className="inline-block">
                                     <SupervisedUserCircleIcon className="align-bottom mr-1" />
                                 </span>
@@ -92,7 +92,7 @@ export class ParticipantProgress extends Component {
                             </p>}
 
                         {displayCredibility &&
-                            <p className="text-xl inline-block">
+                            <p className="text-xl block">
                                 <span className="inline-block">
                                     <CheckCircleIcon className="align-bottom mr-1" />
                                 </span>
