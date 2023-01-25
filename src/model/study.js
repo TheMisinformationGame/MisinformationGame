@@ -486,8 +486,8 @@ export class StudyUserInterfaceSettings {
     static createV2(
         displayPostsInFeed, displayFollowers, displayCredibility,
         displayProgress, displayNumberOfReactions, allowMultipleReactions,
-        postEnabledReactions, commentEnabledReactions) {
-
+        postEnabledReactions, commentEnabledReactions
+    ) {
         return new StudyUserInterfaceSettings(
             displayPostsInFeed, displayFollowers, displayCredibility,
             displayProgress, displayNumberOfReactions, allowMultipleReactions,
@@ -500,12 +500,12 @@ export class StudyUserInterfaceSettings {
      */
     static createV1(
         displayFollowers, displayCredibility, displayProgress,
-        displayNumberOfReactions, postEnabledReactions, commentEnabledReactions) {
-
+        displayNumberOfReactions, postEnabledReactions, commentEnabledReactions
+    ) {
         return StudyUserInterfaceSettings.createV2(
-            false, "free", displayFollowers,
-            displayCredibility, displayProgress, displayNumberOfReactions,
-            false, postEnabledReactions, commentEnabledReactions
+            false, displayFollowers, displayCredibility, displayProgress,
+            displayNumberOfReactions, false, postEnabledReactions,
+            commentEnabledReactions
         )
     }
 }
