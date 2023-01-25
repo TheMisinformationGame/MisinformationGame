@@ -56,11 +56,11 @@ export async function readStudySettings(studyID) {
  * TODO : In the future, it may be good to use pages, as if the number of studies
  *        becomes really large, this will become very costly.
  */
-export async function readAllStudies() {
-    if (!auth.currentUser)
-        throw new Error("User is not authenticated");
+export async function readAllStudies(user) {
+    if (!user)
+        throw new Error("No user provided");
 
-    const getStudiesQuery = query(collection(db, "Studies"), where("authorID", "==", auth.currentUser.uid));
+    const getStudiesQuery = query(collection(db, "Studies"), where("authorID", "==", user.uid));
     const snapshot = await getDocs(getStudiesQuery);
     return snapshot.docs.map((doc) => studyOrBrokenFromJson(doc.id, decompressJson(doc.data())));
 }
@@ -68,11 +68,11 @@ export async function readAllStudies() {
 /**
  * Returns a Promise with whether the current user is an admin.
  */
-export async function readIsAdmin() {
-    if (!auth.currentUser)
-        throw new Error("User is not authenticated");
+export async function readIsAdmin(user) {
+    if (!user)
+        throw new Error("No user provided");
 
-    const snapshot = await getDoc(doc(collection(db, "Admins"), auth.currentUser.uid));
+    const snapshot = await getDoc(doc(collection(db, "Admins"), user.uid));
     return snapshot.exists();
 }
 

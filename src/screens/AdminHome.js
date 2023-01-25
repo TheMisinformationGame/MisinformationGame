@@ -87,26 +87,47 @@ class AdminPage extends MountAwareComponent {
     componentDidMount() {
         super.componentDidMount();
 
-        const handleError = error => {
+        if (auth.currentUser) {
+            this.initialise(auth.currentUser);
+        } else {
+            const authListener = (user) => {
+                if (user) {
+                    this.initialise(user);
+                    getDataManager().removeAuthChangeListener(authListener);
+                }
+            };
+            getDataManager().addAuthChangeListener(authListener);
+        }
+    }
+
+    initialise(user) {
+        if (!user)
+            throw new Error("No user provided");
+
+        const handleError = (activity, error) => {
             this.setStateIfMounted(() => {
-                return {error: error.message};
+                let message = "There was an error " + activity;
+                if (error.message && error.message.length > 0) {
+                    message += ": " + error.message;
+                }
+                return {error: message};
             });
         };
 
         const manager = getDataManager();
-        manager.getIsAdmin().then(isAdmin => {
+        manager.getIsAdmin(user).then(isAdmin => {
             this.setStateIfMounted(() => {
                 return {isAdmin: isAdmin};
             });
             if (!isAdmin)
                 return;
 
-            manager.getAllStudies().then((studies) => {
+            manager.getAllStudies(user).then((studies) => {
                 this.setStateIfMounted(() => {
                     return {studies: studies};
                 });
-            }).catch(handleError);
-        }).catch(handleError);
+            }).catch(error => handleError("loading studies", error));
+        }).catch(error => handleError("checking whether you are an admin", error));
     }
 
     showStudyUpload() {
@@ -116,7 +137,7 @@ class AdminPage extends MountAwareComponent {
     }
 
     hideStudyUpload() {
-        this.setState((state, props) => {
+        this.setState(() => {
             return {showUpload: false};
         });
     }
@@ -135,6 +156,14 @@ class AdminPage extends MountAwareComponent {
         if (!auth.currentUser)
             return (<Navigate to="/sign-in" />);
 
+        let userDisplayName = "Loading...",
+            userUID = "Loading...";
+        if (auth.currentUser) {
+            userDisplayName = auth.currentUser.displayName;
+            userUID = auth.currentUser.uid;
+        }
+
+        const error = this.state.error;
         const isAdmin = this.state.isAdmin;
         const readIsAdmin = this.state.isAdmin !== null;
         const studies = this.state.studies || [];
@@ -158,7 +187,7 @@ class AdminPage extends MountAwareComponent {
 
                     <div className="text-right px-2 py-1">
                         <span className="inline-block text-right text-lg">
-                            {auth.currentUser.displayName}
+                            {userDisplayName}
                         </span>
                         <Link to="/sign-out" className="inline-block ml-2 text-base font-medium hover:text-blue-800
                                                         text-blue-600 cursor-pointer select-none">
@@ -166,13 +195,16 @@ class AdminPage extends MountAwareComponent {
                             (Sign Out)
                         </Link>
                         <span className="block text-right text-sm text-gray-600">
-                            {auth.currentUser.uid}
+                            {userUID}
                         </span>
                     </div>
                 </div>
 
                 <div className="w-full p-10">
-                    {!isAdmin && readIsAdmin &&
+                    {error &&
+                        <ErrorLabel value={error} />}
+
+                    {!error && !isAdmin && readIsAdmin &&
                         <div>
                             <ErrorLabel value={[
                                 <b>You are not registered as an admin.</b>,
@@ -198,14 +230,14 @@ class AdminPage extends MountAwareComponent {
                         </div>}
 
                     {/* The studies. */}
-                    {isAdmin && readStudies &&
+                    {!error && isAdmin && readStudies &&
                         <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-10">
                             {studyComponents}
                             <UploadStudyButton onClick={() => this.showStudyUpload()}/>
                         </div>}
 
                     {/* Label saying that the studies are loading. */}
-                    {(!readIsAdmin || isAdmin) && !readStudies &&
+                    {!error && (!readIsAdmin || isAdmin) && !readStudies &&
                         <ProgressLabel value="Loading studies..." />}
                 </div>
 
