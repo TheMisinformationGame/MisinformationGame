@@ -160,8 +160,6 @@ export class GameScreen extends ActiveGameScreen {
         this.scrollListener = null;
         this.scrollDebounceEnd = 0;
         this.lastScrollTop = document.documentElement.scrollTop;
-        this.scrollFixId = null;
-        this.scrollMaintenanceTop = 0;
     }
 
     afterGameLoaded(game) {
@@ -321,50 +319,6 @@ export class GameScreen extends ActiveGameScreen {
         }
     }
 
-    maintainScrollPosition() {
-        // Abort the previous maintenance on the scroll position.
-        if (this.scrollFixId !== null) {
-            cancelAnimationFrame(this.scrollFixId);
-        }
-
-        // Maintain the scroll position after re-rendering.
-        // Usually the scroll position won't be affected, but
-        // occasionally it gets moved a lot.
-        const states = this.state.currentStates;
-        if (states && states.length > 1) {
-            const state = states[states.length - 1],
-                  elemID = "post-" + state.indexInGame + "-spacer",
-                  elem = document.getElementById(elemID);
-
-            if (elem) {
-                this.scrollMaintenanceTop = elem.getBoundingClientRect().top;
-
-                const fixScroll = (repetitions) => {
-                    this.scrollFixId = null;
-
-                    // Make sure the element hasn't been removed from the DOM.
-                    const elem = document.getElementById(elemID);
-                    if (!this.mounted || !elem)
-                        return;
-
-                    const newTop = elem.getBoundingClientRect().top;
-                    const dy = newTop - this.scrollMaintenanceTop;
-
-                    // Hopefully a good-enough heuristic.
-                    if (Math.abs(dy) > 50) {
-                        // window.scrollBy(0, Math.round(dy));
-                    } else {
-                        this.scrollMaintenanceTop += dy;
-                    }
-                    if (repetitions > 0) {
-                        this.scrollFixId = requestAnimationFrame(() => fixScroll(repetitions - 1));
-                    }
-                }
-                this.scrollFixId = requestAnimationFrame(() => fixScroll(2));
-            }
-        }
-    }
-
     onNextPost(game, fromScroll) {
         const currentState = this.getHighestState();
 
@@ -413,7 +367,6 @@ export class GameScreen extends ActiveGameScreen {
             for (let index = 1; index < currentStates.length; ++index) {
                 newStates.push(currentStates[index]);
             }
-            this.maintainScrollPosition();
         }
 
         // Show the change in followers and credibility.
@@ -466,7 +419,6 @@ export class GameScreen extends ActiveGameScreen {
         // The final timeout to change to the next post.
         setTimeout(() => {
             this.updateGameState(game, null);
-            this.maintainScrollPosition();
         }, animateTimeMS + remainTimeMS);
     }
 
