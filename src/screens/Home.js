@@ -7,11 +7,45 @@ import {setDefaultPageTitle} from "../index";
 function Home() {
     setDefaultPageTitle();
 
-    let exampleGameURL = null;
+    const exampleGameURLs = [];
     if (window.location.hostname === "misinformation-game.web.app") {
-        exampleGameURL = "/study/m1v891krnanahrdi";
+        exampleGameURLs.push([
+            "Example Game",
+            "/study/m1v891krnanahrdi",
+            "Try this out!"
+        ]);
     } else if (window.location.hostname === "localhost") {
-        exampleGameURL = "/study/yr10i6u5hf9fc1yh";
+        exampleGameURLs.push([
+            "Example Study (Feed Mode)",
+            "/study/ixruvsitwcd213x2",
+            "A development study."
+        ]);
+        exampleGameURLs.push([
+            "Example Study (Single Post Mode)",
+            "/study/tf1ogucx5eleihvp",
+            "A development study."
+        ]);
+    }
+
+    const exampleGameElements = [];
+    for (let index = 0; index < exampleGameURLs.length; ++index) {
+        const exampleGame = exampleGameURLs[index],
+              exampleGameName = exampleGame[0],
+              exampleGameURL = exampleGame[1],
+              exampleGameDesc = exampleGame[2];
+
+        exampleGameElements.push(
+            <p key={"example-game-" + index} className="text-lg mb-2">
+                <Link to={exampleGameURL} name="Game"
+                      className="text-xl underline text-purple-600 hover:text-purple-900">
+
+                    {exampleGameName}
+                </Link>:
+                <span className="ml-1">
+                    {exampleGameDesc}
+                </span>
+            </p>
+        );
     }
 
     return (
@@ -49,16 +83,8 @@ function Home() {
 
                     <h2 className="text-4xl mb-4 mt-8">Resources</h2>
 
-                    {/* The example game only exists on the example website. */}
-                    {exampleGameURL !== null &&
-                        <p className="text-lg mb-2 mt-4">
-                            <Link to={exampleGameURL} name="Game"
-                                  className="text-xl underline text-purple-600 hover:text-purple-900">
-
-                                Example Game
-                            </Link>:
-                            An example game that can be played during development.
-                        </p>}
+                    {/* The example games only exists on the example website. */}
+                    {exampleGameElements}
 
                     <p className="text-lg mb-2">
                         <a className="text-xl underline text-purple-600 hover:text-purple-900"
