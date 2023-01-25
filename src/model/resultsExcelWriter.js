@@ -44,6 +44,17 @@ function setWorksheetColumns(worksheet, columnSpecs) {
 }
 
 /**
+ * Converts the given number value into a value to be
+ * written into the result spreadsheet. If the value
+ * is NaN, it is written as an empty cell.
+ */
+function numToCellValue(value) {
+    if (isNaN(value))
+        return "";
+    return value;
+}
+
+/**
  * Creates the workbook to store the results into.
  */
 function constructWorkbook(study, results, problems) {
@@ -151,9 +162,9 @@ function constructWorkbook(study, results, problems) {
                 skippedPost: interaction.hasPostReaction("skip"),
                 comment: interaction.comment || "",
 
-                dwellTime: interaction.timer.getDwellTimeMS(),
-                firstInteractTime: interaction.timer.getTimeToFirstInteractMS(),
-                lastInteractTime: interaction.timer.getTimeToLastInteractMS(),
+                dwellTime: numToCellValue(interaction.timer.getDwellTimeMS()),
+                firstInteractTime: numToCellValue(interaction.timer.getTimeToFirstInteractMS()),
+                lastInteractTime: numToCellValue(interaction.timer.getTimeToLastInteractMS()),
 
                 credibilityChange: afterCredibility - beforeCredibility,
                 followerChange: afterFollowers - beforeFollowers,
@@ -204,7 +215,7 @@ function constructWorkbook(study, results, problems) {
                 const comment = state.currentPost.comments[commentIndex];
                 const likes = comment.numberOfReactions.like;
                 const dislikes = comment.numberOfReactions.dislike;
-                const cInteraction = interaction.findCommentReaction(commentIndex);
+                const cInter = interaction.findCommentReaction(commentIndex);
                 commentsWorksheet.addRow({
                     sessionID: game.sessionID,
                     participantID: participant.participantID || "",
@@ -216,11 +227,11 @@ function constructWorkbook(study, results, problems) {
                     commentLikes: (likes === undefined ? "" : likes),
                     commentDislikes: (dislikes === undefined ? "" : dislikes),
 
-                    likedComment: cInteraction !== null && cInteraction.hasReaction("like"),
-                    dislikedComment: cInteraction !== null && cInteraction.hasReaction("dislike"),
+                    likedComment: cInter !== null && cInter.hasReaction("like"),
+                    dislikedComment: cInter !== null && cInter.hasReaction("dislike"),
 
-                    firstInteractTime: (cInteraction !== null ? cInteraction.timer.getTimeToFirstInteractMS() : ""),
-                    lastInteractTime: (cInteraction !== null ? cInteraction.timer.getTimeToLastInteractMS() : "")
+                    firstInteractTime: (cInter !== null ? numToCellValue(cInter.timer.getTimeToFirstInteractMS()) : ""),
+                    lastInteractTime: (cInter !== null ? numToCellValue(cInter.timer.getTimeToLastInteractMS()) : "")
                 });
                 containsAnyComments = true;
             }
