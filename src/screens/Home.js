@@ -8,11 +8,16 @@ function Home() {
     setDefaultPageTitle();
 
     const exampleGameURLs = [];
-    if (window.location.hostname === "misinformation-game.web.app") {
+    if (window.location.hostname === "try.misinfogame.com") {
         exampleGameURLs.push([
-            "Example Game",
-            "/study/m1v891krnanahrdi",
-            "Try this out!"
+            "Example Feed Mode Study",
+            "/study/zc7s3qqh0rrc30cx",
+            "Try out a feed mode study."
+        ]);
+        exampleGameURLs.push([
+            "Example Single-Post Mode Study",
+            "/study/0m3eots70fhyo6ns",
+            "Try out a single-post mode study."
         ]);
     } else if (window.location.hostname === "localhost") {
         exampleGameURLs.push([
