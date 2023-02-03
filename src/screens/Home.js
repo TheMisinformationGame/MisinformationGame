@@ -8,6 +8,7 @@ function Home() {
     setDefaultPageTitle();
 
     const exampleGameURLs = [];
+    console.log("Test:", window.location.hostname);
     if (window.location.hostname === "try.misinfogame.com") {
         exampleGameURLs.push([
             "Example Feed Mode Study",
@@ -31,6 +32,7 @@ function Home() {
             "A development study."
         ]);
     }
+    console.log(exampleGameURLs);
 
     const exampleGameElements = [];
     for (let index = 0; index < exampleGameURLs.length; ++index) {
