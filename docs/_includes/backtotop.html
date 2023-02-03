@@ -1,0 +1,29 @@
+<div id="back-to-top-button" class="hidden">
+    <a href="#top">
+        Back to Top
+    </a>
+</div>
+
+<script>
+    let lastAnchoredScrollY = 0,
+        lastScrollY = 0;
+
+    function updateBackToTopButton() {
+        const button = document.getElementById("back-to-top-button");
+
+        const scrollY = window.scrollY,
+              anchorChange = scrollY - lastAnchoredScrollY,
+              change = scrollY - lastScrollY;
+
+        if (scrollY < 200 || change > 0) {
+            lastAnchoredScrollY = scrollY;
+            button.classList.add("hidden");
+        } else if (anchorChange < -20) {
+            lastAnchoredScrollY = scrollY;
+            button.classList.remove("hidden");
+        }
+        lastScrollY = scrollY;
+    }
+
+    document.addEventListener("scroll", updateBackToTopButton);
+</script>
