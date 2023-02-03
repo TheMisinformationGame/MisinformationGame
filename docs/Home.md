@@ -34,10 +34,10 @@ permalink: /
 ## Example Game
 {:#example-game}
 
-If you would like to test playing through a study created using
-The Misinformation Game, you can access an example game from
-[the example game page](/link/ExampleGame).
-You can enter any ID to access the example game.
+The best way to get introduced to the Misinformation Game is to try it!
+You can access an example game to try the Misinformation Game yourself
+from [the example games page](/link/ExampleGame). You can enter any
+random text as your ID to access an example game.
 
 <figure id="fig1">
     <img src="screenshots/example-game.png" alt="figure 1" height="582" />
@@ -59,6 +59,8 @@ experience study are available from
 [the example results page](/link/ExampleResults). Additional
 information about the results that are made available for your
 analysis are described in the [Results Documentation](/Results).
+The results that are recorded for your study will depend upon the
+configuration of your study.
 
 
 
@@ -81,7 +83,7 @@ we would really appreciate it if you [cited this paper](#cite)!
 
 <div class="call-to-action-container">
     <a href="/GettingStarted" class="call-to-action-button">
-        Get Started
+        Get Started!
     </a>
 </div>
 
