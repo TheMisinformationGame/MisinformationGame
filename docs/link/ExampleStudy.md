@@ -25,12 +25,12 @@ You may access the study configuration spreadsheets that are used to generate
 the example games from the following URLs:
 
 **Example Study (Single Post Mode):**
-- [Example Study (version 2) Google Sheets Link](https://docs.google.com/spreadsheets/d/1BeEjK3ug6f33i7maCiR2ggnHKIsSqoJS49DC5yym6PA)
+- [Example Study (version 2) Google Sheets Link](https://docs.google.com/spreadsheets/d/1eeql3lM6suTlsQJfrleC-tWqgGZnvlnqmxaRrsWjyYc)
   _(Recommended)_
 - [Example Study (version 2) File Download](/ExampleStudy-V2-Single-Post.xlsx)
 
 **Example Study (Feed Mode):**
-- [Example Study (version 2) Google Sheets Link](https://docs.google.com/spreadsheets/d/1OQ2TGozQw2KVfykQ6TwK8YJyeQkwzC_PVtcmjsHxarM)
+- [Example Study (version 2) Google Sheets Link](https://docs.google.com/spreadsheets/d/198ymVOJE35UdSqe0Og-76Y3LhWUS6nw5sywCw7njKrQ)
   _(Recommended)_
 - [Example Study (version 2) File Download](/ExampleStudy-V2-Feed.xlsx)
 
