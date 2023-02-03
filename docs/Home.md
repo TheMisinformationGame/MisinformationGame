@@ -100,11 +100,9 @@ host your own instance of the game are described on the
 ## Hosting Documentation
 {:#hosting-docs}
 
+- [Installation](/Installation) -
+  Describes the options for hosting your own instance of the Misinformation Game.
 - [Firebase Pricing](/FirebasePricing) - A guide to estimate the hosting costs of running a study.
-- [Non-Technical Installation Guide](/NonTechnicalInstallation) -
-  A guide to host your own study using Firebase (longer, for non-technical users).
-- [Technical Installation Guide](/TechnicalInstallation) -
-  A guide to host your own study using Firebase (shorter, for technical users).
 - [Updating your Installation](/Updating) -
   A guide to retrieve new features and fixes for your installation.
 
