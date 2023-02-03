@@ -4,7 +4,7 @@
  */
 import {doTypeCheck} from "./types";
 
-function randUniform01Exclusive() {
+export function randUniform01Exclusive() {
     let value;
     do {
         value = Math.random();
@@ -53,37 +53,15 @@ export function randElement(items) {
 }
 
 /**
- * Returns a random element of {@param array}, with elements
- * filtered by {@param filterFn}. If there are any elements that
- * are preferred by {@param preferenceFn}, they will be selected
- * before any others.
- *
- * @param filterFn (element) => Whether to include the element.
- * @param preferenceFn (element) => Whether the element is preferred for selection.
+ * Filters the given array to include only elements where
+ * the given filterFn is true.
+ * @param array The array to filter.
+ * @param filterFn The filter to use.
  */
-export function selectFilteredRandomElement(array, filterFn, preferenceFn) {
-    return selectFilteredWeightedRandomElement(array, filterFn, preferenceFn, () => 1);
-}
-
-/**
- * Returns a random element of {@param array}, with elements filtered
- * by {@param filterFn}, and weighted by {@param weightFn}. If there are
- * any elements that are preferred by {@param preferenceFn}, they will be
- * selected before any others.
- *
- * @param filterFn (element) => Whether to include the element.
- * @param preferenceFn (element) => Whether the element is preferred for selection.
- * @param weightFn (element) => Weighting number.
- *                 If the weighting number is zero, then it will
- *                 be weighted by the mean of all the other weights.
- */
-export function selectFilteredWeightedRandomElement(array, filterFn, preferenceFn, weightFn) {
+export function filterArray(array, filterFn) {
     doTypeCheck(array, Array, "Array of Elements");
-    if (array.length === 0)
-        throw new Error("Array cannot be empty");
 
     // Filter out elements, and find all the preferred elements.
-    const preferred = [];
     const filtered = [];
     for (let index = 0; index < array.length; ++index) {
         const elem = array[index];
@@ -91,15 +69,47 @@ export function selectFilteredWeightedRandomElement(array, filterFn, preferenceF
             continue;
 
         filtered.push(elem);
+    }
+    return filtered;
+}
+
+/**
+ * Returns a random element of {@param array}. If there are any elements
+ * that are preferred by {@param preferenceFn}, they will be selected
+ * before any others.
+ *
+ * @param preferenceFn (element) => Whether the element is preferred for selection.
+ */
+export function selectRandomElement(array, preferenceFn) {
+    return selectWeightedRandomElement(array, preferenceFn, () => 1);
+}
+
+/**
+ * Returns a random element of {@param array}, with element selection weighted
+ * by {@param weightFn}. If there are any elements that are preferred by
+ * {@param preferenceFn}, they will be selected before any others.
+ *
+ * @param preferenceFn (element) => Whether the element is preferred for selection.
+ * @param weightFn (element) => Weighting number.
+ *                 If the weighting number is zero, then it will
+ *                 be weighted by the mean of all the other weights.
+ */
+export function selectWeightedRandomElement(array, preferenceFn, weightFn) {
+    doTypeCheck(array, Array, "Array of Elements");
+    if (array.length === 0)
+        throw new Error("No elements provided to select from");
+
+    // Filter out elements, and find all the preferred elements.
+    const preferred = [];
+    for (let index = 0; index < array.length; ++index) {
+        const elem = array[index];
         if (preferenceFn(elem)) {
             preferred.push(elem);
         }
     }
-    if (filtered.length === 0)
-        throw new Error("No elements remaining after filter");
 
     // If there are preferred elements, use those.
-    const collection = (preferred.length > 0 ? preferred : filtered);
+    const collection = (preferred.length > 0 ? preferred : array);
 
     // Filter out elements and compute the weight of the remaining elements.
     const weights = [];

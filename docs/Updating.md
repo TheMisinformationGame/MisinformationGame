@@ -1,18 +1,18 @@
 ---
 title: Updating
 showPath: true
-showBackToTop: false
+showBackToTop: true
 ---
 
-# Updating your Instance of The Misinformation Game
+# Updating the Misinformation Game
 {:#intro .no_toc}
 
 This guide will show you how to update your instance of The Misinformation Game to
 the latest version from the
 [MisinformationGame GitHub repository](https://github.com/TheMisinformationGame/MisinformationGame).
-You will be required to update the source code that you downloaded when you installed
-your instance of The Misinformation Game, and then deploy these new changes to your
-Firebase instance. One process to achieve this is described below.
+You will first be required to update the source code that you downloaded when you
+installed your instance of The Misinformation Game. You will then to deploy the
+new changes to your Firebase instance. One process to achieve this is described below.
 
 
 

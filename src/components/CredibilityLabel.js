@@ -23,14 +23,19 @@ export class CredibilityLabel extends Component {
         const cred = Math.round(this.props.credibility);
         const colour = CredibilityLabel.getCredibilityColour(cred);
         return (
-            <span className={"inline-table font-bold text-white text-center rounded-full mx-1 " +
-            (this.props.className || "")}
-                  style={{backgroundColor: colour, width: "1.6em", height: "1.57em"}}>
+            <span className="inline-block align-middle" style={{lineHeight: "0"}}>
+                <span
+                    className={
+                        "inline-table font-bold text-white text-center rounded-full mx-1 " +
+                        (this.props.className || "")
+                    }
+                    style={{backgroundColor: colour, width: "1.6em", height: "1.57em"}}>
 
                 <span className="table-cell align-middle transform -translate-y-px"
                       style={{fontSize: "0.9em"}}>
                     &nbsp;{cred}&nbsp;
                 </span>
+            </span>
             </span>
         );
     }

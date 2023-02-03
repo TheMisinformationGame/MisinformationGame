@@ -8,6 +8,10 @@ import {BrokenStudy, Study} from "../model/study";
 import {StudyImage} from "../model/images";
 import {Game} from "../model/game";
 import {decompressJson} from "./compressJson";
+import {retryPromiseOperation} from "../utils/promises";
+import {doc} from "firebase/firestore";
+import {collection, getDoc, getDocs, query, where} from "@firebase/firestore";
+import {ref, getDownloadURL} from "firebase/storage";
 
 
 /**
@@ -30,8 +34,8 @@ function studyOrBrokenFromJson(studyID, json) {
  */
 export async function readStudySettings(studyID) {
     return new Promise((resolve, reject) => {
-        db.collection('Studies').doc(studyID).get().then(snapshot => {
-            if (!snapshot.exists) {
+        getDoc(doc(collection(db, "Studies"), studyID)).then(snapshot => {
+            if (!snapshot.exists()) {
                 reject(new Error("Could not find the study with ID " + studyID));
                 return;
             }
@@ -52,24 +56,24 @@ export async function readStudySettings(studyID) {
  * TODO : In the future, it may be good to use pages, as if the number of studies
  *        becomes really large, this will become very costly.
  */
-export async function readAllStudies() {
-    if (!auth.currentUser)
-        throw new Error("User is not authenticated");
+export async function readAllStudies(user) {
+    if (!user)
+        throw new Error("No user provided");
 
-    const snapshot = await db.collection('Studies')
-                             .where("authorID", "==", auth.currentUser.uid).get();
+    const getStudiesQuery = query(collection(db, "Studies"), where("authorID", "==", user.uid));
+    const snapshot = await getDocs(getStudiesQuery);
     return snapshot.docs.map((doc) => studyOrBrokenFromJson(doc.id, decompressJson(doc.data())));
 }
 
 /**
  * Returns a Promise with whether the current user is an admin.
  */
-export async function readIsAdmin() {
-    if (!auth.currentUser)
-        throw new Error("User is not authenticated");
+export async function readIsAdmin(user) {
+    if (!user)
+        throw new Error("No user provided");
 
-    const snapshot = await db.collection("Admins").doc(auth.currentUser.uid).get();
-    return snapshot.exists;
+    const snapshot = await getDoc(doc(collection(db, "Admins"), user.uid));
+    return snapshot.exists();
 }
 
 function getStudyImagePathType(path) {
@@ -83,29 +87,42 @@ function getStudyImagePathType(path) {
 /**
  * Returns a promise to a StudyImage loaded from Firebase Storage at the path {@param path}.
  */
-export async function readStudyImage(path) {
+export function readStudyImage(path) {
+    return retryPromiseOperation(readStudyImageInternal.bind(null, path), 1000, 2);
+}
+
+async function readStudyImageInternal(path) {
     const type = getStudyImagePathType(path);
-    const url = await storage.ref(path).getDownloadURL();
-    return await new Promise((resolve, reject) => {
-        const request = new XMLHttpRequest();
-        request.open("GET", url, true);
-        request.responseType = "arraybuffer";
-        request.onload = () => {
-            const response = request.response;
-            if (response) {
-                resolve(new StudyImage(new Uint8Array(response), type));
-            } else {
-                reject(new Error("Missing response when loading StudyImage from " + path));
-            }
-        };
-        request.onerror = () => {
-            reject(new Error(
-                "Could not load StudyImage from " + path +
-                (request.status ? " (" + request.status + ")" : "") +
-                (request.statusText ? ": " + request.statusText : "")
-            ));
-        };
-        request.send(null);
+    return new Promise((resolve, reject) => {
+        return getDownloadURL(ref(storage, path)).then((url) => {
+            const request = new XMLHttpRequest();
+            // Long timeout as we really don't want to hammer the backend.
+            request.timeout = 8000;
+            request.open("GET", url, true);
+            request.responseType = "arraybuffer";
+            request.onload = () => {
+                const response = request.response;
+                if (response) {
+                    resolve(new StudyImage(new Uint8Array(response), type));
+                } else {
+                    reject(new Error("Missing response when loading StudyImage from " + path));
+                }
+            };
+
+            const makeErrorListener = (errorDesc) => {
+                return () => {
+                    reject(new Error(
+                        errorDesc + " StudyImage from " + path +
+                        (request.status ? " (" + request.status + ")" : "") +
+                        (request.statusText ? ": " + request.statusText : "")
+                    ));
+                };
+            };
+            request.onerror = makeErrorListener("Could not load");
+            request.onabort = makeErrorListener("Aborted while loading");
+            request.ontimeout = makeErrorListener("Timed out while loading");
+            request.send(null);
+        });
     });
 }
 
@@ -120,8 +137,8 @@ export async function readAllCompletedStudyResults(study, problems) {
         throw new Error("User is not authenticated");
 
     const games = [];
-    const snapshot = await db.collection("Studies").doc(study.id)
-                             .collection("Results").get();
+    const snapshot = await getDocs(collection(doc(collection(db, "Studies"), study.id), "Results"));
+
     for(let index = 0; index < snapshot.docs.length; ++index) {
         const doc = snapshot.docs[index];
         const json = decompressJson(doc.data());

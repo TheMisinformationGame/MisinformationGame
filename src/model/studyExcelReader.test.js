@@ -33,8 +33,8 @@ export function loadTestStudy(name, callback) {
     });
 }
 
-test('load the template study', done => {
-    loadTestStudy("../docs/StudyTemplate.xlsx", (err, study) => {
+test('load the version-2 template study', done => {
+    loadTestStudy("../docs/StudyTemplate-V2.xlsx", (err, study) => {
         if (err) {
             done(err);
             return;
@@ -46,8 +46,8 @@ test('load the template study', done => {
     });
 });
 
-test('load an example study', done => {
-    loadTestStudy("ExampleStudy.xlsx", (err, study) => {
+test('load the version-2 single-post-mode example study', done => {
+    loadTestStudy("../docs/ExampleStudy-V2-Single-Post.xlsx", (err, study) => {
         if (err) {
             done(err);
             return;
@@ -59,8 +59,47 @@ test('load an example study', done => {
     });
 });
 
-test('load an example study with missing avatar images', done => {
-    loadTestStudy("ExampleStudy-MissingAvatars.xlsx", (err, study) => {
+test('load the version-2 feed-mode example study', done => {
+    loadTestStudy("../docs/ExampleStudy-V2-Feed.xlsx", (err, study) => {
+        if (err) {
+            done(err);
+            return;
+        }
+        expect(study).toBeInstanceOf(Study);
+        expect(study.sources.length).toBeGreaterThan(0);
+        expect(study.posts.length).toBeGreaterThan(0);
+        done();
+    });
+});
+
+test('load the version-1 template study', done => {
+    loadTestStudy("../docs/StudyTemplate-V1.xlsx", (err, study) => {
+        if (err) {
+            done(err);
+            return;
+        }
+        expect(study).toBeInstanceOf(Study);
+        expect(study.sources.length).toBeGreaterThan(0);
+        expect(study.posts.length).toBeGreaterThan(0);
+        done();
+    });
+});
+
+test('load the version-1 example study', done => {
+    loadTestStudy("../docs/ExampleStudy-V1.xlsx", (err, study) => {
+        if (err) {
+            done(err);
+            return;
+        }
+        expect(study).toBeInstanceOf(Study);
+        expect(study.sources.length).toBeGreaterThan(0);
+        expect(study.posts.length).toBeGreaterThan(0);
+        done();
+    });
+});
+
+test('load the version-1 example study with missing avatar images', done => {
+    loadTestStudy("ExampleStudy-MissingAvatars-V1.xlsx", (err, study) => {
         if (err) {
             done(err);
             return;

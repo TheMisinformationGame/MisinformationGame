@@ -1,6 +1,5 @@
 module.exports = {
-  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
-  darkMode: false, // or 'media' or 'class'
+  content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   theme: {
     extend: {
       scale: {
@@ -16,15 +15,8 @@ module.exports = {
         "mini": "1.5rem"
       },
       boxShadow: {
-        'up': '0 10px 20px 5px rgba(0, 0, 0, 0.3)',
+        'up': '0 10px 10px 5px rgba(0, 0, 0, 1)',
       }
-    },
-  },
-  variants: {
-    extend: {
-      backgroundColor: ['active'],
-      dropShadow: ['hover'],
-      scale: ['group-hover']
     },
   },
   plugins: [],

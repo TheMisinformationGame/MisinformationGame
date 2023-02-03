@@ -1,9 +1,11 @@
 .footer {
   background: #f4f4f4;
   width: 100%;
-  margin-top: 1em;
-  color: black;
+  margin-top: 1.6em;
+  padding-top: 0.6em;
+  color: #222222;
   border-top: 3px solid $brand-color;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
 }
 .footer-content {
   display: block;

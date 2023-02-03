@@ -1,13 +1,13 @@
-import {Component} from "react";
 import {ErrorLabel} from "./StatusLabel";
-import {CircularProgress} from "@material-ui/core";
+import CircularProgress from '@mui/material/CircularProgress';
 import {isOfType} from "../utils/types";
 import {StudyImage} from "../model/images";
+import {MountAwareComponent} from "./MountAwareComponent";
 
 /**
  * An image that may still be loading.
  */
-export class PromiseImage extends Component {
+export class PromiseImage extends MountAwareComponent {
     constructor(props) {
         super(props);
         this.state = {};
@@ -15,16 +15,20 @@ export class PromiseImage extends Component {
 
     load(imagePromise) {
         if (isOfType(imagePromise, StudyImage)) {
-            this.setState({
-                promise: imagePromise,
-                image: imagePromise
+            this.setStateIfMounted(() => {
+                return {
+                    promise: imagePromise,
+                    image: imagePromise
+                };
             });
             return;
         }
 
-        this.setState({
-            promise: imagePromise,
-            image: null
+        this.setStateIfMounted(() => {
+            return {
+                promise: imagePromise,
+                image: null
+            };
         });
 
         imagePromise.then((image) => {
@@ -33,15 +37,19 @@ export class PromiseImage extends Component {
                 return;
 
             // Image has loaded!
-            this.setState({
-                promise: imagePromise,
-                image: image
+            this.setStateIfMounted(() => {
+                return {
+                    promise: imagePromise,
+                    image: image
+                };
             });
         }).catch((err) => {
-            this.setState({
-                promise: imagePromise,
-                image: null,
-                error: err.message
+            this.setStateIfMounted(() => {
+                return {
+                    promise: imagePromise,
+                    image: null,
+                    error: err.message
+                };
             });
         });
     }

@@ -5,19 +5,25 @@ showPath: false
 permalink: /
 ---
 
-# The Misinformation Game
-{:#intro}
+<p class="logo-banner">
+    <img src="assets/img/banner.png" alt="The Misinformation Game Logo" />
+</p>
 
-The Misinformation Game is a social media simulator built to study
-people's behaviour when they interact with social media. To achieve
-this, The Misinformation Game simulates a social media feed for
-research participants. Participants will be shown one fake social
-media post at a time, and they may then react to the post and its
-comments. The Misinformation Game has been designed to be highly
-customisable so that tightly controlled experiences can be created
-for participants. This customisability is a core focus of The
-Misinformation Game, to facilitate the research of a wide array of
-social media related questions.
+--------
+
+<p style="text-align: justify">
+    The Misinformation Game is a social media simulator built to study
+    people's behaviour when they interact with social media. To achieve
+    this, The Misinformation Game simulates a social media feed for
+    research participants. Participants will be shown either a feed of
+    social media posts, or a single social media post at a time, and
+    they may then react to the post and its comments. The Misinformation
+    Game has been designed to be highly customisable so that tightly
+    controlled experiences can be created for participants. This
+    customisability is a core focus of The Misinformation Game,
+    to facilitate the research of a wide array of social media
+    related questions.
+</p>
 
 **Preprint Paper:** [PsyArXiv](https://psyarxiv.com/628wc/)
 
@@ -50,7 +56,9 @@ You can enter any ID to access the example game.
 If you would like to view an example of the results that can be
 gathered when using The Misinformation Game, the results of a user
 experience study are available from
-[the example results page](/link/ExampleResults).
+[the example results page](/link/ExampleResults). Additional
+information about the results that are made available for your
+analysis are described in the [Results Documentation](/Results).
 
 
 
@@ -60,23 +68,18 @@ experience study are available from
 The Misinformation Game contains many configuration options
 to tailor the game for specific research purposes. To find
 out whether The Misinformation Game is the right fit for
-your research, we recommend that you read through the available
-options for configuring your own study on the
+your research, we recommend that you first read through the
+[How to Play](/HowToPlay) page and try the
+[Example Game](#example-game). We then advise that you read
+the available options for configuring your own study on the
 [Study Configuration](/StudyConfiguration) page. Additionally,
 the results that are made available for your analysis are
 described on the [Results](/Results) page.
 
-To conduct a study using The Misinformation Game, you will need
-to host your own website for the game using Google Firebase.
-The steps to host your own instance of the game are described in both a
-[Non-Technical Installation Guide](/NonTechnicalInstallation)
-and a [Technical Installation Guide](/TechnicalInstallation).
-If you are proficient with the command-line and
-installing technical tools, then the technical
-installation guide will be quicker, and requires fewer
-steps. However, if you are not familiar with these
-technologies, then the non-technical installation
-guide should be easier to follow.
+To conduct a study using The Misinformation Game, you will
+need to host your own website for the game. Your options to
+host your own instance of the game are described on the
+[Installation](/Installation) page.
 
 
 
@@ -97,11 +100,9 @@ guide should be easier to follow.
 ## Hosting Documentation
 {:#hosting-docs}
 
+- [Installation](/Installation) -
+  Describes the options for hosting your own instance of the Misinformation Game.
 - [Firebase Pricing](/FirebasePricing) - A guide to estimate the hosting costs of running a study.
-- [Non-Technical Installation Guide](/NonTechnicalInstallation) -
-  A guide to host your own study using Firebase (longer, for non-technical users).
-- [Technical Installation Guide](/TechnicalInstallation) -
-  A guide to host your own study using Firebase (shorter, for technical users).
 - [Updating your Installation](/Updating) -
   A guide to retrieve new features and fixes for your installation.
 
@@ -116,7 +117,7 @@ guide should be easier to follow.
 - [Documentation Development](/DocsDevelopment) - A guide for developers to make adjustments
   to this documentation website.
 - [Original Design](/original-design) - The original, outdated, design document for the game.
-  Only relevant for those who are interested.
+  _This is only relevant for those who are interested, and not as a reference._
 
 
 
@@ -126,7 +127,7 @@ guide should be easier to follow.
 - [Source Code](https://github.com/TheMisinformationGame/MisinformationGame) -
   The Misinformation Game is open-source!
 - [The (Mis)information Game Paper](https://psyarxiv.com/628wc/) -
-  A pre-print paper about The Misinformation Game, including a user experiency study.
+  A pre-print paper about The Misinformation Game, including a user experience study.
 - [Issue Tracker](https://github.com/TheMisinformationGame/MisinformationGame/issues) -
   If you find any issues, please report them here.
 - [Example Game](/link/ExampleGame) -
@@ -137,3 +138,17 @@ guide should be easier to follow.
   The template spreadsheet that should be edited to create your own study.
 - [Example Game Configuration Spreadsheet](/link/ExampleStudy) -
   The study configuration spreadsheet that is used to create the example game.
+
+## Cite the Misinformation Game
+
+```bibtex
+@misc{butler_lamont_wan_prike_nasim_walker_fay_ecker_2022,
+ title={The (Mis)Information Game: A Social Media Simulator},
+ url={psyarxiv.com/628wc},
+ DOI={10.31234/osf.io/628wc},
+ publisher={PsyArXiv},
+ author={Butler, Lucy and Lamont, Padraig and Wan, Dean L Y and Prike, Toby and Nasim, Mehwish and Walker, Bradley and Fay, Nicolas and Ecker, Ullrich K H},
+ year={2022},
+ month={Jul}
+}
+```

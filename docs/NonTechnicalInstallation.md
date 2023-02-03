@@ -155,7 +155,7 @@ If you do not see this page, then you should be able to access it at
 click **Add project** instead.
 
 <figure id="fig2">
-    <img src="diagrams/non-technical-installation-guide/4-create-firebase-project.png" alt="figure 2" height="179" />
+    <img src="diagrams/firebase-create-a-project.png" alt="figure 2" height="179" />
     <figcaption>
         <a href="#fig2">Figure 2.</a> Diagram highlighting how to create a new Firebase project.
     </figcaption>

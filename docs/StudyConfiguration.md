@@ -14,16 +14,20 @@ to be included in your study. This document aims to act as a
 reference for the [configuration spreadsheet](/link/StudyTemplate),
 to help with the configuration of your studies.
 
-**Important: The configuration spreadsheet
-<span style="text-decoration: underline">cannot</span>
-be opened in Microsoft Excel.** It is built specifically for use
-in Google Sheets, and uses functionality that is not available in
-Microsoft Excel.
+<p class="error">
+    <span style="font-weight: bold">Important! The configuration spreadsheet</span>
+    <span style="font-weight: bold; text-decoration: underline">cannot</span>
+    <span style="font-weight: bold">be opened in Microsoft Excel.</span>
+    <br/>
+    It is built specifically for use
+    in Google Sheets, and uses functionality that is not available in
+    Microsoft Excel.
+</p>
 
 
 
 # Table of Contents
-{:#intro .no_toc}
+{:#toc .no_toc}
 * toc
 {:toc}
 
@@ -54,7 +58,7 @@ you can make changes.
 {:#create-upload}
 
 You can download the Study Template file from
-[StudyTemplate.xlsx](StudyTemplate.xlsx). This file can then
+[StudyTemplate.xlsx](StudyTemplate-V1.xlsx). This file can then
 be uploaded to your Google Sheets using the following steps:
 
 **Step 1:** Access Google Sheets at
@@ -67,7 +71,7 @@ spreadsheet.
 -> **_Select a file from your device_**.
 
 **Step 4:** Use the file chooser to select the
-[StudyTemplate.xlsx](StudyTemplate.xlsx) file that you
+[StudyTemplate.xlsx](StudyTemplate-V1.xlsx) file that you
 downloaded to upload.
 
 **Step 5:** Select the **_Import Location_** to be
@@ -209,16 +213,28 @@ be at least 1 post.
 
 ##### Require Reactions
 {:#general-require-reactions .no_toc}
-Whether to require participants to react to every post.
-Participants will still be able to skip posts, but to
-do so they will have to explicitly select "Skip Post"
-as their reaction.
+Whether participants are required to react to every post.
+Participants will still be able to skip posts, but to do
+so they will have to explicitly select "Skip Post" as their
+reaction ([if it is enabled](#general-post-skip-enabled)).
+This option is not available when posts are displayed in a
+feed.
 
-##### Require Comments
-{:#general-require-comments .no_toc}
-Whether comments made by the participants are required
-for each post (enter "required"), optional for each post, or disabled
-entirely.
+Only available if:
+<ul class="param-links">
+    <li><a class="param-link" href="#general-display-feed">
+        General > UI Settings > Display Posts in a Feed
+    </a> is "No".</li>
+</ul>
+
+##### Enable User Comments
+{:#general-enable-user-comments .no_toc}
+
+Whether participants are required to comment on posts
+("Required"), can comment on posts ("Optional"), or
+if commenting is disabled entirely ("Disabled"). Comments
+cannot be required when
+[posts are displayed in a feed](#general-display-feed).
 
 ##### Require Participant Identification
 {:#general-require-identification .no_toc}
@@ -237,26 +253,38 @@ interface of The Misinformation Game for participants.
 These options change the way that participants are able
 to interact with your study.
 
+##### Display Posts in a Feed
+{:#general-display-feed .no_toc}
+Whether to display the posts to participants in a feed,
+instead of one at a time.
+
 ##### Display Followers
 {:#general-display-followers .no_toc}
-Whether to show followers to participants. This includes
-the followers of both sources and participants.
+Whether follower counts are shown to participants.
+The followers of sources and participants will still
+be simulated.
 
 ##### Display Credibility
 {:#general-display-credibility .no_toc}
-Whether to show credibility to participants. This includes
-the credibility of both sources and participants.
+Whether credibility ratings are shown to participants.
+The credibility of sources and participants will still
+be simulated.
 
 ##### Display Progress
 {:#general-display-progress .no_toc}
-Whether to show participants the number of posts they
-have reacted to, and how many they have remaining
-(e.g. "Post 51 of 100").
+Whether to show participants their progress as a
+percentage (e.g. "55%").
 
 ##### Display Number of Reactions
 {:#general-display-reaction-counts .no_toc}
 Whether to show the ostensible number of prior reactions
 to posts and comments adjacent to the reaction buttons.
+
+##### Allow Multiple Reactions at Once
+{:#general-allow-multiple-reactions .no_toc}
+Whether participants may select multiple reactions to a
+post or comment. For example, a user may choose to like
+and share a post if this is enabled.
 
 ##### Post Likes Enabled
 {:#general-post-likes-enabled .no_toc}
@@ -273,6 +301,21 @@ Whether to allow participants to share posts.
 ##### Post Flags Enabled
 {:#general-post-flags-enabled .no_toc}
 Whether to allow participants to flag posts.
+
+##### Post Skip Enabled
+{:#general-post-skip-enabled .no_toc}
+Whether to allow participants to select an option
+to skip reacting to a post.
+
+Only available if:
+<ul class="param-links">
+    <li><a class="param-link" href="#general-require-reactions">
+        General > Basic Settings > Require Reactions
+    </a> is "Yes".</li>
+    <li><a class="param-link" href="#general-display-feed">
+        General > UI Settings > Display Posts in a Feed
+    </a> is "No".</li>
+</ul>
 
 ##### Comment Likes Enabled
 {:#general-comment-likes-enabled .no_toc}
@@ -307,6 +350,13 @@ The period of time after the current post is shown
 in which participants are not able to continue to
 the next post. This delay cannot be negative, but
 it can be zero.
+
+Only available if:
+<ul class="param-links">
+    <li><a class="param-link" href="#general-display-feed">
+        General > UI Settings > Display Posts in a Feed
+    </a> is "No".</li>
+</ul>
 
 ##### Generate Completion Code
 {:#general-generate-completion-code .no_toc}
@@ -634,17 +684,20 @@ for most sources. If one of the parameters that has a
 default is not included for a specific source, the default
 value will be used instead.
 
-The _Default Source Values_ allows you to define normal
-distributions for the initial number of followers and 
+The _Default Source Values_ allows you to define
+[skew-normal distributions](https://en.wikipedia.org/wiki/Skew_normal_distribution)
+for the initial number of followers and
 credibility scores of sources. This random sampling of
-the initial number of followers and credibility for
-sources is not available on a per-source basis. The normal
+the initial number of followers and credibility for sources
+is not available on a per-source basis. The skew-normal
 distributions for the initial credibility and followers is
-configured by setting the mean and standard deviation of
-the distributions. These values are then used to sample
-the initial credibility and followers of sources from a
-normal distribution with that mean and standard deviation
-when a new game is started.
+configured by setting the mean, standard deviation, and
+skew shape of the distributions. These values are then used
+to sample the initial credibility and followers of sources
+from a skew-normal distribution with that mean, standard
+deviation, and skew shape when a new game is started. Each
+participant is likely to see different values chosen for
+sources that are sampled in this way.
 
 The sampling of initial credibility values is truncated to
 between 0 and 100 credibility. The sampling of initial
@@ -743,12 +796,12 @@ follower count of the source may differ throughout
 participant's games (see the [Simulation](/Simulation)
 page for details).
 
-This value is only used if
-
 Only used if:
-- <a class="param-link" href="#general-display-followers">
-      General > UI Settings > Display Followers
-  </a> is true.
+<ul class="param-links">
+    <li><a class="param-link" href="#general-display-followers">
+        General > UI Settings > Display Followers
+    </a> is "Yes".</li>
+</ul>
 
 ##### Initial Credibility
 {:#sources-initial-credibility .no_toc}
@@ -759,9 +812,11 @@ participant's games (see the [Simulation](/Simulation)
 page for details).
 
 Only used if:
-- <a class="param-link" href="#general-display-credibility">
-      General > UI Settings > Display Credibility
-  </a> is true.
+<ul class="param-links">
+    <li><a class="param-link" href="#general-display-credibility">
+        General > UI Settings > Display Credibility
+    </a> is "Yes".</li>
+</ul>
 
 ##### True Post Percentage
 {:#sources-true-post-percentage .no_toc}
@@ -772,9 +827,11 @@ will indicate the probability of it being paired a true post
 rather than a false post.
 
 Only used if:
-- <a class="param-link" href="#selection-selecting-method">
-      Source & Post Selection > Method
-  </a> is "Source-Ratios".
+<ul class="param-links">
+    <li><a class="param-link" href="#selection-selecting-method">
+        Source & Post Selection > Method
+    </a> is "Source-Ratios".</li>
+</ul>
 
 
 
@@ -904,14 +961,14 @@ display for each post. These numbers are displayed below the available reactions
 of the post or comment. If this value is not provided for a particular post, the
 change is sampled from the default normal distribution instead.
 
-Only used if:
+Only available if:
 <ul class="param-links">
     <li><a class="param-link" href="#general-display-reaction-counts">
         General > UI Settings > Display Reaction Counts
-    </a> is true.</li>
+    </a> is "Yes".</li>
     <li><a class="param-link" href="#general-post-likes-enabled">
         General > UI Settings > Post Likes/Dislikes/Shares/Flags Enabled
-    </a> is true for each specific reaction.</li>
+    </a> is "Yes" for each specific reaction.</li>
 </ul>
 
 ##### Comments

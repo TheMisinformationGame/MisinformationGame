@@ -1,4 +1,3 @@
-import {Component} from "react";
 import {ConditionalLink} from "./ConditionalLink";
 import {MountAwareComponent} from "./MountAwareComponent";
 
@@ -13,13 +12,19 @@ export class ContinueButton extends MountAwareComponent {
         super.componentDidMount();
         const delaySeconds = this.props.delay;
         if (!delaySeconds || delaySeconds <= 0) {
-            this.setState({...this.state, disabled: false});
+            this.setState(() => {
+                return {disabled: false};
+            });
             return;
         }
 
-        this.setState({...this.state, disabled: true});
+        this.setState(() => {
+            return {disabled: true};
+        });
         setTimeout(() => {
-            this.setStateIfMounted({...this.state, disabled: false});
+            this.setStateIfMounted(() => {
+                return {disabled: false};
+            });
         }, delaySeconds * 1000);
     }
 
@@ -55,7 +60,19 @@ export class ContinueButton extends MountAwareComponent {
  * Returns whether the page is scrolled to the bottom.
  */
 function isScrolledDown() {
-    const errorMargin = 20.0;
+    const errorMargin = 100.0;
+
+    // Check if there is no scroll bar.
+    const docElem = document.documentElement;
+    if (docElem) {
+        const scrollHeight = docElem.scrollHeight,
+              clientHeight = docElem.clientHeight;
+
+        if (scrollHeight && clientHeight && scrollHeight - errorMargin <= clientHeight)
+            return true;
+    }
+
+    // Detect the scroll.
     const pageHeight = Math.max(
         document.body.scrollHeight, document.documentElement.scrollHeight,
         document.body.offsetHeight, document.documentElement.offsetHeight,
@@ -65,29 +82,36 @@ function isScrolledDown() {
 }
 
 
-export class ContinueBanner extends Component {
+export class ContinueBanner extends MountAwareComponent {
     constructor(props) {
         super(props);
-        this.state = {scrolledDown: isScrolledDown()};
+        this.state = {
+            scrolledDown: false
+        };
         this.scrollTrackingTimer = null;
 
         // We create a new function to make sure that removing it as an
         // event listener won't clash with other ContinueBanner instances.
         this.trackScrolling = () => {
             const scrolledDown = isScrolledDown();
-            if (this.state.scrolledDown !== scrolledDown) {
-                this.setState({scrolledDown: scrolledDown})
+            if (!this.state.scrolledDown && scrolledDown) {
+                this.setStateIfMounted(() => {
+                    return {scrolledDown: true};
+                })
             }
         };
     }
 
     componentDidMount() {
+        super.componentDidMount();
+        window.scrollTo(0, 0);
         if (this.props.requireScrollToBottom) {
-            this.scrollTrackingTimer = setInterval(this.trackScrolling, 10);
+            this.scrollTrackingTimer = setInterval(this.trackScrolling, 50);
         }
     }
 
     componentWillUnmount() {
+        super.componentWillUnmount();
         if (this.scrollTrackingTimer !== null) {
             clearInterval(this.scrollTrackingTimer);
             this.scrollTrackingTimer = null;

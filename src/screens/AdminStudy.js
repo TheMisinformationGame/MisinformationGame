@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
-import {Link, Redirect} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import UploadIcon from "@mui/icons-material/Upload";
 import BlockIcon from '@mui/icons-material/Block';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import {SimpleActiveStudyScreen} from "./ActiveStudyScreen";
 import {isOfType} from "../utils/types";
 import {BrokenStudy} from "../model/study";
 import {ErrorLabel, Status} from "../components/StatusLabel";
@@ -21,6 +20,7 @@ import {downloadResults} from "../model/resultsExcelWriter";
 import {createDateFromUnixEpochTimeSeconds} from "../utils/time";
 import {auth} from "../database/firebase";
 import {setDefaultPageTitle} from "../index";
+import SimpleActiveStudyScreen from "./SimpleActiveStudyScreen";
 
 
 class AdminStudyActionButton extends Component {
@@ -58,58 +58,72 @@ class AdminStudy extends MountAwareComponent {
 
     hideProgress() {
         if (this.state.deletingStudy) {
-            this.setStateIfMounted({
-                ...this.defaultState,
-                progressTitle: "Study Deletion Cancelled",
-                progress: Status.success("The deletion of this study has been cancelled.")
+            this.setStateIfMounted(() => {
+                return {
+                    ...this.defaultState,
+                    progressTitle: "Study Deletion Cancelled",
+                    progress: Status.success("The deletion of this study has been cancelled.")
+                };
             });
         } else {
-            this.setStateIfMounted({...this.defaultState});
+            this.setStateIfMounted(() => {
+                return {...this.defaultState};
+            });
         }
     }
 
     hideStudyUpdate() {
-        this.setStateIfMounted({...this.defaultState});
+        this.setStateIfMounted(() => {
+            return {...this.defaultState};
+        });
     }
 
     showError(errorTitle, errorMessage) {
-        this.setState({
-            ...this.defaultState,
-            progressTitle: errorTitle,
-            progress: Status.error(errorMessage)
+        this.setState(() => {
+            return {
+                ...this.defaultState,
+                progressTitle: errorTitle,
+                progress: Status.error(errorMessage)
+            };
         });
     }
 
     downloadResults(study) {
-        this.setState({
-            ...this.defaultState,
-            progressTitle: "Downloading results...",
-            progress: Status.progress("The results of this study are downloading...")
+        this.setState(() => {
+            return {
+                ...this.defaultState,
+                progressTitle: "Downloading results...",
+                progress: Status.progress("The results of this study are downloading...")
+            };
         });
         setTimeout(() => {
             downloadResults(study).then(() => {
                 // Successfully downloaded!
-                this.setStateIfMounted({
-                    ...this.defaultState,
-                    progressTitle: "Results downloaded",
-                    progress: Status.success([
-                        "Results downloaded!",
-                        <p className="mt-4 text-lg">
-                            There should be a dialog open where you can select where
-                            you wish to save the results spreadsheet.
-                        </p>
-                    ])
+                this.setStateIfMounted(() => {
+                    return {
+                        ...this.defaultState,
+                        progressTitle: "Results downloaded",
+                        progress: Status.success([
+                            "Results downloaded!",
+                            <p className="mt-4 text-lg">
+                                There should be a dialog open where you can select where
+                                you wish to save the results spreadsheet.
+                            </p>
+                        ])
+                    };
                 });
             }).catch((error) => {
                 // There was an error downloading the results...
                 console.error(error);
-                this.setStateIfMounted({
-                    ...this.defaultState,
-                    progressTitle: "Error downloading results",
-                    progress: Status.error([
-                        <b>There was an error:</b>,
-                        error.message
-                    ])
+                this.setStateIfMounted(() => {
+                    return {
+                        ...this.defaultState,
+                        progressTitle: "Error downloading results",
+                        progress: Status.error([
+                            <b>There was an error:</b>,
+                            error.message
+                        ])
+                    };
                 });
             });
         }, 50);
@@ -132,9 +146,11 @@ class AdminStudy extends MountAwareComponent {
             return;
         }
 
-        this.setState({
-            ...this.defaultState,
-            showStudyUpdate: true
+        this.setState(() => {
+            return {
+                ...this.defaultState,
+                showStudyUpdate: true
+            };
         });
     }
 
@@ -144,40 +160,50 @@ class AdminStudy extends MountAwareComponent {
     }
 
     updateStudyEnabled(study, enabled, title, message, completeTitle) {
-        this.setState({
-            ...this.defaultState,
-            progressTitle: title,
-            progress: Status.progress(message)
+        this.setState(() => {
+            return {
+                ...this.defaultState,
+                progressTitle: title,
+                progress: Status.progress(message)
+            };
         });
         setTimeout(() => {
             study.enabled = enabled;
             study.updateLastModifiedTime();
             uploadStudyConfiguration(study).then(() => {
                 getDataManager().clearCachedStudies();
-                this.setStateIfMounted({
-                    ...this.defaultState,
-                    progressTitle: completeTitle,
-                    progress: Status.success("Success")
+                this.setStateIfMounted(() => {
+                    return {
+                        ...this.defaultState,
+                        progressTitle: completeTitle,
+                        progress: Status.success("Success")
+                    };
                 });
             }).catch((error) => {
-                this.setStateIfMounted({
-                    ...this.defaultState,
-                    progressTitle: completeTitle,
-                    progress: Status.error([
-                        <b>There was an error:</b>,
-                        error.message
-                    ])
+                this.setStateIfMounted(() => {
+                    return {
+                        ...this.defaultState,
+                        progressTitle: completeTitle,
+                        progress: Status.error([
+                            <b>There was an error:</b>,
+                            error.message
+                        ])
+                    };
                 });
             });
         }, 50);
     }
 
     enableStudy(study) {
-        this.setState({...this.defaultState, confirmation: "enable-study"});
+        this.setState(() => {
+            return {...this.defaultState, confirmation: "enable-study"};
+        });
     }
 
     disableStudy(study) {
-        this.setState({...this.defaultState, confirmation: "disable-study"});
+        this.setState(() => {
+            return {...this.defaultState, confirmation: "disable-study"};
+        });
     }
 
     confirmEnableStudy(study) {
@@ -189,15 +215,19 @@ class AdminStudy extends MountAwareComponent {
     }
 
     deleteStudy(study) {
-        this.setState({...this.defaultState, confirmation: "delete-study"});
+        this.setState(() => {
+            return {...this.defaultState, confirmation: "delete-study"};
+        });
     }
 
     confirmDeleteStudy(study) {
-        this.setState({
-            ...this.defaultState,
-            deletingStudy: true,
-            progressTitle: "Deleting Study...",
-            progress: Status.progress("The study and its results are being deleted...")
+        this.setState(() => {
+            return {
+                ...this.defaultState,
+                deletingStudy: true,
+                progressTitle: "Deleting Study...",
+                progress: Status.progress("The study and its results are being deleted...")
+            };
         });
 
         // We give users 2 seconds to cancel the deletion by closing the dialog.
@@ -208,23 +238,27 @@ class AdminStudy extends MountAwareComponent {
 
             deleteStudy(study).then((study) => {
                 getDataManager().clearCachedStudies();
-                this.setStateIfMounted({
-                    ...this.defaultState,
-                    progressTitle: "Study Deleted",
-                    progress: Status.success("Success. You will be redirected shortly.")
+                this.setStateIfMounted(() => {
+                    return {
+                        ...this.defaultState,
+                        progressTitle: "Study Deleted",
+                        progress: Status.success("Success. You will be redirected shortly.")
+                    };
                 });
                 setTimeout(() => {
-                    this.props.history.push("/admin");
+                    this.props.navigate("/admin");
                 }, 500);
             }).catch((error) => {
                 console.error(error);
-                this.setStateIfMounted({
-                    ...this.defaultState,
-                    progressTitle: "Error Deleting Study",
-                    progress: Status.error([
-                        <b>There was an error deleting the study:</b>,
-                        <span>{error.message}</span>
-                    ])
+                this.setStateIfMounted((state, props) => {
+                    return {
+                        ...this.defaultState,
+                        progressTitle: "Error Deleting Study",
+                        progress: Status.error([
+                            <b>There was an error deleting the study:</b>,
+                            <span>{error.message}</span>
+                        ])
+                    };
                 });
             });
         }, 2000);
@@ -232,7 +266,7 @@ class AdminStudy extends MountAwareComponent {
 
     render() {
         if (!auth.currentUser)
-            return (<Redirect to="/sign-in" />);
+            return (<Navigate to="/sign-in" />);
 
         const study = this.props.study;
         const modifiedTime = createDateFromUnixEpochTimeSeconds(study.lastModifiedTime);
@@ -251,7 +285,7 @@ class AdminStudy extends MountAwareComponent {
                     <span className="inline-block w-4 h-4 mb-1 mr-2 bg-green-500 rounded-full"
                           title="Study is Enabled" />}
 
-                    {study.name}
+                    {study.basicSettings.name}
                 </h1>
 
                 {/* If not broken, the game URL for this study. */}
@@ -285,7 +319,7 @@ class AdminStudy extends MountAwareComponent {
                 {/* Description. */}
                 <p className="mt-2">
                     <b className="block">Description:&nbsp;</b>
-                    <span dangerouslySetInnerHTML={{__html: study.description}} />
+                    <span dangerouslySetInnerHTML={{__html: study.basicSettings.description}} />
                 </p>
 
                 {/* Actions. */}
@@ -426,7 +460,7 @@ export class AdminStudyPage extends SimpleActiveStudyScreen {
                 <div className="relative mt-3 w-full md:max-w-2xl mx-auto
                                 rounded-xl border bg-white shadow-xl border-gray-400" >
 
-                    <AdminStudy study={study} history={this.props.history} />
+                    <AdminStudy study={study} navigate={this.props.navigate} />
 
                     {/* Close button in top-right. */}
                     <Link to="/admin" className="absolute right-2 top-3 cursor-pointer">

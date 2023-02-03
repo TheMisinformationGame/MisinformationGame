@@ -3,19 +3,21 @@
  * FireStore Database, and to Firebase Storage.
  */
 
-import {db, storageRef} from './firebase';
+import {db, storage} from './firebase';
 import {compressJson} from "./compressJson";
 import {STUDY_UNCOMPRESSED_KEYS} from "../model/study";
+import {collection, setDoc} from "@firebase/firestore";
+import {doc} from "firebase/firestore";
+import {uploadBytes} from "@firebase/storage";
+import {ref} from "firebase/storage";
 
 /**
  * Uploads the configuration for the study {@param study}.
  * @return Promise<void> a Promise for the completion of the upload.
  */
 export function uploadStudyConfiguration(study) {
-    const studyCol = db.collection("Studies");
-    const studyDoc = studyCol.doc(study.id);
     const compressedJson = compressJson(study.toJSON(), STUDY_UNCOMPRESSED_KEYS);
-    return studyDoc.set(compressedJson);
+    return setDoc(doc(collection(db, "Studies"), study.id), compressedJson);
 }
 
 /**
@@ -23,7 +25,7 @@ export function uploadStudyConfiguration(study) {
  * @return {firebase.storage.UploadTask} a task object for tracking the upload.
  */
 export function uploadImageToStorage(path, image) {
-    return storageRef.child(path).put(image.buffer);
+    return uploadBytes(ref(storage, path), image.buffer);
 }
 
 /**
@@ -93,7 +95,6 @@ export function uploadImagesToStorage(imageDict, progressFn) {
 export function postResults(study, game) {
     const resultsJSON = game.toJSON();
     const compressedJSON = compressJson(resultsJSON);
-    return db.collection("Studies").doc(study.id)
-             .collection("Results").doc(game.sessionID)
-             .set(compressedJSON);
+    const studyRef = doc(collection(db, "Studies"), study.id);
+    return setDoc(doc(collection(studyRef, "Results"), game.sessionID), compressedJSON);
 }

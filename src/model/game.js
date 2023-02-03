@@ -3,7 +3,7 @@
  */
 import {doArrayTypeCheck, doNullableArrayTypeCheck, doNullableTypeCheck, doTypeCheck, isOfType} from "../utils/types";
 import {BrokenStudy, Post, PostComment, Source, Study} from "./study";
-import {selectFilteredRandomElement, selectFilteredWeightedRandomElement} from "../utils/random";
+import {filterArray, selectRandomElement, selectWeightedRandomElement} from "../utils/random";
 import {odiff} from "../utils/odiff";
 import {getDataManager} from "./manager";
 import { postResults } from "../database/postToDB";
@@ -87,9 +87,15 @@ export class GameSource {
      * Selects a random source to show, weighted by source's max posts.
      */
     static selectRandomSource(sources) {
-        return selectFilteredWeightedRandomElement(
+        const availableSources = filterArray(
             sources,
-            (source) => source.remainingUses === -1 || source.remainingUses > 0,
+            (source) => source.remainingUses === -1 || source.remainingUses > 0
+        );
+        if (availableSources.length === 0)
+            throw new Error("All sources hit their maximum number of posts");
+
+        return selectWeightedRandomElement(
+            availableSources,
             () => false,
             (source) => source.source.maxPosts === -1 ? 0 : source.source.maxPosts
         );
@@ -223,9 +229,12 @@ export class GamePost {
      */
     static selectRandomPost(posts, truePostPercentage) {
         const selectTruePosts = 100 * Math.random() < truePostPercentage;
-        return selectFilteredRandomElement(
-            posts,
-            (post) => !post.shown, // Hard Filter
+        const availablePosts = filterArray(posts, (post) => !post.shown);
+        if (availablePosts.length === 0)
+            throw new Error("Used up all available posts");
+
+        return selectRandomElement(
+            availablePosts,
             (post) => selectTruePosts === post.post.isTrue // Soft Filter
         );
     }
@@ -266,15 +275,18 @@ export class GamePost {
 export class GameState {
     // The study is not saved as part of the game states, it is only here for convenience.
     study; // Study
+    indexInGame; // Number
 
     currentSource; // GameSource
     currentPost; // GamePost
 
-    constructor(study, currentSource, currentPost) {
+    constructor(study, indexInGame, currentSource, currentPost) {
         doTypeCheck(study, Study, "Game's Study");
+        doTypeCheck(indexInGame, "number", "Index of State in the Game")
         doTypeCheck(currentSource, GameSource, "Game's Current Source");
         doTypeCheck(currentPost, GamePost, "Game's Current Post");
         this.study = study;
+        this.indexInGame = indexInGame;
         this.currentSource = currentSource;
         this.currentPost = currentPost;
     }
@@ -286,9 +298,10 @@ export class GameState {
         };
     }
 
-    static fromJSON(json, study) {
+    static fromJSON(json, study, indexInGame) {
         return new GameState(
             study,
+            indexInGame,
             GameSource.fromJSON(json["currentSource"], study),
             GamePost.fromJSON(json["currentPost"], study),
             null,
@@ -297,37 +310,252 @@ export class GameState {
     }
 }
 
+
+function toggleReactionPresenceInArray(currentReactions, reaction, allowMultipleReactions) {
+    // Skips are always mutually exclusive to other reactions.
+    if (reaction === "skip") {
+        if (detectReactionPresenceInArray(currentReactions, "skip"))
+            return [];
+        else
+            return ["skip"];
+    }
+
+    // Attempt to find and remove the reaction.
+    const newReactions = [];
+    let foundReaction = false;
+    for (let index = 0; index < currentReactions.length; ++index) {
+        const currentReaction = currentReactions[index];
+        if (currentReaction === reaction) {
+            foundReaction = true;
+        } else if (currentReaction !== "skip") {
+            newReactions.push(currentReaction);
+        }
+    }
+    if (foundReaction)
+        return newReactions;
+    if (!allowMultipleReactions)
+        return [reaction];
+
+    newReactions.push(reaction);
+    return newReactions;
+}
+
+function detectReactionPresenceInArray(reactions, reaction) {
+    for (let index = 0; index < reactions.length; ++index) {
+        if (reactions[index] === reaction)
+            return true;
+    }
+    return false;
+}
+
+
+/**
+ * Keeps track of how long it took participants to interact with something.
+ */
+export class InteractionTimer {
+    showTime; // Number (UNIX Milliseconds)
+    firstInteractTime; // Number? (UNIX Milliseconds)
+    lastInteractTime; // Number? (UNIX Milliseconds)
+    hideTime; // Number? (UNIX Milliseconds)
+
+    constructor(showTime, firstInteractTime, lastInteractTime, hideTime) {
+        doTypeCheck(showTime, "number", "Time of Appearance");
+        doNullableTypeCheck(firstInteractTime, "number", "Time of First Interaction");
+        doNullableTypeCheck(lastInteractTime, "number", "Time of Last Interaction");
+        doNullableTypeCheck(hideTime, "number", "Time of Disappearance");
+        this.showTime = showTime;
+        this.firstInteractTime = firstInteractTime || null;
+        this.lastInteractTime = lastInteractTime || null;
+        this.hideTime = hideTime || null;
+    }
+
+    static create(showTime) {
+        return new InteractionTimer(showTime, null, null, null);
+    }
+
+    static start() {
+        return InteractionTimer.create(Date.now());
+    }
+
+    getTimeToFirstInteractMS() {
+        if (this.firstInteractTime === null)
+            return NaN;
+
+        return this.firstInteractTime - this.showTime;
+    }
+
+    getTimeToLastInteractMS() {
+        if (this.lastInteractTime === null)
+            return NaN;
+
+        return this.lastInteractTime - this.showTime;
+    }
+
+    getDwellTimeMS() {
+        if (this.hideTime === null)
+            return NaN;
+
+        return this.hideTime - this.showTime;
+    }
+
+    withNewInteraction() {
+        if (this.hideTime !== null)
+            throw new Error("The interactions have already been marked as hidden");
+
+        const time = Date.now();
+        return new InteractionTimer(
+            this.showTime,
+            (this.firstInteractTime !== null ? this.firstInteractTime : time),
+            time,
+            null
+        );
+    }
+
+    complete() {
+        return new InteractionTimer(
+            this.showTime, this.firstInteractTime, this.lastInteractTime, Date.now()
+        );
+    }
+
+    toJSON() {
+        return {
+            "showTime": this.showTime,
+            "firstInteractTime": this.firstInteractTime,
+            "lastInteractTime": this.lastInteractTime,
+            "hideTime": this.hideTime
+        };
+    }
+
+    static fromJSON(json) {
+        return new InteractionTimer(
+            json["showTime"],
+            json["firstInteractTime"],
+            json["lastInteractTime"],
+            json["hideTime"]
+        );
+    }
+}
+
+
 /**
  * Stores the reaction of a user to a comment.
  */
-export class GameCommentReaction {
+export class GameCommentInteraction {
     commentIndex; // Number
-    reaction; // String
-    reactTimeMS; // Number
+    reactions; // String[]
+    timer; // InteractionTimer
 
-    constructor(commentIndex, reaction, reactTimeMS) {
+    constructor(commentIndex, reactions, timer) {
         doTypeCheck(commentIndex, "number", "Comment ID for Comment Reaction");
-        doTypeCheck(reaction, "string", "Comment Reaction");
-        doTypeCheck(reactTimeMS, "number", "Comment Reaction Time")
+        doArrayTypeCheck(reactions, "string", "Comment Reaction");
+        doTypeCheck(timer, InteractionTimer, "Comment Reaction Timer")
         this.commentIndex = commentIndex;
-        this.reaction = reaction;
-        this.reactTimeMS = reactTimeMS;
+        this.reactions = reactions;
+        this.timer = timer;
+    }
+
+    static create(commentIndex, commentReaction, postShowTime) {
+        return new GameCommentInteraction(
+            commentIndex, [commentReaction],
+            InteractionTimer.create(postShowTime).withNewInteraction()
+        )
+    }
+
+    complete() {
+        return new GameCommentInteraction(
+            this.commentIndex,
+            this.reactions,
+            this.timer.complete()
+        )
+    }
+
+    withToggledReaction(reaction, allowMultipleReactions) {
+        return this.withReactions(toggleReactionPresenceInArray(
+            this.reactions, reaction, allowMultipleReactions
+        ));
+    }
+
+    hasReaction(reaction) {
+        return detectReactionPresenceInArray(this.reactions, reaction);
+    }
+
+    withReactions(reactions) {
+        return new GameCommentInteraction(
+            this.commentIndex,
+            reactions,
+            this.timer.withNewInteraction()
+        );
     }
 
     toJSON() {
         return {
             "commentID": this.commentIndex,
-            "reaction": this.reaction,
-            "reactTimeMS": this.reactTimeMS
+            "reactions": this.reactions,
+            "timer": this.timer.toJSON()
         };
     }
 
-    static fromJSON(json) {
-        return new GameCommentReaction(
+    static fromJSON(json, showTime) {
+        const reactions = json["reactions"],
+              reaction = json["reaction"],
+              timerJSON = json["timer"],
+              reactTimeMS = json["reactTimeMS"];
+
+        let timer;
+        if (timerJSON !== undefined) {
+            timer = InteractionTimer.fromJSON(timerJSON);
+        } else {
+            timer = new InteractionTimer(showTime, reactTimeMS, reactTimeMS, null);
+        }
+
+        return new GameCommentInteraction(
             json["commentID"],
-            json["reaction"],
-            json["reactTimeMS"]
+            (reactions !== undefined ? reactions : (reaction ? [reaction] : [])),
+            timer
         );
+    }
+}
+
+/**
+ * Stores the interactions of a user with a set of posts.
+ * This is intended to be used to help when displaying
+ * posts in a feed, by allowing interactions with multiple
+ * posts at once.
+ */
+export class GamePostInteractionStore {
+    postInteractions; // {Number: GamePostInteraction}
+
+    constructor(template) {
+        this.postInteractions = {};
+        if (template !== undefined) {
+            const templateInteractions = template.postInteractions;
+            for (let key in templateInteractions) {
+                if (!templateInteractions.hasOwnProperty(key))
+                    continue;
+
+                this.postInteractions[key] = templateInteractions[key];
+            }
+        }
+    }
+
+    static empty() {
+        return new GamePostInteractionStore();
+    }
+
+    get(postIndex) {
+        let postInteraction = this.postInteractions[postIndex];
+        if (postInteraction !== undefined)
+            return postInteraction;
+
+        postInteraction = GamePostInteraction.empty();
+        this.postInteractions[postIndex] = postInteraction;
+        return postInteraction;
+    }
+
+    update(postIndex, postInteraction) {
+        const copy = new GamePostInteractionStore(this);
+        copy.postInteractions[postIndex] = postInteraction;
+        return copy;
     }
 }
 
@@ -335,88 +563,110 @@ export class GameCommentReaction {
  * Stores all the interactions of a user with a post.
  */
 export class GamePostInteraction {
-    postShowTime; // Number (UNIX Milliseconds)
-
-    postReaction; // String?
-    commentReactions; // GameCommentReaction[]
+    postReactions; // String[]
+    commentReactions; // GameCommentInteraction[]
+    lastComment; // String?
     comment; // String?
+    timer; // InteractionTimer
 
-    firstInteractTimeMS; // Number? (Milliseconds)
-    lastInteractTimeMS; // Number? (Milliseconds)
-
-    constructor(postShowTime, postReaction, commentReactions, comment, firstInteractTimeMS, lastInteractTimeMS) {
-        doTypeCheck(postShowTime, "number", "Time the Post was Shown");
-        doNullableTypeCheck(postReaction, "string", "Reaction to Post");
-        doArrayTypeCheck(commentReactions, GameCommentReaction, "Reactions to Comments");
+    constructor(postReactions, commentReactions, lastComment, comment, timer) {
+        doArrayTypeCheck(postReactions, "string", "Reactions to Post");
+        doArrayTypeCheck(commentReactions, GameCommentInteraction, "Reactions to Comments");
+        doNullableTypeCheck(lastComment, "string", "Participant's Last Comment");
         doNullableTypeCheck(comment, "string", "Participant's Comment");
-        doNullableTypeCheck(firstInteractTimeMS, "number", "First Time to Interact with Post");
-        doNullableTypeCheck(lastInteractTimeMS, "number", "Last Time to Interact with Post");
-        this.postShowTime = postShowTime;
-        this.postReaction = postReaction;
+        doNullableTypeCheck(timer, InteractionTimer, "Post Reaction Timer");
+        this.postReactions = postReactions;
         this.commentReactions = commentReactions;
+        this.lastComment = lastComment;
         this.comment = comment;
-        this.firstInteractTimeMS = firstInteractTimeMS || null;
-        this.lastInteractTimeMS = lastInteractTimeMS || null;
+        this.timer = timer;
     }
 
     static empty() {
-        return new GamePostInteraction(Date.now(), null, [], null, -1, -1);
+        return new GamePostInteraction([], [], null, null, InteractionTimer.start());
     }
 
-    withUpdatedInteractTime() {
-        const timeMS = Date.now() - this.postShowTime;
-        const firstInteractTimeMS = (this.firstInteractTimeMS === null ? timeMS : this.firstInteractTimeMS);
-        const lastInteractTimeMS = timeMS;
+    complete() {
+        const completedCommentReactions = [];
+        for (let index = 0; index < this.commentReactions.length; ++index) {
+            completedCommentReactions.push(this.commentReactions[index].complete())
+        }
         return new GamePostInteraction(
-            this.postShowTime, this.postReaction, this.commentReactions,
-            this.comment, firstInteractTimeMS, lastInteractTimeMS
+            this.postReactions,
+            completedCommentReactions,
+            this.lastComment,
+            this.comment,
+            this.timer.complete()
         );
     }
 
     withComment(comment) {
-        return new GamePostInteraction(
-            this.postShowTime,
-            this.postReaction,
-            this.commentReactions,
-            comment
-        ).withUpdatedInteractTime();
-    }
-
-    withToggledPostReaction(postReaction) {
-        // We want clicking the same reaction twice to toggle it.
-        if (this.postReaction === postReaction) {
-            postReaction = null;
+        let lastComment;
+        if (comment) {
+            lastComment = comment;
+        } else if (this.comment) {
+            lastComment = this.comment;
+        } else {
+            lastComment = this.lastComment;
         }
-        return this.withPostReaction(postReaction);
-    }
-
-    withPostReaction(postReaction) {
         return new GamePostInteraction(
-            this.postShowTime,
-            postReaction,
+            this.postReactions,
             this.commentReactions,
-            this.comment
-        ).withUpdatedInteractTime();
+            lastComment,
+            comment,
+            this.timer.withNewInteraction()
+        );
     }
 
-    withToggledCommentReaction(commentIndex, commentReaction) {
-        doNullableTypeCheck(commentReaction, "string", "Comment Reaction");
+    withDeletedComment() {
+        return new GamePostInteraction(
+            this.postReactions,
+            this.commentReactions,
+            null,
+            null,
+            this.timer.withNewInteraction()
+        );
+    }
+
+    withToggledPostReaction(postReaction, allowMultipleReactions) {
+        return this.withPostReactions(toggleReactionPresenceInArray(
+            this.postReactions, postReaction, allowMultipleReactions
+        ));
+    }
+
+    hasPostReaction(postReaction) {
+        return detectReactionPresenceInArray(this.postReactions, postReaction);
+    }
+
+    withPostReactions(postReactions) {
+        return new GamePostInteraction(
+            postReactions,
+            this.commentReactions,
+            this.lastComment,
+            this.comment,
+            this.timer.withNewInteraction()
+        );
+    }
+
+    withToggledCommentReaction(commentIndex, commentReaction, allowMultipleReactions) {
+        doTypeCheck(commentReaction, "string", "Comment Reaction");
 
         const existing = this.findCommentReaction(commentIndex);
-        if (existing === null || existing.reaction !== commentReaction) {
-            return this.withCommentReaction(
-                commentIndex,
-                new GameCommentReaction(
-                    commentIndex, commentReaction, Date.now() - this.postShowTime
-                )
-            );
+        if (existing === null) {
+            // First time interacting with the comment.
+            return this.withCommentReaction(commentIndex, GameCommentInteraction.create(
+                commentIndex, commentReaction, this.timer.showTime
+            ));
         } else {
-            return this.withCommentReaction(commentIndex, null);
+            // New interaction with a comment that had previous interactions.
+            return this.withCommentReaction(commentIndex, existing.withToggledReaction(
+                commentReaction, allowMultipleReactions
+            ));
         }
     }
 
     withCommentReaction(commentIndex, commentReaction) {
-        doNullableTypeCheck(commentReaction, GameCommentReaction, "Comment Reaction");
+        doNullableTypeCheck(commentReaction, GameCommentInteraction, "Comment Reaction");
 
         const commentReactions = [];
         for (let index = 0; index < this.commentReactions.length; ++index) {
@@ -430,11 +680,12 @@ export class GamePostInteraction {
         }
 
         return new GamePostInteraction(
-            this.postShowTime,
-            this.postReaction,
+            this.postReactions,
             commentReactions,
-            this.comment
-        ).withUpdatedInteractTime();
+            this.lastComment,
+            this.comment,
+            this.timer.withNewInteraction()
+        );
     }
 
     findCommentReaction(commentIndex) {
@@ -445,11 +696,6 @@ export class GamePostInteraction {
                 return commentReaction;
         }
         return null;
-    }
-
-    findCommentReactionString(commentIndex) {
-        const reaction = this.findCommentReaction(commentIndex);
-        return reaction === null ? null : reaction.reaction;
     }
 
     static commentReactionsToJSON(commentReactions) {
@@ -463,30 +709,48 @@ export class GamePostInteraction {
     static commentReactionsFromJSON(json) {
         const commentReactions = [];
         for (let index = 0; index < json.length; ++index) {
-            commentReactions.push(GameCommentReaction.fromJSON(json[index]));
+            commentReactions.push(GameCommentInteraction.fromJSON(json[index]));
         }
         return commentReactions;
     }
 
     toJSON() {
         return {
-            "postShowTime": this.postShowTime,
-            "postReaction": this.postReaction,
+            "postReactions": this.postReactions,
             "commentReactions": GamePostInteraction.commentReactionsToJSON(this.commentReactions),
             "comment": this.comment,
-            "firstInteractTimeMS": this.firstInteractTimeMS,
-            "lastInteractTimeMS": this.lastInteractTimeMS
+            "timer": this.timer.toJSON()
         };
     }
 
     static fromJSON(json) {
+        const timerJSON = json["timer"],
+              postShowTime = json["postShowTime"],
+              firstInteractTimeMS = json["firstInteractTimeMS"],
+              lastInteractTimeMS = json["lastInteractTimeMS"];
+
+        let timer;
+        if (timerJSON !== undefined) {
+            timer = InteractionTimer.fromJSON(timerJSON);
+        } else {
+            timer = new InteractionTimer(
+                postShowTime,
+                (firstInteractTimeMS ? postShowTime + firstInteractTimeMS : null),
+                (lastInteractTimeMS ? postShowTime + lastInteractTimeMS : null),
+                null
+            );
+        }
+
+        const postReactions = json["postReactions"],
+              postReaction = json["postReaction"],
+              comment = json["comment"];
+
         return new GamePostInteraction(
-            json["postShowTime"],
-            json["postReaction"],
+            (postReactions !== undefined ? postReactions : (postReaction ? [postReaction] : [])),
             GamePostInteraction.commentReactionsFromJSON(json["commentReactions"]),
-            json["comment"],
-            json["firstInteractTimeMS"],
-            json["lastInteractTimeMS"]
+            comment,
+            comment,
+            timer
         );
     }
 }
@@ -585,6 +849,7 @@ export class Game {
     participant; // GameParticipant
     dismissedPrompt; // Boolean
     completionCode; // String
+    displayPostsWindowSize; // Number
 
     saveResultsToDatabasePromise; // Promise, not saved
 
@@ -611,6 +876,7 @@ export class Game {
         this.participant = participant;
         this.dismissedPrompt = dismissedPrompt;
         this.completionCode = completionCode;
+        this.displayPostsWindowSize = (study.uiSettings.displayPostsInFeed ? 5 : 1);
 
         this.saveResultsToDatabasePromise = null;
     }
@@ -646,14 +912,22 @@ export class Game {
      * Returns whether there are no more posts to show to the participant.
      */
     isFinished() {
-        return this.participant.postInteractions.length >= this.study.length;
+        return this.participant.postInteractions.length >= this.study.basicSettings.length;
+    }
+
+    /**
+     * Returns whether there are no states beyond the current states.
+     */
+    areNoNextStates() {
+        const nextIndex = this.participant.postInteractions.length + this.displayPostsWindowSize;
+        return nextIndex >= this.states.length;
     }
 
     /**
      * Returns the stage of the game that the user should be shown right now.
      */
     getCurrentStage() {
-        if (!this.participant.participantID && this.study.requireIdentification)
+        if (!this.participant.participantID && this.study.basicSettings.requireIdentification)
             return "identification";
         if (this.isFinished())
             return "debrief";
@@ -662,31 +936,41 @@ export class Game {
         return "introduction";
     }
 
-    getCurrentState() {
+    getCurrentStates() {
         if (this.isFinished())
             throw new Error("The game has been finished!");
 
-        return this.states[this.participant.postInteractions.length];
+        const states = [];
+        const startIndex = this.participant.postInteractions.length
+        const limit = Math.min(this.states.length, startIndex + this.displayPostsWindowSize);
+        for (let index = startIndex; index < limit; ++index) {
+            states.push(this.states[index]);
+        }
+        return states;
     }
 
     /**
      * Preloads the images required for the current state.
      */
-    preloadCurrentState() {
+    preloadCurrentStates() {
         if (this.isFinished())
             return;
-        this.preloadState(this.getCurrentState());
+
+        const states = this.getCurrentStates();
+        for (let index = 0; index < states.length; ++index) {
+            setTimeout(this.preloadState.bind(this, states[index]), index * 200);
+        }
     }
 
     /**
-     * Preloads the images required for the next state.
+     * Preloads the images required for the next states.
      */
     preloadNextState() {
-        const nextStateIndex = this.participant.postInteractions.length + 1;
-        if (nextStateIndex >= this.states.length)
+        const nextIndex = this.participant.postInteractions.length + this.displayPostsWindowSize;
+        if (nextIndex >= this.states.length)
             return;
 
-        this.preloadState(this.states[nextStateIndex]);
+        this.preloadState(this.states[nextIndex]);
     }
 
     /**
@@ -706,29 +990,37 @@ export class Game {
     }
 
     /**
-     * Advances to the next state in the game after the
-     * participant interacted with a post.
+     * Advances to the next state in the game after the participant interacted with the
+     * highest current post. The highest current post is the visible post if not in
+     * feed-mode, or the first visible post in feed-mode.
      *
-     * @param interactions the interactions that the participant made with the post.
+     * @param interaction the interactions that the participant made with the highest current post.
      */
-    advanceState(interactions) {
-        doTypeCheck(interactions, GamePostInteraction, "Interaction with the Current Post")
+    advanceState(interaction) {
+        doTypeCheck(interaction, GamePostInteraction, "Interaction with the Current Post")
 
-        const postReaction = interactions.postReaction;
-        if (postReaction === "skip" || postReaction === null) {
-            this.participant.addReaction(interactions, 0, 0);
-        } else {
-            const post = this.getCurrentState().currentPost.post;
-            this.participant.addReaction(
-                interactions,
-                post.changesToCredibility[postReaction].sample(),
-                post.changesToFollowers[postReaction].sample()
-            );
+        // Mark that the post is no longer accessible.
+        interaction = interaction.complete();
+
+        // Calculate and apply the changes to participant's credibility and followers.
+        const postReactions = interaction.postReactions;
+        let credibilityChange = 0,
+            followerChange = 0;
+
+        const post = this.getCurrentStates()[0].currentPost.post;
+        for (let index = 0; index < postReactions.length; ++index) {
+            const reaction = postReactions[index];
+            if (reaction === "skip")
+                continue;
+
+            credibilityChange += post.changesToCredibility[reaction].sample();
+            followerChange += post.changesToFollowers[reaction].sample();
         }
+        this.participant.addReaction(interaction, credibilityChange, followerChange);
 
         // Generate a completion code when the game is finished.
         if (this.isFinished()) {
-            if (this.study.genCompletionCode) {
+            if (this.study.advancedSettings.genCompletionCode) {
                 this.completionCode = this.study.generateRandomCompletionCode();
             }
             this.endTime = getUnixEpochTimeSeconds();
@@ -744,13 +1036,13 @@ export class Game {
     }
 
     calculateAllStates() {
-        while (this.states.length < this.study.length) {
+        while (this.states.length < this.study.basicSettings.length) {
             this.calculateNextState();
         }
     }
 
     calculateNextState() {
-        if (this.states.length >= this.study.length)
+        if (this.states.length >= this.study.basicSettings.length)
             throw new Error("Already calculated all states for study");
 
         // Get or create the sources and posts arrays.
@@ -800,7 +1092,7 @@ export class Game {
         }
 
         // Create the new state.
-        const newState = new GameState(this.study, selectedSource, selectedPost);
+        const newState = new GameState(this.study, this.states.length, selectedSource, selectedPost);
         this.states.push(newState);
         this.latestStateSources = nextSources;
         this.latestStatePosts = nextPosts;
@@ -818,7 +1110,7 @@ export class Game {
     static statesFromJSON(json, study) {
         const states = [];
         for (let index = 0; index < json.length; ++index) {
-            states.push(GameState.fromJSON(json[index], study));
+            states.push(GameState.fromJSON(json[index], study, index));
         }
         return states;
     }
@@ -882,7 +1174,7 @@ export class Game {
 
 /**
  * Converts {@param game} to JSON and back, and
- * returns an array with all of the changes between
+ * returns an array with all changes between
  * the original game and the reconstructed one.
  * This should return an empty array if everything
  * is working correctly.

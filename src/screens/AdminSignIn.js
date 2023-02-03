@@ -1,7 +1,8 @@
 import {MountAwareComponent} from "../components/MountAwareComponent";
 import {auth, authProvider} from "../database/firebase";
+import {signInWithPopup} from "firebase/auth"
 import StatusLabel, {Status} from "../components/StatusLabel";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {Button} from "../components/Button";
 import {getDataManager} from "../model/manager";
 import {setDefaultPageTitle} from "../index";
@@ -22,10 +23,12 @@ export class AdminSignIn extends MountAwareComponent {
             if (!user)
                 return;
 
-            this.setStateIfMounted({
-                signingIn: false,
-                signedIn: true,
-                status: Status.success("Successfully signed in.")
+            this.setStateIfMounted(() => {
+                return {
+                    signingIn: false,
+                    signedIn: true,
+                    status: Status.success("Successfully signed in.")
+                };
             });
         };
     };
@@ -41,33 +44,31 @@ export class AdminSignIn extends MountAwareComponent {
     }
 
     signIn() {
-        this.setStateIfMounted({
-            signingIn: true,
-            signedIn: false,
-            status: Status.progress("Opening a popup for you to sign in...")
+        this.setStateIfMounted(() => {
+            return {
+                signingIn: true,
+                signedIn: false,
+                status: Status.progress("Opening a popup for you to sign in...")
+            };
         });
 
-        auth.signInWithPopup(authProvider).then(result => {
-            this.setStateIfMounted({
-                signingIn: false,
-                signedIn: false,
-                status: Status.progress("You are being signed in...")
-            });
-        }).catch(error => {
-            this.setStateIfMounted({
-                signingIn: false,
-                signedIn: false,
-                status: Status.error([
-                    <b>You could not be signed in:</b>,
-                    error.message
-                ])
+        signInWithPopup(auth, authProvider).catch(error => {
+            this.setStateIfMounted(() => {
+                return {
+                    signingIn: false,
+                    signedIn: false,
+                    status: Status.error([
+                        <b>You could not be signed in:</b>,
+                        error.message
+                    ])
+                };
             });
         });
     }
 
     render() {
         if (this.state.signedIn)
-            return (<Redirect to="/admin" />);
+            return (<Navigate to="/admin" />);
 
         return (
             <div className="w-full bg-gray-100" style={{minHeight: "100vh"}}>

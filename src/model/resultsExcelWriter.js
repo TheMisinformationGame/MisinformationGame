@@ -44,17 +44,28 @@ function setWorksheetColumns(worksheet, columnSpecs) {
 }
 
 /**
+ * Converts the given number value into a value to be
+ * written into the result spreadsheet. If the value
+ * is NaN, it is written as an empty cell.
+ */
+function numToCellValue(value) {
+    if (isNaN(value))
+        return "";
+    return value;
+}
+
+/**
  * Creates the workbook to store the results into.
  */
 function constructWorkbook(study, results, problems) {
-    const showFollowers = study.displayFollowers;
-    const showCredibility = study.displayCredibility;
-    const showPostLikes = study.postEnabledReactions.like;
-    const showPostDislikes = study.postEnabledReactions.dislike;
-    const showPostShares = study.postEnabledReactions.share;
-    const showPostFlags = study.postEnabledReactions.flag;
-    const showCommentLikes = study.commentEnabledReactions.like;
-    const showCommentDislikes = study.commentEnabledReactions.dislike;
+    const showFollowers = study.uiSettings.displayFollowers;
+    const showCredibility = study.uiSettings.displayCredibility;
+    const showPostLikes = study.uiSettings.postEnabledReactions.like;
+    const showPostDislikes = study.uiSettings.postEnabledReactions.dislike;
+    const showPostShares = study.uiSettings.postEnabledReactions.share;
+    const showPostFlags = study.uiSettings.postEnabledReactions.flag;
+    const showCommentLikes = study.uiSettings.commentEnabledReactions.like;
+    const showCommentDislikes = study.uiSettings.commentEnabledReactions.dislike;
 
     const workbook = new excel.Workbook();
 
@@ -68,7 +79,7 @@ function constructWorkbook(study, results, problems) {
     ];
     coverWorksheet.addRow({
         studyId: study.id,
-        studyName: study.name,
+        studyName: study.basicSettings.name,
         participants: results.length + Object.keys(problems).length,
         date: formatUTCDate(new Date())
     });
@@ -94,10 +105,17 @@ function constructWorkbook(study, results, problems) {
         {header: "Post Shares", key: "postShares", width: 20, enabled: showPostShares},
         {header: "Post Flags", key: "postFlags", width: 20, enabled: showPostFlags},
 
-        {header: "Reaction", key: "reaction", width: 12},
+        {header: "Liked Post", key: "likedPost", width: 20, enabled: showPostLikes},
+        {header: "Disliked Post", key: "dislikedPost", width: 20, enabled: showPostDislikes},
+        {header: "Shared Post", key: "sharedPost", width: 20, enabled: showPostShares},
+        {header: "Flagged Post", key: "flaggedPost", width: 20, enabled: showPostFlags},
+        {header: "Skipped Post", key: "skippedPost", width: 20},
         {header: "User Comment", key: "comment", width: 20, enabled: study.areUserCommentsEnabled()},
+
+        {header: "Dwell Time (MS)", key: "dwellTime", width: 22},
         {header: "First Time to Interact (MS)", key: "firstInteractTime", width: 32},
         {header: "Last Time to Interact (MS)", key: "lastInteractTime", width: 32},
+
         {header: "Credibility Change", key: "credibilityChange", width: 22, enabled: showCredibility},
         {header: "Follower Change", key: "followerChange", width: 22, enabled: showFollowers},
 
@@ -137,10 +155,17 @@ function constructWorkbook(study, results, problems) {
                 postShares: (shares === undefined ? "" : shares),
                 postFlags: (flags === undefined ? "" : flags),
 
-                reaction: interaction.postReaction || "",
+                likedPost: interaction.hasPostReaction("like"),
+                dislikedPost: interaction.hasPostReaction("dislike"),
+                sharedPost: interaction.hasPostReaction("share"),
+                flaggedPost: interaction.hasPostReaction("flag"),
+                skippedPost: interaction.hasPostReaction("skip"),
                 comment: interaction.comment || "",
-                firstInteractTime: interaction.firstInteractTimeMS,
-                lastInteractTime: interaction.lastInteractTimeMS,
+
+                dwellTime: numToCellValue(interaction.timer.getDwellTimeMS()),
+                firstInteractTime: numToCellValue(interaction.timer.getTimeToFirstInteractMS()),
+                lastInteractTime: numToCellValue(interaction.timer.getTimeToLastInteractMS()),
+
                 credibilityChange: afterCredibility - beforeCredibility,
                 followerChange: afterFollowers - beforeFollowers,
 
@@ -172,8 +197,11 @@ function constructWorkbook(study, results, problems) {
         {header: "Comment Likes", key: "commentLikes", width: 24, enabled: showCommentLikes},
         {header: "Comment Dislikes", key: "commentDislikes", width: 24, enabled: showCommentDislikes},
 
-        {header: "Reaction", key: "reaction", width: 12},
-        {header: "Reaction Time (ms)", key: "reactTime", width: 24},
+        {header: "Liked Comment", key: "likedComment", width: 20, enabled: showCommentLikes},
+        {header: "Disliked Comment", key: "dislikedComment", width: 20, enabled: showCommentDislikes},
+
+        {header: "First Time to Interact (MS)", key: "firstInteractTime", width: 32},
+        {header: "Last Time to Interact (MS)", key: "lastInteractTime", width: 32},
     ]);
     for (let index = 0 ; index < results.length; index++){
         const game = results[index];
@@ -187,7 +215,7 @@ function constructWorkbook(study, results, problems) {
                 const comment = state.currentPost.comments[commentIndex];
                 const likes = comment.numberOfReactions.like;
                 const dislikes = comment.numberOfReactions.dislike;
-                const reaction = interaction.findCommentReaction(commentIndex);
+                const cInter = interaction.findCommentReaction(commentIndex);
                 commentsWorksheet.addRow({
                     sessionID: game.sessionID,
                     participantID: participant.participantID || "",
@@ -199,8 +227,11 @@ function constructWorkbook(study, results, problems) {
                     commentLikes: (likes === undefined ? "" : likes),
                     commentDislikes: (dislikes === undefined ? "" : dislikes),
 
-                    reaction: (reaction ? reaction.reaction : ""),
-                    reactTime: (reaction ? reaction.reactTimeMS : "")
+                    likedComment: cInter !== null && cInter.hasReaction("like"),
+                    dislikedComment: cInter !== null && cInter.hasReaction("dislike"),
+
+                    firstInteractTime: (cInter !== null ? numToCellValue(cInter.timer.getTimeToFirstInteractMS()) : ""),
+                    lastInteractTime: (cInter !== null ? numToCellValue(cInter.timer.getTimeToLastInteractMS()) : "")
                 });
                 containsAnyComments = true;
             }
@@ -217,7 +248,7 @@ function constructWorkbook(study, results, problems) {
     setWorksheetColumns(participantWorksheet, [
         {header: "Session ID", key: "sessionID", width: 24},
         {header: "Participant ID", key: "participantID", width: 24},
-        {header: "Completion Code", key: "completionCode", width: 24, enabled: study.genCompletionCode},
+        {header: "Completion Code", key: "completionCode", width: 24, enabled: study.advancedSettings.genCompletionCode},
         {header: "Duration (Seconds)", key: "gameDuration", width: 24},
         {header: "Game Start Time (UTC)", key: "gameStartTime", width: 30},
         {header: "Game Finish Time (UTC)", key: "gameEndTime", width: 30},
@@ -281,7 +312,7 @@ export async function downloadResults(study) {
     });
 
     // Remove characters that could potentially interfere with user's file systems.
-    const safeStudyName = study.name.replace(/[^a-z0-9]/gi, '_');
+    const safeStudyName = study.basicSettings.name.replace(/[^a-z0-9]/gi, '_');
     FileSaver.saveAs(blob, "results--" + safeStudyName + ".xlsx");
     return problems;
 }

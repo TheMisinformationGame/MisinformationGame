@@ -2,6 +2,9 @@
   "buckets": [
     {
       "id": "misinformation-game.appspot.com"
+    },
+    {
+      "id": "rubber-duck-inc.appspot.com"
     }
   ]
 }

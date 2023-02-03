@@ -6,8 +6,15 @@ showBackToTop: true
 sitemap: false
 ---
 
-**This information is out of date.** This document is kept as
-the original design document for the application.
+# Original Design Document
+
+<p class="error">
+    <span style="font-weight: bold">This information is out-of-date.</span>
+    This document is kept for posterity, as it is the original design
+    document that was made before development on the Misinformation Game
+    started. Therefore, it should not be used as a reference for the
+    functioning of the Misinformation Game today.
+</p>
 
 # Table of contents
 

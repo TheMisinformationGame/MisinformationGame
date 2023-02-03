@@ -1,6 +1,6 @@
 import {Component} from 'react';
 import {getDataManager} from "../model/manager";
-import {Link, Redirect} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import StudyUpload from "../components/StudyUpload";
 import {ErrorLabel, ProgressLabel} from "../components/StatusLabel";
 import UploadIcon from '@mui/icons-material/Upload';
@@ -9,6 +9,7 @@ import {BrokenStudy} from "../model/study";
 import {MountAwareComponent} from "../components/MountAwareComponent";
 import {auth} from "../database/firebase";
 import {setDefaultPageTitle} from "../index";
+import {gameVersion} from "../version";
 
 
 class StudySummary extends Component {
@@ -20,10 +21,10 @@ class StudySummary extends Component {
                 <div className="rounded-xl border border-red-800 p-3 bg-white shadow">
                     <Link to={`/admin/${study.id}`}
                           className="text-red-500 text-lg font-bold hover:text-red-700 hover:underline">
-                        {study.name}
+                        {study.basicSettings.name}
                     </Link>
 
-                    <p dangerouslySetInnerHTML={{__html: study.description}} />
+                    <p dangerouslySetInnerHTML={{__html: study.basicSettings.description}} />
                     <ErrorLabel className="mt-3" value={[<b>This study is broken:</b>, study.error]} />
                 </div>
             );
@@ -43,10 +44,10 @@ class StudySummary extends Component {
                                  (study.enabled ? "text-green-600 hover:text-green-700" :
                                                   "text-blue-600 hover:text-blue-700")}>
 
-                    {study.name}
+                    {study.basicSettings.name}
                 </Link>
-                
-                <p dangerouslySetInnerHTML={{__html: study.description}} />
+
+                <p dangerouslySetInnerHTML={{__html: study.basicSettings.description}} />
             </div>
         );
     }
@@ -86,42 +87,58 @@ class AdminPage extends MountAwareComponent {
     componentDidMount() {
         super.componentDidMount();
 
-        const handleError = error => {
-            this.setStateIfMounted({
-                ...this.state,
-                error: error.message
+        if (auth.currentUser) {
+            this.initialise(auth.currentUser);
+        } else {
+            const authListener = (user) => {
+                if (user) {
+                    this.initialise(user);
+                    getDataManager().removeAuthChangeListener(authListener);
+                }
+            };
+            getDataManager().addAuthChangeListener(authListener);
+        }
+    }
+
+    initialise(user) {
+        if (!user)
+            throw new Error("No user provided");
+
+        const handleError = (activity, error) => {
+            this.setStateIfMounted(() => {
+                let message = "There was an error " + activity;
+                if (error.message && error.message.length > 0) {
+                    message += ": " + error.message;
+                }
+                return {error: message};
             });
         };
 
         const manager = getDataManager();
-        manager.getIsAdmin().then(isAdmin => {
-            this.setStateIfMounted({
-                ...this.state,
-                isAdmin: isAdmin
+        manager.getIsAdmin(user).then(isAdmin => {
+            this.setStateIfMounted(() => {
+                return {isAdmin: isAdmin};
             });
             if (!isAdmin)
                 return;
 
-            manager.getAllStudies().then((studies) => {
-                this.setStateIfMounted({
-                    ...this.state,
-                    studies: studies
+            manager.getAllStudies(user).then((studies) => {
+                this.setStateIfMounted(() => {
+                    return {studies: studies};
                 });
-            }).catch(handleError);
-        }).catch(handleError);
+            }).catch(error => handleError("loading studies", error));
+        }).catch(error => handleError("checking whether you are an admin", error));
     }
 
     showStudyUpload() {
-        this.setState({
-            studies: this.state.studies,
-            showUpload: true
+        this.setState(() => {
+            return {showUpload: true};
         });
     }
 
     hideStudyUpload() {
-        this.setState({
-            studies: this.state.studies,
-            showUpload: false
+        this.setState(() => {
+            return {showUpload: false};
         });
     }
 
@@ -132,13 +149,21 @@ class AdminPage extends MountAwareComponent {
         manager.cacheStudy(study);
 
         // Move to the study page for the uploaded study.
-        this.props.history.push("/admin/" + study.id);
+        this.props.navigate("/admin/" + study.id);
     }
 
     render() {
         if (!auth.currentUser)
-            return (<Redirect to="/sign-in" />);
+            return (<Navigate to="/sign-in" />);
 
+        let userDisplayName = "Loading...",
+            userUID = "Loading...";
+        if (auth.currentUser) {
+            userDisplayName = auth.currentUser.displayName;
+            userUID = auth.currentUser.uid;
+        }
+
+        const error = this.state.error;
         const isAdmin = this.state.isAdmin;
         const readIsAdmin = this.state.isAdmin !== null;
         const studies = this.state.studies || [];
@@ -157,12 +182,12 @@ class AdminPage extends MountAwareComponent {
                 {/* The navigation bar. */}
                 <div className="flex items-center justify-between w-full bg-white shadow">
                     <Link to="/" className="font-bold text-xl p-3">
-                        The Misinformation Game
+                        The Misinformation Game v{gameVersion}
                     </Link>
 
                     <div className="text-right px-2 py-1">
                         <span className="inline-block text-right text-lg">
-                            {auth.currentUser.displayName}
+                            {userDisplayName}
                         </span>
                         <Link to="/sign-out" className="inline-block ml-2 text-base font-medium hover:text-blue-800
                                                         text-blue-600 cursor-pointer select-none">
@@ -170,13 +195,16 @@ class AdminPage extends MountAwareComponent {
                             (Sign Out)
                         </Link>
                         <span className="block text-right text-sm text-gray-600">
-                            {auth.currentUser.uid}
+                            {userUID}
                         </span>
                     </div>
                 </div>
 
                 <div className="w-full p-10">
-                    {!isAdmin && readIsAdmin &&
+                    {error &&
+                        <ErrorLabel value={error} />}
+
+                    {!error && !isAdmin && readIsAdmin &&
                         <div>
                             <ErrorLabel value={[
                                 <b>You are not registered as an admin.</b>,
@@ -202,14 +230,14 @@ class AdminPage extends MountAwareComponent {
                         </div>}
 
                     {/* The studies. */}
-                    {isAdmin && readStudies &&
+                    {!error && isAdmin && readStudies &&
                         <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-10">
                             {studyComponents}
                             <UploadStudyButton onClick={() => this.showStudyUpload()}/>
                         </div>}
 
                     {/* Label saying that the studies are loading. */}
-                    {(!readIsAdmin || isAdmin) && !readStudies &&
+                    {!error && (!readIsAdmin || isAdmin) && !readStudies &&
                         <ProgressLabel value="Loading studies..." />}
                 </div>
 
