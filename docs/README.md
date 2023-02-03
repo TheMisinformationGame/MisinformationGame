@@ -1,7 +1,7 @@
 # The Misinformation Game Documentation
 
 You can read the documentation for The Misinformation Game at
-[https://themisinformationgame.github.io](https://themisinformationgame.github.io).
+[https://misinfogame.com](https://misinfogame.com).
 
 The documentation itself lives in two places on GitHub,
 

@@ -18,9 +18,11 @@ that was used to create the example game can be found [here](/link/ExampleStudy)
     the <a href="/FirebasePricing">Firebase Pricing Documentation</a>.
 </p>
 
+
 ## Access
 {:#access}
 
-You may access the example game from the following URL:
+You may access example studies from the following URLs:
 
-- [Misinformation Game Link](https://misinformation-game.web.app/study/m1v891krnanahrdi/id?s=hviawth01zo4zxmx)
+- [Single-Post Mode Study](https://try.misinfogame.com/study/0m3eots70fhyo6ns)
+- [Feed Mode Study](https://try.misinfogame.com/study/zc7s3qqh0rrc30cx)
