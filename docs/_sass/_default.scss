@@ -138,3 +138,26 @@ ul#markdown-toc > li > ul > li > ul > li {
     width: 95vw;
   }
 }
+
+.content-wrapper .call-to-action-container {
+  display: block;
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 3em;
+}
+.content-wrapper a.call-to-action-button {
+  display: inline-block;
+  padding: 0.5em 1.1em;
+  border-radius: 0.6em;
+  background-color: $brand-color;
+  box-shadow: 1px 1px 4px -1px rgba(0,0,0,0.65);
+  color: white;
+  text-decoration: none;
+  font-size: 1.1em;
+  transition: background-color 0.2s;
+}
+.content-wrapper a.call-to-action-button:hover {
+  background-color: $brand-color-lighter;
+  text-decoration: underline;
+  transition: background-color 0.2s;
+}

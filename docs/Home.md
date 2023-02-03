@@ -65,22 +65,39 @@ analysis are described in the [Results Documentation](/Results).
 ## Getting Started
 {:#getting-started}
 
-The Misinformation Game contains many configuration options
-to tailor the game for specific research purposes. To find
-out whether The Misinformation Game is the right fit for
-your research, we recommend that you first read through the
-[How to Play](/HowToPlay) page and try the
-[Example Game](#example-game). We then advise that you read
-the available options for configuring your own study on the
-[Study Configuration](/StudyConfiguration) page. Additionally,
-the results that are made available for your analysis are
-described on the [Results](/Results) page.
+The number of configuration options that are available for the Misinformation
+Game may be intimidating. Therefore, if you are new to the tool, or you want
+to get a refresher, we recommend that you read our
+[Getting Started Guide](/GettingStarted). This guide is a great place to learn
+the most important concepts for using the Misinformation Game effectively
+for your research. Additionally, the paper
+[The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
+provides an in-depth introduction to using the tool, along with results from
+two validation studies that were conducted to test the Misinformation Game. If
+you use the Misinformation Game for your research, we would really appreciate
+it if you [cited this paper](#cite)!
 
-To conduct a study using The Misinformation Game, you will
-need to host your own website for the game. Your options to
-host your own instance of the game are described on the
-[Installation](/Installation) page.
+<div class="call-to-action-container">
+    <a href="/GettingStarted" class="call-to-action-button">
+        Get Started
+    </a>
+</div>
 
+
+## Cite the Misinformation Game
+{:#cite}
+
+```bibtex
+@misc{butler_lamont_wan_prike_nasim_walker_fay_ecker_2022,
+ title={The (Mis)Information Game: A Social Media Simulator},
+ url={psyarxiv.com/628wc},
+ DOI={10.31234/osf.io/628wc},
+ publisher={PsyArXiv},
+ author={Butler, Lucy and Lamont, Padraig and Wan, Dean L Y and Prike, Toby and Nasim, Mehwish and Walker, Bradley and Fay, Nicolas and Ecker, Ullrich K H},
+ year={2022},
+ month={Jul}
+}
+```
 
 
 ## Usage Documentation
@@ -138,17 +155,3 @@ host your own instance of the game are described on the
   The template spreadsheet that should be edited to create your own study.
 - [Example Game Configuration Spreadsheet](/link/ExampleStudy) -
   The study configuration spreadsheet that is used to create the example game.
-
-## Cite the Misinformation Game
-
-```bibtex
-@misc{butler_lamont_wan_prike_nasim_walker_fay_ecker_2022,
- title={The (Mis)Information Game: A Social Media Simulator},
- url={psyarxiv.com/628wc},
- DOI={10.31234/osf.io/628wc},
- publisher={PsyArXiv},
- author={Butler, Lucy and Lamont, Padraig and Wan, Dean L Y and Prike, Toby and Nasim, Mehwish and Walker, Bradley and Fay, Nicolas and Ecker, Ullrich K H},
- year={2022},
- month={Jul}
-}
-```
