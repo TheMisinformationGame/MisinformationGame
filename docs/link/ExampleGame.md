@@ -4,12 +4,12 @@ showPath: true
 sitemap: false
 ---
 
-# Example Game
+# Example Games
 {:#intro .no_toc}
 
-The example game may be used to help to understand the basic functionality
-and purpose of The Misinformation Game. The study configuration spreadsheet
-that was used to create the example game can be found [here](/link/ExampleStudy).
+These example games may be used to help to understand the basic functionality
+and purpose of The Misinformation Game. The study configuration spreadsheets
+that were used to create the example games can be found [here](/link/ExampleStudy).
 
 <p class="info">
     If the game doesn't load correctly for you, then that may be caused due
