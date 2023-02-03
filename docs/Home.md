@@ -70,12 +70,14 @@ Game may be intimidating. Therefore, if you are new to the tool, or you want
 to get a refresher, we recommend that you read our
 [Getting Started Guide](/GettingStarted). This guide is a great place to learn
 the most important concepts for using the Misinformation Game effectively
-for your research. Additionally, the paper
+for your research.
+
+The paper
 [The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
-provides an in-depth introduction to using the tool, along with results from
-two validation studies that were conducted to test the Misinformation Game. If
-you use the Misinformation Game for your research, we would really appreciate
-it if you [cited this paper](#cite)!
+also provides an in-depth introduction to the Misinformation Game. It also
+contains the results from two validation studies that were conducted to test
+the Misinformation Game. If you use the Misinformation Game for your research,
+we would really appreciate it if you [cited this paper](#cite)!
 
 <div class="call-to-action-container">
     <a href="/GettingStarted" class="call-to-action-button">
