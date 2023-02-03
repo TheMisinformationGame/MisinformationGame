@@ -17,6 +17,7 @@ related questions.
 
 **Documentation:** [misinfogame.com](https://misinfogame.com)
 
+
 ### Example Game
 If you would like to try a study created using
 The Misinformation Game, you can access an example game from
@@ -24,6 +25,7 @@ The Misinformation Game, you can access an example game from
 You may enter any ID to access the example game.
 
 ![Example Game](docs/screenshots/example-game.png)
+
 
 ### Features
 
@@ -46,15 +48,13 @@ You may enter any ID to access the example game.
 - Ability to completely delete old studies and their results to
   ensure privacy of participants is maintained.
 
+
 # 🛠️ Documentation
 Information regarding how The Misinformation Game works, the system architecture, and guides to conducting studies
 can all be found at https://themisinformationgame.github.io/.
 This documentation is also available under /docs in this
 repository.
 
-# 📝 License
-The Misinformation Game is licensed under the
-[CC BY 4.0 License](LICENSE.txt).
 
 # 🖥️ Screenshots
 **Admin Dashboard:**
@@ -70,3 +70,22 @@ start a study:**
 **Configurable debriefing given to participants after
 they complete a study:**
 ![Example Study Debriefing](docs/screenshots/example-debriefing.png)
+
+
+# 📖 Cite the Misinformation Game
+```bibtex
+@misc{butler_lamont_wan_prike_nasim_walker_fay_ecker_2022,
+ title={The (Mis)Information Game: A Social Media Simulator},
+ url={psyarxiv.com/628wc},
+ DOI={10.31234/osf.io/628wc},
+ publisher={PsyArXiv},
+ author={Butler, Lucy and Lamont, Padraig and Wan, Dean L Y and Prike, Toby and Nasim, Mehwish and Walker, Bradley and Fay, Nicolas and Ecker, Ullrich K H},
+ year={2022},
+ month={Jul}
+}
+```
+
+
+# 📝 License
+The Misinformation Game is licensed under the
+[CC BY 4.0 License](LICENSE.txt).
