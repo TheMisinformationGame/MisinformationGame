@@ -117,26 +117,13 @@ ul#markdown-toc > li > ul > li > ul > li {
 }
 
 .content-wrapper {
-  padding-top: $header-thickness+10px;
-  margin: auto;
   display: block;
-  width: $container-width - 20px;
+  padding: $header-thickness+10px 1.8em 0;
+  margin: auto;
+  max-width: $container-width;
 }
 .content-wrapper h1 {
   margin: 20px 0 5px;
-}
-@media (max-width: $container-width) {
-  .container {
-    width: 95vw;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .content-wrapper {
-    padding-top: $header-thickness+10px;
-    margin: auto;
-    display: block;
-    width: 95vw;
-  }
 }
 
 .content-wrapper .call-to-action-container {
