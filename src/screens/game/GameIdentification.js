@@ -116,13 +116,14 @@ export class GameIdentification extends ActiveGameScreen {
                     {this.state.displayError && (!this.state.value || this.state.value.trim() === "") &&
                         <ErrorLabel value="Please enter an ID" />}
 
-                    <ContinueButton to={target}
-                                    condition={GameIdentification.isValidValue(this.state.value)}
-                                    disabledTooltip="Enter your access ID to continue"
-                                    onClick={() => this.setState(() => {
-                                        return {displayError: true};
-                                    })}
-                                    active={this.state.submitOnEnterUp} />
+                    <ContinueButton
+                        to={target}
+                        condition={GameIdentification.isValidValue(this.state.value)}
+                        disabledTooltip="Enter your access ID to continue"
+                        onClick={() => this.setState(() => {
+                            return {displayError: true};
+                        })}
+                        active={this.state.submitOnEnterUp} />
                 </div>
             </div>
         )

@@ -32,22 +32,23 @@ export class ContinueButton extends MountAwareComponent {
         const disabledByTime = this.state.disabled;
         const enabled = !disabledByTime && this.props.condition;
         return (
-            <ConditionalLink to={this.props.to}
-                             condition={enabled}
-                             onClick={this.props.onClick}
-                             tooltip={
-                                 (!enabled ? (disabledByTime ?
-                                    "The continue button will be enabled shortly"
-                                    : this.props.disabledTooltip) : "")}
-                             className={
-                                 "px-3 py-2 rounded-md text-white " +
-                                 (!enabled ? "" : "cursor-pointer ") +
-                                 "select-none " +
-                                 (this.props.className || "") + " " +
-                                 (!enabled ? "bg-gray-400 " :
-                                     (this.props.active ? "bg-blue-600 " : "bg-blue-500 active:bg-blue-600 ") +
-                                     "hover:bg-blue-600")
-                             }>
+            <ConditionalLink
+                to={this.props.to}
+                condition={enabled}
+                onClick={() => this.props.onClick(enabled)}
+                tooltip={
+                    (!enabled ? (disabledByTime ?
+                        "The continue button will be enabled shortly"
+                        : this.props.disabledTooltip) : "")}
+                className={
+                    "px-3 py-2 rounded-md text-white " +
+                    (!enabled ? "" : "cursor-pointer ") +
+                    "select-none " +
+                    (this.props.className || "") + " " +
+                    (!enabled ? "bg-gray-400 " :
+                        (this.props.active ? "bg-blue-600 " : "bg-blue-500 active:bg-blue-600 ") +
+                        "hover:bg-blue-600")
+                }>
 
                 {(disabledByTime ? "Continue" : this.props.buttonText || "Continue")}
             </ConditionalLink>

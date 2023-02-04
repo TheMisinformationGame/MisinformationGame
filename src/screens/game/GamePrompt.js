@@ -18,10 +18,11 @@ export class GamePrompt extends Component {
                     <div className="h-16" />
                 </div>
 
-                <ContinueBanner to={null}
-                                condition={true}
-                                onClick={this.props.onClick}
-                                delay={study.promptDelaySeconds}/>
+                <ContinueBanner
+                    to={null}
+                    condition={true}
+                    onClick={this.props.onClick}
+                    delay={study.advancedSettings.promptDelaySeconds} />
             </div>
         );
      }

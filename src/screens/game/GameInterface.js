@@ -563,7 +563,11 @@ export class GameScreen extends ActiveGameScreen {
         return (
             <>
                 {displayPrompt &&
-                    <GamePrompt study={study} onClick={() => this.onPromptContinue()} />}
+                    <GamePrompt study={study} onClick={(enabled) => {
+                        if (enabled) {
+                            this.onPromptContinue();
+                        }
+                    }} />}
 
                 <div className={"flex flex-row items-start w-full bg-gray-100 " +
                                 (displayPrompt ? " filter blur " : "")}
