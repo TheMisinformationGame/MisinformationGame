@@ -72,18 +72,6 @@ repository.
 
 # 🖥️ Gallery
 
-### Reacting to a post
-
-![Reacting to a post](docs/screenshots/reacting.gif)
-
-### Commenting on a post
-
-![Commenting on a post](docs/screenshots/commenting.gif)
-
-### Dynamic feedback for participants
-
-![Receiving dynamic feedback after reacting to a post](docs/screenshots/dynamic-feedback.gif)
-
 ### Admin dashboard
 
 ![Example Admin Dashboard](docs/screenshots/example-admin-dashboard.png)
