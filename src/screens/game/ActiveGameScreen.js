@@ -112,7 +112,9 @@ export class ActiveGameScreen extends ActiveStudyScreen {
         manager.addUpdateListener(this.studyUpdateListener);
 
         // Load the current game.
-        this.reloadActiveGame();
+        if (!this.state.game) {
+            this.reloadActiveGame();
+        }
     }
 
     componentWillUnmount() {
