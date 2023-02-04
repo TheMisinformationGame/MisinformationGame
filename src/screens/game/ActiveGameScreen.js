@@ -83,25 +83,23 @@ export class ActiveGameScreen extends ActiveStudyScreen {
                 gameLoadError: null
             };
         });
-        setTimeout(() => {
-            getDataManager().getActiveGame().then((game) => {
-                this.setStateIfMounted(() => {
-                    return {
-                        game: game,
-                        gameLoading: false,
-                        gameLoadError: null
-                    };
-                });
-                this.afterGameLoaded(game);
-            }).catch(err => {
-                console.error(err);
-                this.setStateIfMounted(() => {
-                    return {
-                        game: null,
-                        gameLoading: false,
-                        gameLoadError: err.message
-                    };
-                });
+        getDataManager().getActiveGame().then((game) => {
+            this.setStateIfMounted(() => {
+                return {
+                    game: game,
+                    gameLoading: false,
+                    gameLoadError: null
+                };
+            });
+            this.afterGameLoaded(game);
+        }).catch(err => {
+            console.error(err);
+            this.setStateIfMounted(() => {
+                return {
+                    game: null,
+                    gameLoading: false,
+                    gameLoadError: err.message
+                };
             });
         });
     }
