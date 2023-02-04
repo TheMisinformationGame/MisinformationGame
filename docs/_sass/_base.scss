@@ -153,6 +153,16 @@ figure > figcaption > a:hover {
   color: #222222;
   text-decoration: underline;
 }
+figure .figure-side-by-side {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+figure .figure-side-by-side img {
+  flex: 0;
+  margin: 0.4rem 0.4rem 0;
+}
 
 p {
   display: block;

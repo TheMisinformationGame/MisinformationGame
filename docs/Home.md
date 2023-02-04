@@ -40,7 +40,7 @@ from [the example games page](/link/ExampleGame). You can enter any
 random text as your ID to access an example game.
 
 <figure id="fig1">
-    <img src="screenshots/example-game.png" alt="figure 1" height="582" />
+    <img src="screenshots/example-game.png" alt="Figure 1. Screenshot of the user interface within a game." height="582" />
     <figcaption>
         <a href="#fig1">Figure 1.</a> Screenshot of the user interface within a game.
     </figcaption>
