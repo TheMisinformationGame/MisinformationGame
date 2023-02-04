@@ -70,7 +70,20 @@ repository.
 ```
 
 
-# 🖥️ Screenshots
+# 🖥️ Gallery
+
+**Reacting to a Post**
+
+<img src="docs/screenshots/reacting.gif" width="860" alt="Reacting to a post" />
+
+**Commenting on a Post**
+
+<img src="docs/screenshots/commenting.gif" width="860" alt="Commenting on a post" />
+
+**Dynamic Feedback for Participants**
+
+<img src="docs/screenshots/dynamic-feedback.gif" width="524" alt="Receiving dynamic feedback after reacting to a post" />
+
 **Admin Dashboard:**
 ![Example Admin Dashboard](docs/screenshots/example-admin-dashboard.png)
 
