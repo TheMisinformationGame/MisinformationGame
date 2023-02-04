@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import {BrowserRouter, Route, Routes, useNavigate, useParams} from "react-router-dom";
@@ -21,8 +21,28 @@ export function setDefaultPageTitle() {
 }
 
 
+/**
+ * Scrolls back to the top when each screen is loaded.
+ */
+class ScreenContainer extends Component {
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
+    render() {
+        return this.props.children;
+    }
+}
+
+
 function withNavigation(Comp) {
-    return (props) => <Comp {...props} navigate={useNavigate()} params={useParams()} />;
+    return (props) => {
+        return (
+            <ScreenContainer>
+                <Comp {...props} navigate={useNavigate()} params={useParams()} />
+            </ScreenContainer>
+        );
+    };
 }
 
 

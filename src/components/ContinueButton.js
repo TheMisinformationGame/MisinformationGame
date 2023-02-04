@@ -90,21 +90,24 @@ export class ContinueBanner extends MountAwareComponent {
         };
         this.scrollTrackingTimer = null;
 
-        // We create a new function to make sure that removing it as an
-        // event listener won't clash with other ContinueBanner instances.
-        this.trackScrolling = () => {
-            const scrolledDown = isScrolledDown();
-            if (!this.state.scrolledDown && scrolledDown) {
-                this.setStateIfMounted(() => {
-                    return {scrolledDown: true};
-                })
-            }
-        };
+        if (this.props.requireScrollToBottom) {
+            // We create a new function to make sure that removing it as an
+            // event listener won't clash with other ContinueBanner instances.
+            this.trackScrolling = () => {
+                const scrolledDown = isScrolledDown();
+                if (!this.state.scrolledDown && scrolledDown) {
+                    this.setStateIfMounted(() => {
+                        return {scrolledDown: true};
+                    })
+                }
+            };
+        } else {
+            this.trackScrolling = null;
+        }
     }
 
     componentDidMount() {
         super.componentDidMount();
-        window.scrollTo(0, 0);
         if (this.props.requireScrollToBottom) {
             this.scrollTrackingTimer = setInterval(this.trackScrolling, 50);
         }
