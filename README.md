@@ -73,16 +73,13 @@ repository.
 # 🖥️ Gallery
 
 **Reacting to a Post**
-
-<img src="docs/screenshots/reacting.gif" width="860" alt="Reacting to a post" />
+![Reacting to a post](docs/screenshots/reacting.gif)
 
 **Commenting on a Post**
-
-<img src="docs/screenshots/commenting.gif" width="860" alt="Commenting on a post" />
+![Commenting on a post](docs/screenshots/commenting.gif)
 
 **Dynamic Feedback for Participants**
-
-<img src="docs/screenshots/dynamic-feedback.gif" width="524" alt="Receiving dynamic feedback after reacting to a post" />
+![Receiving dynamic feedback after reacting to a post](docs/screenshots/dynamic-feedback.gif)
 
 **Admin Dashboard:**
 ![Example Admin Dashboard](docs/screenshots/example-admin-dashboard.png)
