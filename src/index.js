@@ -57,6 +57,7 @@ const GameRulesElem = withNavigation(GameRules);
 const GamePostIntroductionElem = withNavigation(GamePostIntroduction);
 const GameScreenElem = withNavigation(GameScreen);
 const GameDebriefElem = withNavigation(GameDebrief);
+const ErrorElem = withNavigation(ErrorScreen);
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -75,7 +76,7 @@ root.render(
               <Route exact path="/study/:studyID/post-intro" element={<GamePostIntroductionElem />} />
               <Route exact path="/study/:studyID/feed" element={<GameScreenElem />} />
               <Route exact path="/study/:studyID/debrief" element={<GameDebriefElem />} />
-              <Route element={ErrorScreen} />
+              <Route path="*" element={<ErrorElem />} />
           </Routes>
       </BrowserRouter>
   </React.StrictMode>
