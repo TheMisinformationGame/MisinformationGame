@@ -94,35 +94,40 @@ export function readStudyImage(path) {
 async function readStudyImageInternal(path) {
     const type = getStudyImagePathType(path);
     return new Promise((resolve, reject) => {
-        return getDownloadURL(ref(storage, path)).then((url) => {
-            const request = new XMLHttpRequest();
-            // Long timeout as we really don't want to hammer the backend.
-            request.timeout = 8000;
-            request.open("GET", url, true);
-            request.responseType = "arraybuffer";
-            request.onload = () => {
-                const response = request.response;
-                if (response) {
-                    resolve(new StudyImage(new Uint8Array(response), type));
-                } else {
-                    reject(new Error("Missing response when loading StudyImage from " + path));
-                }
-            };
-
-            const makeErrorListener = (errorDesc) => {
-                return () => {
-                    reject(new Error(
-                        errorDesc + " StudyImage from " + path +
-                        (request.status ? " (" + request.status + ")" : "") +
-                        (request.statusText ? ": " + request.statusText : "")
-                    ));
+        getDownloadURL(ref(storage, path))
+            .then((url) => {
+                const request = new XMLHttpRequest();
+                // Long timeout as we really don't want to hammer the backend.
+                request.timeout = 8000;
+                request.open("GET", url, true);
+                request.responseType = "arraybuffer";
+                request.onload = () => {
+                    const response = request.response;
+                    if (response) {
+                        resolve(new StudyImage(new Uint8Array(response), type));
+                    } else {
+                        reject(new Error("Missing response when loading StudyImage from " + path));
+                    }
                 };
-            };
-            request.onerror = makeErrorListener("Could not load");
-            request.onabort = makeErrorListener("Aborted while loading");
-            request.ontimeout = makeErrorListener("Timed out while loading");
-            request.send(null);
-        });
+
+                const makeErrorListener = (errorDesc) => {
+                    return () => {
+                        reject(new Error(
+                            errorDesc + " StudyImage from " + path +
+                            (request.status ? " (" + request.status + ")" : "") +
+                            (request.statusText ? ": " + request.statusText : "")
+                        ));
+                    };
+                };
+                request.onerror = makeErrorListener("Could not load");
+                request.onabort = makeErrorListener("Aborted while loading");
+                request.ontimeout = makeErrorListener("Timed out while loading");
+                request.send(null);
+            })
+            .catch((reason) => {
+                reject(reason);
+                throw reason;
+            });
     });
 }
 
