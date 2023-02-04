@@ -73,26 +73,33 @@ repository.
 # 🖥️ Gallery
 
 **Reacting to a Post**
+
 ![Reacting to a post](docs/screenshots/reacting.gif)
 
 **Commenting on a Post**
+
 ![Commenting on a post](docs/screenshots/commenting.gif)
 
 **Dynamic Feedback for Participants**
+
 ![Receiving dynamic feedback after reacting to a post](docs/screenshots/dynamic-feedback.gif)
 
 **Admin Dashboard:**
+
 ![Example Admin Dashboard](docs/screenshots/example-admin-dashboard.png)
 
 **Admin Study View:**
+
 ![Example Admin Study View](docs/screenshots/example-admin-study.png)
 
 **Configurable prompt shown to participants before they
 start a study:**
+
 ![Example Study Prompt](docs/screenshots/example-prompt.png)
 
 **Configurable debriefing given to participants after
 they complete a study:**
+
 ![Example Study Debriefing](docs/screenshots/example-debriefing.png)
 
 
