@@ -48,15 +48,15 @@ export async function readStudySettings(studyID) {
                 resolve(study);
                 return study;
             })
-            .catch(error => {
-                if (error.code === "permission-denied") {
+            .catch(reason => {
+                if (reason.code === "permission-denied") {
                     console.error(reason);
                     const err = new Error("This study has been disabled.");
                     reject(err);
                     throw err;
                 }
-                reject(error);
-                throw error;
+                reject(reason);
+                throw reason;
             })
     });
 }
