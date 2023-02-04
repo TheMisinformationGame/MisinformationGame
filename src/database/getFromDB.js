@@ -34,20 +34,30 @@ function studyOrBrokenFromJson(studyID, json) {
  */
 export async function readStudySettings(studyID) {
     return new Promise((resolve, reject) => {
-        getDoc(doc(collection(db, "Studies"), studyID)).then(snapshot => {
-            if (!snapshot.exists()) {
-                reject(new Error("Could not find the study with ID " + studyID));
-                return;
-            }
-            const json = decompressJson(snapshot.data())
-            resolve(studyOrBrokenFromJson(studyID, json));
-        }).catch(error => {
-            if (error.code === "permission-denied") {
-                reject(new Error("This study has been disabled."));
-                return;
-            }
-            reject(error);
-        })
+        getDoc(doc(collection(db, "Studies"), studyID))
+            .then(snapshot => {
+                if (!snapshot.exists()) {
+                    const err = new Error("Could not find the study with ID " + studyID);
+                    reject(err);
+                    throw err;
+                }
+
+                const json = decompressJson(snapshot.data()),
+                      study = studyOrBrokenFromJson(studyID, json);
+
+                resolve(study);
+                return study;
+            })
+            .catch(error => {
+                if (error.code === "permission-denied") {
+                    console.error(reason);
+                    const err = new Error("This study has been disabled.");
+                    reject(err);
+                    throw err;
+                }
+                reject(error);
+                throw error;
+            })
     });
 }
 
@@ -125,6 +135,14 @@ async function readStudyImageInternal(path) {
                 request.send(null);
             })
             .catch((reason) => {
+                if (reason.code === "storage/object-not-found") {
+                    console.error(reason);
+                    const err = new Error("Image not found.");
+                    reject(err);
+                    throw err;
+                }
+                console.log("REASON REASON REASON")
+                console.log(reason.code);
                 reject(reason);
                 throw reason;
             });
