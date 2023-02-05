@@ -46,11 +46,19 @@ Sheets, or by uploading the Study Template file.
 ### Method 1: Copy the Template (Recommended)
 {:#create-copy}
 
-You can access the Study Configuration Template Spreadsheet on Google Sheets
+You can access the Study Configuration Template Spreadsheet
 from [the study configuration template page](/link/StudyTemplate).
-After you have loaded the template spreadsheet, you can select
-**_File_** -> **_Make a copy_** to clone the spreadsheet so that
-you can make changes.
+On this page, you should follow the latest recommended Google Sheets
+link. Once opened, select **_File -> Make a copy_** to clone the
+spreadsheet so that you can make your own study, as shown in
+[Figure 1](#fig1).
+
+<figure id="fig1">
+    <img src="diagrams/make-a-copy.png" height="412" alt="A diagram showing the process to copy the study configuration template." />
+    <figcaption>
+        <a href="#fig1">Figure 1.</a> A diagram showing the process to copy the study configuration template.
+    </figcaption>
+</figure>
 
 
 
@@ -196,12 +204,12 @@ This description is not shown to participants.
 ##### Prompt
 {:#general-prompt .no_toc}
 The prompt text to be shown to participants before they
-start the study. An example prompt is shown in [Figure 1](#fig1).
+start the study. An example prompt is shown in [Figure 2](#fig2).
 
-<figure id="fig1">
-    <img src="screenshots/example-prompt-no-border.png" alt="figure 1" height="501" />
+<figure id="fig2">
+    <img src="screenshots/example-prompt-no-border.png" alt="A screenshot of an example prompt." height="471" />
     <figcaption>
-        <a href="#fig1">Figure 1.</a> Screenshot of an example prompt.
+        <a href="#fig2">Figure 2.</a> A screenshot of an example prompt.
     </figcaption>
 </figure>
 
@@ -363,12 +371,12 @@ Only available if:
 Whether to generate and display a completion code
 to participants once they have completed the study.
 An example debriefing page that includes a generated
-completion code for a participant is shown in [Figure 2](#fig2).
+completion code for a participant is shown in [Figure 3](#fig3).
 
-<figure id="fig2">
-    <img src="screenshots/example-debriefing-no-border.png" alt="figure 2" height="276" />
+<figure id="fig3">
+    <img src="screenshots/example-debriefing-no-border.png" alt="A screenshot of an example debriefing page with a completion code." height="276" />
     <figcaption>
-        <a href="#fig2">Figure 2.</a> Screenshot of an example debriefing page with a completion code.
+        <a href="#fig3">Figure 3.</a> A screenshot of an example debriefing page with a completion code.
     </figcaption>
 </figure>
 
@@ -386,12 +394,12 @@ default source avatars. If set to "No", the default
 avatars of sources will all have a white background.
 This setting does nothing if sources are given avatar
 images. The possible background colours when the
-background is randomised are shown in [Figure 3](#fig3).
+background is randomised are shown in [Figure 4](#fig4).
 
-<figure id="fig3">
-    <img src="screenshots/example-default-random-avatars.png" alt="figure 3" height="140" />
+<figure id="fig4">
+    <img src="screenshots/example-default-random-avatars.png" alt="The possible random source avatar background colours." height="140" />
     <figcaption>
-        <a href="#fig3">Figure 3.</a> The possible random source avatar background colours.
+        <a href="#fig4">Figure 4.</a> The possible random source avatar background colours.
     </figcaption>
 </figure>
 
@@ -539,10 +547,10 @@ will add a checkbox that will require participants to confirm
 that they have read the study debriefing before they can copy
 their completion code.
 
-<figure id="fig4">
-    <img src="screenshots/example-debriefing-no-border.png" alt="figure 4" height="276" />
+<figure id="fig5">
+    <img src="screenshots/example-debriefing-no-border.png" alt="A screenshot of an example debriefing page with a completion code." height="276" />
     <figcaption>
-        <a href="#fig4">Figure 4.</a> Screenshot of an example debriefing page with a completion code.
+        <a href="#fig5">Figure 5.</a> A screenshot of an example debriefing page with a completion code.
     </figcaption>
 </figure>
 
@@ -660,12 +668,12 @@ These IDs can be found in the _Posts_ sheet.
 The _Sources_ sheet allows you to add all the sources that can
 be shown to participants during your study. Each source contains
 several settings to define their appearance and behaviour. An
-example source for a post is shown in [Figure 5](#fig5).
+example source for a post is shown in [Figure 6](#fig6).
 
-<figure id="fig5">
-    <img src="screenshots/example-source.png" alt="figure 5" height="76" />
+<figure id="fig6">
+    <img src="screenshots/example-source.png" alt="A screenshot of an example source in the game." height="76" />
     <figcaption>
-        <a href="#fig5">Figure 5.</a> Screenshot of an example source in the game.
+        <a href="#fig6">Figure 6.</a> A screenshot of an example source in the game.
     </figcaption>
 </figure>
 
@@ -710,12 +718,12 @@ the mean +/- 5 SD is tiny (0.00006%), and therefore this
 should not affect the shape of the distributions noticeably.
 
 An example preview of the distributions of the follower
-count and credibility for a source is shown in [Figure 6](#fig6).
+count and credibility for a source is shown in [Figure 7](#fig7).
 
-<figure id="fig6">
-    <img src="screenshots/example-config-source-preview.png" alt="figure 6" height="484" />
+<figure id="fig7">
+    <img src="screenshots/example-config-source-preview.png" alt="A screenshot of the distributions preview for an example source." height="506" />
     <figcaption>
-        <a href="#fig6">Figure 6.</a> Screenshot of the distributions preview for an example source.
+        <a href="#fig7">Figure 7.</a> A screenshot of the distributions preview for an example source.
     </figcaption>
 </figure>
 
@@ -757,14 +765,14 @@ are all described in the [Including Images in Studies](/Images) documentation.
 The avatar image must be inserted into the spreadsheet using the **Insert**
 menu at the top of the page on Google Sheets. You must first select the cell
 where you want to insert the avatar image, and then select **Insert** ->
-**Image** -> **Image in cell**. This process is highlighted in [Figure 7](#fig7).
+**Image** -> **Image in cell**. This process is highlighted in [Figure 8](#fig8).
 If you do not use this procedure, then The Misinformation Game may not
 be able to find the image to use for the avatar.
 
-<figure id="fig7">
-    <img src="diagrams/inserting-image.png" alt="figure 7" height="549" />
+<figure id="fig8">
+    <img src="diagrams/inserting-image.png" alt="Diagram demonstrating how to insert an image into a study configuration spreadsheet." height="549" />
     <figcaption>
-        <a href="#fig7">Figure 7.</a> Diagram demonstrating how to insert an
+        <a href="#fig8">Figure 8.</a> Diagram demonstrating how to insert an
         image into a study configuration spreadsheet.
     </figcaption>
 </figure>
@@ -891,12 +899,12 @@ The headline of the post is used to provide a title above the
 content of the post. This headline is optional, and if it is
 not included then only the content of the post will be shown.
 The appearance of the headline within posts is highlighted
-in [Figure 8](#fig8).
+in [Figure 9](#fig9).
 
-<figure id="fig8">
-    <img src="diagrams/post-headline-content.png" alt="figure 8" height="495" />
+<figure id="fig9">
+    <img src="diagrams/post-headline-content.png" alt="A diagram highlighting a post's headline and content." height="495" />
     <figcaption>
-        <a href="#fig8">Figure 8.</a> Diagram highlighting the post's headline and content.
+        <a href="#fig9">Figure 9.</a> A diagram highlighting a post's headline and content.
     </figcaption>
 </figure>
 
@@ -920,15 +928,15 @@ images into the spreadsheet. The content image must be inserted into
 the spreadsheet using the **Insert** menu at the top of the page on
 Google Sheets. You must first select the cell where you want to insert
 the content image, and then select **Insert** -> **Image**
--> **Image in cell**. This process is highlighted in [Figure 9](#fig9).
+-> **Image in cell**. This process is highlighted in [Figure 10](#fig10).
 If you do not use this procedure, then The Misinformation Game may not
 be able to find the image to use for the content.
 
-<figure id="fig9">
-    <img src="diagrams/inserting-image.png" alt="figure 9" height="549" />
+<figure id="fig10">
+    <img src="diagrams/inserting-image.png" alt="A diagram demonstrating how to insert an image into a study configuration spreadsheet." height="549" />
     <figcaption>
-        <a href="#fig9">Figure 9.</a> Diagram demonstrating how to insert an
-        image into a study configuration spreadsheet.
+        <a href="#fig10">Figure 10.</a> A diagram demonstrating how to
+        insert an image into a study configuration spreadsheet.
     </figcaption>
 </figure>
 
@@ -975,12 +983,12 @@ Only available if:
 {:#posts-comments .no_toc}
 Up to three optional comments can be configured for each post. Each comment must
 include both a _Source Name_ and a _Message_, which are described below. An
-example comment is shown in [Figure 10](#fig10).
+example comment is shown in [Figure 11](#fig11).
 
-<figure id="fig10">
-    <img src="screenshots/example-comment.png" alt="figure 10" height="123" />
+<figure id="fig11">
+    <img src="screenshots/example-comment.png" alt="A screenshot of an example comment in the game." height="123" />
     <figcaption>
-        <a href="#fig10">Figure 10.</a> Screenshot of an example comment in the game.
+        <a href="#fig11">Figure 11.</a> A screenshot of an example comment in the game.
     </figcaption>
 </figure>
 
@@ -1034,14 +1042,14 @@ everything looks correct, and doesn't contain any errors.
 The configuration spreadsheet can then be downloaded as an .xlsx
 file to upload to The Misinformation Game. This can be done by
 selecting **File** -> **Download** -> **Microsoft Excel (.xlsx)**.
-This process is shown in [Figure 11](#fig11).
+This process is shown in [Figure 12](#fig12).
 The name suggests that this spreadsheet is only meant for Microsoft
 Excel, but .xlsx is a general-purpose spreadsheet file format.
 
-<figure id="fig11">
-    <img src="diagrams/exporting-config-spreadsheet.png" alt="figure 11" height="500" />
+<figure id="fig12">
+    <img src="diagrams/exporting-config-spreadsheet.png" alt="A diagram demonstrating how to download your study configuration spreadsheet." height="500" />
     <figcaption>
-        <a href="#fig11">Figure 11.</a> Diagram demonstrating how to download
+        <a href="#fig12">Figure 12.</a> A diagram demonstrating how to download
         your study configuration spreadsheet.
     </figcaption>
 </figure>
