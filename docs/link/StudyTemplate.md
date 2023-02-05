@@ -15,7 +15,7 @@ found in the [Study Configuration documentation](/StudyConfiguration).
 You may access the study configuration template spreadsheet
 from the following URLs:
 
-- [Study Configuration (version 2) Google Sheets Link](https://docs.google.com/spreadsheets/d/1XKvNLRYRVegaDfST1a7p53NOsCaTwJxOQJtD91WdNG0)
+- [Study Configuration (version 2) Google Sheets Link](https://docs.google.com/spreadsheets/d/1x2580r1ynbLQmzhc1SkIR1TxmIj74f_mZxat_A36sKY)
   _\(Recommended\)_
 - [Study Configuration (version 2) File Download](/StudyTemplate-V2.xlsx)
 
