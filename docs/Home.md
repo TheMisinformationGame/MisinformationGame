@@ -76,10 +76,10 @@ for your research.
 
 The paper
 [The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
-also provides an in-depth introduction to the Misinformation Game. It also
-contains the results from two validation studies that were conducted to test
-the Misinformation Game. If you use the Misinformation Game for your research,
-we would really appreciate it if you [cited this paper](#cite)!
+also provides an in-depth introduction to the Misinformation Game, alongside
+results from two validation studies that were conducted to test it. If you use
+the Misinformation Game for your research, we would really appreciate it if
+you [cited this paper](#cite).
 
 <div class="call-to-action-container">
     <a href="/GettingStarted" class="call-to-action-button">
