@@ -142,7 +142,7 @@ function initGIF(element) {
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#dcebfc";
+    ctx.fillStyle = "rgb(243 244 246)";
     ctx.fillRect(0, 0, width, height);
 
     // Replace the image with the canvas.
@@ -197,7 +197,7 @@ function setupGIF(canvas, options, gif) {
     const ctx = canvas.getContext("2d");
 
     const state = {
-        start: performance.now(),
+        start: performance.now() + (reducedMotion ? -gif.durationMS - 1 : 0),
         hoverStart: null,
         pauseGIFTime: null,
         lastScrollY: null,
@@ -224,21 +224,20 @@ function setupGIF(canvas, options, gif) {
     }
 
     // Restart the GIF on hover.
-    if (!reducedMotion) {
-        canvas.addEventListener("mouseover", function() {
-            if (state.pauseGIFTime !== null)
-                return;
+    canvas.addEventListener("mouseover", function() {
+        if (state.pauseGIFTime !== null)
+            return;
 
-            if (getGIFTime() <= gif.durationMS) {
-                state.hoverStart = state.start;
-            } else {
-                state.hoverStart = performance.now();
-            }
-        });
-        canvas.addEventListener("mouseout", function() {
-            state.hoverStart = null;
-        });
-    }
+        if (getGIFTime() <= gif.durationMS) {
+            state.hoverStart = state.start;
+        } else {
+            state.hoverStart = performance.now();
+        }
+    });
+    canvas.addEventListener("mouseout", function() {
+        state.hoverStart = null;
+    });
+
     // Play the GIF once on click.
     canvas.addEventListener("click", function() {
         const gifTime = getGIFTime();
