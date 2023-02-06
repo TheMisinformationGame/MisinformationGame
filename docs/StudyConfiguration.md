@@ -33,7 +33,7 @@ to help with the configuration of your studies.
 
 
 
-## 1. Create a new Configuration Spreadsheet
+## Guide: Create a new Configuration Spreadsheet
 {:#create}
 
 Before you can start configuring your study, you will first
@@ -91,21 +91,46 @@ Your spreadsheet should now contain everything you need
 to create your new study.
 
 
+## Guide: Upload your Study
+{:#upload}
 
-## 2. Enter your Settings into the Configuration Spreadsheet
-{:#configure}
+Once you have completed configuring your study, it is recommended
+you first check the **Overview** sheet to make sure that
+everything looks correct, and doesn't contain any errors.
 
-The configuration spreadsheet may look intimidating at
-first glance, and so this section will try to break
-down the configuration spreadsheet sheet-by-sheet.
-The sheets are roughly ordered in the same order as
-you may want to fill in the data for your study,
-however you are free to jump back and forth as you
-configure your study.
+The configuration spreadsheet can then be downloaded as an .xlsx
+file to upload to The Misinformation Game. This can be done by
+selecting **File** -> **Download** -> **Microsoft Excel (.xlsx)**.
+This process is shown in [Figure 12](#fig12).
+The name suggests that this spreadsheet is only meant for Microsoft
+Excel, but .xlsx is a general-purpose spreadsheet file format.
+
+<figure id="fig12">
+    <img src="diagrams/exporting-config-spreadsheet.png" alt="A diagram demonstrating how to download your study configuration spreadsheet." height="500" />
+    <figcaption>
+        <a href="#fig12">Figure 12.</a> A diagram demonstrating how to download
+        your study configuration spreadsheet.
+    </figcaption>
+</figure>
+
+Once you have downloaded your study configuration as an
+.xlsx file, you can then upload it through The Misinformation
+Game admin dashboard by clicking the **Upload New Study**
+button. This will open a window where you can click
+**Upload Spreadsheet** to select the .xlsx file to upload.
+
+If there are any errors that could be found with your study,
+then an error will be displayed in this window. Otherwise,
+a success message will be displayed, and you will be redirected
+to the admin view of your new study. You can then click the
+URL to your study at the top of its page to test it! Additional
+information about managing your study after you have uploaded
+it can be found in the
+[Managing Studies documentation](/ManagingStudies).
 
 
 
-### 2.1. About Worksheet
+## 1. About Worksheet
 {:#configure}
 
 The _About_ sheet gives an overview of the structure of
@@ -120,7 +145,7 @@ spreadsheet.
 
 
 
-### 2.2. Overview Worksheet
+## 2. Overview Worksheet
 {:#overview}
 
 The _Overview_ sheet provides a summary of all the settings
@@ -129,15 +154,19 @@ between all the sheets into one place, so that you can
 easily identify if there are any errors in your
 configuration.
 
-#### 2.2.1. Status
-{:#overview-status}
+##### Status
+{:#overview-status .no_toc}
+<p class="config-loc">(Overview &gt; Status)</p>
+
 The status of the spreadsheet gives an indication of
 whether there are any errors in the spreadsheet. If
 there are any errors in any of the sheets, an error
 will be shown here.
 
-#### 2.2.2. Opened in Google Sheets
-{:#overview-opened-in-sheets}
+##### Opened in Google Sheets
+{:#overview-opened-in-sheets .no_toc}
+<p class="config-loc">(Overview &gt; Opened in Google Sheets)</p>
+
 This attempts to detect whether the spreadsheet was
 opened in Google Sheets, and will error if it can
 detect that it was opened in Microsoft Excel. This
@@ -145,22 +174,28 @@ detection uses a bug when converting between Google
 Sheets and Microsoft Excel, and it therefore may not
 be 100% accurate.
 
-#### 2.2.3. General Settings
-{:#overview-general}
+##### General Settings
+{:#overview-general .no_toc}
+<p class="config-loc">(Overview &gt; General Settings)</p>
+
 This section gives an overview of the general settings
 of your study, as well as their validity in the top-left.
 The **Pages** value will show the exact order of pages
 that participants will be shown when they participate
 in your study.
 
-#### 2.2.4. Sources
-{:#overview-sources}
+##### Sources
+{:#overview-sources .no_toc}
+<p class="config-loc">(Overview &gt; Sources)</p>
+
 This will show the validity of all the sources you have
 entered, and includes the number of sources that have been
 included in the _Sources_ sheet.
 
-#### 2.2.5. Posts
-{:#overview-posts}
+##### Posts
+{:#overview-posts .no_toc}
+<p class="config-loc">(Overview &gt; Posts)</p>
+
 This will show the validity of all posts, as well as the
 number of true and false posts that have been included
 in the _Posts_ sheet.
@@ -177,14 +212,14 @@ being shown, even if the true post percentage is 100%.
 
 
 
-### 2.3. General Worksheet
+## 3. General Worksheet
 {:#general}
 
 The General sheet is the best place to start when creating
 a study. It contains all the most broad settings of
 studies including their name, description, and length.
 
-#### 2.3.1. Basic Settings
+### 3.1. Basic Settings
 {:#general-basic-settings}
 This section contains the most basic settings that likely
 should be changed for each study.
@@ -269,7 +304,7 @@ identifier in URL parameters is discussed
 [here](/ManagingStudies#access-study-url).
 
 
-#### 2.3.2. User Interface Settings
+### 3.2. User Interface Settings
 {:#general-ui-settings}
 This section contains the settings that change the user
 interface of The Misinformation Game for participants.
@@ -375,7 +410,7 @@ Whether to allow participants to like comments.
 Whether to allow participants to dislike comments.
 
 
-#### 2.3.3. Advanced Settings
+### 3.3. Advanced Settings
 {:#general-advanced-settings}
 
 These settings can be used to fine-tune your study.
@@ -458,7 +493,7 @@ background is randomised are shown in [Figure 4](#fig4).
 
 
 
-### 2.4. Pages Worksheet
+## 4. Pages Worksheet
 {:#pages}
 
 The _Pages_ sheet allows you to edit the content of
@@ -467,7 +502,7 @@ shown. It also allows you to edit the enforced delays
 (with disabled continue button) on these pages.
 
 
-#### 2.4.1. Formatting the Text
+### 4.1. Formatting the Text
 {:#pages-formatting}
 
 The text on these pages can be formatted to include **bold**,
@@ -502,9 +537,11 @@ that links to The Misinformation Game's GitHub page,
 </a>
 ```
 
+### 4.2. Available Pages
 
-#### 2.4.2. Introduction before game rules
-{:#pages-intro-before-rules}
+##### Introduction before game rules
+{:#pages-intro-before-rules .no_toc}
+<p class="config-loc">(Pages &gt; Introduction before game rules)</p>
 
 This page will be shown to participants after they have
 identified themselves, and before they are shown the
@@ -514,8 +551,9 @@ an introduction before they are shown the game rules, then
 leave this page blank.
 
 
-#### 2.4.3. Game Rules
-{:#pages-rules}
+##### Game Rules
+{:#pages-rules .no_toc}
+<p class="config-loc">(Pages &gt; Game Rules)</p>
 
 This page will be shown to participants after they have
 viewed the introduction before the game rules page. This
@@ -562,8 +600,9 @@ The available placeholders are:
   An example Your Progress box with placeholder values.
 
 
-#### 2.4.4. Introduction after game rules
-{:#pages-intro-after-rules}
+##### Introduction after game rules
+{:#pages-intro-after-rules .no_toc}
+<p class="config-loc">(Pages &gt; Introduction after game rules)</p>
 
 This page will be shown to participants after they have
 been shown the rules of the game. This page can also be 
@@ -572,8 +611,9 @@ wish to show participants an introduction after they are
 shown the game rules, then leave this page blank.
 
 
-#### 2.4.5. Debriefing
-{:#pages-debriefing}
+##### Debriefing
+{:#pages-debriefing .no_toc}
+<p class="config-loc">(Pages &gt; Debriefing)</p>
 
 This page will be shown to participants after they have
 completed the study. This page is not optional. An
@@ -609,7 +649,7 @@ their completion code.
 
 
 
-### 2.5. Sources Worksheet
+## 5. Sources Worksheet
 {:#sources}
 
 The _Sources_ sheet allows you to add all the sources that can
@@ -630,7 +670,7 @@ To the right there is also a widget that can be used to
 preview the settings for your sources.
 
 
-#### 2.5.1. Default Source Values
+### 5.1. Default Source Values
 {:#sources-defaults}
 
 This section defines defaults for some source parameters
@@ -675,7 +715,7 @@ count and credibility for a source is shown in [Figure 7](#fig7).
 </figure>
 
 
-#### 2.5.2. Sources Table
+### 5.2. Sources Table
 {:#sources-table}
 
 The table below the Default Source Values is where the sources
@@ -804,7 +844,7 @@ Only used if:
 
 
 
-### 2.6. Posts Worksheet
+## 6. Posts Worksheet
 {:#posts}
 
 The _Posts_ sheet allows you to add all the posts that could
@@ -818,7 +858,7 @@ the right there is also a table to display the total
 number of true and false posts that you have entered.
 
 
-#### 2.6.1. Default Post Values
+### 6.1. Default Post Values
 {:#posts-default-values}
 This section defines separate defaults for true posts and
 false posts. This is done to reduce the effort in creating
@@ -832,7 +872,7 @@ a default distribution for the number of reactions to display
 for _likes_, _dislikes_, _shares_, or _flags_ for posts.
 
 
-#### 2.6.2. Posts Table
+### 6.2. Posts Table
 {:#posts-table}
 The table below the Default Post Values allows you to enter
 all the posts that may be shown to participants during the
@@ -1017,7 +1057,7 @@ Only used if:
 
 
 
-### 2.7. Source & Post Selection Worksheet
+## 7. Source & Post Selection Worksheet
 {:#selection}
 
 The Source & Post Selection sheet allows you to edit the
@@ -1030,7 +1070,7 @@ In-depth descriptions of each selection method are available
 in the [Simulation documentation](/Simulation).
 
 
-#### 2.7.1. Selecting a Method
+### 7.1. Selecting a Method
 {:#selection-selecting-method}
 
 The **Source & Post Selection Method** value at the top of
@@ -1042,7 +1082,7 @@ settings for all the other selection methods will be
 disabled.
 
 
-#### 2.7.2. Method 1: Overall-Ratio
+### 7.2. Method 1: Overall-Ratio
 {:#selection-overall-ratio}
 
 Sources will be selected randomly, and the associated
@@ -1062,7 +1102,7 @@ of true posts shown to all participants collectively
 should approach this value.
 
 
-#### 2.7.3. Method 2: Source-Ratios
+### 7.3. Method 2: Source-Ratios
 {:#selection-source-ratios}
 
 Sources will be selected randomly, and the associated
@@ -1076,7 +1116,7 @@ actual percentage of true posts that a source is selected
 to show should approach their defined **True Post Percentage**.
 
 
-#### 2.7.4. Method 3: Credibility
+### 7.4. Method 3: Credibility
 {:#selection-credibility}
 
 Sources will be selected randomly, and then a **True Post
@@ -1103,7 +1143,7 @@ The **True Post Percentage** to use when a source's
 credibility is zero.
 
 
-#### 2.7.5. Method 4: Pre-Defined
+### 7.5. Method 4: Pre-Defined
 {:#selection-predefined}
 
 An exact set of source/post pairs is manually defined to be presented
@@ -1113,7 +1153,7 @@ documented [here](#predefined).
 
 
 
-### 2.9. Pre-Defined Source & Post Order Worksheet
+## 8. Pre-Defined Source & Post Order Worksheet
 {:#predefined}
 
 This worksheet is only used if the Source & Post Selection
@@ -1143,41 +1183,3 @@ These IDs can be found in the _Sources_ sheet.
 
 The ID of the post to display (e.g. **S1**).
 These IDs can be found in the _Posts_ sheet.
-
-
-## 3. Upload your Study
-{:#upload}
-
-Once you have completed configuring your study, it is recommended
-you first check the **Overview** sheet to make sure that
-everything looks correct, and doesn't contain any errors.
-
-The configuration spreadsheet can then be downloaded as an .xlsx
-file to upload to The Misinformation Game. This can be done by
-selecting **File** -> **Download** -> **Microsoft Excel (.xlsx)**.
-This process is shown in [Figure 12](#fig12).
-The name suggests that this spreadsheet is only meant for Microsoft
-Excel, but .xlsx is a general-purpose spreadsheet file format.
-
-<figure id="fig12">
-    <img src="diagrams/exporting-config-spreadsheet.png" alt="A diagram demonstrating how to download your study configuration spreadsheet." height="500" />
-    <figcaption>
-        <a href="#fig12">Figure 12.</a> A diagram demonstrating how to download
-        your study configuration spreadsheet.
-    </figcaption>
-</figure>
-
-Once you have downloaded your study configuration as an
-.xlsx file, you can then upload it through The Misinformation
-Game admin dashboard by clicking the **Upload New Study**
-button. This will open a window where you can click
-**Upload Spreadsheet** to select the .xlsx file to upload.
-
-If there are any errors that could be found with your study,
-then an error will be displayed in this window. Otherwise,
-a success message will be displayed, and you will be redirected
-to the admin view of your new study. You can then click the
-URL to your study at the top of its page to test it! Additional
-information about managing your study after you have uploaded
-it can be found in the
-[Managing Studies documentation](/ManagingStudies).
