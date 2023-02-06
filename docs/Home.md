@@ -66,12 +66,10 @@ configuration of your study.
 ## Getting Started
 {:#getting-started}
 
-The number of configuration options that are available for the Misinformation
-Game may be intimidating. Therefore, if you are new to the tool, or you want
-to get a refresher, we recommend that you read our
-[Getting Started Guide](/GettingStarted). This guide is a great place to learn
-the most important concepts for using the Misinformation Game effectively
-for your research.
+If you are new to the tool, or you would like a refresher on its use, we recommend
+that you read our [Getting Started Guide](/GettingStarted). This guide is a great
+place to learn the most important concepts for using the Misinformation Game
+effectively for your research.
 
 The paper
 [The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
