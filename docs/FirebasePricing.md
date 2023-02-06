@@ -12,7 +12,14 @@ backend. This document analyses the pricing information
 of Firebase for hosting your own studies using The
 Misinformation Game.
 
-
+<p class="info">
+    <span style="font-weight: bold">Note:</span> This guide
+    has been written with a snapshot of Firebase's pricing.
+    It is likely that Firebase's pricing will have changed.
+    Please make sure that you double-check with the latest
+    Firebase pricing on the
+    <a href="https://firebase.google.com/pricing">Firebase website</a>.
+</p>
 
 # Table of Contents
 {:#toc .no_toc}
