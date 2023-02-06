@@ -13,12 +13,12 @@ customisability is a core focus of The Misinformation Game,
 to facilitate the research of a wide array of social media
 related questions.
 
-**Preprint Paper:** [PsyArXiv](https://psyarxiv.com/628wc/)
+**Preprint Paper:** [The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
 
-**Documentation:** [misinfogame.com](https://misinfogame.com)
+**Documentation:** [MisinfoGame.com](https://misinfogame.com)
 
 
-### Example Game
+# Example Game
 If you would like to try a study created using
 The Misinformation Game, you can access an example game from
 [here](https://themisinformationgame.github.io/link/ExampleGame).
@@ -27,7 +27,7 @@ You may enter any ID to access the example game.
 ![Example Game](docs/screenshots/example-game.png)
 
 
-### Features
+# Features
 
 - Social media simulator with posts that may be displayed
   in a feed, or one at a time.
@@ -50,10 +50,11 @@ You may enter any ID to access the example game.
 
 
 # 🛠️ Documentation
-Information regarding how The Misinformation Game works, the system architecture, and guides to conducting studies
-can all be found at https://themisinformationgame.github.io/.
-This documentation is also available under /docs in this
-repository.
+
+Guides to creating studies using the Misinformation Game, information regarding its
+functionality, and its system architecture can all be found in the documentation
+for the Misinformation Game. This documentation can be accessed from
+[MisinfoGame.com](https://misinfogame.com).
 
 
 # 📖 Cite the Misinformation Game
