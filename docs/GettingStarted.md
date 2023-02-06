@@ -28,8 +28,7 @@ Game at a high level, to help you get started!
 It will be easier to understand the configuration options that
 we will introduce to you here if you have tried the Misinformation
 Game yourself. To try the Misinformation Game out, you can access
-an example game from [the example games page](/link/ExampleGame). You
-can enter any random text as your ID to access an example game.
+an example game from [the example games page](/link/ExampleGame).
 
 <figure id="fig1">
     <img src="screenshots/example-game.png" alt="Screenshot of the user interface within a game." height="582" />

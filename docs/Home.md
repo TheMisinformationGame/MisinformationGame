@@ -36,8 +36,7 @@ permalink: /
 
 The best way to get introduced to the Misinformation Game is to try it!
 You can access an example game to try the Misinformation Game yourself
-from [the example games page](/link/ExampleGame). You can enter any
-random text as your ID to access an example game.
+from [the example games page](/link/ExampleGame).
 
 <figure id="fig1">
     <img src="screenshots/example-game.png" alt="Figure 1. Screenshot of the user interface within a game." height="582" />
