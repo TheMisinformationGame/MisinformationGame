@@ -25,7 +25,7 @@ permalink: /
     related questions.
 </p>
 
-**Preprint Paper:** [PsyArXiv](https://psyarxiv.com/628wc/)
+**Preprint Paper:** [The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
 
 **Source Code:** [MisinformationGame Repository on GitHub](https://github.com/TheMisinformationGame/MisinformationGame)
 
