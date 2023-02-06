@@ -199,17 +199,12 @@ function setupGIF(canvas, options, gif) {
     const state = {
         start: performance.now() + (reducedMotion ? -gif.durationMS - 1 : 0),
         hoverStart: null,
-        pauseGIFTime: null,
         lastScrollY: null,
         lastOnScreen: null,
-        lastFrame: null,
-        lastPaused: null
+        lastFrame: null
     };
 
     function getGIFTime() {
-        if (state.pauseGIFTime !== null)
-            return state.pauseGIFTime;
-
         let start;
         if (state.hoverStart !== null) {
             start = state.hoverStart;
@@ -225,9 +220,6 @@ function setupGIF(canvas, options, gif) {
 
     // Restart the GIF on hover.
     canvas.addEventListener("mouseover", function() {
-        if (state.pauseGIFTime !== null)
-            return;
-
         if (getGIFTime() <= gif.durationMS) {
             state.hoverStart = state.start;
         } else {
@@ -242,22 +234,12 @@ function setupGIF(canvas, options, gif) {
     canvas.addEventListener("click", function() {
         const gifTime = getGIFTime();
         const isPlaying = gifTime < gif.durationMS;
+
         if (isPlaying) {
-            if (state.pauseGIFTime === null) {
-                state.pauseGIFTime = gifTime;
-            } else {
-                state.start = performance.now() - state.pauseGIFTime / options.playbackSpeed;
-                state.pauseGIFTime = null;
-                if (state.hoverStart !== null) {
-                    state.hoverStart = state.start;
-                }
-            }
+            state.start = state.hoverStart;
         } else {
             state.start = performance.now();
-            if (state.hoverStart !== null) {
-                state.hoverStart = state.start;
-            }
-            state.pauseGIFTime = null;
+            state.hoverStart = state.start;
         }
     });
 
@@ -275,13 +257,11 @@ function setupGIF(canvas, options, gif) {
         }
 
         const gifTime = getGIFTime();
-        const paused = gifTime > gif.durationMS;
         const frame = getFrameAtTime(gif, gifTime);
-        if (frame === state.lastFrame && paused === state.lastPaused)
+        if (frame === state.lastFrame)
             return;
 
         state.lastFrame = frame;
-        state.lastPaused = paused;
         ctx.drawImage(frame, 0, 0);
     }
 
