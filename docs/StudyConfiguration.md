@@ -558,114 +558,7 @@ their completion code.
 
 
 
-### 2.5. Source & Post Selection Worksheet
-{:#selection}
-
-The Source & Post Selection sheet allows you to edit the
-method that is used to select the source/post pairs that
-will be shown to participants in their games. There are
-four options for source/post selection: **Overall-Ratio**,
-**Source-Ratios**, **Credibility**, and **Pre-Defined**.
-
-In-depth descriptions of each selection method are available
-in the [Simulation documentation](/Simulation).
-
-
-#### 2.5.1. Selecting a Method
-{:#selection-selecting-method}
-
-The **Source & Post Selection Method** value at the top of
-this sheet should be changed manually to the name of the method 
-to be used. This should be one of _Overall-Ratio_,
-_Source-Ratios_, _Credibility_, or _Pre-Defined_. Once you
-have entered your desired source/post selection method, the
-settings for all the other selection methods will be
-disabled.
-
-
-#### 2.5.2. Method 1: Overall-Ratio
-{:#selection-overall-ratio}
-
-Sources will be selected randomly, and the associated
-post will be chosen to match an overall ratio of
-true:false posts. The settings for this method are
-available in the **Overall-Ratio Settings** section.
-
-##### True Post Percentage
-{:#selection-overall-ratio-tpp .no_toc}
-
-The percentage of true posts to display to users. This
-percentage is used to probabilistically sample posts.
-Therefore, the actual percentage for each participant
-will differ from this value. However, the percentage
-of true posts shown to all participants collectively
-should approach this value.
-
-
-#### 2.5.3. Method 2: Source-Ratios
-{:#selection-source-ratios}
-
-Sources will be selected randomly, and the associated
-post will be chosen to match the **True Post Percentage**
-defined for each source.
-
-Similarly to _Method 1_, this does not guarantee that
-an exact percentage of true posts will be shown for each
-source in one game. However, over all games played, the
-actual percentage of true posts that a source is selected
-to show should approach their defined **True Post Percentage**.
-
-
-#### 2.5.4. Method 3: Credibility
-{:#selection-credibility}
-
-Sources will be selected randomly, and then a **True Post
-Percentage** will be calculated from the credibility of
-the source. The ratio will then be used to sample a true
-or false post to display alongside the source. The
-relationship between the source's credibility and the
-true-post percentage to be used is a linear relationship.
-The parameters of the linear relationship between the two
-can be configured under the **Credibility Settings** section.
-
-##### Linear Slope
-{:#selection-credibility-slope .no_toc}
-The increase in the **True Post Percentage** for every unit
-increase in a source's credibility.
-
-##### Linear Intercept
-{:#selection-credibility-intercept .no_toc}
-The **True Post Percentage** to use when a source's
-credibility is zero.
-
-
-#### 2.5.5. Method 4: Pre-Defined
-{:#selection-predefined}
-
-An exact set of source/post pairs is manually defined.
-The source/post pairs can be manually defined in the
-_Pre-Defined Source & Post Order_ sheet, alongside
-other settings for this method.
-
-##### Randomise Order
-{:#selection-predefined-randomise .no_toc}
-Whether the presentation order of the pairs should
-be randomised. Otherwise, the pairs will be shown
-in the exact order specified.
-
-##### Source ID
-{:#selection-predefined-source-id .no_toc}
-The ID of the source to be used for the post (e.g. **S1**).
-These IDs can be found in the _Sources_ sheet.
-
-##### Post ID
-{:#selection-predefined-post-id .no_toc}
-The ID of the post to display (e.g. **S1**).
-These IDs can be found in the _Posts_ sheet.
-
-
-
-### 2.6. Sources Worksheet
+### 2.5. Sources Worksheet
 {:#sources}
 
 The _Sources_ sheet allows you to add all the sources that can
@@ -686,7 +579,7 @@ To the right there is also a widget that can be used to
 preview the settings for your sources.
 
 
-#### 2.6.1. Default Source Values
+#### 2.5.1. Default Source Values
 {:#sources-defaults}
 
 This section defines defaults for some source parameters
@@ -731,10 +624,10 @@ count and credibility for a source is shown in [Figure 7](#fig7).
 </figure>
 
 
-#### 2.6.2. Sources Table
+#### 2.5.2. Sources Table
 {:#sources-table}
 
-The table below the Default Source Values is where the sources 
+The table below the Default Source Values is where the sources
 in the study can be added. Each row in this table represents
 one source. The **ID** and **Name** of each source is required
 (although the **ID** should be pre-filled already). The remaining
@@ -789,14 +682,14 @@ that there is no maximum number of posts for this source.
 
 The Max Posts value is also used to weight the random
 selection of sources to be shown to participants. Sources
-with a higher Max Posts value will have a higher chance of 
-being selected than sources with a low Max Posts value. 
-Sources with a Max Posts of `Unlimited` will be weighted 
+with a higher Max Posts value will have a higher chance of
+being selected than sources with a low Max Posts value.
+Sources with a Max Posts of `Unlimited` will be weighted
 with the mean weighting of all sources with a Max Posts value.
-Therefore, if you wish one source to show up more than others, 
-but do not wish to limit the number of times other sources can 
-be selected, you can use high values of Max Posts (e.g. a 
-source with Max Posts = 100 will be selected 10x more than a 
+Therefore, if you wish one source to show up more than others,
+but do not wish to limit the number of times other sources can
+be selected, you can use high values of Max Posts (e.g. a
+source with Max Posts = 100 will be selected 10x more than a
 source with Max Posts = 10).
 
 ##### Initial Followers
@@ -846,7 +739,7 @@ Only used if:
 
 
 
-### 2.7. Posts Worksheet
+### 2.6. Posts Worksheet
 {:#posts}
 
 The _Posts_ sheet allows you to add all the posts that could
@@ -860,9 +753,9 @@ the right there is also a table to display the total
 number of true and false posts that you have entered.
 
 
-#### 2.7.1. Default Post Values
+#### 2.6.1. Default Post Values
 {:#posts-default-values}
-This section defines separate defaults for true posts and 
+This section defines separate defaults for true posts and
 false posts. This is done to reduce the effort in creating
 consistent behaviour for true and false posts. For example,
 you could make sharing true posts increase credibility,
@@ -874,7 +767,7 @@ a default distribution for the number of reactions to display
 for _likes_, _dislikes_, _shares_, or _flags_ for posts.
 
 
-#### 2.7.2. Posts Table
+#### 2.6.2. Posts Table
 {:#posts-table}
 The table below the Default Post Values allows you to enter
 all the posts that may be shown to participants during the
@@ -914,7 +807,7 @@ in [Figure 9](#fig9).
 ##### Content
 {:#posts-content .no_toc}
 The content of the post is used to provide a  more substantial
-piece of text, or an image to display to participants. The content 
+piece of text, or an image to display to participants. The content
 is optional, and if it is not included then only the headline of
 the post will be shown. The content can be either a piece of text
 _or_ an image, but it cannot contain both.
@@ -1032,6 +925,113 @@ Only used if:
         General > UI Settings > Comment Dislikes Enabled
     </a> is true.</li>
 </ul>
+
+
+
+### 2.7. Source & Post Selection Worksheet
+{:#selection}
+
+The Source & Post Selection sheet allows you to edit the
+method that is used to select the source/post pairs that
+will be shown to participants in their games. There are
+four options for source/post selection: **Overall-Ratio**,
+**Source-Ratios**, **Credibility**, and **Pre-Defined**.
+
+In-depth descriptions of each selection method are available
+in the [Simulation documentation](/Simulation).
+
+
+#### 2.7.1. Selecting a Method
+{:#selection-selecting-method}
+
+The **Source & Post Selection Method** value at the top of
+this sheet should be changed manually to the name of the method 
+to be used. This should be one of _Overall-Ratio_,
+_Source-Ratios_, _Credibility_, or _Pre-Defined_. Once you
+have entered your desired source/post selection method, the
+settings for all the other selection methods will be
+disabled.
+
+
+#### 2.7.2. Method 1: Overall-Ratio
+{:#selection-overall-ratio}
+
+Sources will be selected randomly, and the associated
+post will be chosen to match an overall ratio of
+true:false posts. The settings for this method are
+available in the **Overall-Ratio Settings** section.
+
+##### True Post Percentage
+{:#selection-overall-ratio-tpp .no_toc}
+
+The percentage of true posts to display to users. This
+percentage is used to probabilistically sample posts.
+Therefore, the actual percentage for each participant
+will differ from this value. However, the percentage
+of true posts shown to all participants collectively
+should approach this value.
+
+
+#### 2.7.3. Method 2: Source-Ratios
+{:#selection-source-ratios}
+
+Sources will be selected randomly, and the associated
+post will be chosen to match the **True Post Percentage**
+defined for each source.
+
+Similarly to _Method 1_, this does not guarantee that
+an exact percentage of true posts will be shown for each
+source in one game. However, over all games played, the
+actual percentage of true posts that a source is selected
+to show should approach their defined **True Post Percentage**.
+
+
+#### 2.7.4. Method 3: Credibility
+{:#selection-credibility}
+
+Sources will be selected randomly, and then a **True Post
+Percentage** will be calculated from the credibility of
+the source. The ratio will then be used to sample a true
+or false post to display alongside the source. The
+relationship between the source's credibility and the
+true-post percentage to be used is a linear relationship.
+The parameters of the linear relationship between the two
+can be configured under the **Credibility Settings** section.
+
+##### Linear Slope
+{:#selection-credibility-slope .no_toc}
+The increase in the **True Post Percentage** for every unit
+increase in a source's credibility.
+
+##### Linear Intercept
+{:#selection-credibility-intercept .no_toc}
+The **True Post Percentage** to use when a source's
+credibility is zero.
+
+
+#### 2.7.5. Method 4: Pre-Defined
+{:#selection-predefined}
+
+An exact set of source/post pairs is manually defined.
+The source/post pairs can be manually defined in the
+_Pre-Defined Source & Post Order_ sheet, alongside
+other settings for this method.
+
+##### Randomise Order
+{:#selection-predefined-randomise .no_toc}
+Whether the presentation order of the pairs should
+be randomised. Otherwise, the pairs will be shown
+in the exact order specified.
+
+##### Source ID
+{:#selection-predefined-source-id .no_toc}
+The ID of the source to be used for the post (e.g. **S1**).
+These IDs can be found in the _Sources_ sheet.
+
+##### Post ID
+{:#selection-predefined-post-id .no_toc}
+The ID of the post to display (e.g. **S1**).
+These IDs can be found in the _Posts_ sheet.
 
 
 
