@@ -73,6 +73,10 @@ for the Misinformation Game. This documentation can be accessed from
 
 # 🖥️ Gallery
 
+### Commenting on a Post
+
+![Commenting on a Post](docs/screenshots/commenting-with-border.gif)
+
 ### Admin dashboard
 
 ![Example Admin Dashboard](docs/screenshots/example-admin-dashboard.png)
