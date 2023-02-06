@@ -191,18 +191,24 @@ should be changed for each study.
 
 ##### Name
 {:#general-name .no_toc}
+<p class="config-loc">(General &gt; Basic Settings &gt; Name)</p>
+
 The name that is used for the browser tab title for
 participants in this study. This name is also used to
 identify the study in your admin dashboard.
 
 ##### Description
 {:#general-description .no_toc}
+<p class="config-loc">(General &gt; Basic Settings &gt; Description)</p>
+
 The description of your study is used to include
 information about the study in your admin dashboard.
 This description is not shown to participants.
 
 ##### Prompt
 {:#general-prompt .no_toc}
+<p class="config-loc">(General &gt; Basic Settings &gt; Prompt)</p>
+
 The prompt text to be shown to participants before they
 start the study. An example prompt is shown in [Figure 2](#fig2).
 
@@ -215,12 +221,16 @@ start the study. An example prompt is shown in [Figure 2](#fig2).
 
 ##### Length of Game
 {:#general-length .no_toc}
+<p class="config-loc">(General &gt; Basic Settings &gt; Length of Game)</p>
+
 The exact number of posts to show to participants before
 they complete the study. The length of studies must
 be at least 1 post.
 
 ##### Require Reactions
 {:#general-require-reactions .no_toc}
+<p class="config-loc">(General &gt; Basic Settings &gt; Require Reactions)</p>
+
 Whether participants are required to react to every post.
 Participants will still be able to skip posts, but to do
 so they will have to explicitly select "Skip Post" as their
@@ -237,6 +247,7 @@ Only available if:
 
 ##### Enable User Comments
 {:#general-enable-user-comments .no_toc}
+<p class="config-loc">(General &gt; Basic Settings &gt; Enable User Comments)</p>
 
 Whether participants are required to comment on posts
 ("Required"), can comment on posts ("Optional"), or
@@ -246,6 +257,8 @@ cannot be required when
 
 ##### Require Participant Identification
 {:#general-require-identification .no_toc}
+<p class="config-loc">(General &gt; Basic Settings &gt; Require Participant Identification)</p>
+
 Whether participants will be required to provide a
 participant ID before starting the study. If this value
 is true, then participants will be shown an identification
@@ -265,55 +278,77 @@ to interact with your study.
 
 ##### Display Posts in a Feed
 {:#general-display-feed .no_toc}
+<p class="config-loc">(General &gt; User Interface Settings &gt; Display Posts in a Feed)</p>
+
 Whether to display the posts to participants in a feed,
 instead of one at a time.
 
 ##### Display Followers
 {:#general-display-followers .no_toc}
+<p class="config-loc">(General &gt; User Interface Settings &gt; Display Followers)</p>
+
 Whether follower counts are shown to participants.
 The followers of sources and participants will still
 be simulated.
 
 ##### Display Credibility
 {:#general-display-credibility .no_toc}
+<p class="config-loc">(General &gt; User Interface Settings &gt; Display Credibility)</p>
+
 Whether credibility ratings are shown to participants.
 The credibility of sources and participants will still
 be simulated.
 
 ##### Display Progress
 {:#general-display-progress .no_toc}
+<p class="config-loc">(General &gt; User Interface Settings &gt; Display Progress)</p>
+
 Whether to show participants their progress as a
 percentage (e.g. "55%").
 
 ##### Display Number of Reactions
 {:#general-display-reaction-counts .no_toc}
+<p class="config-loc">(General &gt; User Interface Settings &gt; Display Number of Reactions)</p>
+
 Whether to show the ostensible number of prior reactions
 to posts and comments adjacent to the reaction buttons.
 
 ##### Allow Multiple Reactions at Once
 {:#general-allow-multiple-reactions .no_toc}
+<p class="config-loc">(General &gt; User Interface Settings &gt; Allow Multiple Reactions at Once)</p>
+
 Whether participants may select multiple reactions to a
 post or comment. For example, a user may choose to like
 and share a post if this is enabled.
 
 ##### Post Likes Enabled
 {:#general-post-likes-enabled .no_toc}
+<p class="config-loc">(General &gt; User Interface Settings &gt; Post Likes Enabled)</p>
+
 Whether to allow participants to like posts.
 
 ##### Post Dislikes Enabled
 {:#general-post-dislikes-enabled .no_toc}
+<p class="config-loc">(General &gt; User Interface Settings &gt; Post Dislikes Enabled)</p>
+
 Whether to allow participants to dislike posts.
 
 ##### Post Shares Enabled
 {:#general-post-shares-enabled .no_toc}
+<p class="config-loc">(General &gt; User Interface Settings &gt; Post Shares Enabled)</p>
+
 Whether to allow participants to share posts.
 
 ##### Post Flags Enabled
 {:#general-post-flags-enabled .no_toc}
+<p class="config-loc">(General &gt; User Interface Settings &gt; Post Flags Enabled)</p>
+
 Whether to allow participants to flag posts.
 
 ##### Post Skip Enabled
 {:#general-post-skip-enabled .no_toc}
+<p class="config-loc">(General &gt; User Interface Settings &gt; Post Skip Enabled)</p>
+
 Whether to allow participants to select an option
 to skip reacting to a post.
 
@@ -329,10 +364,14 @@ Only available if:
 
 ##### Comment Likes Enabled
 {:#general-comment-likes-enabled .no_toc}
+<p class="config-loc">(General &gt; User Interface Settings &gt; Comment Likes Enabled)</p>
+
 Whether to allow participants to like comments.
 
 ##### Comment Dislikes Enabled
 {:#general-comment-dislikes-enabled .no_toc}
+<p class="config-loc">(General &gt; User Interface Settings &gt; Comment Dislikes Enabled)</p>
+
 Whether to allow participants to dislike comments.
 
 
@@ -344,18 +383,24 @@ It is unlikely that you will need to edit these settings.
 
 ##### Minimum Comment Length
 {:#general-minimum-comment-length .no_toc}
+<p class="config-loc">(General &gt; Advanced Settings &gt; Minimum Comment Length)</p>
+
 The minimum number of characters that participants must
 enter for their comments. The minimum length of comments
 must be at least 1 character.
 
 ##### Prompt Continue Delay (Seconds)
 {:#general-prompt-continue-delay .no_toc}
+<p class="config-loc">(General &gt; Advanced Settings &gt; Prompt Continue Delay)</p>
+
 The period of time in which participants are not able
 to continue past the prompt page to start the game.
 This delay cannot be negative, but it can be zero.
 
 ##### Next Post Delay (Seconds)
 {:#general-next-post-delay .no_toc}
+<p class="config-loc">(General &gt; Advanced Settings &gt; Next Post Delay)</p>
+
 The period of time after the current post is shown
 in which participants are not able to continue to
 the next post. This delay cannot be negative, but
@@ -370,6 +415,8 @@ Only available if:
 
 ##### Generate Completion Code
 {:#general-generate-completion-code .no_toc}
+<p class="config-loc">(General &gt; Advanced Settings &gt; Generate Completion Code)</p>
+
 Whether to generate and display a completion code
 to participants once they have completed the study.
 An example debriefing page that includes a generated
@@ -384,6 +431,8 @@ completion code for a participant is shown in [Figure 3](#fig3).
 
 ##### Completion Code Digits
 {:#general-completion-code-digits .no_toc}
+<p class="config-loc">(General &gt; Advanced Settings &gt; Completion Code Digits)</p>
+
 The number of digits to generate for the completion
 code (e.g. If this value is 4, then completion codes
 from 1000 to 9999 will be generated). The number of
@@ -391,6 +440,8 @@ digits in completion codes must be at least 1.
 
 ##### Generate Random Default Avatars
 {:#general-generate-random-default-avatars .no_toc}
+<p class="config-loc">(General &gt; Advanced Settings &gt; Generate Random Default Avatars)</p>
+
 Whether to use a random background colour for the
 default source avatars. If set to "No", the default
 avatars of sources will all have a white background.
@@ -637,6 +688,8 @@ use a default based upon the **Name** of the source instead.
 
 ##### Source ID
 {:#sources-id .no_toc}
+<p class="config-loc">(Sources &gt; Source ID)</p>
+
 The ID's of sources are used to uniquely identify them. For example,
 the ID of a source will be used to reference it in the results of
 a study. The ID's of the sources should be of the form `Sx`, where
@@ -646,11 +699,15 @@ have to edit them.
 
 ##### Name
 {:#sources-name .no_toc}
+<p class="config-loc">(Sources &gt; Name)</p>
+
 The name of the source will be shown to participants when this source
 is used alongside a post.
 
 ##### Avatar
 {:#sources-avatar .no_toc}
+<p class="config-loc">(Sources &gt; Avatar)</p>
+
 The avatar of a source is an optional image that is displayed in a circle
 alongside the source. If the avatar is not square, it will be cropped.
 The avatar images are only shown at small sizes, and therefore are
@@ -675,6 +732,8 @@ be able to find the image to use for the avatar.
 
 ##### Max Posts
 {:#sources-max-posts .no_toc}
+<p class="config-loc">(Sources &gt; Max Posts)</p>
+
 The maximum posts for a source allows you to set a hard limit on the number
 of times a source is shown to the participant. This value can either be an
 integer greater than or equal to zero, or the text `Unlimited` to represent
@@ -694,6 +753,8 @@ source with Max Posts = 10).
 
 ##### Initial Followers
 {:#sources-initial-followers .no_toc}
+<p class="config-loc">(Sources &gt; Initial Followers)</p>
+
 This optional value lets you set an exact initial
 follower count for this source. However, the actual
 follower count of the source may differ throughout
@@ -709,6 +770,8 @@ Only used if:
 
 ##### Initial Credibility
 {:#sources-initial-credibility .no_toc}
+<p class="config-loc">(Sources &gt; Initial Credibility)</p>
+
 This optional value lets you set an exact initial
 credibility number for this source. However, the actual
 credibility number of the source may differ throughout
@@ -724,6 +787,8 @@ Only used if:
 
 ##### True Post Percentage
 {:#sources-true-post-percentage .no_toc}
+<p class="config-loc">(Sources &gt; True Post Percentage)</p>
+
 When using the _Source-Ratios_ source/post selection method,
 this value is used to define the percentage of true posts that
 this source should show. After this source is selected, this
@@ -782,6 +847,8 @@ used instead.
 
 ##### Post ID
 {:#posts-post-id .no_toc}
+<p class="config-loc">(Posts &gt; Post ID)</p>
+
 The ID of each post is used to uniquely identify
 the post. This ID should be of the form `Px` where x is
 an increasing integer (e.g. P1, P2, P3, etc...). This ID
@@ -791,6 +858,8 @@ and there should be no need to edit them.
 
 ##### Headline
 {:#posts-headline .no_toc}
+<p class="config-loc">(Posts &gt; Headline)</p>
+
 The headline of the post is used to provide a title above the
 content of the post. This headline is optional, and if it is
 not included then only the content of the post will be shown.
@@ -806,6 +875,8 @@ in [Figure 9](#fig9).
 
 ##### Content
 {:#posts-content .no_toc}
+<p class="config-loc">(Posts &gt; Content)</p>
+
 The content of the post is used to provide a  more substantial
 piece of text, or an image to display to participants. The content
 is optional, and if it is not included then only the headline of
@@ -838,12 +909,16 @@ be able to find the image to use for the content.
 
 ##### Is True
 {:#posts-is-true .no_toc}
+<p class="config-loc">(Posts &gt; Is True)</p>
+
 This should be set to whether the post should be considered true or false.
 This value is used for the post selection, and for choosing the default
 settings to use for the post. This value is never shown to participants.
 
 ##### Changes to Followers
 {:#posts-changes-to-followers .no_toc}
+<p class="config-loc">(Posts &gt; Changes to Followers)</p>
+
 These settings allow you to set the exact change to a participant's followers
 after they _like_, _dislike_, _share_, or _flag_ a post. This value can be a
 decimal number, however participant's followers are rounded before being displayed.
@@ -852,6 +927,8 @@ the default normal distribution instead.
 
 ##### Changes to Credibility
 {:#posts-changes-to-credibility .no_toc}
+<p class="config-loc">(Posts &gt; Changes to Credibility)</p>
+
 These settings allow you to set the exact change to a participant's credibility
 after they _like_, _dislike_, _share_, or _flag_ a post. This value can be a
 decimal number, however a participant's credibility is rounded before being displayed.
@@ -860,6 +937,8 @@ the default normal distribution instead.
 
 ##### Number of Reactions
 {:#posts-number-of-reactions .no_toc}
+<p class="config-loc">(Posts &gt; Number of Reactions)</p>
+
 These settings allow you to set the ostensible number of prior reactions to
 display for each post. These numbers are displayed below the available reactions
 of the post or comment. If this value is not provided for a particular post, the
@@ -877,6 +956,8 @@ Only available if:
 
 ##### Comments
 {:#posts-comments .no_toc}
+<p class="config-loc">(Posts &gt; Comments)</p>
+
 Up to three optional comments can be configured for each post. Each comment must
 include both a _Source Name_ and a _Message_, which are described below. An
 example comment is shown in [Figure 11](#fig11).
@@ -890,14 +971,20 @@ example comment is shown in [Figure 11](#fig11).
 
 ##### Comment Source Name
 {:#posts-comment-source-name .no_toc}
+<p class="config-loc">(Posts &gt; Comments &gt; Source Name)</p>
+
 The name of the source to display as having made the comments.
 
 ##### Comment Message
 {:#posts-comment-message .no_toc}
+<p class="config-loc">(Posts &gt; Comments &gt; Message)</p>
+
 The text to display as the content of the comments.
 
 ##### Comment Likes
 {:#posts-comment-likes .no_toc}
+<p class="config-loc">(Posts &gt; Comments &gt; Likes)</p>
+
 The number of likes to display for comments. These likes will only be shown if
 comments are enabled, comment likes are enabled, and displaying the number of
 reactions is enabled.
@@ -914,6 +1001,8 @@ Only used if:
 
 ##### Comment Dislikes
 {:#posts-comment-dislikes .no_toc}
+<p class="config-loc">(Posts &gt; Comments &gt; Dislikes)</p>
+
 The number of dislikes to display for comments.
 
 Only used if:
@@ -963,6 +1052,7 @@ available in the **Overall-Ratio Settings** section.
 
 ##### True Post Percentage
 {:#selection-overall-ratio-tpp .no_toc}
+<p class="config-loc">(Source & Post Selection &gt; Overall-Ratio Settings &gt; True Post Percentage)</p>
 
 The percentage of true posts to display to users. This
 percentage is used to probabilistically sample posts.
@@ -1000,11 +1090,15 @@ can be configured under the **Credibility Settings** section.
 
 ##### Linear Slope
 {:#selection-credibility-slope .no_toc}
+<p class="config-loc">(Source & Post Selection &gt; Credibility Settings &gt; Linear Slope)</p>
+
 The increase in the **True Post Percentage** for every unit
 increase in a source's credibility.
 
 ##### Linear Intercept
 {:#selection-credibility-intercept .no_toc}
+<p class="config-loc">(Source & Post Selection &gt; Credibility Settings &gt; Linear Intercept)</p>
+
 The **True Post Percentage** to use when a source's
 credibility is zero.
 
@@ -1019,17 +1113,23 @@ other settings for this method.
 
 ##### Randomise Order
 {:#selection-predefined-randomise .no_toc}
+<p class="config-loc">(Pre-Defined Source & Post Order &gt; Randomise Order)</p>
+
 Whether the presentation order of the pairs should
 be randomised. Otherwise, the pairs will be shown
 in the exact order specified.
 
 ##### Source ID
 {:#selection-predefined-source-id .no_toc}
+<p class="config-loc">(Pre-Defined Source & Post Order &gt; Source ID)</p>
+
 The ID of the source to be used for the post (e.g. **S1**).
 These IDs can be found in the _Sources_ sheet.
 
 ##### Post ID
 {:#selection-predefined-post-id .no_toc}
+<p class="config-loc">(Pre-Defined Source & Post Order &gt; Post ID)</p>
+
 The ID of the post to display (e.g. **S1**).
 These IDs can be found in the _Posts_ sheet.
 

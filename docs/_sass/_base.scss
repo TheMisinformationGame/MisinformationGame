@@ -49,15 +49,15 @@ h3 {
   margin-top: 1.75rem;
   font-size: 1.25rem;
 }
-h4 {
+h4, h5, h6 {
   margin-top: 1.5rem;
   font-size: 1.125rem;
+}
+h4 {
   text-decoration: underline;
 }
 h5, h6 {
-  margin-top: 1.25rem;
-  margin-bottom: -0.75rem;
-  font-size: 1.05rem;
+  margin-bottom: -0.85em;
 }
 
 /* Body */
