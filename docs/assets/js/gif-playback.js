@@ -221,7 +221,9 @@ function setupGIF(canvas, options, gif) {
     // Restart the GIF on hover.
     canvas.addEventListener("mouseover", function() {
         if (getGIFTime() <= gif.durationMS) {
-            state.hoverStart = state.start;
+            if (state.start !== null) {
+                state.hoverStart = state.start;
+            }
         } else {
             state.hoverStart = performance.now();
         }
@@ -231,12 +233,14 @@ function setupGIF(canvas, options, gif) {
     });
 
     // Play the GIF once on click.
-    canvas.addEventListener("click", function() {
+    canvas.addEventListener("mousedown", function() {
         const gifTime = getGIFTime();
         const isPlaying = gifTime < gif.durationMS;
 
         if (isPlaying) {
-            state.start = state.hoverStart;
+            if (state.hoverStart !== null) {
+                state.start = state.hoverStart;
+            }
         } else {
             state.start = performance.now();
             state.hoverStart = state.start;
