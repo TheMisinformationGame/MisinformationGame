@@ -1106,33 +1106,43 @@ credibility is zero.
 #### 2.7.5. Method 4: Pre-Defined
 {:#selection-predefined}
 
-An exact set of source/post pairs is manually defined.
-The source/post pairs can be manually defined in the
-_Pre-Defined Source & Post Order_ sheet, alongside
-other settings for this method.
+An exact set of source/post pairs is manually defined to be presented
+to participants. The source/post pairs can be manually defined in the
+_Pre-Defined Source & Post Order_ sheet, which is
+documented [here](#predefined).
+
+
+
+### 2.9. Pre-Defined Source & Post Order Worksheet
+{:#predefined}
+
+This worksheet is only used if the Source & Post Selection
+Method is set to [Pre-Defined](#selection-predefined). This
+worksheet contains a table of pre-defined source/post pairs to
+present to participants. The order that these pairs are
+presented may also be randomised.
 
 ##### Randomise Order
-{:#selection-predefined-randomise .no_toc}
+{:#predefined-randomise .no_toc}
 <p class="config-loc">(Pre-Defined Source & Post Order &gt; Randomise Order)</p>
 
 Whether the presentation order of the pairs should
 be randomised. Otherwise, the pairs will be shown
-in the exact order specified.
+in the exact order specified, from top to bottom.
 
 ##### Source ID
-{:#selection-predefined-source-id .no_toc}
+{:#predefined-source-id .no_toc}
 <p class="config-loc">(Pre-Defined Source & Post Order &gt; Source ID)</p>
 
 The ID of the source to be used for the post (e.g. **S1**).
 These IDs can be found in the _Sources_ sheet.
 
 ##### Post ID
-{:#selection-predefined-post-id .no_toc}
+{:#predefined-post-id .no_toc}
 <p class="config-loc">(Pre-Defined Source & Post Order &gt; Post ID)</p>
 
 The ID of the post to display (e.g. **S1**).
 These IDs can be found in the _Posts_ sheet.
-
 
 
 ## 3. Upload your Study
