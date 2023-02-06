@@ -251,7 +251,9 @@ participant ID before starting the study. If this value
 is true, then participants will be shown an identification
 screen for them to manually enter their ID if it has not
 already been automatically populated from the URL they
-have been given.
+have been given. The method to include a participant
+identifier in URL parameters is discussed
+[here](/ManagingStudies#access-study-url).
 
 
 #### 2.3.2. User Interface Settings
@@ -589,8 +591,9 @@ post will be chosen to match an overall ratio of
 true:false posts. The settings for this method are
 available in the **Overall-Ratio Settings** section.
 
-##### selection-overall-ratio-tpp
-{:#aaa .no_toc}
+##### True Post Percentage
+{:#selection-overall-ratio-tpp .no_toc}
+
 The percentage of true posts to display to users. This
 percentage is used to probabilistically sample posts.
 Therefore, the actual percentage for each participant
@@ -1063,6 +1066,8 @@ button. This will open a window where you can click
 If there are any errors that could be found with your study,
 then an error will be displayed in this window. Otherwise,
 a success message will be displayed, and you will be redirected
-to the admin view of your new study. Additional information about
-managing your study after you have uploaded it can be found in
-the [Managing Studies documentation](/ManagingStudies).
+to the admin view of your new study. You can then click the
+URL to your study at the top of its page to test it! Additional
+information about managing your study after you have uploaded
+it can be found in the
+[Managing Studies documentation](/ManagingStudies).
