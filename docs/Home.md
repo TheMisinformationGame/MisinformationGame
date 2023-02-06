@@ -87,6 +87,15 @@ you [cited this paper](#cite).
 </div>
 
 
+## Documentation
+{:#docs}
+
+The Misinformation Game has extensive documentation to help you use the tool.
+This documentation ranges from high-level guides on the use of the
+Misinformation Game, to reference guides for configuring studies and using
+their results. The documentation can be found [here](/DocumentationIndex).
+
+
 ## Cite the Misinformation Game
 {:#cite}
 
@@ -101,60 +110,3 @@ you [cited this paper](#cite).
  month={Jul}
 }
 ```
-
-
-## Usage Documentation
-{:#usage-docs}
-
-- [How to Play](/HowToPlay) -
-  The default guide given to participants before they start a study.
-- [Study Configuration](/StudyConfiguration) - A reference guide on creating your own study.
-- [Including Images in Studies](/Images) - Recommendations for including images in studies.
-- [Registering Administrators](/Administrators) - How to securely assign administrator privileges.
-- [Managing Studies](/ManagingStudies) - How to upload, enable, disable, and delete your studies.
-- [Qualtrics Integration](/QualtricsIntegration) - How to integrate a study into Qualtrics.
-- [Results](/Results) - A reference guide on the results that are recorded by the game.
-
-
-
-## Hosting Documentation
-{:#hosting-docs}
-
-- [Installation](/Installation) -
-  Describes the options for hosting your own instance of the Misinformation Game.
-- [Firebase Pricing](/FirebasePricing) - A guide to estimate the hosting costs of running a study.
-- [Updating your Installation](/Updating) -
-  A guide to retrieve new features and fixes for your installation.
-
-
-
-## System Documentation
-{:#system-docs}
-
-- [Technical Overview](/TechnicalOverview) - A broad overview of the tech-stack used by the game.
-- [Simulation](/Simulation) - An in-depth description of the simulation behind the game.
-- [Development](/Development) - A guide for developers to make adjustments to the game.
-- [Documentation Development](/DocsDevelopment) - A guide for developers to make adjustments
-  to this documentation website.
-- [Original Design](/original-design) - The original, outdated, design document for the game.
-  _This is only relevant for those who are interested, and not as a reference._
-
-
-
-## Other Useful Links
-{:#other-links}
-
-- [Source Code](https://github.com/TheMisinformationGame/MisinformationGame) -
-  The Misinformation Game is open-source!
-- [The (Mis)information Game Paper](https://psyarxiv.com/628wc/) -
-  A pre-print paper about The Misinformation Game, including a user experience study.
-- [Issue Tracker](https://github.com/TheMisinformationGame/MisinformationGame/issues) -
-  If you find any issues, please report them here.
-- [Example Game](/link/ExampleGame) -
-  Test out The Misinformation Game with an example game.
-- [Example Results](/link/ExampleResults) -
-  View the results of a user experience study ran using The Misinformation Game.
-- [Study Configuration Template Spreadsheet](/link/StudyTemplate) -
-  The template spreadsheet that should be edited to create your own study.
-- [Example Game Configuration Spreadsheet](/link/ExampleStudy) -
-  The study configuration spreadsheet that is used to create the example game.
