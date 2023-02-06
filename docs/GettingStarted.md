@@ -337,7 +337,7 @@ study, as you fine-tune it for your research.
 {:#run}
 
 When you are happy with your study, you can
-[enable the it](/ManagingStudies#enable-disable-studies) so that other
+[enable it](/ManagingStudies#enable-disable-studies) so that other
 people can access it. You may then share the URL of your study with your
 participants, so that they can play through it. If you are using the
 Firebase free tier, and are expecting
