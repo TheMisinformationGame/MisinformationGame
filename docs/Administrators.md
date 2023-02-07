@@ -39,8 +39,9 @@ the dashboard from the homepage is highlighted in [Figure 1](#fig1).
     </figcaption>
 </figure>
 
-**Step 2:** You will then be prompted to sign in using a Google account. You should click
-the **Sign In with Google** button. A screenshot of the sign-in page is shown in [Figure 2](#fig2).
+**Step 2:** You will then be prompted to sign in using a Google account.
+You should click the **Sign In with Google** button. A screenshot of the
+sign-in page is shown in [Figure 2](#fig2).
 
 <figure id="fig2">
     <img src="screenshots/sign-in-page.png" alt="figure 2" height="237" />
@@ -62,8 +63,10 @@ already been granted administrator privileges.
     </figcaption>
 </figure>
 
-**Step 4:** You have now been registered as a user, but not an administrator. The process
-to register users as administrators is described under [Admin Registration](#admin-registration) below.
+**Step 4:** You have now been registered as a user, but not an
+administrator. The process to register users as administrators is
+described under the [Admin Registration section](#admin-registration)
+below.
 
 
 
@@ -151,12 +154,13 @@ The process to access this tab is shown in [Figure 6](#fig6).
 When you register your first administrator, you must create the "Admins"
 collection within your Firestore database. The process to do this is
 described below. If you already have an "Admins" collection, then you should
-follow the process in the [Registering Additional Administrators](#admin-registration-additional)
-section instead.
+follow the process in the
+[Registering Additional Administrators section](#admin-registration-additional)
+instead.
 
-**Step 1:** In the Firestore Database, press the "+ Start collection" button to create your first
-Firestore collection. This button is highlighted in [Figure 7](#fig7).
-This should open a dialog prompting you to "Start a collection".
+**Step 1:** In the Firestore Database, press the "+ Start collection" button
+to create your first Firestore collection. This button is highlighted in
+[Figure 7](#fig7). This should open a dialog prompting you to "Start a collection".
 
 <figure id="fig7">
     <img src="diagrams/starting-firestore-collection.png" alt="figure 7" height="529" />
@@ -185,15 +189,17 @@ The first document that we will add is the first administrator of your instance 
 The Misinformation Game. An example of this form correctly filled in is shown
 in [Figure 9](#fig9).
 
-* You should enter the User ID you copied earlier as the "Document ID". Your User ID can be found using the
-process described under the [Finding your User ID](#find-user-id) section. This will
-allow The Misinformation Game to verify that you are an administrator.
+* You should enter the User ID you copied earlier as the "Document ID". Your
+  User ID can be found using the process described under the
+  [Finding your User ID](#find-user-id) section. This will allow The Misinformation
+  Game to verify that you are an administrator.
 
 * Next, you should enter `Name` under "Field", and your name under "Value". The "Type"
-field should be set to `string`. This name will later help to keep track of who has been
-granted administrator privileges.
+  field should be set to `string`. This name will later help to keep track of who has been
+  granted administrator privileges.
 
-* Once you have set the admin name, save the collection. "Admins" should now be displayed as a collection in your Firestore Database.
+* Once you have set the admin name, save the collection. "Admins" should now be
+  displayed as a collection in your Firestore Database.
 
 <figure id="fig9">
     <img src="screenshots/firestore-populate-admins-collection.png" alt="figure 9" height="693" />
@@ -203,7 +209,10 @@ granted administrator privileges.
     </figcaption>
 </figure>
 
-**Step 4:** You should now be able to access your admin dashboard. To do so, reload the admin dashboard (as shown in [Figure 3](#fig3)) and the permission error should be gone. You may now upload and manage your studies as described under [Managing Studies documentation](ManagingStudies)!
+**Step 4:** You should now be able to access your admin dashboard. To do so,
+reload the admin dashboard (as shown in [Figure 3](#fig3)) and the permission
+error should be gone. You may now upload and manage your studies as described
+in the [Managing Studies documentation](/ManagingStudies)!
 
 
 ### 3.3. Registering Additional Administrators
@@ -233,12 +242,13 @@ as shown in [Figure 10](#fig10).
 you are registering. An example of this form correctly filled in is shown
 in [Figure 11](#fig11).
 
-* You should enter the admin's User ID as the "Document ID". Their User ID can be found using the
-  process described under the [Finding your User ID](#find-user-id) section.
+* You should enter the admin's User ID as the "Document ID". Their User ID
+  can be found using the process described under the
+  [Finding your User ID](#find-user-id) section.
 
-* Next, you should enter `Name` under "Field", and the admin's name under "Value". The "Type"
-  field should be set to `string`. This name will later help to keep track of who has been
-  granted administrator privileges.
+* Next, you should enter `Name` under "Field", and the admin's name under
+  "Value". The "Type" field should be set to `string`. This name will
+  later help to keep track of who has been granted administrator privileges.
 
 * Once you have set the admin name, save the document to the Admin collection.
 
