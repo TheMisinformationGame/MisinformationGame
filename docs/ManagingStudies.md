@@ -59,7 +59,7 @@ with the URL of the study. Once the study is disabled however,
 participants will no longer be able to access the study.
 
 Enabling or disabling your study will also update its **Last
-Study Modification Time**, which is saved into the results.
+Study Modification Time**, which is saved in the results.
 This timestamp will allow you to distinguish between your
 test runs through the study while it was disabled, and the
 participant's runs through the study after you enabled it.
@@ -81,7 +81,7 @@ can be found in the [Results](/Results) documentation.
 {:#update-study}
 
 If you have found changes you wish to make to your
-study after you tested playing through it, you may
+study after testing, you may
 wish to upload a new version of your study. This
 can be done by pressing the **Update Study** button
 and selecting the new version of your configuration
@@ -89,7 +89,7 @@ spreadsheet that you wish to upload.
 
 Note, this updating should not be done while
 participants are taking part in your study, as it
-is possible that it will break their game.
+is possible that it will break the game.
 
 
 
@@ -100,11 +100,12 @@ Once you have finished conducting your study and you
 have downloaded the results of your study, you may
 wish to delete your study from The Misinformation Game.
 This can be done by pressing the **Delete Study** button
-for your study in its _Admin View_. This deletion
-will delete everything to do with your study, including
+for the study in its _Admin View_. This deletion
+will delete everything to do with the study, including
 its settings, all its images, and all its results. The
 results will not be recoverable after the study has been
-deleted.
+deleted. 
+**Please note that deleted studies cannot be recovered.**
 
 
 
@@ -113,8 +114,8 @@ deleted.
 
 The URL to send to participants is shown below the name
 of the study at the top of its _Admin View_. This
-URL can also be used for you to access your game to test
-it before you enable the study.
+URL can also be used to access your game to test
+it locally before you enable the study.
 
 If you are using another system to redirect participants
 to your game, some of them may also support automatically
