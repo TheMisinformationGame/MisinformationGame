@@ -11,11 +11,13 @@ showBackToTop: false
     <span style="font-weight: bold">
         This is a <span style="font-style: italic">copy</span> of the
         default rules page that will be shown to participants before
-        they start a study.
+        they start a study where posts are
+        <span style="font-style: italic">not</span> displayed in a feed.
     </span>
-    The content of this page
-    <a href="/StudyConfiguration#pages-rules">can be edited</a>
-    for your own studies.
+    Rules for studies where posts are displayed in a feed will vary
+    slightly from what is shown below. The content of this page
+    <a href="/StudyConfiguration#pages-rules">can be edited</a> for
+    your own studies.
 </p>
 
 This document contains slight modifications from the actual default rules page
