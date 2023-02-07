@@ -90,7 +90,7 @@ project.
 <img src="diagrams/firebase-console.png" alt="Screenshot of the Firebase console" height="252" />
 
 #### 2.1.2. Enable Firestore Database
-{:#firebase-enable-firestore}
+{:#enable-firebase-firestore}
 The Misinformation Game uses Firestore to store the
 studies and their results, however it is not enabled
 by default. To enable Firestore, navigate to
@@ -118,19 +118,22 @@ a screen like the one below.
 <img src="diagrams/created-firestore-database.png" alt="Screen after creating Firestore database" height="242" />
 
 #### 2.1.3. Enable Firebase Storage
-{:#enable-firebase-storage} Any images that are embedded within studies will be stored within Firebase Storage. Therefore, Firebase Storage will need to be enabled for your Firebase project.
+{:#enable-firebase-storage}
+Any images that are embedded within studies will be stored within
+Firebase Storage. Therefore, Firebase Storage will need to be
+enabled for your Firebase project.
 
 **Step 1:** Select **Storage** under the **Build** tab on the left of the project page.
 
-  <img src="diagrams/accessing-firebase-storage.png" alt="access firebase storage" height="218" />
+<img src="diagrams/accessing-firebase-storage.png" alt="access firebase storage" height="218" />
 
 **Step 2:** Your storage should now be set up. If you see a page that looks like the page shown above,
-then this has been successful. However, if you see the **Get started** page,
-then you will need to first enable the Firestore Database as explained in the
+then this has been successful. However, if you see the **Get started** page, as shown
+below, then you will need to first enable the Firestore Database as explained in the
 [Enable Firebase Firestore section](#enable-firebase-firestore) of this guide.
 This should automatically enable Firebase Storage when you start Firestore in **production mode**.
 
-  <img src="screenshots/storage-get-started.png" alt="firebase storage" height="240" />
+<img src="screenshots/storage-get-started.png" alt="firebase storage" height="240" />
 
 #### 2.1.4. Enable Google Authentication
 {:#firebase-enable-google-auth}
