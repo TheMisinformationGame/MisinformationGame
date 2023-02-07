@@ -42,7 +42,7 @@ you use either the PNG (`.png`) or JPEG (`.jpg`) file formats for
 images. These file formats are very widely supported.
 
 Additionally, JPEG files can be compressed further than PNG files,
-and therefore JPEG images will often be smaller. Therefore, the use
+and so JPEG images will often be smaller. Therefore, the use
 of JPEG images is recommended. However, sometimes JPEG files can
 introduce visual artifacts to some images. If you observe this, then
 using PNG files instead will avoid those at the cost of additional
@@ -83,8 +83,8 @@ them to your study configuration spreadsheet.
 As an example, the two images below in [Figure 1](#fig1) and [Figure 2](#fig2)
 should appear very similar. However, the image in Figure 2 is half the width and
 height of the image in Figure 1, and therefore also only 30% of the size. This
-demonstrates that downscaling images can save a lot of bandwidth without
-affecting the quality of the images very much.
+demonstrates that downscaling images can save a lot of bandwidth without noticeably
+affecting the quality of the images.
 
 **Original Image:**
 <figure id="fig1">
@@ -126,8 +126,8 @@ hasn't lost too much quality.
 As an example, the two images below in [Figure 3](#fig3) and [Figure 4](#fig4)
 should appear very similar. However, the image in Figure 4 has been compressed,
 and has a 16% smaller file size than the image in Figure 3. This demonstrates
-that compressing images can save some bandwidth without affecting the quality
-of the images very much.
+that compressing images can save some bandwidth without noticeably affecting the quality
+of the images.
 
 **Original Image:**
 <figure id="fig3">
