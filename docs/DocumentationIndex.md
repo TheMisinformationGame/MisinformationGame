@@ -37,6 +37,8 @@ for your research, we would also really appreciate it if you
 - [How to Play](/HowToPlay) -
   The default rules page given to participants before they start a study.
 - [About](/About) - A description of the history behind the development of this tool.
+- [Slack](https://join.slack.com/t/themisinformationgame/shared_invite/zt-1oruoc0s2-OLscp581nAJ2hxpDYGnvJQ) -
+  Join our Slack community to ask questions, share your research, and meet other academics!
 
 
 ## 3. Usage
