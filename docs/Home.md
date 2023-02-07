@@ -50,13 +50,13 @@ The Misinformation Game, you can access an example game from
 ## Example Results
 {:#example-results}
 
-If you would like to view an example of the results output for studies run using The Misinformation Game, the results of a user
-experience study are available from
-[the example results page](/link/ExampleResults). Additional
-information about the results that are made available for your
-analysis are described in the [Results Documentation](/Results).
-The results that are recorded for your study will depend upon the
-configuration of your study.
+If you would like to view an example of the results output by a study
+run using The Misinformation Game, the results of a user experience
+study are available from [the example results page](/link/ExampleResults).
+Additional information about the results that are made available for your
+analysis are described in the [Results documentation](/Results). The
+results that are recorded for your study will depend upon the configuration
+of your study.
 
 
 
