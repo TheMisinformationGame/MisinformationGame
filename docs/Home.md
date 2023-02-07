@@ -11,19 +11,17 @@ permalink: /
 
 --------
 
-<p style="text-align: justify">
-    The Misinformation Game is a social media simulator built to study
-    people's behaviour when they interact with social media. To achieve
-    this, The Misinformation Game simulates a social media feed for
-    research participants. Participants will be shown either a feed of
-    social media posts, or a single social media post at a time, and
-    they may then react to the post and its comments. The Misinformation
-    Game has been designed to be highly customisable so that tightly
-    controlled experiences can be created for participants. This
-    customisability is a core focus of The Misinformation Game,
-    to facilitate the research of a wide array of social media
-    related questions.
-</p>
+The Misinformation Game is a social media simulator built to study
+how people interact with information on social media. To achieve
+this, The Misinformation Game simulates a social media feed for
+research participants. Participants are shown fake social media
+posts, either one at a time or in a feed format. They may then
+react to the post and its comments. The Misinformation Game has
+been designed to be highly customisable so that a range of tightly
+controlled experiences can be created for participants. This
+customisability is a core focus of The Misinformation Game, to
+facilitate the research of a wide array of social media related
+questions.
 
 **Preprint Paper:** [The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
 
@@ -34,9 +32,9 @@ permalink: /
 ## Example Game
 {:#example-game}
 
-The best way to get introduced to the Misinformation Game is to try it!
-You can access an example game to try the Misinformation Game yourself
-from [the example games page](/link/ExampleGame).
+If you would like to experience participating in a study created using
+The Misinformation Game, you can access an example game from
+[the example game page](/link/ExampleGame).
 
 <figure id="fig1">
     <img src="screenshots/example-game.png" alt="Figure 1. Screenshot of the user interface within a game." height="582" />
@@ -52,14 +50,13 @@ from [the example games page](/link/ExampleGame).
 ## Example Results
 {:#example-results}
 
-If you would like to view an example of the results that can be
-gathered when using The Misinformation Game, the results of a user
-experience study are available from
-[the example results page](/link/ExampleResults). Additional
-information about the results that are made available for your
-analysis are described in the [Results Documentation](/Results).
-The results that are recorded for your study will depend upon the
-configuration of your study.
+If you would like to view an example of the results output by a study
+run using The Misinformation Game, the results of a user experience
+study are available from [the example results page](/link/ExampleResults).
+Additional information about the results that are made available for your
+analysis are described in the [Results documentation](/Results). The
+results that are recorded for your study will depend upon the configuration
+of your study.
 
 
 
