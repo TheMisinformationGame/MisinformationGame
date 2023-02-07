@@ -20,7 +20,7 @@ spreadsheet is split into four worksheets:
    results were downloaded.
 
 2) **[The Posts Worksheet](#posts):**
-   This sheet contains all the interactions participants make with
+   This sheet contains all the interactions participants made with
    the posts that they were shown, as well as information about
    those posts.
 
