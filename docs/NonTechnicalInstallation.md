@@ -459,7 +459,9 @@ all the necessary packages and deploy the app. Please note that this process may
 
 During this deployment process you will be asked many questions which require a response. These questions
 are as follows: <br/>
-Question 1: You will be asked to login to your Google Firebase account. If you are not already logged in this will open a browser window.Please login to your Google Firebase account and return to Visual Studio Code. <br/>
+Question 1: You will be asked to login to your Google Firebase account. If you are not already logged
+in, this will open a browser window. Please sign in to your Google Firebase account and return to Visual
+Studio Code. <br/>
 Question 2: You will be asked to select a Firebase Project. Select the relevant Firebase project made earlier
 and then press Enter to continue. This is shown in [Figure 21](#fig21).
 
