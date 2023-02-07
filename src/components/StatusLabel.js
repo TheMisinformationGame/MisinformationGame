@@ -1,8 +1,8 @@
 import {Component} from "react";
-import ErrorIcon from "@material-ui/icons/Error";
-import {CircularProgress} from "@material-ui/core";
-import DoneIcon from "@material-ui/icons/Done";
-import WarningIcon from "@material-ui/icons/Warning";
+import ErrorIcon from "@mui/icons-material/Error";
+import CircularProgress from '@mui/material/CircularProgress';
+import DoneIcon from "@mui/icons-material/Done";
+import WarningIcon from "@mui/icons-material/Warning";
 import {doNullableTypeCheck, isOfType} from "../utils/types";
 
 /**

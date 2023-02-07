@@ -1,5 +1,6 @@
 import {MountAwareComponent} from "../components/MountAwareComponent";
 import {auth} from "../database/firebase";
+import {signOut} from "firebase/auth";
 import StatusLabel, {Status} from "../components/StatusLabel";
 import {Button, LinkButton} from "../components/Button";
 import {setDefaultPageTitle} from "../index";
@@ -19,26 +20,32 @@ export class AdminSignOut extends MountAwareComponent {
     };
 
     signOut() {
-        this.setStateIfMounted({
-            signingOut: true,
-            signedOut: false,
-            status: Status.progress("Signing you out...")
+        this.setStateIfMounted(() => {
+            return {
+                signingOut: true,
+                signedOut: false,
+                status: Status.progress("Signing you out...")
+            };
         });
 
-        auth.signOut().then(() => {
-            this.setStateIfMounted({
-                signingOut: false,
-                signedOut: true,
-                status: Status.success("Successfully signed out.")
+        signOut(auth).then(() => {
+            this.setStateIfMounted(() => {
+                return {
+                    signingOut: false,
+                    signedOut: true,
+                    status: Status.success("Successfully signed out.")
+                };
             });
         }).catch(error => {
-            this.setStateIfMounted({
-                signingOut: false,
-                signedOut: false,
-                status: Status.error([
-                    <b>You could not be signed out:</b>,
-                    error.message
-                ])
+            this.setStateIfMounted(() => {
+                return {
+                    signingOut: false,
+                    signedOut: false,
+                    status: Status.error([
+                        <b>You could not be signed out:</b>,
+                        error.message
+                    ])
+                };
             });
         });
     }

@@ -15,6 +15,15 @@ found in the [Study Configuration documentation](/StudyConfiguration).
 You may access the study configuration template spreadsheet
 from the following URLs:
 
-- [Google Sheets Link](https://docs.google.com/spreadsheets/d/19WQxzPeap1p3bZ1VlGyjM6YN-j1jKqo-sPxv5Dl0q1Q)
+- [Study Configuration (version 2) Google Sheets Link](https://docs.google.com/spreadsheets/d/1x2580r1ynbLQmzhc1SkIR1TxmIj74f_mZxat_A36sKY)
   _\(Recommended\)_
-- [File Download](/StudyTemplate.xlsx)
+- [Study Configuration (version 2) File Download](/StudyTemplate-V2.xlsx)
+
+## Legacy
+{:#legacy}
+
+You may access old versions of the example study configuration spreadsheet
+below:
+
+- [Study Configuration (version 1) Google Sheets Link](https://docs.google.com/spreadsheets/d/19WQxzPeap1p3bZ1VlGyjM6YN-j1jKqo-sPxv5Dl0q1Q)
+- [Study Configuration (version 1) File Download](/StudyTemplate-V1.xlsx)

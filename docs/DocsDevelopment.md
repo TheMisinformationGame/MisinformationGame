@@ -20,10 +20,10 @@ website, and host  it locally for testing.
 
 You must navigate your terminal to the ./docs directory
 to run the documentation website. If you have cloned the
-[themisinformationgame.github.io](https://github.com/TheMisinformationGame/themisinformationgame.github.io)
-repository, then this directory will not exist. Please clone
-the [MisinformationGame](https://github.com/TheMisinformationGame/MisinformationGame)
-repository instead. If your terminal's current working directory
+[themisinformationgame.github.io repository](https://github.com/TheMisinformationGame/themisinformationgame.github.io),
+then this directory will not exist. Please clone the
+[MisinformationGame repository](https://github.com/TheMisinformationGame/MisinformationGame)
+instead. If your terminal's current working directory
 is the MisinformationGame repository, then you may run the following
 command to change it to the ./docs directory,
 

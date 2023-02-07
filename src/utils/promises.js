@@ -7,17 +7,19 @@ export function createWaitPromise(durationMS) {
 
 export function retryPromiseOperation(operation, delay, retries) {
     return new Promise((resolve, reject) => {
-        return operation()
+        operation()
             .then(resolve)
             .catch((reason) => {
                 console.log("Error when running retry-looped operation:", reason);
                 if (retries > 0) {
-                    return createWaitPromise(delay)
+                    createWaitPromise(delay)
                         .then(retryPromiseOperation.bind(null, operation, delay, retries - 1))
                         .then(resolve)
                         .catch(reject);
+                } else {
+                    reject(reason);
                 }
-                return reject(reason);
+                throw reason;
             });
     });
 }

@@ -289,12 +289,16 @@ export class StudyUploadForm extends MountAwareComponent {
         if (!file)
             return;
 
-        this.setStateIfMounted({ fileStatus: Status.progress("Reading file...") });
+        this.setStateIfMounted(() => {
+            return {fileStatus: Status.progress("Reading file...")};
+        });
         const reader = new FileReader();
 
         // Callbacks on callbacks on callbacks on callbacks.
         reader.onload = (event) => {
-            const updateStatusFn = (status) => this.setStateIfMounted({ fileStatus: status });
+            const updateStatusFn = (status) => this.setStateIfMounted((state, props) => {
+                return {fileStatus: status};
+            });
             this.readXLSX(
                 event.target.result,
                 updateStatusFn,
@@ -307,11 +311,13 @@ export class StudyUploadForm extends MountAwareComponent {
             );
         };
         reader.onerror = () => {
-            this.setStateIfMounted({
-                fileStatus: Status.error([
-                    <strong>Error reading file:</strong>,
-                    reader.error
-                ])
+            this.setStateIfMounted(() => {
+                return {
+                    fileStatus: Status.error([
+                        <strong>Error reading file:</strong>,
+                        reader.error
+                    ])
+                };
             });
         }
         reader.readAsArrayBuffer(file);

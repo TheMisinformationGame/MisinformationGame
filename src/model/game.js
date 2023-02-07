@@ -3,7 +3,7 @@
  */
 import {doArrayTypeCheck, doNullableArrayTypeCheck, doNullableTypeCheck, doTypeCheck, isOfType} from "../utils/types";
 import {BrokenStudy, Post, PostComment, Source, Study} from "./study";
-import {selectFilteredRandomElement, selectFilteredWeightedRandomElement} from "../utils/random";
+import {filterArray, selectRandomElement, selectWeightedRandomElement} from "../utils/random";
 import {odiff} from "../utils/odiff";
 import {getDataManager} from "./manager";
 import { postResults } from "../database/postToDB";
@@ -87,9 +87,15 @@ export class GameSource {
      * Selects a random source to show, weighted by source's max posts.
      */
     static selectRandomSource(sources) {
-        return selectFilteredWeightedRandomElement(
+        const availableSources = filterArray(
             sources,
-            (source) => source.remainingUses === -1 || source.remainingUses > 0,
+            (source) => source.remainingUses === -1 || source.remainingUses > 0
+        );
+        if (availableSources.length === 0)
+            throw new Error("All sources hit their maximum number of posts");
+
+        return selectWeightedRandomElement(
+            availableSources,
             () => false,
             (source) => source.source.maxPosts === -1 ? 0 : source.source.maxPosts
         );
@@ -223,9 +229,12 @@ export class GamePost {
      */
     static selectRandomPost(posts, truePostPercentage) {
         const selectTruePosts = 100 * Math.random() < truePostPercentage;
-        return selectFilteredRandomElement(
-            posts,
-            (post) => !post.shown, // Hard Filter
+        const availablePosts = filterArray(posts, (post) => !post.shown);
+        if (availablePosts.length === 0)
+            throw new Error("Used up all available posts");
+
+        return selectRandomElement(
+            availablePosts,
             (post) => selectTruePosts === post.post.isTrue // Soft Filter
         );
     }

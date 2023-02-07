@@ -35,23 +35,38 @@
   text-decoration: none;
 }
 .site-title {
+  display: inline-block;
+  float: left;
   font-size: 22px;
   font-weight: 400;
   line-height: $header-thickness;
   margin-bottom: 0;
   margin-top: 0;
   padding-left: 10px;
-  float: left;
 }
 .menu-list {
+  display: inline-block;
   line-height: $header-thickness;
+}
+.menu-right {
   float: right;
 }
 .menu-link {
-  font-size: 1.8em;
+  font-size: 0.9em;
   vertical-align: middle;
   color: black;
   padding: 5px 10px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.menu-link:hover {
+  text-decoration: underline;
+}
+.menu-link-social-icon {
+  font-size: 1.8em;
+}
+.menu-link-social-icon:hover {
+  text-decoration: none;
 }
 
 /*

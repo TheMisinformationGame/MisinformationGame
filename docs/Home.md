@@ -22,7 +22,7 @@ for participants. This customisability is a core focus of The
 Misinformation Game, to facilitate the research of a wide array of
 social media related questions.
 
-**Preprint Paper:** [PsyArXiv](https://psyarxiv.com/628wc/)
+**Preprint Paper:** [The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
 
 **Source Code:** [MisinformationGame Repository on GitHub](https://github.com/TheMisinformationGame/MisinformationGame)
 
@@ -34,10 +34,9 @@ social media related questions.
 If you would like to experience participating in a study created using
 The Misinformation Game, you can access an example game from
 [the example game page](/link/ExampleGame).
-You can enter any ID to access the example game.
 
 <figure id="fig1">
-    <img src="screenshots/example-game.png" alt="figure 1" height="582" />
+    <img src="screenshots/example-game.png" alt="Figure 1. Screenshot of the user interface within a game." height="582" />
     <figcaption>
         <a href="#fig1">Figure 1.</a> Screenshot of the user interface within a game.
     </figcaption>
@@ -55,103 +54,44 @@ experience study are available from
 [the example results page](/link/ExampleResults). Additional
 information about the results that are made available for your
 analysis are described in the [Results Documentation](/Results).
+The results that are recorded for your study will depend upon the
+configuration of your study.
 
 
 
 ## Getting Started
 {:#getting-started}
 
-The Misinformation Game contains many configuration options
-to tailor the game for specific research purposes. To find
-out whether The Misinformation Game is the right fit for
-your research, we recommend that you first read through the
-[How to Play](/HowToPlay) page and try the
-[Example Game](#example-game). We then advise that you read
-the available options for configuring your own study on the
-[Study Configuration](/StudyConfiguration) page. Additionally,
-the results that are made available for your analysis are
-described on the [Results](/Results) page.
+If you are new to the tool, or you would like a refresher on its use, we recommend
+that you read our [Getting Started Guide](/GettingStarted). This guide is a great
+place to learn the most important concepts for using the Misinformation Game
+effectively for your research.
 
-To conduct a study using The Misinformation Game, you will
-need to host your own website for the game using
-[Google Firebase](https://cloud.google.com/firestore/docs/client/get-firebase).
-The steps to host your own instance of the game are described
-in both a
-[Non-Technical Installation Guide](/NonTechnicalInstallation)
-and a [Technical Installation Guide](/TechnicalInstallation).
-If you are proficient with the command-line and installing
-technical tools, then the technical installation guide will
-be quicker, and requires fewer steps. However, if you are
-not familiar with these technologies, then the non-technical
-installation guide should be easier to follow. Additionally,
-while Firebase has a generous free tier, if you wish to run
-large studies or studies with many images, then you should
-consult the
-[Firebase Pricing Documentation](/FirebasePricing) to estimate
-your hosting costs. In our experience, the hosting costs for
-the Misinformation Game have been minimal.
+The paper
+[The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
+also provides an in-depth introduction to the Misinformation Game, alongside
+results from two validation studies that were conducted to test it. If you use
+the Misinformation Game for your research, we would really appreciate it if
+you [cited this paper](#cite).
+
+<div class="call-to-action-container">
+    <a href="/GettingStarted" class="call-to-action-button">
+        Get Started!
+    </a>
+</div>
 
 
+## Documentation
+{:#docs}
 
-## Usage Documentation
-{:#usage-docs}
+The Misinformation Game has extensive documentation to help you use the tool.
+This documentation ranges from high-level guides on the use of the
+Misinformation Game, to reference guides for configuring studies and using
+their results. The documentation can be found [here](/DocumentationIndex).
 
-- [How to Play](/HowToPlay) -
-  The default guide given to participants before they start a study.
-- [Study Configuration](/StudyConfiguration) - A reference guide on creating your own study.
-- [Including Images in Studies](/Images) - Recommendations for including images in studies.
-- [Registering Administrators](/Administrators) - How to securely assign administrator privileges.
-- [Managing Studies](/ManagingStudies) - How to upload, enable, disable, and delete your studies.
-- [Qualtrics Integration](/QualtricsIntegration) - How to integrate a study into Qualtrics.
-- [Results](/Results) - A reference guide on the results that are recorded by the game.
-
-
-
-## Hosting Documentation
-{:#hosting-docs}
-
-- [Firebase Pricing](/FirebasePricing) - A guide to estimate the hosting costs of running a study.
-- [Non-Technical Installation Guide](/NonTechnicalInstallation) -
-  A guide to host your own study using Firebase (longer, for non-technical users).
-- [Technical Installation Guide](/TechnicalInstallation) -
-  A guide to host your own study using Firebase (shorter, for technical users).
-- [Updating your Installation](/Updating) -
-  A guide to retrieve new features and fixes for your installation.
-
-
-
-## System Documentation
-{:#system-docs}
-
-- [Technical Overview](/TechnicalOverview) - A broad overview of the tech-stack used by the game.
-- [Simulation](/Simulation) - An in-depth description of the simulation behind the game.
-- [Development](/Development) - A guide for developers to make adjustments to the game.
-- [Documentation Development](/DocsDevelopment) - A guide for developers to make adjustments
-  to this documentation website.
-- [Original Design](/original-design) - The original, outdated, design document for the game.
-  _This is only relevant for those who are interested, and not as a reference._
-
-
-
-## Other Useful Links
-{:#other-links}
-
-- [Source Code](https://github.com/TheMisinformationGame/MisinformationGame) -
-  The Misinformation Game is open-source!
-- [The (Mis)information Game Paper](https://psyarxiv.com/628wc/) -
-  A pre-print paper about The Misinformation Game, including a user experience study.
-- [Issue Tracker](https://github.com/TheMisinformationGame/MisinformationGame/issues) -
-  If you find any issues, please report them here.
-- [Example Game](/link/ExampleGame) -
-  Test out The Misinformation Game with an example game.
-- [Example Results](/link/ExampleResults) -
-  View the results of a user experience study ran using The Misinformation Game.
-- [Study Configuration Template Spreadsheet](/link/StudyTemplate) -
-  The template spreadsheet that should be edited to create your own study.
-- [Example Game Configuration Spreadsheet](/link/ExampleStudy) -
-  The study configuration spreadsheet that is used to create the example game.
 
 ## Cite the Misinformation Game
+{:#cite}
 
 ```bibtex
 @misc{butler_lamont_wan_prike_nasim_walker_fay_ecker_2022,

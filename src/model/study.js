@@ -439,6 +439,7 @@ export class StudyUserInterfaceSettings {
         doTypeCheck(postEnabledReactions["dislike"], "boolean", "Whether likes are enabled for posts");
         doTypeCheck(postEnabledReactions["share"], "boolean", "Whether likes are enabled for posts");
         doTypeCheck(postEnabledReactions["flag"], "boolean", "Whether likes are enabled for posts");
+        doTypeCheck(postEnabledReactions["skip"], "boolean", "Whether skip post is enabled for posts");
         doTypeCheck(commentEnabledReactions, "object", "The reactions enabled for comments");
         doTypeCheck(commentEnabledReactions["like"], "boolean", "Whether likes are enabled for comments");
         doTypeCheck(commentEnabledReactions["dislike"], "boolean", "Whether likes are enabled for comments");
@@ -471,12 +472,18 @@ export class StudyUserInterfaceSettings {
         const displayPostsInFeed = json["displayPostsInFeed"],
               allowMultipleReactions = json["allowMultipleReactions"];
 
+        const postEnabledReactions = json["postEnabledReactions"];
+        // For backwards compatibility with V1 spreadsheets.
+        if (postEnabledReactions["skip"] === undefined) {
+            postEnabledReactions["skip"] = true;
+        }
+
         return new StudyUserInterfaceSettings(
             (displayPostsInFeed === undefined ? false : displayPostsInFeed),
             json["displayFollowers"], json["displayCredibility"],
             json["displayProgress"], json["displayNumberOfReactions"],
             (allowMultipleReactions === undefined ? false : allowMultipleReactions),
-            json["postEnabledReactions"], json["commentEnabledReactions"]
+            postEnabledReactions, json["commentEnabledReactions"]
         )
     }
 
@@ -486,8 +493,8 @@ export class StudyUserInterfaceSettings {
     static createV2(
         displayPostsInFeed, displayFollowers, displayCredibility,
         displayProgress, displayNumberOfReactions, allowMultipleReactions,
-        postEnabledReactions, commentEnabledReactions) {
-
+        postEnabledReactions, commentEnabledReactions
+    ) {
         return new StudyUserInterfaceSettings(
             displayPostsInFeed, displayFollowers, displayCredibility,
             displayProgress, displayNumberOfReactions, allowMultipleReactions,
@@ -500,12 +507,20 @@ export class StudyUserInterfaceSettings {
      */
     static createV1(
         displayFollowers, displayCredibility, displayProgress,
-        displayNumberOfReactions, postEnabledReactions, commentEnabledReactions) {
+        displayNumberOfReactions, postEnabledReactions, commentEnabledReactions
+    ) {
+        // V1 studies are missing whether skip is enabled.
+        const postEnabledReactionsWithSkip = {"skip": true};
+        for (let key in postEnabledReactions) {
+            if (postEnabledReactions.hasOwnProperty(key)) {
+                postEnabledReactionsWithSkip[key] = postEnabledReactions[key];
+            }
+        }
 
         return StudyUserInterfaceSettings.createV2(
-            false, "free", displayFollowers,
-            displayCredibility, displayProgress, displayNumberOfReactions,
-            false, postEnabledReactions, commentEnabledReactions
+            false, displayFollowers, displayCredibility, displayProgress,
+            displayNumberOfReactions, false,
+            postEnabledReactionsWithSkip, commentEnabledReactions
         )
     }
 }
@@ -707,7 +722,6 @@ export class Study {
             sourcePostSelectionMethod,
             sources, posts) {
 
-
         doTypeCheck(id, "string", "Study ID");
         doTypeCheck(authorID, "string", "Study Author's ID");
         doTypeCheck(authorName, "string", "Study Author's Name");
@@ -739,22 +753,20 @@ export class Study {
         this.posts = posts;
     }
 
-    static convertEnabledReactionsToList(enabledReactions) {
-        const enabled = [];
-        for (let key in enabledReactions) {
-            if (enabledReactions.hasOwnProperty(key) && enabledReactions[key]) {
-                enabled.push(key);
-            }
+    isPostReactionEnabled(reaction) {
+        if (reaction === "skip") {
+            return (
+                this.basicSettings.requireReactions &&
+                !this.uiSettings.displayPostsInFeed &&
+                this.uiSettings.postEnabledReactions["skip"]
+            );
+        } else {
+            return this.uiSettings.postEnabledReactions[reaction];
         }
-        return enabled;
     }
 
-    getPostEnabledReactions() {
-        return Study.convertEnabledReactionsToList(this.uiSettings.postEnabledReactions);
-    }
-
-    getCommentEnabledReactions() {
-        return Study.convertEnabledReactionsToList(this.uiSettings.commentEnabledReactions);
+    isCommentReactionEnabled(reaction) {
+        return this.uiSettings.commentEnabledReactions[reaction];
     }
 
     areUserCommentsRequired() {

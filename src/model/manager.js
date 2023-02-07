@@ -166,17 +166,16 @@ class DataManager {
     /**
      * Reads whether the current user is an admin.
      */
-    readIsAdmin() {
-        if (!auth.currentUser) {
-            this.isAdminPromiseGenerator = () => Promise.resolve(false);
-            return this.isAdminPromiseGenerator();
-        }
+    readIsAdmin(user) {
+        if (!user)
+            throw new Error("Not signed in");
 
-        const isAdminPromise = readIsAdmin().then(isAdmin => {
+        const isAdminPromise = readIsAdmin(user).then(isAdmin => {
             this.isAdminPromiseGenerator = () => Promise.resolve(isAdmin);
             return isAdmin;
         }).catch(error => {
             this.isAdminPromiseGenerator = () => Promise.reject(error);
+            throw error;
         });
         this.isAdminPromiseGenerator = () => isAdminPromise;
         return isAdminPromise;
@@ -185,9 +184,9 @@ class DataManager {
     /**
      * Gets a Promise to whether the current user is an admin.
      */
-    getIsAdmin() {
+    getIsAdmin(user) {
         if (this.isAdminPromiseGenerator === null)
-            return this.readIsAdmin();
+            return this.readIsAdmin(user);
 
         return this.isAdminPromiseGenerator();
     }
@@ -197,8 +196,8 @@ class DataManager {
      * This method should not be called directly, instead
      * call {@link DataManager#getAllStudies()} to get a promise to all the studies.
      */
-    readAllStudies() {
-        const studiesPromise = readAllStudies().then((studies) => {
+    readAllStudies(user) {
+        const studiesPromise = readAllStudies(user).then((studies) => {
             studies.sort((a, b) => {
                 // First, sort by whether the studies are errored.
                 const aErrored = isOfType(a, BrokenStudy);
@@ -236,9 +235,9 @@ class DataManager {
     /**
      * Returns a promise to a list of all studies.
      */
-    getAllStudies() {
+    getAllStudies(user) {
         if (this.allStudiesPromiseGenerator === null)
-            return this.readAllStudies();
+            return this.readAllStudies(user);
 
         return this.allStudiesPromiseGenerator();
     }

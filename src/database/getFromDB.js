@@ -9,6 +9,9 @@ import {StudyImage} from "../model/images";
 import {Game} from "../model/game";
 import {decompressJson} from "./compressJson";
 import {retryPromiseOperation} from "../utils/promises";
+import {doc} from "firebase/firestore";
+import {collection, getDoc, getDocs, query, where} from "@firebase/firestore";
+import {ref, getDownloadURL} from "firebase/storage";
 
 
 /**
@@ -31,20 +34,30 @@ function studyOrBrokenFromJson(studyID, json) {
  */
 export async function readStudySettings(studyID) {
     return new Promise((resolve, reject) => {
-        db.collection('Studies').doc(studyID).get().then(snapshot => {
-            if (!snapshot.exists) {
-                reject(new Error("Could not find the study with ID " + studyID));
-                return;
-            }
-            const json = decompressJson(snapshot.data())
-            resolve(studyOrBrokenFromJson(studyID, json));
-        }).catch(error => {
-            if (error.code === "permission-denied") {
-                reject(new Error("This study has been disabled."));
-                return;
-            }
-            reject(error);
-        })
+        getDoc(doc(collection(db, "Studies"), studyID))
+            .then(snapshot => {
+                if (!snapshot.exists()) {
+                    const err = new Error("Could not find the study with ID " + studyID);
+                    reject(err);
+                    throw err;
+                }
+
+                const json = decompressJson(snapshot.data()),
+                      study = studyOrBrokenFromJson(studyID, json);
+
+                resolve(study);
+                return study;
+            })
+            .catch(reason => {
+                if (reason.code === "permission-denied") {
+                    console.error(reason);
+                    const err = new Error("This study has been disabled.");
+                    reject(err);
+                    throw err;
+                }
+                reject(reason);
+                throw reason;
+            })
     });
 }
 
@@ -53,24 +66,24 @@ export async function readStudySettings(studyID) {
  * TODO : In the future, it may be good to use pages, as if the number of studies
  *        becomes really large, this will become very costly.
  */
-export async function readAllStudies() {
-    if (!auth.currentUser)
-        throw new Error("User is not authenticated");
+export async function readAllStudies(user) {
+    if (!user)
+        throw new Error("No user provided");
 
-    const snapshot = await db.collection('Studies')
-                             .where("authorID", "==", auth.currentUser.uid).get();
+    const getStudiesQuery = query(collection(db, "Studies"), where("authorID", "==", user.uid));
+    const snapshot = await getDocs(getStudiesQuery);
     return snapshot.docs.map((doc) => studyOrBrokenFromJson(doc.id, decompressJson(doc.data())));
 }
 
 /**
  * Returns a Promise with whether the current user is an admin.
  */
-export async function readIsAdmin() {
-    if (!auth.currentUser)
-        throw new Error("User is not authenticated");
+export async function readIsAdmin(user) {
+    if (!user)
+        throw new Error("No user provided");
 
-    const snapshot = await db.collection("Admins").doc(auth.currentUser.uid).get();
-    return snapshot.exists;
+    const snapshot = await getDoc(doc(collection(db, "Admins"), user.uid));
+    return snapshot.exists();
 }
 
 function getStudyImagePathType(path) {
@@ -91,35 +104,48 @@ export function readStudyImage(path) {
 async function readStudyImageInternal(path) {
     const type = getStudyImagePathType(path);
     return new Promise((resolve, reject) => {
-        return storage.ref(path).getDownloadURL().then((url) => {
-            const request = new XMLHttpRequest();
-            // Long timeout as we really don't want to hammer the backend.
-            request.timeout = 8000;
-            request.open("GET", url, true);
-            request.responseType = "arraybuffer";
-            request.onload = () => {
-                const response = request.response;
-                if (response) {
-                    resolve(new StudyImage(new Uint8Array(response), type));
-                } else {
-                    reject(new Error("Missing response when loading StudyImage from " + path));
-                }
-            };
-
-            const makeErrorListener = (errorDesc) => {
-                return () => {
-                    reject(new Error(
-                        errorDesc + " StudyImage from " + path +
-                        (request.status ? " (" + request.status + ")" : "") +
-                        (request.statusText ? ": " + request.statusText : "")
-                    ));
+        getDownloadURL(ref(storage, path))
+            .then((url) => {
+                const request = new XMLHttpRequest();
+                // Long timeout as we really don't want to hammer the backend.
+                request.timeout = 8000;
+                request.open("GET", url, true);
+                request.responseType = "arraybuffer";
+                request.onload = () => {
+                    const response = request.response;
+                    if (response) {
+                        resolve(new StudyImage(new Uint8Array(response), type));
+                    } else {
+                        reject(new Error("Missing response when loading StudyImage from " + path));
+                    }
                 };
-            };
-            request.onerror = makeErrorListener("Could not load");
-            request.onabort = makeErrorListener("Aborted while loading");
-            request.ontimeout = makeErrorListener("Timed out while loading");
-            request.send(null);
-        });
+
+                const makeErrorListener = (errorDesc) => {
+                    return () => {
+                        reject(new Error(
+                            errorDesc + " StudyImage from " + path +
+                            (request.status ? " (" + request.status + ")" : "") +
+                            (request.statusText ? ": " + request.statusText : "")
+                        ));
+                    };
+                };
+                request.onerror = makeErrorListener("Could not load");
+                request.onabort = makeErrorListener("Aborted while loading");
+                request.ontimeout = makeErrorListener("Timed out while loading");
+                request.send(null);
+            })
+            .catch((reason) => {
+                if (reason.code === "storage/object-not-found") {
+                    console.error(reason);
+                    const err = new Error("Image not found.");
+                    reject(err);
+                    throw err;
+                }
+                console.log("REASON REASON REASON")
+                console.log(reason.code);
+                reject(reason);
+                throw reason;
+            });
     });
 }
 
@@ -134,8 +160,8 @@ export async function readAllCompletedStudyResults(study, problems) {
         throw new Error("User is not authenticated");
 
     const games = [];
-    const snapshot = await db.collection("Studies").doc(study.id)
-                             .collection("Results").get();
+    const snapshot = await getDocs(collection(doc(collection(db, "Studies"), study.id), "Results"));
+
     for(let index = 0; index < snapshot.docs.length; ++index) {
         const doc = snapshot.docs[index];
         const json = decompressJson(doc.data());

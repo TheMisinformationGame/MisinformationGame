@@ -49,39 +49,44 @@ h3 {
   margin-top: 1.75rem;
   font-size: 1.25rem;
 }
-h4 {
+h4, h5, h6 {
   margin-top: 1.5rem;
   font-size: 1.125rem;
+}
+h4 {
   text-decoration: underline;
 }
 h5, h6 {
-  margin-top: 1.25rem;
-  margin-bottom: -0.75rem;
-  font-size: 1.05rem;
+  margin-bottom: -0.85em;
 }
 
 /* Body */
 body {
   font-family: $base-font-family;
 }
-body img {
+body img,
+body canvas {
   margin: 0.4rem auto auto auto;
   display: block;
   max-height: 360px;
   max-width: 800px;
+  width: auto;
   height: auto;
 }
-body img.inline-img {
+body img.inline-img,
+body canvas.inline-img {
   display: inline;
   width: auto;
   margin-left: 0.06em;
   margin-right: 0.06em;
   vertical-align: -10%;
 }
-.content-wrapper img {
+.content-wrapper img,
+.content-wrapper canvas {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
-.content-wrapper img.inline-img {
+.content-wrapper img.inline-img,
+.content-wrapper canvas.inline-img {
   box-shadow: none;
 }
 
@@ -134,7 +139,11 @@ a.about-link-logo, a.about-link-logo img {
   box-shadow: none;
 }
 
-figure img {
+figure {
+  padding-bottom: 0.3em;
+}
+figure img,
+figure canvas {
   max-width: 100%;
 }
 figure figcaption {
@@ -153,6 +162,17 @@ figure > figcaption > a:hover {
   color: #222222;
   text-decoration: underline;
 }
+figure .figure-side-by-side {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+figure .figure-side-by-side img,
+figure .figure-side-by-side canvas {
+  flex: 0;
+  margin: 0.4rem 0.4rem 0;
+}
 
 p {
   display: block;
@@ -170,7 +190,7 @@ p.spacer {
 /* Lists */
 ul, ol, dl {
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   margin-left: 1.5rem;
   font-family: $body-font-family;
 }

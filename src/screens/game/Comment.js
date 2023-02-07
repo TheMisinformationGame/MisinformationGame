@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import ThumbDownIcon from "@material-ui/icons/ThumbDown";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import {ConfirmationDialog} from "../../components/ConfirmationDialog";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
@@ -20,16 +20,14 @@ export class Comment extends Component {
     }
 
     showDeleteConfirmation() {
-        this.setState({
-            ...this.state,
-            showDeleteConfirmation: true
+        this.setState(() => {
+            return {showDeleteConfirmation: true};
         });
     }
 
     hideDeleteConfirmation() {
-        this.setState({
-            ...this.state,
-            showDeleteConfirmation: false
+        this.setState(() => {
+            return {showDeleteConfirmation: false};
         });
     }
 

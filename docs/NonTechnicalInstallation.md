@@ -101,7 +101,7 @@ Select the platform-specific installer you require by clicking the **Windows Ins
 further down the page.
 
 **Step 2:** Open the downloaded file to begin the installation process. If you are asked whether you wish
-to run the software, then accept by clicking **Run**.
+to run the software, accept by clicking **Run**.
 
 **Step 3:** On the _Introduction_ page, begin the installation by clicking **Next**.
 
@@ -119,7 +119,7 @@ The default selections include all the components we require, so click **Next**.
 ### 3.1. Verify that Node.js and NPM were installed correctly (Optional)
 {:#verify-nodejs-install}
 
-Optionally, you may verify that Node.js and NPM were successfully installed through the
+You may verify that Node.js and NPM were successfully installed through the
 command line.
 
 **Step 1:** Open a command-line program,
@@ -155,7 +155,7 @@ If you do not see this page, then you should be able to access it at
 click **Add project** instead.
 
 <figure id="fig2">
-    <img src="diagrams/non-technical-installation-guide/4-create-firebase-project.png" alt="figure 2" height="179" />
+    <img src="diagrams/firebase-create-a-project.png" alt="figure 2" height="179" />
     <figcaption>
         <a href="#fig2">Figure 2.</a> Diagram highlighting how to create a new Firebase project.
     </figcaption>
@@ -459,8 +459,9 @@ all the necessary packages and deploy the app. Please note that this process may
 
 During this deployment process you will be asked many questions which require a response. These questions
 are as follows: <br/>
-Question 1: You will then be asked to login to your Google Firebase account. This will open a browser window.
-Please login to your Google Firebase account and return to Visual Studio Code. <br/>
+Question 1: You will be asked to login to your Google Firebase account. If you are not already logged
+in, this will open a browser window. Please sign in to your Google Firebase account and return to Visual
+Studio Code. <br/>
 Question 2: You will be asked to select a Firebase Project. Select the relevant Firebase project made earlier
 and then press Enter to continue. This is shown in [Figure 21](#fig21).
 
@@ -471,12 +472,12 @@ and then press Enter to continue. This is shown in [Figure 21](#fig21).
     </figcaption>
 </figure>
 
-Question 3: You will then be asked to give an alias to this project. This can be whatever you would like.
+Question 3: You will be asked to give an alias to this project. This can be whatever you would like.
 For example, “test”. Press Enter to continue. <br/>
-Question 4: You will then be asked to sign in to Google Cloud. Press Y and then Enter. This will open a
+Question 4: You will be asked to sign in to Google Cloud. Press Y and then Enter. This will open a
 login page in your browser, please login with the same Google Account you are using for Firebase. After
 this return to Visual Studio Code. <br/>
-Question 5: You will then be asked to select the cloud project. Press the number next to your project and
+Question 5: You will be asked to select the cloud project. Press the number next to your project and
 then press Enter to continue. This is shown in [Figure 22](#fig22).
 
 <figure id="fig22">
@@ -487,7 +488,7 @@ then press Enter to continue. This is shown in [Figure 22](#fig22).
 </figure>
 
 Question 6: Next you will be asked to make a domain name. <br/>
-Before entering the URL, please note that the domain name must be your Firebase Project ID. You can get
+Before entering the URL, please note that the domain name **must** be your Firebase Project ID. You can get
 the Project ID from Firebase by clicking on the “Gear” icon on the left and then on “Project Settings”.
 [Figure 23](#fig23) and [Figure 24](#fig24) below demonstrates this.
 
@@ -525,7 +526,7 @@ Step 4: The site is now fully deployed and ready to be accessed. You will see so
     </figcaption>
 </figure>
 
-You can access the website on your browser at the domain \[Your Project ID\].web.app.
+You can now access the website on your browser at the domain \[Your Project ID\].web.app.
 \[Your Project ID\]” is the project ID obtained for question 6 above.
 
 

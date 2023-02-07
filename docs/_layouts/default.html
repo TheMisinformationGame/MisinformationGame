@@ -22,10 +22,16 @@
       {% include anchor_headings.html html=content anchorBody="#" anchorClass="header-link" %}
 
       {% if page.showBackToTop %}
-      <a class="back-to-top" href="#top">Back to Top</a>
+        <a class="back-to-top" href="#top">Back to Top</a>
       {% endif %}
     </div>
   </div>
   {% include footer.html %}
+
+  {% if page.showBackToTop %}
+    {% include backtotop.html %}
+  {% endif %}
+
+  <script type="text/javascript" src="/assets/js/gif-playback.js" defer></script>
 </body>
 </html>

@@ -2,10 +2,10 @@ import React, {Component} from "react";
 import {PromiseImage} from "../../components/PromiseImage";
 import {getDataManager} from "../../model/manager";
 import {CredibilityLabel} from "../../components/CredibilityLabel";
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import ThumbDownIcon from "@material-ui/icons/ThumbDown";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ReplyIcon from "@mui/icons-material/Reply";
-import FlagIcon from "@material-ui/icons/Flag";
+import FlagIcon from "@mui/icons-material/Flag";
 import {UserComment} from "../../model/study";
 import {isOfType} from "../../utils/types";
 import {CommentSubmissionRow} from "./CommentEntry";
@@ -47,9 +47,16 @@ class SourceElement extends Component {
                             </span>
                         </div>}
                 </div>
+
                 <div>
-                    <div className={"flex " + (small || source.study.uiSettings.displayFollowers ? "" : "pt-1")}>
-                        <p className={text_xl}>{source.source.name}</p>
+                    <div className={
+                            "flex flex-row items-middle " + text_xl +
+                            (small || source.study.uiSettings.displayFollowers ? "" : "pt-1")}>
+
+                        <span className="inline-block mr-1" style={{lineHeight: "1.5em"}}>
+                            {source.source.name}
+                        </span>
+
                         {source.study.uiSettings.displayCredibility &&
                             <CredibilityLabel credibility={source.credibility} className={text_xl} />}
                     </div>
@@ -139,16 +146,19 @@ class PostReactionsRow extends Component {
                     {buttons}
                 </div>
 
-                <ReactButton reaction="skip"
-                             selected={interactions.hasPostReaction("skip")}
-                             grayOut={interactions.postReactions.length > 0}
-                             onReact={onReact}
-                             enabled={enabled}
-                             className="w-32"
-                             fontSize="1.25rem"
-                             childClassName="transform translate-y-1">
-                    <p>Skip Post</p>
-                </ReactButton>
+                {study.isPostReactionEnabled("skip") &&
+                    <ReactButton
+                        reaction="skip"
+                        selected={interactions.hasPostReaction("skip")}
+                        grayOut={interactions.postReactions.length > 0}
+                        onReact={onReact}
+                        enabled={enabled}
+                        wide={true}
+                        fontSize="1.25rem"
+                        childClassName="transform translate-y-1">
+
+                        <p>Skip Post</p>
+                    </ReactButton>}
             </div>
         );
     }
@@ -171,25 +181,28 @@ export class PostComponent extends Component {
         if (interactions.comment) {
             const userComment = new UserComment(interactions.comment);
             commentComponents.push(
-                <Comment comment={userComment}
-                         study={state.study}
-                         key="user.comment"
-                         enabled={false}
-                         editable={true}
-                         onCommentEdit={() =>  this.props.onCommentEdit()}
-                         onCommentDelete={() => this.props.onCommentDelete()} />);
+                <Comment
+                    className="mt-0"
+                    comment={userComment}
+                    study={state.study}
+                    key="user.comment"
+                    enabled={false}
+                    editable={true}
+                    onCommentEdit={() =>  this.props.onCommentEdit()}
+                    onCommentDelete={() => this.props.onCommentDelete()} />);
         }
         for (let index = 0; index < post.comments.length; ++index) {
             const comment = post.comments[index];
             commentComponents.push(
-                <Comment comment={comment}
-                         study={state.study}
-                         className={showCommentBox || commentComponents.length > 0 ? "mt-1" : ""}
-                         key={index + "." + comment.sourceName}
-                         onReact={r => this.props.onCommentReact(index, r)}
-                         enabled={this.props.enableReactions}
-                         editable={false}
-                         interaction={interactions.findCommentReaction(index)} />
+                <Comment
+                    comment={comment}
+                    study={state.study}
+                    className={showCommentBox || interactions.comment || index > 0 ? "mt-1" : "mt-0"}
+                    key={index + "." + comment.sourceName}
+                    onReact={r => this.props.onCommentReact(index, r)}
+                    enabled={this.props.enableReactions}
+                    editable={false}
+                    interaction={interactions.findCommentReaction(index)} />
             );
         }
 
@@ -199,7 +212,7 @@ export class PostComponent extends Component {
                 <p className="text-lg font-normal p-2 pt-0" dangerouslySetInnerHTML={{__html: post.content}} />
             );
         } else {
-            postContent = (<div className="flex justify-center bg-gray-200 max-h-60vh shadow-inner overflow-hidden">
+            postContent = (<div className="flex justify-center bg-gray-200 max-h-40vh md:max-h-60vh shadow-inner overflow-hidden">
                 <PromiseImage image={
                     getDataManager().getStudyImage(state.study, post.id, post.content)
                 } imageClassName="object-contain shadow" style={{maxHeight: "50vh"}} />
@@ -235,11 +248,12 @@ export class PostComponent extends Component {
                 {/* The comments on the post. */}
                 <div className="flex flex-row justify-between items-end">
                     {(showCommentBox || commentComponents.length > 0) &&
-                        <p className="font-bold text-gray-500 p-1">Comments:</p>}
+                        <p className="font-bold text-gray-500 p-1 px-2">Comments:</p>}
                 </div>
 
                 {showCommentBox &&
                     <CommentSubmissionRow
+                        className="mt-0"
                         study={state.study}
                         initialValue={interactions.lastComment}
                         submit={value => this.props.onCommentSubmit(value)}

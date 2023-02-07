@@ -19,11 +19,12 @@ class CompletionCodeWidget extends Component {
 
         return <>
             {requireConfirmation &&
-                <div className="mt-8">
+                <div className="flex flex-row items-center mt-8">
                     <input id="confirmation-checkbox" type="checkbox"
-                           className="inline-block align-middle w-6 h-6
+                           className="flex-0 align-middle w-6 h-6
                                           checked:bg-blue-600 checked:border-transparent" />
-                    <label className="inline-block ml-4 font-semibold text-lg align-middle">
+
+                    <label className="flex-1 ml-4 font-semibold text-lg align-middle">
                         I confirm I have read the study debriefing
                     </label>
                 </div>}

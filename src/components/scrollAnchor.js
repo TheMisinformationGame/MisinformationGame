@@ -30,6 +30,7 @@ class RectBBox {
  * it when it doesn't anchor in the way that we want. The ultimate
  * goal of this class is to enable smooth scrolling through a feed
  * of posts, where posts may be added or removed at any time.
+ * Ideally, the scroll correction of this class would never trigger.
  */
 export class ScrollAnchor {
     constructor(getFeedDivFn) {

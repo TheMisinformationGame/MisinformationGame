@@ -51,21 +51,22 @@ export const V2 = {
                 dislike: new WorkbookLoc("Post Dislikes Enabled", "General", "D21", ExcelBoolean),
                 share: new WorkbookLoc("Post Shares Enabled", "General", "D22", ExcelBoolean),
                 flag: new WorkbookLoc("Post Flags Enabled", "General", "D23", ExcelBoolean),
+                skip: new WorkbookLoc("Post Skip Enabled", "General", "D24", ExcelBoolean),
             },
 
             commentEnabledReactions: {
-                like: new WorkbookLoc("Comment Likes Enabled", "General", "D24", ExcelBoolean),
-                dislike: new WorkbookLoc("Comment Dislikes Enabled", "General", "D25", ExcelBoolean),
+                like: new WorkbookLoc("Comment Likes Enabled", "General", "D25", ExcelBoolean),
+                dislike: new WorkbookLoc("Comment Dislikes Enabled", "General", "D26", ExcelBoolean),
             }
         },
 
         advanced: {
-            minimumCommentLength: new WorkbookLoc("Minimum Comment Length", "General", "D29", ExcelNumber),
-            promptDelaySeconds: new WorkbookLoc("Prompt Continue Delay (Seconds)", "General", "D30", ExcelNumber),
-            reactDelaySeconds: new WorkbookLoc("Reaction Delay (Seconds)", "General", "D31", ExcelNumber),
-            genCompletionCode: new WorkbookLoc("Generate Completion Code", "General", "D32", ExcelBoolean),
-            completionCodeDigits: new WorkbookLoc("Completion Code Digits", "General", "D33", ExcelNumber),
-            genRandDefaultAvatars: new WorkbookLoc("Generate Random Default Avatars", "General", "D34", ExcelBoolean),
+            minimumCommentLength: new WorkbookLoc("Minimum Comment Length", "General", "D30", ExcelNumber),
+            promptDelaySeconds: new WorkbookLoc("Prompt Continue Delay (Seconds)", "General", "D31", ExcelNumber),
+            reactDelaySeconds: new WorkbookLoc("Reaction Delay (Seconds)", "General", "D32", ExcelNumber),
+            genCompletionCode: new WorkbookLoc("Generate Completion Code", "General", "D33", ExcelBoolean),
+            completionCodeDigits: new WorkbookLoc("Completion Code Digits", "General", "D34", ExcelNumber),
+            genRandDefaultAvatars: new WorkbookLoc("Generate Random Default Avatars", "General", "D35", ExcelBoolean),
         }
     },
 
@@ -232,6 +233,7 @@ function readV2StudyUserInterfaceSettings(workbook, displayPostsInFeed) {
             "dislike": readCell(workbook, V2.general.userInterface.postEnabledReactions.dislike),
             "share": readCell(workbook, V2.general.userInterface.postEnabledReactions.share),
             "flag": readCell(workbook, V2.general.userInterface.postEnabledReactions.flag),
+            "skip": readCell(workbook, V2.general.userInterface.postEnabledReactions.skip)
         },
         { // commentEnabledReactions
             "like": readCell(workbook, V2.general.userInterface.commentEnabledReactions.like),

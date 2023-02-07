@@ -1,6 +1,6 @@
 import {ContinueBanner} from "../../components/ContinueButton";
 import {ActiveGameScreen} from "./ActiveGameScreen";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import React from "react";
 import {renderToStaticMarkup} from "react-dom/server";
 
@@ -52,9 +52,9 @@ export class GameIntroductionScreen extends ActiveGameScreen {
     renderWithStudyAndGame(study, game) {
         const stage = game.getCurrentStage();
         if (stage === "identification")
-            return (<Redirect to={"/study/" + study.id + "/id" + window.location.search} />);
+            return (<Navigate to={"/study/" + study.id + "/id" + window.location.search} />);
         if (stage === "debrief")
-            return (<Redirect to={"/study/" + study.id + "/debrief" + window.location.search} />);
+            return (<Navigate to={"/study/" + study.id + "/debrief" + window.location.search} />);
 
         const content = this.getContent(study);
         const target = this.getTarget(study) + window.location.search;
@@ -63,7 +63,7 @@ export class GameIntroductionScreen extends ActiveGameScreen {
         // If this page is empty, redirect them to the next page.
         if (content.trim().length === 0) {
             setTimeout(() => {
-                this.props.history.push(target);
+                this.props.navigate(target);
             });
             return (
                 <div>Redirecting...</div>

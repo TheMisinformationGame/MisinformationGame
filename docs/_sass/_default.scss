@@ -17,6 +17,12 @@ body {
 .content-wrapper .page-path a {
   color: #6c6c6c;
 }
+.content-wrapper .config-loc {
+  padding-top: 0;
+  padding-left: 0.35em;
+  color: #5f5f5f;
+  margin-bottom: -0.5em;
+}
 
 .recommendation {
   display: inline-block;
@@ -117,24 +123,34 @@ ul#markdown-toc > li > ul > li > ul > li {
 }
 
 .content-wrapper {
-  padding-top: $header-thickness+10px;
-  margin: auto;
   display: block;
-  width: $container-width - 20px;
+  padding: $header-thickness+10px 1.8em 0;
+  margin: auto;
+  max-width: $container-width;
 }
 .content-wrapper h1 {
   margin: 20px 0 5px;
 }
-@media (max-width: $container-width) {
-  .container {
-    width: 95vw;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .content-wrapper {
-    padding-top: $header-thickness+10px;
-    margin: auto;
-    display: block;
-    width: 95vw;
-  }
+
+.content-wrapper .call-to-action-container {
+  display: block;
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 3em;
+}
+.content-wrapper a.call-to-action-button {
+  display: inline-block;
+  padding: 0.5em 1.1em;
+  border-radius: 0.6em;
+  background-color: $brand-color;
+  box-shadow: 1px 1px 4px -1px rgba(0,0,0,0.65);
+  color: white;
+  text-decoration: none;
+  font-size: 1.1em;
+  transition: background-color 0.2s;
+}
+.content-wrapper a.call-to-action-button:hover {
+  background-color: $brand-color-lighter;
+  text-decoration: underline;
+  transition: background-color 0.2s;
 }

@@ -1,0 +1,22 @@
+#back-to-top-button {
+  position: fixed;
+  display: block;
+  left: 50%;
+  transform: translate(-50%, 0);
+  top: $header-thickness;
+  opacity: 1;
+  transition: top 0.1s, opacity 0.1s;
+}
+#back-to-top-button a {
+  display: block;
+  margin-top: 0.7em;
+  padding: 0.4em 1em;
+  background: white;
+  border-radius: 1em;
+  box-shadow: 0 1px 6px -1px rgba(0,0,0,0.65);
+}
+#back-to-top-button.hidden {
+  top: 0;
+  opacity: 0;
+  transition: top 0.2s, opacity 0.2s;
+}

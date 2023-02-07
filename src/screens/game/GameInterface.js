@@ -3,7 +3,7 @@ import {GamePrompt} from "./GamePrompt";
 import {ContinueButton} from "../../components/ContinueButton";
 import {ErrorLabel, ProgressLabel} from "../../components/StatusLabel"
 import {ActiveGameScreen} from "./ActiveGameScreen";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {MountAwareComponent} from "../../components/MountAwareComponent";
 import {ParticipantProgress} from "./ParticipantProgress";
 import {GamePostInteractionStore} from "../../model/game";
@@ -71,19 +71,23 @@ class GameFinished extends MountAwareComponent {
             promise = game.saveToDatabase();
         }
 
-        this.setState({...this.defaultState});
+        this.setState(() => this.defaultState);
         promise.then(() => {
-            this.setStateIfMounted({
-                saving: false,
-                saved: true,
-                error: null
+            this.setStateIfMounted(() => {
+                return {
+                    saving: false,
+                    saved: true,
+                    error: null
+                };
             });
         }).catch(error => {
             console.error(error);
-            this.setStateIfMounted({
-                saving: false,
-                saved: false,
-                error: error.message
+            this.setStateIfMounted(() => {
+                return {
+                    saving: false,
+                    saved: false,
+                    error: error.message
+                };
             });
         });
     }
@@ -156,8 +160,6 @@ export class GameScreen extends ActiveGameScreen {
         this.scrollListener = null;
         this.scrollDebounceEnd = 0;
         this.lastScrollTop = document.documentElement.scrollTop;
-        this.scrollFixId = null;
-        this.scrollMaintenanceTop = 0;
     }
 
     afterGameLoaded(game) {
@@ -193,56 +195,63 @@ export class GameScreen extends ActiveGameScreen {
     }
 
     onPostReaction(postIndex, reaction, study) {
-        const inters = this.state.interactions;
-        this.setState({
-            ...this.state,
-            interactions: inters.update(postIndex, inters.get(postIndex).withToggledPostReaction(
-                reaction, study.uiSettings.allowMultipleReactions
-            ))
+        this.setState((state) => {
+            const inters = state.interactions;
+            return {
+                interactions: inters.update(postIndex, inters.get(postIndex).withToggledPostReaction(
+                    reaction, study.uiSettings.allowMultipleReactions
+                ))
+            };
         });
     }
 
     onCommentReaction(postIndex, commentIndex, reaction, study) {
-        const inters = this.state.interactions;
-        this.setState({
-            ...this.state,
-            interactions: inters.update(postIndex, inters.get(postIndex).withToggledCommentReaction(
-                commentIndex, reaction, study.uiSettings.allowMultipleReactions
-            ))
+        this.setState((state) => {
+            const inters = state.interactions;
+            return {
+                interactions: inters.update(postIndex, inters.get(postIndex).withToggledCommentReaction(
+                    commentIndex, reaction, study.uiSettings.allowMultipleReactions
+                ))
+            };
         });
     }
 
     onCommentSubmit(postIndex, comment) {
-        const inters = this.state.interactions;
-        this.setState({
-            ...this.state,
-            interactions: inters.update(postIndex, inters.get(postIndex).withComment(comment)),
-            commentHasBeenEdited: false
+        this.setState((state) => {
+            const inters = state.interactions;
+            return {
+                interactions: inters.update(postIndex, inters.get(postIndex).withComment(comment)),
+                commentHasBeenEdited: false
+            };
         });
     }
 
     onCommentEdit(postIndex) {
-        const inters = this.state.interactions;
-        this.setState({
-            ...this.state,
-            interactions: inters.update(postIndex, inters.get(postIndex).withComment(null)),
-            commentHasBeenEdited: false
+        this.setState((state) => {
+            const inters = state.interactions;
+            return {
+                interactions: inters.update(postIndex, inters.get(postIndex).withComment(null)),
+                commentHasBeenEdited: false
+            };
         });
     }
 
     onCommentDelete(postIndex) {
-        const inters = this.state.interactions;
-        this.setState({
-            ...this.state,
-            interactions: inters.update(postIndex, inters.get(postIndex).withDeletedComment()),
-            commentHasBeenEdited: false
+        this.setState((state) => {
+            const inters = state.interactions;
+            return {
+                interactions: inters.update(postIndex, inters.get(postIndex).withDeletedComment()),
+                commentHasBeenEdited: false
+            };
         });
     }
 
     onCommentEditedStatusUpdate(postIndex, hasBeenEdited) {
-        this.setState({
-            ...this.state,
-            commentHasBeenEdited: hasBeenEdited
+        // FIXME : IS THIS WRONG? IT LOOKS WRONG
+        this.setState(() => {
+            return {
+                commentHasBeenEdited: hasBeenEdited
+            };
         });
     }
 
@@ -310,50 +319,6 @@ export class GameScreen extends ActiveGameScreen {
         }
     }
 
-    maintainScrollPosition() {
-        // Abort the previous maintenance on the scroll position.
-        if (this.scrollFixId !== null) {
-            cancelAnimationFrame(this.scrollFixId);
-        }
-
-        // Maintain the scroll position after re-rendering.
-        // Usually the scroll position won't be affected, but
-        // occasionally it gets moved a lot.
-        const states = this.state.currentStates;
-        if (states && states.length > 1) {
-            const state = states[states.length - 1],
-                  elemID = "post-" + state.indexInGame + "-spacer",
-                  elem = document.getElementById(elemID);
-
-            if (elem) {
-                this.scrollMaintenanceTop = elem.getBoundingClientRect().top;
-
-                const fixScroll = (repetitions) => {
-                    this.scrollFixId = null;
-
-                    // Make sure the element hasn't been removed from the DOM.
-                    const elem = document.getElementById(elemID);
-                    if (!this.mounted || !elem)
-                        return;
-
-                    const newTop = elem.getBoundingClientRect().top;
-                    const dy = newTop - this.scrollMaintenanceTop;
-
-                    // Hopefully a good-enough heuristic.
-                    if (Math.abs(dy) > 50) {
-                        // window.scrollBy(0, Math.round(dy));
-                    } else {
-                        this.scrollMaintenanceTop += dy;
-                    }
-                    if (repetitions > 0) {
-                        this.scrollFixId = requestAnimationFrame(() => fixScroll(repetitions - 1));
-                    }
-                }
-                this.scrollFixId = requestAnimationFrame(() => fixScroll(2));
-            }
-        }
-    }
-
     onNextPost(game, fromScroll) {
         const currentState = this.getHighestState();
 
@@ -402,18 +367,18 @@ export class GameScreen extends ActiveGameScreen {
             for (let index = 1; index < currentStates.length; ++index) {
                 newStates.push(currentStates[index]);
             }
-            this.maintainScrollPosition();
         }
 
         // Show the change in followers and credibility.
-        this.setState({
-            ...this.state,
-            currentStates: newStates,
-            overrideFollowers: beforeFollowers,
-            overrideCredibility: beforeCredibility,
-            followerChange: followerChange,
-            credibilityChange: credibilityChange,
-            inputEnabled: inputEnabled
+        this.setState(() => {
+            return {
+                currentStates: newStates,
+                overrideFollowers: beforeFollowers,
+                overrideCredibility: beforeCredibility,
+                followerChange: followerChange,
+                credibilityChange: credibilityChange,
+                inputEnabled: inputEnabled
+            };
         });
 
         function roundInDir(value, direction) {
@@ -437,14 +402,15 @@ export class GameScreen extends ActiveGameScreen {
                 lastFollowers = followers;
                 lastCredibility = credibility;
                 setTimeout(() => {
-                    this.setStateIfMounted({
-                        ...this.state,
-                        currentStates: newStates,
-                        overrideFollowers: followers,
-                        overrideCredibility: credibility,
-                        followerChange: followerChange,
-                        credibilityChange: credibilityChange,
-                        inputEnabled: inputEnabled
+                    this.setStateIfMounted(() => {
+                        return {
+                            currentStates: newStates,
+                            overrideFollowers: followers,
+                            overrideCredibility: credibility,
+                            followerChange: followerChange,
+                            credibilityChange: credibilityChange,
+                            inputEnabled: inputEnabled
+                        };
                     });
                 }, stage * animateTimeMS / maxStages);
             }
@@ -453,7 +419,6 @@ export class GameScreen extends ActiveGameScreen {
         // The final timeout to change to the next post.
         setTimeout(() => {
             this.updateGameState(game, null);
-            this.maintainScrollPosition();
         }, animateTimeMS + remainTimeMS);
     }
 
@@ -471,7 +436,6 @@ export class GameScreen extends ActiveGameScreen {
     updateGameState(game, error, setDismissedPrompt) {
         const displayPostsInFeed = game.study.uiSettings.displayPostsInFeed;
         const state = {
-            ...this.state,
             currentStates: (game && !game.isFinished() ? game.getCurrentStates() : null),
 
             error: error,
@@ -488,11 +452,15 @@ export class GameScreen extends ActiveGameScreen {
             game.dismissedPrompt = true;
         }
 
-        this.setStateIfMounted(state);
+        this.setStateIfMounted(() => {
+            return state;
+        });
         if (!displayPostsInFeed && (this.state.dismissedPrompt || setDismissedPrompt) && game) {
             game.preloadNextState();
             setTimeout(() => {
-                this.setStateIfMounted({...this.state, reactionsAllowed: true});
+                this.setStateIfMounted(() => {
+                    return {reactionsAllowed: true};
+                });
             }, game.study.reactDelaySeconds * 1000);
         }
     }
@@ -504,7 +472,7 @@ export class GameScreen extends ActiveGameScreen {
     renderWithStudyAndGame(study, game) {
         const stage = game.getCurrentStage();
         if (stage === "identification")
-            return (<Redirect to={"/study/" + study.id + "/id" + window.location.search} />);
+            return (<Navigate to={"/study/" + study.id + "/id" + window.location.search} />);
 
         let states = this.state.currentStates;
         if (!states || states.length === 0) {
@@ -595,7 +563,11 @@ export class GameScreen extends ActiveGameScreen {
         return (
             <>
                 {displayPrompt &&
-                    <GamePrompt study={study} onClick={() => this.onPromptContinue()} />}
+                    <GamePrompt study={study} onClick={(enabled) => {
+                        if (enabled) {
+                            this.onPromptContinue();
+                        }
+                    }} />}
 
                 <div className={"flex flex-row items-start w-full bg-gray-100 " +
                                 (displayPrompt ? " filter blur " : "")}

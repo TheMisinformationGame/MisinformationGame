@@ -1,18 +1,18 @@
-import firebase from "firebase/app";
+import { initializeApp } from "firebase/app"
+import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
+import { getStorage, connectStorageEmulator } from "firebase/storage";
+import { getAuth, GoogleAuthProvider, connectAuthEmulator } from "firebase/auth";
 import firebaseConfig from "../../config/firebase-config";
 import developmentConfig from "../../config/development-config";
-import 'firebase/firestore';
-import 'firebase/storage';
-import 'firebase/auth'
 
-firebase.initializeApp(firebaseConfig);
+
+const firebaseApp = initializeApp(firebaseConfig);
 
 // Make the firebase API available to our pages.
-export const db = firebase.firestore();
-export const storage = firebase.storage();
-export const storageRef = storage.ref();
-export const auth = firebase.auth();
-export const authProvider = new firebase.auth.GoogleAuthProvider();
+export const db = getFirestore(firebaseApp);
+export const storage = getStorage(firebaseApp);
+export const auth = getAuth(firebaseApp);
+export const authProvider = new GoogleAuthProvider();
 
 
 // When in development mode, we want to connect to the Firebase
@@ -23,7 +23,7 @@ const devMode = developmentConfig.developmentMode;
 export const inDevelopmentMode = (devMode === "on" || (devMode === "auto" && atDevAddress));
 if (inDevelopmentMode) {
     console.log("Running in development mode!")
-    auth.useEmulator("http://" + devAddress + ":9099", { disableWarnings: true });
-    storage.useEmulator(devAddress, 9199);
-    db.useEmulator(devAddress, 9299);
+    connectAuthEmulator(auth, "http://" + devAddress + ":9099", { disableWarnings: true });
+    connectStorageEmulator(storage, devAddress, 9199);
+    connectFirestoreEmulator(db, devAddress, 9299);
 }
