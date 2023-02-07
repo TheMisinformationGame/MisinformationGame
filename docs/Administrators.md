@@ -134,8 +134,8 @@ to do this is described in the sections below.
 
 Administrators are registered by manually adding entries to the Firestore
 database. The Firestore database can be accessed through the **Build ->
-Firestore Database** tab on the lefthand side of your Firebase console. The process to access this tab is
-shown in [Figure 6](#fig6).
+Firestore Database** tab on the lefthand side of your Firebase console.
+The process to access this tab is shown in [Figure 6](#fig6).
 
 <figure id="fig6">
     <img src="diagrams/accessing-firestore.png" alt="figure 6" height="529" />
@@ -168,8 +168,9 @@ This should open a dialog prompting you to "Start a collection".
 
 **Step 2:** You will be prompted to enter an ID for the new collection.
 You should enter `Admins` for the Collection ID, as shown in [Figure 8](#fig8).
-The case of the letters in the Collection ID is important, and must match the example provided. You may now
-press "Next" to advance to adding the first administrator.
+The case of the letters in the Collection ID is important, and must match
+the example provided. You may now press "Next" to advance to adding the
+first administrator.
 
 <figure id="fig8">
     <img src="screenshots/firestore-start-admins-collection.png" alt="figure 8" height="529" />
