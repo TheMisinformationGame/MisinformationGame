@@ -8,7 +8,7 @@ showBackToTop: false
 {:#intro}
 
 The Misinformation Game began as an undergraduate project at the University of
-Western Australia, and later grew into the sophisticated social media research
+Western Australia, and later grew into the sophisticated social-media research
 tool that it is today. The idea for the project was originally conceived by
 [Ullrich Ecker](https://twitter.com/UlliEcker), and the project is now led by
 [Lucy Butler](https://twitter.com/lucy_h_butler) from the
@@ -20,7 +20,7 @@ received significant contributions in its conception, design, and testing by
 Toby Prike, Mehwish Nasim, Bradley Walker, Nicolas Fay, and Sherica Fabienne Ocbania.
 The collaboration from all of these people has been vital to the successful development
 of The Misinformation Game. We hope that it will be a helpful tool in facilitating
-continued research into social media.
+continued research into social-media.
 
 <figure class="about-links">
     <a class="about-link-logo" href="https://www.emc-lab.org/">
