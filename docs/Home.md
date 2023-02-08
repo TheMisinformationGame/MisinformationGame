@@ -1,5 +1,5 @@
 ---
-title: 'The Misinformation Game: A social-media simulator for research'
+title: 'The Misinformation Game: A social-media simulator for research.'
 skipTitleSuffix: true
 showPath: false
 permalink: /
