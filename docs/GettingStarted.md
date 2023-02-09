@@ -94,7 +94,7 @@ needed to create your study (though some configuration options require specific 
     </figcaption>
 </figure>
 
-### 3.2. Adding Sources and Posts
+### 3.2. Add Sources and Posts
 {:#create-posts}
 
 The information presented to participants can take the form of
