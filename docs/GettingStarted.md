@@ -87,7 +87,7 @@ and post are highlighted in [Figure 4](#fig4). These sources and
 posts will form the primary information that is presented to
 participants.
 
-<figure id "fig4">
+<figure id="fig4">
     <div class="figure-side-by-side">
         <img style="height: 156px" src="diagrams/highlighted-source.png" height="264" alt="A screenshot with the source of a post highlighted." />
         <img style="height: 156px" src="diagrams/highlighted-post.png" height="264" alt="A screenshot with a post highlighted." />
