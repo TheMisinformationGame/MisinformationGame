@@ -7,10 +7,10 @@ showBackToTop: true
 # Getting Started with The Misinformation Game
 {:#intro .no_toc}
 
-When you're first getting started with the Misinformation
-Game, the number of configuration options may be intimidating.
-We have written this guide to highlight the major features of the Misinformation
-Game at a high level, to help you get started!
+We have written this guide to help you get started with running
+your first study using the Misinformation Game! There are a lot
+of options available, so this guide will try to highlight the
+most important ones.
 
 
 
@@ -20,36 +20,19 @@ Game at a high level, to help you get started!
 {:toc}
 
 
-
-## 1. Try an Example Game
-{:#try}
-
-It will be easier to understand the configuration options if you have tried the Misinformation
-Game yourself. To try the Misinformation Game out, you can access
-an example game at [the example games page](/link/ExampleGame).
-
-<figure id="fig1">
-    <img src="screenshots/example-game.png" alt="Screenshot of the user interface within a game." height="582" />
-    <figcaption>
-        <a href="#fig1">Figure 1.</a> Screenshot of the user interface within a game.
-    </figcaption>
-</figure>
-
-<p class="spacer"></p>
-
-
-## 2. Copy the Study Configuration Spreadsheet
+## 1. Copy the Study Configuration Spreadsheet
 {:#copy}
 
-Before you can start configuring your study, you must first create
-your own copy of the Study Configuration Template in Google Sheets.
-This spreadsheet will be used to configure your own study. You can
-access the template from
-[the study configuration template page](/link/StudyTemplate). On
-this page, you should follow the latest recommended Google Sheets
+Before you can configure your study, you must first create your own
+copy of the Study Configuration Template in Google Sheets. This
+spreadsheet will hold all the settings of your study. You can access
+the template from [the study configuration template page](/link/StudyTemplate).
+On this page, you should follow the latest recommended Google Sheets
 link. Once opened, select **_File -> Make a copy_** to clone the
-spreadsheet, as shown in [Figure 2](#fig2). This copy of the spreadsheet will now be linked to your Google account, and you will have the capacity to edit this version of the template to build your own study. More information about this process can be
-found [here](/StudyConfiguration#create).
+spreadsheet, as shown in [Figure 2](#fig2). Your copy of the
+spreadsheet will now be linked to your Google account, and you
+may edit it to build your own study. More information about this
+process can be found [here](/StudyConfiguration#create).
 
 <figure id="fig2">
     <img src="diagrams/make-a-copy.png" height="412" alt="A diagram showing the process to copy the study configuration template." />
@@ -59,20 +42,21 @@ found [here](/StudyConfiguration#create).
 </figure>
 
 
-## 3. Create a Study
+## 2. Create a Study
 {:#create}
 
-Studies in the Misinformation Game are created by editing the
-configuration spreadsheet in Google Sheets that you copied in
-[section 2](#copy-the-configuration). All settings for your study
-will be kept in this spreadsheet, and this spreadsheet can be
-shared with others so that they can test or edit your study.
+Studies are created by editing the configuration spreadsheet that
+you copied in [section 2](#copy-the-configuration). All settings for
+your study will be kept in this spreadsheet, and this spreadsheet can
+be shared with others so that they can test or edit your study.
 Your study configurations may also be shared alongside your
 published works to aid with reproducibility.
 
-The Google Sheets template contains 8 sheets. The first two sheets (titled **About** and **Overview**) provide you with information about how to use the template, as well as the design of your study (including whether there are any errors in the spreadsheet which will impact the running of the study). These sheets are locked, meaning you cannot (and should not) edit their contents. 
+The Google Sheets template contains 8 sheets. The first two sheets,
+**About** and **Overview**, provide you with information about how
+to use the template, as well as the design of your study (including whether there are any errors in the spreadsheet which will impact the running of the study). These sheets are locked, meaning you cannot (and should not) edit their contents. 
 
-### 3.1. Give your Study a Name
+### 2.1. Give your Study a Name
 {:#create-name}
 
 The first step to editing your configuration will be to give
@@ -94,8 +78,7 @@ needed to create your study (though some configuration options require specific 
     </figcaption>
 </figure>
 
-### 3.2. Add Sources and Posts
-{:#create-posts}
+### 2.2. Add Sources and Posts
 
 The information presented to participants can take the form of
 text or image posts, and can be associated with sources. The sources may be used for
@@ -104,7 +87,7 @@ and post are highlighted in [Figure 4](#fig4). These sources and
 posts will form the primary information that is presented to
 participants.
 
-<figure id="fig4">
+<figure id "fig4">
     <div class="figure-side-by-side">
         <img style="height: 156px" src="diagrams/highlighted-source.png" height="264" alt="A screenshot with the source of a post highlighted." />
         <img style="height: 156px" src="diagrams/highlighted-post.png" height="264" alt="A screenshot with a post highlighted." />
@@ -158,7 +141,7 @@ include additional comments on each post, which is described there.
 
 
 
-### 3.2. Configure Reactions and Comments
+### 2.3. Configure Reactions and Comments
 {:#create-responses}
 
 The responses from participants can take the form of reactions to posts,
@@ -190,7 +173,7 @@ listed below:
 </figure>
 
 
-### 3.3. Control Dynamic Feedback
+### 2.4. Control Dynamic Feedback
 {:#create-dynamic-feedback}
 
 The dynamic feedback changes the follower count and credibility score
@@ -238,7 +221,7 @@ found [here](/StudyConfiguration#posts-changes-to-followers).
 </figure>
 
 
-### 3.4. Configure how Sources and Posts are Paired
+### 2.5. Configure how Sources and Posts are Paired
 {:#create-source-post-selection}
 
 The sources that are shown for each post is dynamically selected when
@@ -256,7 +239,7 @@ detail on the available source/post selection modes can be found
 [here](/Simulation).
 
 
-### 3.5. Update your Study's Introduction and Debriefing Pages
+### 2.7. Update your Study's Introduction and Debriefing Pages
 {:#create-pages}
 
 The Misinformation Game supports showing several pages of information
@@ -280,7 +263,7 @@ Additional documentation on these pages can be found
 
 
 
-### 3.6. Other Considerations
+### 3.7. Other Considerations
 {:#create-other}
 
 There are many other small considerations that you should make when
@@ -315,7 +298,7 @@ considerations that we consider important are listed below:
   [here](/StudyConfiguration#general-generate-completion-code).
 
 
-## 4. Install The Misinformation Game
+## 3. Install The Misinformation Game
 {:#install}
 
 You must host your own version of the Misinformation Game to use it for
@@ -323,7 +306,7 @@ your studies. The installation process can take a few hours, but you only
 have to follow it once. This process is described [here](/Installation).
 
 
-## 5. Test your Study
+## 4. Test your Study
 {:#test}
 
 Once you have deployed your own instance of the Misinformation Game, you
@@ -332,7 +315,7 @@ upload it, and test it, is described [here](/StudyConfiguration#upload).
 You may also use the **Update Study** button to introduce changes to your
 study, as you fine-tune it for your research.
 
-## 6. Run your Study!
+## 5. Run your Study!
 {:#run}
 
 When you are happy with your study, you can
@@ -363,7 +346,7 @@ your work! The BibTex for this citation is included below:
 }
 ```
 
-## 7. Join the Community
+## 6. Join the Community
 
 We have created a Slack community in the hopes that we will be able
 to meet our users, and get your feedback and help to improve the tool.
