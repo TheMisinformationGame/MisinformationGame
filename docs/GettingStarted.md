@@ -102,11 +102,11 @@ of the configuration input cells.
 ### 2.2. Add Sources and Posts
 
 The information presented to participants can take the form of
-text or image posts, and can be associated with sources. The sources may be used for
-many posts, but each post will only be used once. An example source
-and post are highlighted in [Figure 4](#fig4). These sources and
-posts will form the primary information that is presented to
-participants.
+text or image posts that are associated with sources. The sources
+may be used for many posts, but each post will only be shown once.
+An example source and post are highlighted in [Figure 4](#fig4).
+These sources and posts will form the primary information that
+is presented to participants.
 
 <figure id="fig4">
     <div class="figure-side-by-side">
@@ -121,11 +121,11 @@ participants.
 Sources are presented as the identity that published a post. Only the
 name of each source is required, but you may also choose each source's
 avatar image, follower count, and credibility number. Sources for your
-study may be added by entering the necessary information into the table in the **Sources**
-sheet in your study configuration. The columns to enter values in are
-highlighted in [Figure 5](#fig5). Additional documentation about the
-available configuration options for sources can be found
-[here](/StudyConfiguration#sources).
+study may be added by entering the necessary information into the table
+in the **Sources** sheet in your study configuration. The columns to
+enter values in are highlighted in [Figure 5](#fig5). Additional
+documentation about the available configuration options for sources can
+be found [here](/StudyConfiguration#sources).
 
 <figure id="fig5">
     <img src="diagrams/add-a-source.png" height="637" alt="A diagram highlighting where to enter new sources." />
@@ -134,24 +134,27 @@ available configuration options for sources can be found
     </figcaption>
 </figure>
 
-The posts that you add may include a headline, and either text or image (including gifs) content.
-Posts must include at least a headline or content, but both are not required.
-Additionally, you must specify whether the post is true or false. This value
-is used for selecting default values for posts (e.g., quantity of engagements associated with the post) and for associating posts with
-sources. Therefore, it is only used internally, and may be used to represent
-information other than truth for your study. For example, if you are creating
-a study to test whether including highly emotive images in posts affects the reactions of
-participants, you may use this field to store whether a highly emotive image is or is not included.
+The posts that you add may include a headline, and either text or image
+(including gifs) content. Posts must include at least a headline or content,
+but both are not required. Additionally, you must specify whether the post
+is true or false. This value is used for selecting default values for posts
+(e.g., quantity of engagements associated with the post) and for associating
+posts with sources. Therefore, it is only used internally, and may be used to
+represent information other than truth for your study. For example, if you
+are creating a study to test whether including highly emotive images in posts
+affects the reactions of participants, you may use this field to store whether
+a highly emotive image is or is not included.
 
-The posts for your study may be added by entering information into a row in the table in the
-**Posts** sheet in your study configuration. The columns to enter values in are
-highlighted in [Figure 6](#fig6). Images may be included for the content of
-posts by selecting **Insert -> Image -> Insert image in cell** in the top menu.
-However, it is important that any images that you add are optimised to reduce
-your hosting costs. A guide for including images can be found [here](/Images).
-Additional documentation on the available configuration options for posts
-can also be found [here](/StudyConfiguration#posts). For example, you may
-include additional comments on each post, which is described there.
+The posts for your study may be added by entering information into a row in the
+table in the **Posts** sheet in your study configuration. The columns to enter
+values in are highlighted in [Figure 6](#fig6). Images may be included for the
+content of posts by selecting **Insert -> Image -> Insert image in cell** in
+the top menu. However, it is important that any images that you add are
+optimised to reduce your hosting costs. A guide for including images can be
+found [here](/Images). Additional documentation on the available configuration
+options for posts can also be found [here](/StudyConfiguration#posts). For
+example, you may include additional comments on each post, which is described
+[here](/StudyConfiguration#posts-comments).
 
 <figure id="fig6">
     <img src="diagrams/add-a-post.png" height="639" alt="A diagram highlighting where to enter new posts." />
@@ -168,13 +171,13 @@ include additional comments on each post, which is described there.
 The responses from participants can take the form of reactions to posts,
 or comments on them. Examples of reacting to, and commenting on, a post are
 shown in [Figure 7](#fig7). There are many options to configure the
-available responses for your participants, which can be set within the **General** sheet. You should select the options
-that are most applicable for your research. The major available options are
-listed below:
+available responses for your participants, which can be set within the
+**General** sheet. You should select the options that are most applicable
+for your research. The major available options are listed below:
 
 - You may enable or disable the available reactions for posts and comments as described
   [here](/StudyConfiguration#general-post-likes-enabled).
-- You may set reactions to be required or optional as described 
+- You may set reactions to be required or optional as described
   [here](/StudyConfiguration#general-require-reactions).
 - You may set comments to be required, optional, or disabled as described
   [here](/StudyConfiguration#general-enable-user-comments).
@@ -198,7 +201,7 @@ listed below:
 {:#create-dynamic-feedback}
 
 The dynamic feedback changes the follower count and credibility score
-of participants based on their reactions to a post. These changes
+of participants based upon their reactions to a post. These changes
 can be chosen by you for each post. An example of the follower count
 and credibility number of a participant changing is shown in
 [Figure 8](#fig8). If you wish, you may also disable followers and/or
@@ -223,11 +226,12 @@ changes for each reaction will be added together.
 
 The dynamic feedback is controlled within the **Posts** sheet, as shown
 in [Figure 9](#fig9). The default normal distributions are specified for
-true and false posts separately, with one distribution for each reaction option.
-The mean and standard deviation of these distributions can be specified
-under the **Default Post Values** section at the top of the sheet.
-Additionally, exact changes to followers and credibility for reactions
-can be specified for each post individually in the posts table (within the row where post information has been included).
+true and false posts separately, with one distribution for each reaction
+option. The mean and standard deviation of these distributions can be
+specified under the **Default Post Values** section at the top of the
+sheet. Additionally, exact changes to followers and credibility for
+reactions can be specified for each post individually in the posts
+table (within the row where post information has been included).
 Additional documentation about configuring the default post values can
 be found [here](/StudyConfiguration#posts-default-values), and
 documentation about configuring the exact changes for a post can be
@@ -246,21 +250,24 @@ found [here](/StudyConfiguration#posts-changes-to-followers).
 {:#create-source-post-selection}
 
 The sources that are shown for each post is dynamically selected when
-each participant starts the study. This can be set in a number of different ways based on the needs of your study (see
-[here](/StudyConfiguration#selection)). However, if you don't wish to
-dive into the details, the "Credibility" mode is a good default pick.
+each participant starts the study. This can be set in a number of
+different ways based upon the needs of your study
+(see [here](/StudyConfiguration#selection)). However, if you don't wish
+to dive into the details, the "Credibility" mode is a good default pick.
 It selects true or false posts to pair with a source based on the
-credibility score of that source. If the source has a high credibility, it
-will be shown with more true posts, and if the source has a low
-credibility, it will be shown with more false posts. The likelihood of this pairing can be altered under the **Credibility Settings** on the **Source and Post Selection** sheet. Additionally, if
-you want more control, then you can also define the pairings of sources
-and posts manually, by selecting the "Pre-Defined" mode and adding
-the pairings in the **Pre-Defined Source/Post Pairs** sheet. Additional
+credibility score of that source. If the source has a high credibility,
+it will be shown with more true posts, and if the source has a low
+credibility, it will be shown with more false posts. The likelihood of
+this pairing can be altered under the **Credibility Settings** section
+on the **Source and Post Selection** sheet. Additionally, if you want
+more control, then you can also define the pairings of sources and
+posts manually, by selecting the "Pre-Defined" mode and adding the
+pairings in the **Pre-Defined Source/Post Pairs** sheet. Additional
 detail on the available source/post selection modes can be found
 [here](/Simulation).
 
 
-### 2.7. Update your Study's Introduction and Debriefing Pages
+### 2.6. Update your Study's Introduction and Debriefing Pages
 {:#create-pages}
 
 The Misinformation Game supports showing several pages of information
@@ -284,7 +291,7 @@ Additional documentation on these pages can be found
 
 
 
-### 3.7. Other Considerations
+### 2.7. Other Considerations
 {:#create-other}
 
 There are many other small considerations that you should make when
@@ -294,7 +301,8 @@ considerations that we consider important are listed below:
 - Select whether you wish your study to be displayed as a feed, or whether only
   a single post should be shown at a time. This option will have
   a significant impact on the experience of your participants.
-  The option to use a feed is documented [here](/StudyConfiguration#general-display-feed).
+  The option to use a feed is documented
+  [here](/StudyConfiguration#general-display-feed).
 
 - Enter the prompt to display to participants before they start a study.
   This can be used to test hypotheses about participant's actions after
@@ -306,8 +314,8 @@ considerations that we consider important are listed below:
   a text identifier. This is vital if you wish to identify participants
   as they move from other platforms (e.g., Qualtrics or Prolific).
   This participant identifier can be provided through URL parameters,
-  as discussed [here](/ManagingStudies#access-study-url). Documentation for this
-  option is also provided
+  as discussed [here](/ManagingStudies#access-study-url). Documentation
+  for this option is also provided
   [here](/StudyConfiguration#general-require-identification).
 
 - Select whether you wish to generate completion codes for participants.
@@ -341,15 +349,15 @@ study, as you fine-tune it for your research.
 
 When you are happy with your study, you can
 [enable it](/ManagingStudies#enable-disable-studies) so that other
-people can access it. You may then share the URL of your study with your
-participants, so that they can play through it. If you are using the
-Firebase free tier, and are expecting
-a lot of participants, or if your study has many images, you should
-reference the [Firebase Pricing documentation](/FirebasePricing) to make
-sure that you don't hit the free tier's limits. Additional documentation on
-the results that are provided by the Misinformation Game are also given in
-the [Results documentation](/Results). We hope that the results you gather
-using the Misinformation Game are valuable!
+people can access it. You may then share the URL of your study with
+your participants, so that they can play through it. If you are using
+the Firebase free tier, and are expecting a lot of participants, or if
+your study has many images, you should read the
+[Firebase Pricing documentation](/FirebasePricing) to make sure that
+you don't hit the free tier's limits. Additional documentation on the
+results that are provided by the Misinformation Game are also given in
+the [Results documentation](/Results). We hope that the results you
+gather using the Misinformation Game are valuable!
 
 If you publish your research, we would also really appreciate it if you
 cited [The (Mis)Information Game paper](https://psyarxiv.com/628wc/) in
