@@ -378,11 +378,13 @@ your work! The BibTex for this citation is included below:
 ## 6. Join the Community
 
 We have created a Slack community in the hopes that we will be able
-to meet our users, and get your feedback and help to improve the tool.
-We also hope that this will become a great place to ask questions,
-share your research, and meet other academics. If you are conducting
-Psychology research, teaching Psychology, or are interested in using
-this tool for other purposes, we'd love to hear from you!
+to meet our users, and get your feedback to help improve the tool.
+We also hope that this will become a good place to ask questions,
+share your research, and meet others working in the same area. If
+you are conducting Psychology research, teaching Psychology, or
+are interested in using this tool for other purposes, we'd love to
+hear from you! If Slack isn't your speed, a contact email is also
+available at the bottom of this page.
 
 <div class="call-to-action-container">
     <a href="https://join.slack.com/t/themisinformationgame/shared_invite/zt-1oruoc0s2-OLscp581nAJ2hxpDYGnvJQ" class="call-to-action-button">
