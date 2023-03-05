@@ -29,15 +29,15 @@ spreadsheet will hold all the settings of your study. You can access
 the template from [the study configuration template page](/link/StudyTemplate).
 On this page, you should follow the latest recommended Google Sheets
 link. Once opened, select **_File -> Make a copy_** to clone the
-spreadsheet, as shown in [Figure 2](#fig2). Your copy of the
+spreadsheet, as shown in [Figure 1](#fig1). Your copy of the
 spreadsheet will now be linked to your Google account, and you
 may edit it to build your own study. More information about this
 process can be found [here](/StudyConfiguration#create).
 
-<figure id="fig2">
+<figure id="fig1">
     <img src="diagrams/make-a-copy.png" height="412" alt="A diagram showing the process to copy the study configuration template." />
     <figcaption>
-        <a href="#fig2">Figure 2.</a> A diagram showing the process to copy the study configuration template.
+        <a href="#fig1">Figure 1.</a> A diagram showing the process to copy the study configuration template.
     </figcaption>
 </figure>
 
@@ -52,9 +52,21 @@ be shared with others so that they can test or edit your study.
 Your study configurations may also be shared alongside your
 published works to aid with reproducibility.
 
-The Google Sheets template contains 8 sheets. The first two sheets,
-**About** and **Overview**, provide you with information about how
-to use the template, as well as the design of your study (including whether there are any errors in the spreadsheet which will impact the running of the study). These sheets are locked, meaning you cannot (and should not) edit their contents. 
+The first two sheets in the Google Sheets template, **About** and
+**Overview**, provide information about how to use the template,
+and an overview of the settings of your study as you create it.
+These sheets are highlighted in [Figure 2](#fig2).
+The **Overview** sheet can be useful to double-check the settings
+of your study before you test it, including checking if there are
+any errors with your configuration. These sheets are also locked,
+meaning you cannot (and should not) edit their contents.
+
+<figure id="fig2">
+    <img src="diagrams/about-overview-sheets.png" height="742" alt="A diagram highlighting the About and Overview sheets." />
+    <figcaption>
+        <a href="#fig2">Figure 2.</a> A diagram highlighting the About and Overview sheets.
+    </figcaption>
+</figure>
 
 ### 2.1. Give your Study a Name
 {:#create-name}
@@ -64,12 +76,21 @@ your study a name under the **General** sheet. This can be done
 by first accessing the **General** tab at the bottom of the
 spreadsheet, and then by editing the **Name** value, as shown in
 [Figure 3](#fig3). You should edit the cell to the right of
-the **Name** cell. This can be done by double clicking the cell, backspacing the default name and typing in your unique study name. The value that you enter will be used as the name of your study. This may be used to identify your
-study, and will be visible to participants. Note that information entered into the **Description** is only visible to administrators, and so may be useful for including study information you do not want visible to participants.
+the **Name** cell. This can be done by double-clicking the cell,
+deleting the default name, and typing in your unique study name.
+The value that you enter will be used as the name of your study.
+This may be used to identify your study, and will be visible to
+participants. Note that information entered into the **Description**
+cell is only visible to administrators, and so may be useful for
+including study information that should not be shown to participants.
 
-The procedure for changing the name of the study is the same general procedure for modifying all configuration options
-needed to create your study (though some configuration options require specific content to be entered, which are explained in the blue **help** cell to the right of the **input** cell).
-
+This procedure for changing the name of your study by editing the
+value within a cell is also used for modifying almost all configuration
+options needed to create your study. However, some configuration options
+do require specific values to be entered. If this is the case, then
+the blue help cells for each configuration option will describe what
+you should enter. These help cells are often located to the right
+of the configuration input cells.
 
 <figure id="fig3">
     <img src="diagrams/give-study-a-name.png" height="517" alt="A diagram highlighting where to enter the name of your study." />
