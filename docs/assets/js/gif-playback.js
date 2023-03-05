@@ -3,6 +3,8 @@
 //
 // Author: Padraig X. Lamont
 
+const GIF_PLAYBACK_PROGRESS_HEIGHT = 4;
+
 (function () {
     const images = document.getElementsByTagName("img");
     const gifImages = [];
@@ -62,7 +64,7 @@ function readGIF(reader) {
 
         const canvas = document.createElement("canvas");
         canvas.width = reader.width;
-        canvas.height = reader.height;
+        canvas.height = reader.height + GIF_PLAYBACK_PROGRESS_HEIGHT;
         canvas.getContext("2d").putImageData(image, 0, 0);
         diffFrames.push(canvas);
     }
@@ -136,11 +138,12 @@ function initGIF(element) {
     }
     const bounds = element.getBoundingClientRect(),
           pixelRatio = window.devicePixelRatio || 1,
-          height = Math.max(10, Math.round(bounds.height * pixelRatio)),
+          height = Math.max(10, Math.round(bounds.height * pixelRatio)) + GIF_PLAYBACK_PROGRESS_HEIGHT,
           width = Math.max(height, Math.round(bounds.width * pixelRatio));
 
     canvas.width = width;
     canvas.height = height;
+    canvas.classList.add("gif");
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = "rgb(243 244 246)";
     ctx.fillRect(0, 0, width, height);
@@ -189,7 +192,7 @@ function prefersReducedMotion() {
 function setupGIF(canvas, options, gif) {
     const reducedMotion = prefersReducedMotion();
     const width = gif.width,
-          height = gif.height;
+          height = gif.height + GIF_PLAYBACK_PROGRESS_HEIGHT;
 
     canvas.width = width;
     canvas.height = height;
@@ -201,7 +204,8 @@ function setupGIF(canvas, options, gif) {
         hoverStart: null,
         lastScrollY: null,
         lastOnScreen: null,
-        lastFrame: null
+        lastFrame: null,
+        lastProgressWidth: null
     };
 
     function getGIFTime() {
@@ -262,11 +266,18 @@ function setupGIF(canvas, options, gif) {
 
         const gifTime = getGIFTime();
         const frame = getFrameAtTime(gif, gifTime);
-        if (frame === state.lastFrame)
+        const progressWidth = Math.round(gif.width * gifTime / gif.durationMS);
+        if (frame === state.lastFrame && progressWidth === state.lastProgressWidth)
             return;
 
         state.lastFrame = frame;
+        state.lastProgressWidth = progressWidth;
         ctx.drawImage(frame, 0, 0);
+
+        ctx.fillStyle = "#333333";
+        ctx.fillRect(0, gif.height, gif.width, GIF_PLAYBACK_PROGRESS_HEIGHT);
+        ctx.fillStyle = "#006be2";
+        ctx.fillRect(0, gif.height, progressWidth, GIF_PLAYBACK_PROGRESS_HEIGHT);
     }
 
     function renderLoop() {

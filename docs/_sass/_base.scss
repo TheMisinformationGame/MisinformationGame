@@ -146,6 +146,9 @@ figure img,
 figure canvas {
   max-width: 100%;
 }
+figure canvas.gif {
+  cursor: pointer;
+}
 figure figcaption {
   text-align: center;
   font-style: italic;
