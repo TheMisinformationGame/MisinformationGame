@@ -10,19 +10,14 @@ showBackToTop: true
 Studies in The Misinformation Game are configured through the
 use of Google Sheets spreadsheets. These spreadsheets contain
 all settings for your study in one place, including all images
-to be included in your study. This document aims to act as a
-reference for the [configuration spreadsheet](/link/StudyTemplate),
-to help with the configuration of your studies.
+to be included in your study. This guide contains reference
+documentation for the
+[configuration spreadsheet](/link/StudyTemplate), alongside
+guides for its use.
 
-<p class="error">
-    <span style="font-weight: bold">Important! The configuration spreadsheet</span>
-    <span style="font-weight: bold; text-decoration: underline">cannot</span>
-    <span style="font-weight: bold">be opened in Microsoft Excel.</span>
-    <br/>
-    It is built specifically for use
-    in Google Sheets, and uses functionality that is not available in
-    Microsoft Excel.
-</p>
+<figure id="header-image">
+    <img src="diagrams/study-configuration-header.png" height="554" alt="Screenshot from a study configuration." />
+</figure>
 
 
 
@@ -41,6 +36,16 @@ need to create a new spreadsheet for the study in Google
 Sheets. You can create a new spreadsheet by either copying
 the Study Template spreadsheet that is already on Google
 Sheets, or by uploading the Study Template file.
+
+<p class="error">
+    <span style="font-weight: bold">Important! The configuration spreadsheet</span>
+    <span style="font-weight: bold; text-decoration: underline">cannot</span>
+    <span style="font-weight: bold">be opened in Microsoft Excel.</span>
+    <br/>
+    It is built specifically for use
+    in Google Sheets, and uses functionality that is not available in
+    Microsoft Excel.
+</p>
 
 
 ### Method 1: Copy the Template (Recommended)
