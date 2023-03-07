@@ -12,6 +12,9 @@ your first study using the Misinformation Game! There are a lot
 of options available, so this guide will try to highlight the
 most important ones.
 
+<figure id="header-image">
+    <img src="diagrams/getting-started-header.png" height="614" alt="Screenshot of the configuration spreadsheet and the user interface within a game." />
+</figure>
 
 
 # Table of Contents

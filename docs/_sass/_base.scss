@@ -89,6 +89,9 @@ body canvas.inline-img {
 .content-wrapper canvas.inline-img {
   box-shadow: none;
 }
+.content-wrapper figure#header-image img {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
 
 /* The 'How To Play' page requires custom styling of its images. */
 .content-wrapper img.h2p-img {
