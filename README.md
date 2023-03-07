@@ -1,17 +1,17 @@
 ![The Misinformation Game](docs/assets/img/banner.png)
 ------------------------------------------------------
 
-The Misinformation Game is a social media simulator built to study
-people's behaviour when they interact with social media. To achieve
-this, The Misinformation Game simulates a social media feed for
-research participants. Participants will be shown either a feed of
-social media posts, or a single social media post at a time, and
-they may then react to the post and its comments. The Misinformation
-Game has been designed to be highly customisable so that tightly
+The Misinformation Game is a social-media simulator built to study
+how people interact with information on social-media. To achieve
+this, The Misinformation Game simulates a social-media feed for
+research participants. Participants are shown fake social-media
+posts, either one at a time or in a feed format. They may then
+react to the posts and their comments. The Misinformation Game has
+been designed to be highly customisable so that a range of tightly
 controlled experiences can be created for participants. This
-customisability is a core focus of The Misinformation Game,
-to facilitate the research of a wide array of social media
-related questions.
+customisability is a core focus of The Misinformation Game, to
+facilitate the research of a wide array of social-media related
+questions.
 
 **Preprint Paper:** [The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
 
