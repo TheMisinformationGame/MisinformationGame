@@ -5,9 +5,15 @@ showPath: false
 permalink: /
 ---
 
-<p class="logo-banner">
-    <img src="assets/img/banner.png" alt="The Misinformation Game Logo" />
-</p>
+<div id="logo-banner">
+    <div class="logo">
+        <img src="assets/img/logo.png" alt="The Misinformation Game Logo" />
+    </div>
+    <div class="titles">
+        <h1>The Misinformation Game</h1>
+        <h2>A social-media simulator for research.</h2>
+    </div>
+</div>
 
 --------
 
