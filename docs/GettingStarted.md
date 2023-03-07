@@ -37,7 +37,9 @@ link. Once opened, select **_File -> Make a copy_** to clone the
 spreadsheet, as shown in [Figure 1](#fig1). Your copy of the
 spreadsheet will now be linked to your Google account, and you
 may edit it to build your own study. More information about this
-process can be found [here](/StudyConfiguration#create).
+process can be found [here](/StudyConfiguration#create). It is
+important to note that the configuration spreadsheet **must be
+opened in Google Sheets**. Excel is not supported.
 
 <figure id="fig1">
     <img src="diagrams/make-a-copy.png" height="412" alt="A diagram showing the process to copy the study configuration template." />
