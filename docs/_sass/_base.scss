@@ -106,11 +106,12 @@ body canvas.inline-img {
   text-align: center;
   width: 100%;
   height: auto;
+  margin-top: 0.6rem;
 }
 #logo-banner .logo {
   display: inline-block;
   vertical-align: middle;
-  height: 6.6rem;
+  height: 6.8rem;
   padding: 1.4rem 0.5rem 1.2rem 0;
 }
 #logo-banner .logo img {
@@ -126,7 +127,7 @@ body canvas.inline-img {
   display: inline-block;
   vertical-align: middle;
   text-align: left;
-  margin-top: 0.3rem;
+  margin-top: 0.5rem;
 }
 #logo-banner .titles h1,
 #logo-banner .titles h2 {
@@ -140,7 +141,7 @@ body canvas.inline-img {
   margin-bottom: 0.4rem;
 }
 #logo-banner .titles h2 {
-  font-size: 1.8rem;
+  font-size: 1.9rem;
   font-weight: lighter;
   color: #555555;
   margin-top: 0;
