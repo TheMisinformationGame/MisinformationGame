@@ -10,7 +10,9 @@ showBackToTop: true
 We have written this guide to help you get started with running
 your first study using the Misinformation Game! There are a lot
 of options available, so this guide will try to highlight the
-most important ones.
+most important ones. You will be guided through the process of
+creating a study, configuring it, running it, and obtaining
+your results.
 
 <figure id="header-image">
     <img src="diagrams/getting-started-header.png" height="614" alt="Screenshot of the configuration spreadsheet and the user interface within a game." />
