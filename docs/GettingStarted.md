@@ -382,7 +382,7 @@ your work! The BibTex for this citation is included below:
 }
 ```
 
-## 7. Join the Community
+## 6. Join the Community
 
 We have created a Slack community in the hopes that we will be able
 to meet our users, and get your feedback to help improve the tool.
