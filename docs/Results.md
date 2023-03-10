@@ -1,6 +1,7 @@
 ---
 title: Results
 showPath: true
+underDocsPath: true
 showBackToTop: true
 ---
 

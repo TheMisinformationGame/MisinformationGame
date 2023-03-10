@@ -1,6 +1,7 @@
 ---
 title: How to Play
 showPath: true
+underDocsPath: true
 showBackToTop: false
 ---
 

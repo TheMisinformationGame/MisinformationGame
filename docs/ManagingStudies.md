@@ -1,6 +1,7 @@
 ---
 title: Managing Studies
 showPath: true
+underDocsPath: true
 showBackToTop: true
 ---
 

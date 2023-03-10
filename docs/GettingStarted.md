@@ -1,6 +1,7 @@
 ---
 title: Getting Started Guide
 showPath: true
+underDocsPath: true
 showBackToTop: true
 ---
 

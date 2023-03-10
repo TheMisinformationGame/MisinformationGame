@@ -1,6 +1,7 @@
 ---
 title: Study Configuration
 showPath: true
+underDocsPath: true
 showBackToTop: true
 ---
 

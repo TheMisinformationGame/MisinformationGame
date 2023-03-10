@@ -1,6 +1,7 @@
 ---
 title: Non-Technical Installation Guide
 showPath: true
+underDocsPath: true
 showBackToTop: true
 ---
 

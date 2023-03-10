@@ -1,6 +1,7 @@
 ---
 title: Firebase Pricing
 showPath: true
+underDocsPath: true
 showBackToTop: true
 ---
 

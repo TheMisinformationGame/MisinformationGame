@@ -14,7 +14,17 @@
         <div class="page-path">
           <a href="/">Home</a>
           &gt;
-          <a href="{{ page.url }}">{{ page.title }}</a>
+          {% if page.underDocsPath %}
+          <a href="/DocumentationIndex">Docs</a>
+          &gt;
+          {% endif %}
+          <a href="{{ page.url }}">
+            {% if page.pathNameOverride %}
+              {{ page.pathNameOverride }}
+            {% else %}
+              {{ page.title }}
+            {% endif %}
+          </a>
         </div>
       {% endif %}
 

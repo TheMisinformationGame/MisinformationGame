@@ -1,6 +1,7 @@
 ---
 title: Including Images in Studies
 showPath: true
+underDocsPath: true
 showBackToTop: true
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: Documentation Index
 showPath: true
+pathNameOverride: Docs
 showBackToTop: true
 ---
 

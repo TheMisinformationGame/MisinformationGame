@@ -1,6 +1,7 @@
 ---
 title: Qualtrics Integration
 showPath: true
+underDocsPath: true
 showBackToTop: false
 ---
 

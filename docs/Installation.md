@@ -1,6 +1,7 @@
 ---
 title: Installation
 showPath: true
+underDocsPath: true
 showBackToTop: false
 ---
 

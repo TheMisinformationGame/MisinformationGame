@@ -1,6 +1,7 @@
 ---
 title: Registering Administrators
 showPath: true
+underDocsPath: true
 showBackToTop: true
 ---
 

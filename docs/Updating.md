@@ -1,6 +1,7 @@
 ---
 title: Updating
 showPath: true
+underDocsPath: true
 showBackToTop: true
 ---
 

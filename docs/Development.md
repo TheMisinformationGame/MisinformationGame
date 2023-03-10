@@ -1,6 +1,7 @@
 ---
 title: Development Environment
 showPath: true
+underDocsPath: true
 showBackToTop: true
 ---
 

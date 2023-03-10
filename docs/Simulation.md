@@ -1,6 +1,7 @@
 ---
 title: Simulation
 showPath: true
+underDocsPath: true
 showBackToTop: true
 ---
 
