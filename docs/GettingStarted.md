@@ -253,7 +253,7 @@ found [here](/StudyConfiguration#posts-changes-to-followers).
 </figure>
 
 
-### 2.5. Configure how Sources and Posts are Paired
+### 2.5. Configure How Sources and Posts are Paired
 {:#create-source-post-selection}
 
 The sources that are shown for each post is dynamically selected when
@@ -382,7 +382,7 @@ your work! The BibTex for this citation is included below:
 }
 ```
 
-## 6. Join the Community
+## 7. Join the Community
 
 We have created a Slack community in the hopes that we will be able
 to meet our users, and get your feedback to help improve the tool.
