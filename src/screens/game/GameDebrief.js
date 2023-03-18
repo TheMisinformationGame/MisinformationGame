@@ -35,7 +35,7 @@ class CompletionCodeWidget extends Component {
                                 text-center font-mono tracking-widest">
 
                     <p className="leading-5">
-                        <span id="real-completion-code" style={{"display": "none"}}>
+                        <span id="real-completion-code" style={{"display": (requireConfirmation ? "none" : "auto")}}>
                             {realCompletionCode}
                         </span>
                         {requireConfirmation &&
