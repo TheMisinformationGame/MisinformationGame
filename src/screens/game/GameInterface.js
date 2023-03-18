@@ -102,9 +102,12 @@ class GameFinished extends MountAwareComponent {
         const target = "/study/" + study.id + "/debrief" + window.location.search;
         return (
             <div className="w-full bg-white shadow items-center">
-                <div className="px-10 py-8 max-w-full text-center">
-                    <p className="block text-xl mb-4">
-                        Congratulations! You have completed the simulation.
+                <div className="px-10 pt-8 pb-6 max-w-full text-center">
+                    <p className="block text-xl mb-4 font-bold">
+                        You have completed the simulation!
+                    </p>
+                    <p className="text-left mb-4">
+                        Your results will be saved, and then you may continue to the debriefing of the study.
                     </p>
 
                     {/* Allow the user to continue if their results have been saved. */}
