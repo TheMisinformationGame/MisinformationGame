@@ -145,6 +145,8 @@ export class GameScreen extends ActiveGameScreen {
             reactionsAllowed: true,
             dismissedPrompt: false,
 
+            displayScrollToNewPostsSuggestion: false,
+
             overrideFollowers: null,
             overrideCredibility: null,
             followerChange: null,
@@ -247,24 +249,18 @@ export class GameScreen extends ActiveGameScreen {
         });
     }
 
-    getHighestState() {
-        const currentStates = this.state.currentStates;
-        if (currentStates === undefined)
-            throw new Error("There are no current states!");
-
-        const currentState = this.state.currentStates[0];
-        if (currentState === undefined)
-            throw new Error("There is no current state!");
-
-        return currentState;
-    }
-
     onPostMove(lastLoc, newLoc) {
         const postIndex = newLoc.postIndex;
         if ((!lastLoc || !lastLoc.aboveScreen) && newLoc.aboveScreen) {
             this.onPostScrolledAboveScreen(postIndex);
         } else if ((!lastLoc || !lastLoc.onScreen) && newLoc.onScreen) {
             this.onPostScrolledOnScreen(postIndex);
+        } else if ((!lastLoc || !lastLoc.belowScreen) && newLoc.belowScreen) {
+            this.onPostScrolledBelowScreen(postIndex);
+        }
+
+        if (lastLoc && lastLoc.belowScreen && newLoc.onScreen) {
+            this.onPostScrolledOnScreenFromBelow(postIndex);
         }
     }
 
@@ -272,6 +268,30 @@ export class GameScreen extends ActiveGameScreen {
 
     onPostScrolledAboveScreen(postIndex) {
         this.submitPost(postIndex);
+    }
+
+    onPostScrolledBelowScreen(postIndex) {
+        this.updateDisplayScrollToNewPosts(postIndex - 1);
+    }
+
+    onPostScrolledOnScreenFromBelow(postIndex) {
+        this.updateDisplayScrollToNewPosts(postIndex);
+    }
+
+    updateDisplayScrollToNewPosts(highestVisiblePostIndex) {
+        const inters = this.state.interactions;
+        let newPostVisible = false;
+        for (let index = 0; index <= highestVisiblePostIndex; ++index) {
+            if (!inters.get(index).isCompleted()) {
+                newPostVisible = true;
+                break;
+            }
+        }
+        this.setState(() => {
+            return {
+                displayScrollToNewPostsSuggestion: !newPostVisible
+            };
+        });
     }
 
     /**
@@ -393,7 +413,7 @@ export class GameScreen extends ActiveGameScreen {
         const totalPosts = game.study.basicSettings.length;
         const progressPercentage = Math.round(currentPostNumber / totalPosts * 100);
 
-        let nextPostEnabled = (states !== null);
+        let nextPostEnabled = true;
         let nextPostError = "";
         if (!study.uiSettings.displayPostsInFeed && states !== null) {
             if (states.length > 1)
@@ -507,7 +527,7 @@ export class GameScreen extends ActiveGameScreen {
 
                     {/* The posts and their associated comments. */}
                     <div id="post-feed"
-                         className="bg-gray-200 w-full md:max-w-xl
+                         className="relative bg-gray-200 w-full md:max-w-xl
                                     md:border-l-2 md:border-r-2 md:border-gray-700 shadow-2xl"
                          style={{minHeight: "100vh"}}>
 
@@ -526,6 +546,28 @@ export class GameScreen extends ActiveGameScreen {
 
                         {/* Used for reserving space below reactions and progress. */}
                         <div className="h-56 md:h-8" />
+
+                        {/* Suggestion for users to scroll to new posts. */}
+                        <div className="absolute left-1/2">
+                            <div id="scroll-to-new-posts-suggestion"
+                                 className={
+                                     "fixed top-3 block transform -translate-x-1/2 px-3 py-1 cursor-pointer " +
+                                     "bg-white rounded-full shadow-floatingbutton text-blue-600 hover:text-blue-800 " +
+                                     "text-lg transition " +
+                                     (this.state.displayScrollToNewPostsSuggestion ?
+                                        " opacity-100 translate-y-0 " :
+                                        " opacity-0 -translate-y-5 ")
+                                 }
+                                 onClick={() => {
+                                     if (nextPostEnabled) {
+                                         this.onNextPost();
+                                     }
+                                 }}>
+
+                                Scroll To New Posts
+                            </div>
+                        </div>
+
                     </div>
 
                     {/* Space to the right. */}

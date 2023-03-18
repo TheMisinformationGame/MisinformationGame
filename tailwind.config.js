@@ -16,6 +16,7 @@ module.exports = {
       },
       boxShadow: {
         'up': '0 10px 10px 5px rgba(0, 0, 0, 1)',
+        'floatingbutton': '0 1px 6px -1px rgba(0,0,0,0.65)',
       },
       colors: {
         gray: {
