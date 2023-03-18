@@ -33,9 +33,9 @@ export class ReactButton extends Component {
                      " " + this.getPositioningClassName(wide) + " " +
                      (selected ? " bg-gray-100 font-semibold " : (enabled ? " hover:bg-gray-100 " : "")) +
                      (enabled ? " cursor-pointer " : "") +
-                     (enabled && (selected || !grayOut) ?
-                         (selected ? " text-blue-700 " : " text-gray-700 ")
-                         : " text-gray-500 ") +
+                     (selected ?
+                         (enabled ? " text-blue-700 " : " text-blue-500 ")
+                         : (!enabled || grayOut ? " text-gray-500 " : " text-gray-700 ")) +
                      (this.props.className  || "")}
                  style={{fontSize: (this.props.fontSize || "2.5rem")}}
                  onClick={() => {
