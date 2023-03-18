@@ -3,13 +3,12 @@ import {GamePrompt} from "./GamePrompt";
 import {ContinueButton} from "../../components/ContinueButton";
 import {ErrorLabel, ProgressLabel} from "../../components/StatusLabel"
 import {ActiveGameScreen} from "./ActiveGameScreen";
-import {Navigate} from "react-router-dom";
 import {MountAwareComponent} from "../../components/MountAwareComponent";
 import {ParticipantProgress} from "./ParticipantProgress";
-import {GamePostInteractionStore} from "../../model/game";
 import smoothscroll from 'smoothscroll-polyfill';
 import {PostComponent} from "./Post";
-import {ScrollAnchor} from "../../components/scrollAnchor";
+import {GamePostInteractionStore} from "../../model/game/interactions";
+import {ScrollTracker} from "../../model/game/scrollTracker";
 
 
 // We want to ensure that we have smooth element scrollIntoView behaviour.
@@ -136,17 +135,14 @@ class GameFinished extends MountAwareComponent {
  */
 export class GameScreen extends ActiveGameScreen {
     constructor(props) {
-        super(props);
+        super(props, ["game", "introduction-or-game"]);
         this.defaultState = {
             ...this.defaultState,
-            currentStates: null,
 
             error: null,
-            reactionsAllowed: false,
 
             interactions: GamePostInteractionStore.empty(),
-            commentHasBeenEdited: false,
-
+            reactionsAllowed: true,
             dismissedPrompt: false,
 
             overrideFollowers: null,
@@ -156,42 +152,50 @@ export class GameScreen extends ActiveGameScreen {
             inputEnabled: true,
         };
         this.state = this.defaultState;
-        this.scrollAnchor = new ScrollAnchor(this.getFeedDiv.bind(this));
-        this.scrollListener = null;
-        this.scrollDebounceEnd = 0;
-        this.lastScrollTop = document.documentElement.scrollTop;
+        this.scrollTracker = new ScrollTracker(
+            this.getFeedDiv.bind(this),
+            this.onPostMove.bind(this)
+        );
+        this.scrollToNextPostAfterNextUpdate = null;
     }
 
     afterGameLoaded(game) {
         super.afterGameLoaded(game);
-        setTimeout(() => {
-            this.updateGameState(game, null);
+
+        const inters = game.participant.postInteractions;
+        this.setStateIfMounted(() => {
+            this.scrollToNextPostAfterNextUpdate = inters.getSubmittedPostsCount();
+            return {interactions: inters.copy()};
         });
     }
 
     componentDidMount() {
         super.componentDidMount();
-        this.scrollAnchor.start();
-        this.scrollListener = this.onScroll.bind(this);
-        document.addEventListener("scroll", this.scrollListener);
+        this.scrollTracker.start();
+        if (this.scrollToNextPostAfterNextUpdate) {
+            const postIndex = this.scrollToNextPostAfterNextUpdate;
+            this.scrollToNextPostAfterNextUpdate = null;
+            window.requestAnimationFrame(() => this.scrollToNextPost(postIndex, false));
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.scrollToNextPostAfterNextUpdate) {
+            const postIndex = this.scrollToNextPostAfterNextUpdate;
+            this.scrollToNextPostAfterNextUpdate = null;
+            window.requestAnimationFrame(() => this.scrollToNextPost(postIndex, false));
+        }
     }
 
     componentWillUnmount() {
         super.componentWillUnmount();
-        this.scrollAnchor.stop();
-        if (this.scrollListener !== null) {
-            document.removeEventListener("scroll", this.scrollListener);
-            this.scrollListener = null;
-        }
-        if (this.scrollDebounceTimer !== null) {
-            clearTimeout(this.scrollDebounceTimer);
-            this.scrollDebounceTimer = null;
-        }
+        this.scrollTracker.stop();
     }
 
     onPromptContinue() {
-        // Dismiss the prompt and disable the reactions for a brief period of time.
-        this.updateGameState(this.state.game, this.state.error, true);
+        this.setState(() => {
+            return {dismissedPrompt: true};
+        })
     }
 
     onPostReaction(postIndex, reaction, study) {
@@ -220,8 +224,7 @@ export class GameScreen extends ActiveGameScreen {
         this.setState((state) => {
             const inters = state.interactions;
             return {
-                interactions: inters.update(postIndex, inters.get(postIndex).withComment(comment)),
-                commentHasBeenEdited: false
+                interactions: inters.update(postIndex, inters.get(postIndex).withComment(comment))
             };
         });
     }
@@ -230,8 +233,7 @@ export class GameScreen extends ActiveGameScreen {
         this.setState((state) => {
             const inters = state.interactions;
             return {
-                interactions: inters.update(postIndex, inters.get(postIndex).withComment(null)),
-                commentHasBeenEdited: false
+                interactions: inters.update(postIndex, inters.get(postIndex).withComment(null))
             };
         });
     }
@@ -240,17 +242,7 @@ export class GameScreen extends ActiveGameScreen {
         this.setState((state) => {
             const inters = state.interactions;
             return {
-                interactions: inters.update(postIndex, inters.get(postIndex).withDeletedComment()),
-                commentHasBeenEdited: false
-            };
-        });
-    }
-
-    onCommentEditedStatusUpdate(postIndex, hasBeenEdited) {
-        // FIXME : IS THIS WRONG? IT LOOKS WRONG
-        this.setState(() => {
-            return {
-                commentHasBeenEdited: hasBeenEdited
+                interactions: inters.update(postIndex, inters.get(postIndex).withDeletedComment())
             };
         });
     }
@@ -267,202 +259,120 @@ export class GameScreen extends ActiveGameScreen {
         return currentState;
     }
 
-    getHighestInteractions() {
-        return this.state.interactions.get(this.getHighestState().indexInGame);
-    }
-
-    getNextStateElement() {
-        const states = this.state.currentStates;
-        if (states === null || states.length < 2)
-            return;
-
-        return document.getElementById("post-" + states[1].indexInGame);
-    }
-
-    onScroll(event, isDebouncedCheck) {
-        const time = Date.now();
-        if (!isDebouncedCheck && time < this.scrollDebounceEnd)
-            return;
-
-        const lastScrollTop = this.lastScrollTop,
-              newScrollTop = document.documentElement.scrollTop;
-
-        this.lastScrollTop = newScrollTop;
-        if (lastScrollTop && newScrollTop) {
-            // We only want to trigger this when scrolling down.
-            if (!isDebouncedCheck && newScrollTop <= lastScrollTop)
-                return;
+    onPostMove(lastLoc, newLoc) {
+        const postIndex = newLoc.postIndex;
+        if ((!lastLoc || !lastLoc.aboveScreen) && newLoc.aboveScreen) {
+            this.onPostScrolledAboveScreen(postIndex);
+        } else if ((!lastLoc || !lastLoc.onScreen) && newLoc.onScreen) {
+            this.onPostScrolledOnScreen(postIndex);
         }
+    }
 
+    onPostScrolledOnScreen(postIndex) {}
+
+    onPostScrolledAboveScreen(postIndex) {
+        this.submitPost(postIndex);
+    }
+
+    /**
+     * Submits all posts up to and including maxPostIndex.
+     */
+    static completePostInteractions(inters, maxPostIndex) {
+        for (let index = 0; index <= maxPostIndex; ++index) {
+            const previousPostInters = inters.get(index);
+            if (!previousPostInters.isCompleted()) {
+                inters = inters.update(index, previousPostInters.complete());
+            }
+        }
+        return inters;
+    }
+
+    submitInteractionsToGame(game, inters) {
+        game.submitInteractions(inters.getSubmittedPosts());
+    }
+
+    submitPost(postIndex) {
         const game = this.state.game;
-        const element = this.getNextStateElement();
-        if (!game || !element || !this.state.inputEnabled)
+        if (!game)
+            throw new Error("There is no active game");
+
+        this.setState((state) => {
+            const inters = state.interactions;
+            const postInters = inters.get(postIndex);
+
+            if (postInters.isCompleted() || postInters.isEmpty())
+                return {};
+
+            const newInters = GameScreen.completePostInteractions(inters, postIndex);
+            this.submitInteractionsToGame(game, newInters);
+            return {interactions: newInters};
+        });
+    }
+
+    submitAll() {
+        const game = this.state.game;
+        if (!game)
+            throw new Error("There is no active game");
+
+        const postCount = game.study.basicSettings.length;
+        this.setState((state) => {
+            const inters = state.interactions;
+            const newInters = GameScreen.completePostInteractions(inters, postCount - 1);
+            this.submitInteractionsToGame(game, newInters);
+            return {interactions: newInters};
+        });
+    }
+
+    getCurrentPostIndex() {
+        const interactions = this.state.interactions;
+        if (!interactions)
             return;
 
-        // Once the participant has scrolled such that the previous
-        // post is completely off the screen, process it.
-        const bounds = element.getBoundingClientRect();
-        if (bounds.top < 0) {
-            const delay = 2000;
-            this.scrollDebounceEnd = time + delay;
-            this.onNextPost(game, true);
-
-            // Just in case, set up a timer in case the participant
-            // scrolled past many posts quickly.
-            if (this.scrollDebounceTimer !== null) {
-                clearTimeout(this.scrollDebounceTimer);
-            }
-            this.scrollDebounceTimer = setTimeout(() => {
-                this.scrollDebounceTimer = null;
-                this.onScroll(null, true);
-            }, delay);
-        }
+        return interactions.getCurrentPostIndex();
     }
 
-    onNextPost(game, fromScroll) {
-        const currentState = this.getHighestState();
+    onNextPost() {
+        const game = this.state.game;
+        if (!game)
+            throw new Error("There is no active game!");
 
-        // Scroll the next post into view, if possible.
-        const nextStateElement = this.getNextStateElement();
-        if (!fromScroll && nextStateElement) {
-            // We only want to scroll down, not up.
-            const bounds = nextStateElement.getBoundingClientRect();
-            if (bounds.top > 0) {
-                nextStateElement.scrollIntoView({
-                    behavior: "smooth"
-                });
-            }
-        }
-
-        // Apply the interaction the user made.
-        const interaction = this.state.interactions.get(currentState.indexInGame);
-
-        const beforeFollowers = Math.round(game.participant.followers);
-        const beforeCredibility = Math.round(game.participant.credibility);
-        game.advanceState(interaction);
-
-        const followerChange = Math.round(game.participant.followers) - beforeFollowers;
-        const credibilityChange = Math.round(game.participant.credibility) - beforeCredibility;
-
-        // If there is no change, skip any animation.
-        // We don't do this when displaying posts in a feed,
-        // as we must wait for the next post to scroll into view.
-        if (!game.study.uiSettings.displayPostsInFeed && followerChange === 0 && credibilityChange === 0) {
-            this.updateGameState(game, null);
+        // Search by submitted posts.
+        const study = game.study;
+        let currentPostIndex = this.getCurrentPostIndex();
+        if (currentPostIndex >= study.basicSettings.length)
             return;
+
+        if (study.uiSettings.displayPostsInFeed) {
+            this.scrollToNextPost(currentPostIndex, true);
+        } else {
+            this.submitPost(currentPostIndex);
         }
-
-        const animateTimeMS = 500;
-        const remainTimeMS = 1000;
-
-        // If the participant scrolled the next post into view,
-        // we don't want to let them scroll back.
-        const currentStates = this.state.currentStates;
-        let newStates = currentStates,
-            inputEnabled = false;
-
-        if (fromScroll) {
-            newStates = [];
-            inputEnabled = true;
-            for (let index = 1; index < currentStates.length; ++index) {
-                newStates.push(currentStates[index]);
-            }
-        }
-
-        // Show the change in followers and credibility.
-        this.setState(() => {
-            return {
-                currentStates: newStates,
-                overrideFollowers: beforeFollowers,
-                overrideCredibility: beforeCredibility,
-                followerChange: followerChange,
-                credibilityChange: credibilityChange,
-                inputEnabled: inputEnabled
-            };
-        });
-
-        function roundInDir(value, direction) {
-            if (direction < 0)
-                return Math.floor(value);
-            if (direction > 0)
-                return Math.ceil(value);
-            return Math.round(value);
-        }
-
-        // Animate the followers and credibility changing.
-        const maxStages = 20;
-        let lastFollowers = beforeFollowers;
-        let lastCredibility = beforeCredibility;
-        for (let stage = 1; stage <= maxStages; ++stage) {
-            const ratio = stage / maxStages;
-            const followers = roundInDir(beforeFollowers + followerChange * ratio, followerChange);
-            const credibility = roundInDir(beforeCredibility + credibilityChange * ratio, credibilityChange);
-
-            if (followers !== lastFollowers || credibility !== lastCredibility) {
-                lastFollowers = followers;
-                lastCredibility = credibility;
-                setTimeout(() => {
-                    this.setStateIfMounted(() => {
-                        return {
-                            currentStates: newStates,
-                            overrideFollowers: followers,
-                            overrideCredibility: credibility,
-                            followerChange: followerChange,
-                            credibilityChange: credibilityChange,
-                            inputEnabled: inputEnabled
-                        };
-                    });
-                }, stage * animateTimeMS / maxStages);
-            }
-        }
-
-        // The final timeout to change to the next post.
-        setTimeout(() => {
-            this.updateGameState(game, null);
-        }, animateTimeMS + remainTimeMS);
     }
 
-    submitAllRemaining(game) {
-        const states = this.state.currentStates;
-        for (let index = 0; index < states.length; ++index) {
-            const state = states[index].indexInGame,
-                  interaction = this.state.interactions.get(state);
+    scrollToNextPost(currentPostIndex, smoothScroll) {
+        this.scrollTracker.detect();
 
-            game.advanceState(interaction);
-        }
-        this.updateGameState(game, null);
-    }
+        // Search visually for the next post.
+        let nextPostIndex = currentPostIndex;
+        let nextPostBBox;
+        do {
+            nextPostBBox = this.scrollTracker.get(nextPostIndex);
+            if (!nextPostBBox)
+                return;
+            if (nextPostBBox.y > 80)
+                break;
 
-    updateGameState(game, error, setDismissedPrompt) {
-        const displayPostsInFeed = game.study.uiSettings.displayPostsInFeed;
-        const state = {
-            currentStates: (game && !game.isFinished() ? game.getCurrentStates() : null),
+            nextPostIndex += 1;
+        } while (true);
 
-            error: error,
-            reactionsAllowed: displayPostsInFeed || (!this.state.dismissedPrompt && !game),
+        // Get the post to scroll it into view.
+        const nextPostElement = document.getElementById("post-" + nextPostIndex);
+        if (!nextPostElement)
+            throw new Error("Unable to find the element for the next post (" + nextPostIndex + ")");
 
-            overrideFollowers: null,
-            overrideCredibility: null,
-            followerChange: null,
-            credibilityChange: null,
-            inputEnabled: true,
-        };
-        if (setDismissedPrompt) {
-            state.dismissedPrompt = true;
-            game.dismissedPrompt = true;
-        }
-
-        this.setStateIfMounted(() => {
-            return state;
+        nextPostElement.scrollIntoView({
+            behavior: (smoothScroll ? "smooth" : "auto")
         });
-        if (!displayPostsInFeed && (this.state.dismissedPrompt || setDismissedPrompt) && game) {
-            game.preloadNextState();
-            setTimeout(() => {
-                this.setStateIfMounted(() => {
-                    return {reactionsAllowed: true};
-                });
-            }, game.study.reactDelaySeconds * 1000);
-        }
     }
 
     getFeedDiv() {
@@ -470,14 +380,7 @@ export class GameScreen extends ActiveGameScreen {
     }
 
     renderWithStudyAndGame(study, game) {
-        const stage = game.getCurrentStage();
-        if (stage === "identification")
-            return (<Navigate to={"/study/" + study.id + "/id" + window.location.search} />);
-
-        let states = this.state.currentStates;
-        if (!states || states.length === 0) {
-            states = null;
-        }
+        const states = game.states;
 
         const participant = game.participant;
         const displayPrompt = !this.state.dismissedPrompt;
@@ -485,8 +388,8 @@ export class GameScreen extends ActiveGameScreen {
         const finished = game.isFinished();
 
         const interactions = this.state.interactions;
+        const currentPostNumber = interactions.getSubmittedPostsCount();
 
-        const currentPostNumber = participant.postInteractions.length;
         const totalPosts = game.study.basicSettings.length;
         const progressPercentage = Math.round(currentPostNumber / totalPosts * 100);
 
@@ -501,7 +404,7 @@ export class GameScreen extends ActiveGameScreen {
             const madeUserComment = (postInteraction.comment !== null);
 
             nextPostEnabled = false;
-            if (this.state.commentHasBeenEdited) {
+            if (postInteraction.isEditingComment()) {
                 if (study.basicSettings.requireReactions && !madePostReaction) {
                     nextPostError = "Please react to the post";
                 } else {
@@ -528,20 +431,12 @@ export class GameScreen extends ActiveGameScreen {
 
         // Generate the post components.
         const postComponents = [];
-        if (!error && states !== null) {
+        if (!error && !finished) {
             for (let index = 0; index < states.length; ++index) {
                 const state = states[index];
+                const interaction = interactions.get(index);
                 const postIndex = state.indexInGame,
-                      postID = "post-" + state.indexInGame,
-                      postSpacerID = postID + "-spacer";
-
-                if (study.uiSettings.displayPostsInFeed) {
-                    // The spacers help with scroll anchoring, which helps to
-                    // avoid flickering when old posts are removed.
-                    postComponents.push(
-                        <div id={postSpacerID} key={postSpacerID} className={"h-8"}></div>
-                    );
-                }
+                      postID = "post-" + state.indexInGame;
 
                 postComponents.push(
                     <PostComponent
@@ -551,11 +446,11 @@ export class GameScreen extends ActiveGameScreen {
                         onPostReact={r => this.onPostReaction(postIndex, r, study)}
                         onCommentReact={(i, r) => this.onCommentReaction(postIndex, i, r, study)}
                         onCommentSubmit={value => this.onCommentSubmit(postIndex, value)}
-                        onCommentEditedStatusUpdate={edited => this.onCommentEditedStatusUpdate(postIndex, edited)}
                         onCommentEdit={() => this.onCommentEdit(postIndex)}
                         onCommentDelete={() => this.onCommentDelete(postIndex)}
-                        enableReactions={(index !== 0) || (this.state.reactionsAllowed && this.state.inputEnabled)}
-                        interactions={interactions.get(postIndex)} />
+                        enabled={this.state.reactionsAllowed && this.state.inputEnabled}
+                        interactions={interaction}
+                        className={(study.uiSettings.displayPostsInFeed ? "mt-6 scroll-mt-4" : "")}/>
                 );
             }
         }
@@ -589,22 +484,20 @@ export class GameScreen extends ActiveGameScreen {
                             nextPostEnabled={nextPostEnabled && this.state.reactionsAllowed && this.state.inputEnabled}
                             progressPercentage = {progressPercentage}
                             onNextPost={() => {
-                                if (!nextPostEnabled)
-                                    return;
-
-                                const reactions = this.getHighestInteractions().postReactions;
-                                if (!study.basicSettings.requireReactions || reactions.length > 0) {
-                                    this.onNextPost(game, false);
+                                if (nextPostEnabled) {
+                                    this.onNextPost();
                                 }
                             }}
                             nextPostText={
-                                finished ? "The simulation is complete!" :
-                                    (nextPostEnabled ?
-                                        (this.state.reactionsAllowed ?
-                                            (study.uiSettings.displayPostsInFeed ?
-                                                "Scroll to next post" : "Continue to next post")
-                                            : "Please wait to continue")
-                                        : nextPostError)
+                                finished ?
+                                    "The simulation is complete!" :
+                                (!nextPostEnabled ?
+                                    nextPostError :
+                                (!this.state.reactionsAllowed ?
+                                    "Please wait to continue" :
+                                (study.uiSettings.displayPostsInFeed ?
+                                    "Scroll to next post" :
+                                    "Continue to next post")))
                             }
                             followerChange={this.state.followerChange}
                             credibilityChange={this.state.credibilityChange}/>}
@@ -622,11 +515,11 @@ export class GameScreen extends ActiveGameScreen {
                         {postComponents}
 
                         {/* The end of the feed. */}
-                        {states !== null && study.uiSettings.displayPostsInFeed && game.areNoNextStates() &&
-                            <FeedEnd onContinue={() => this.submitAllRemaining(game)} />}
+                        {!finished && study.uiSettings.displayPostsInFeed &&
+                            <FeedEnd onContinue={() => this.submitAll(game)} />}
 
                         {/* If the game is finished, display a game completed prompt. */}
-                        {states === null && finished && <GameFinished study={study} game={game} />}
+                        {finished && <GameFinished study={study} game={game} />}
 
                         {/* If there is an error, display it here. */}
                         {error && <ErrorLabel value={error} />}

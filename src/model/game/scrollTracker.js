@@ -79,7 +79,7 @@ export class ScrollTracker {
             throw new Error("Already running");
 
         this.running = true;
-        this.loopIntervalID = setInterval(this.loop.bind(this), 50);
+        this.loopIntervalID = setInterval(this.detect.bind(this), 50);
     }
 
     stop() {
@@ -97,7 +97,7 @@ export class ScrollTracker {
         return this.lastPostBBoxes[postIndex];
     }
 
-    loop() {
+    detect() {
         const feedDiv = this.getFeedDivFn();
         if (feedDiv) {
             const postBBoxes = this.detectPostBBoxes(feedDiv);

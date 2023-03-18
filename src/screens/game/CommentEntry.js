@@ -3,6 +3,7 @@ import {MountAwareComponent} from "../../components/MountAwareComponent";
 import {ConfirmationDialog} from "../../components/ConfirmationDialog";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import {ErrorLabel} from "../../components/StatusLabel";
+import {POST_SUBMITTED_TOOLTIP} from "./Post";
 
 
 /**
@@ -66,7 +67,6 @@ export class CommentSubmissionRow extends MountAwareComponent {
             enabled: isEditing,
             isEditingComment: isEditing,
             value: (props.initialValue || ""),
-            lastHasEdited: false,
             showDiscardConfirmation: false,
             displayError: false,
         };
@@ -143,16 +143,10 @@ export class CommentSubmissionRow extends MountAwareComponent {
     }
 
     updateValue(value) {
-        const edited = this.hasBeenEdited(value);
-        if (edited !== this.lastHasEdited) {
-            this.props.onCommentEditedStatusUpdate(edited);
-        }
-
         this.setState(() => {
             return {
                 value: value,
-                enabled: value.trim().length > 0,
-                lastHasEdited: edited
+                enabled: value.trim().length > 0
             };
         });
     }
@@ -169,7 +163,8 @@ export class CommentSubmissionRow extends MountAwareComponent {
             "Please write your comment in the entry box above" :
             "Your comment must be at least " + requiredLength + " characters");
 
-        const submitVisible = this.state.isEditingComment || (this.props.enabled && this.state.enabled);
+        const enabled = this.props.enabled;
+        const submitVisible = this.state.isEditingComment || (enabled && this.state.enabled);
         const submitEnabled = !isError && submitVisible;
 
         return (
@@ -192,20 +187,25 @@ export class CommentSubmissionRow extends MountAwareComponent {
                 <div className={"flex flex-col m-2 rounded-lg py-1 px-2 bg-white " + (this.props.className || "")}>
                     <div className="flex flex-col mb-1.5">
                         <div className="flex flex-row justify-between w-full text-gray-700 mb-1">
-                        <span>
-                            {this.state.isEditingComment ? "Edit Comment:" : "Add Comment:"}
-                        </span>
+                            <span>
+                                {this.state.isEditingComment ? "Edit Comment:" : "Add Comment:"}
+                            </span>
                         </div>
+
                         <textarea
-                            className={
-                                "transition-max-height duration-300 ease-out w-full px-3 py-2 " +
-                                "border border-gray-400 rounded-md justify-self-center bg-gray-100 "}
-                            style={{minHeight: "2.8em", height: "6em", maxHeight: submitVisible ? "12em" : "2.8em"}}
-                            placeholder="Write your comment here"
-                            rows="1"
-                            value={this.state.value}
-                            onChange={e => this.updateValue(e.target.value)}>
-                    </textarea>
+                                className={
+                                    "transition-max-height duration-300 ease-out w-full px-3 py-2 " +
+                                    "border rounded-md justify-self-center bg-gray-100 " +
+                                    (enabled ? "border-gray-400" : "border-gray-300")}
+                                style={{minHeight: "2.8em", height: "6em", maxHeight: submitVisible ? "12em" : "2.8em"}}
+                                placeholder={enabled ? "Write your comment here" : "You may no longer comment on this post"}
+                                rows="1"
+                                value={enabled ? this.state.value : ""}
+                                onChange={e => this.updateValue(e.target.value)}
+                                disabled={!enabled}
+                                title={enabled ? "" : POST_SUBMITTED_TOOLTIP}>
+                        </textarea>
+
                         {showError &&
                             <ErrorLabel value={error} className="mt-1" />}
 
@@ -221,7 +221,10 @@ export class CommentSubmissionRow extends MountAwareComponent {
                                 {this.state.isEditingComment ?
                                     (deletingComment ?
                                         <>
-                                            <DeleteForeverIcon className="-mt-1 pr-1 h-0" />
+                                            <DeleteForeverIcon
+                                                className={"-mt-1 pr-1 h-0 " +
+                                                    (enabled ? "text-gray-600" : "text-gray-500")} />
+
                                             Delete Comment
                                         </>
                                         : "Save Comment")
@@ -231,7 +234,7 @@ export class CommentSubmissionRow extends MountAwareComponent {
                             <div className={
                                 "h-8 inline-block px-3 py-1.5 mt-2 rounded-md text-white text-sm select-none " +
                                 " cursor-pointer bg-gray-400 active:bg-gray-500 hover:bg-gray-500 "}
-                                 title={isError ? error : "Click to submit your message as a comment"}
+                                 title={isError ? error : "Click to discard your comment"}
                                  onClick={() => this.handleCancelClick()}>
 
                                 Cancel

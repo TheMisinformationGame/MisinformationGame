@@ -4,7 +4,7 @@ import {readStudyWorkbook} from "../model/studyExcelReader";
 import StatusLabel, {Status} from "./StatusLabel";
 import {checkStudyToJSONCompliance, getStudyChangesToAndFromJSON, Study} from "../model/study";
 import xlsxHelp from "./help-export-to-xlsx.png"
-import {Game, getGameChangesToAndFromJSON} from "../model/game";
+import {Game, getGameChangesToAndFromJSON} from "../model/game/game";
 import {doTypeCheck, isOfType} from "../utils/types";
 import {uploadImagesToStorage, uploadStudyConfiguration} from "../database/postToDB";
 import {generateUID} from "../utils/uid";

@@ -14,6 +14,7 @@ export class ReactButton extends Component {
     }
 
     render() {
+        const enabled = this.props.enabled;
         const reaction = this.props.reaction;
         const grayOut = this.props.grayOut;
         const selected = this.props.selected;
@@ -30,21 +31,21 @@ export class ReactButton extends Component {
                      " relative group rounded text-center " +
                      " fill-current transition duration-100 " +
                      " " + this.getPositioningClassName(wide) + " " +
-                     (selected ? " bg-gray-100 font-semibold " : " hover:bg-gray-100 ") +
-                     (this.props.enabled ? " cursor-pointer " : "") +
-                     (this.props.enabled && (selected || !grayOut) ?
+                     (selected ? " bg-gray-100 font-semibold " : (enabled ? " hover:bg-gray-100 " : "")) +
+                     (enabled ? " cursor-pointer " : "") +
+                     (enabled && (selected || !grayOut) ?
                          (selected ? " text-blue-700 " : " text-gray-700 ")
                          : " text-gray-500 ") +
                      (this.props.className  || "")}
                  style={{fontSize: (this.props.fontSize || "2.5rem")}}
                  onClick={() => {
-                     if (this.props.enabled) {
+                     if (enabled) {
                          this.props.onReact(reaction);
                      }
                  }}>
 
                 {/* This extra div avoids the scale transforms from overriding one another for shares. */}
-                <div className={(this.props.enabled ? "transform group-hover:scale-110 " : "")}>
+                <div className={(enabled ? "transform group-hover:scale-110 " : "")}>
                     {React.cloneElement(this.props.children, {
                         className: "fill-current " +
                             (this.props.childClassName || ""),

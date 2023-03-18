@@ -6,7 +6,7 @@
 import {auth, db, storage} from "./firebase";
 import {BrokenStudy, Study} from "../model/study";
 import {StudyImage} from "../model/images";
-import {Game} from "../model/game";
+import {Game} from "../model/game/game";
 import {decompressJson} from "./compressJson";
 import {retryPromiseOperation} from "../utils/promises";
 import {doc} from "firebase/firestore";

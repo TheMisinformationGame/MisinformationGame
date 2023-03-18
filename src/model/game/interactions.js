@@ -439,6 +439,27 @@ export class GamePostInteractionStore {
                 this.postInteractions.push(templateInteraction);
             }
         }
+        this.checkIntegrity();
+    }
+
+    /**
+     * Ensures that the state of this store is valid.
+     */
+    checkIntegrity() {
+        if (this.postInteractions === null)
+            throw new Error("Missing postInteractions of GamePostInteractionStore");
+
+        // Check that all complete posts are stored to the front of the interactions.
+        let foundIncomplete = false;
+        const interactions = this.postInteractions;
+        for (let index = 0; index < interactions.length; ++index) {
+            const inter = interactions[index];
+            if (!inter.isCompleted()) {
+                foundIncomplete = true;
+            } else if (foundIncomplete) {
+                throw new Error("There exists a complete post after incomplete posts")
+            }
+        }
     }
 
     copy() {
@@ -449,15 +470,21 @@ export class GamePostInteractionStore {
         return new GamePostInteractionStore();
     }
 
-    getSubmittedPostsCount() {
-        let submitted = 0;
+    getSubmittedPosts() {
+        let submitted = [];
         const interactions = this.postInteractions;
         for (let index = 0; index < interactions.length; ++index) {
-            if (interactions[index].isCompleted()) {
-                submitted += 1;
-            }
+            const inter = interactions[index];
+            if (!inter.isCompleted())
+                break
+
+            submitted.push(interactions[index]);
         }
         return submitted;
+    }
+
+    getSubmittedPostsCount() {
+        return this.getSubmittedPosts().length;
     }
 
     ensureExists(postIndex) {
@@ -489,6 +516,7 @@ export class GamePostInteractionStore {
         const copy = this.copy();
         copy.ensureExists(postIndex);
         copy.postInteractions[postIndex] = postInteraction;
+        copy.checkIntegrity();
         return copy;
     }
 

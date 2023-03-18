@@ -1,6 +1,5 @@
 import {ContinueBanner} from "../../components/ContinueButton";
 import {ActiveGameScreen} from "./ActiveGameScreen";
-import {Navigate} from "react-router-dom";
 import React from "react";
 import {renderToStaticMarkup} from "react-dom/server";
 
@@ -34,7 +33,7 @@ export function replaceHTMLPlaceholder(rulesHTML, placeholder, domGeneratorFn, m
 
 export class GameIntroductionScreen extends ActiveGameScreen {
     constructor(props) {
-        super(props, true);
+        super(props, ["introduction-or-game"]);
     }
 
     getContent(study) {
@@ -50,12 +49,6 @@ export class GameIntroductionScreen extends ActiveGameScreen {
     }
 
     renderWithStudyAndGame(study, game) {
-        const stage = game.getCurrentStage();
-        if (stage === "identification")
-            return (<Navigate to={"/study/" + study.id + "/id" + window.location.search} />);
-        if (stage === "debrief")
-            return (<Navigate to={"/study/" + study.id + "/debrief" + window.location.search} />);
-
         const content = this.getContent(study);
         const target = this.getTarget(study) + window.location.search;
         const delay = this.getContinueDelaySeconds(study);

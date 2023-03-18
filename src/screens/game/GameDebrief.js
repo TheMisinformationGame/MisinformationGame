@@ -1,6 +1,6 @@
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {ActiveGameScreen} from "./ActiveGameScreen";
-import {Component} from "react";
+import React, {Component} from "react";
 import {replaceHTMLPlaceholder} from "./GameIntroduction";
 
 
@@ -108,6 +108,10 @@ class CompletionCodeWidget extends Component {
 
 
 export class GameDebrief extends ActiveGameScreen {
+    constructor(props) {
+        super(props, ["debrief"]);
+    }
+
     componentDidUpdate() {
         // This must be run after every time the DOM of this component has been updated.
         window.requestAnimationFrame(CompletionCodeWidget.makeInteractive);

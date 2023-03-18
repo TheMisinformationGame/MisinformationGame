@@ -1,7 +1,7 @@
 import {doTypeCheck} from "../utils/types";
 import {LinearFunction} from "./math";
-import {GamePost, GameSource} from "./game";
 import {shuffleArray} from "../utils/arrays";
+import {GamePost, GameSource} from "./game/gameState";
 
 
 /**

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import {BrowserRouter, Route, Routes, useNavigate, useParams} from "react-router-dom";
+import {BrowserRouter, Navigate, Route, Routes, useNavigate, useParams} from "react-router-dom";
 import Home from "./screens/Home";
 import AdminHome from "./screens/AdminHome";
 import {AdminStudyPage} from "./screens/AdminStudy";
@@ -81,6 +81,28 @@ root.render(
       </BrowserRouter>
   </React.StrictMode>
 );
+
+
+/**
+ * Gets the URL to send a participant to for the state of the game.
+ */
+export function getGameStageURL(game) {
+    const stage = game.getCurrentStage();
+
+    if (stage === "identification")
+        return "/study/" + game.study.id + "/id" + window.location.search;
+
+    if (stage === "introduction-or-game")
+        return "/study/" + game.study.id + window.location.search;
+
+    if (stage === "game")
+        return "/study/" + game.study.id + "/feed" + window.location.search;
+
+    if (stage === "debrief")
+        return "/study/" + game.study.id + "/debrief" + window.location.search;
+
+    throw new Error("Unknown game stage, " + stage);
+}
 
 
 // Web Vitals Reporting.

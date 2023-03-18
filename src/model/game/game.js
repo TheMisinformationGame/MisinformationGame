@@ -1,9 +1,5 @@
-/**
- * A source with a known credibility and follower count.
- */
-import {doArrayTypeCheck, doNullableArrayTypeCheck, doNullableTypeCheck, doTypeCheck, isOfType} from "../../utils/types";
-import {BrokenStudy, Post, PostComment, Source, Study} from "../study";
-import {filterArray, selectRandomElement, selectWeightedRandomElement} from "../../utils/random";
+import {doArrayTypeCheck, doNullableTypeCheck, doTypeCheck, isOfType} from "../../utils/types";
+import {BrokenStudy, Study} from "../study";
 import {odiff} from "../../utils/odiff";
 import {getDataManager} from "../manager";
 import { postResults } from "../../database/postToDB";
@@ -11,369 +7,9 @@ import {generateUID} from "../../utils/uid";
 import {getUnixEpochTimeSeconds} from "../../utils/time";
 import {compressJson, decompressJson} from "../../database/compressJson";
 import {GamePostInteraction, GamePostInteractionStore} from "./interactions";
+import {GamePost, GameSource, GameState} from "./gameState";
+import {GameParticipant} from "./gameParticipant";
 
-
-/**
- * Adjusts the current credibility of a source or participant,
- * and returns their new credibility.
- */
-function adjustCredibility(current, change) {
-    return Math.max(0, Math.min(current + change, 100));
-}
-
-/**
- * Adjusts the current followers of a source or participant,
- * and returns their new followers.
- */
-function adjustFollowers(current, change) {
-    return Math.max(0, current + change);
-}
-
-/**
- * A source in the game with known credibility and followers.
- */
-export class GameSource {
-    // The study is not saved as part of the game states, it is only here for convenience.
-    study; // Study
-
-    source; // BaseSource
-    credibility; // Number
-    followers; // Number
-    remainingUses; // Number
-
-    constructor(study, source, credibility, followers, remainingUses) {
-        doTypeCheck(study, Study, "Source's Study");
-        doTypeCheck(source, Source, "Source's Metadata");
-        doTypeCheck(credibility, "number", "Source's Credibility");
-        doTypeCheck(followers, "number", "Source's Followers");
-        doTypeCheck(remainingUses, "number", "Source's Remaining Uses");
-        this.study = study;
-        this.source = source;
-        this.credibility = credibility;
-        this.followers = followers;
-        this.remainingUses = remainingUses;
-    }
-
-    /**
-     * Returns a copy with of this source with adjusted credibility,
-     * followers, and remaining uses.
-     */
-    adjustAfterPost(credibilityChange, followersChange) {
-        const newCredibility = adjustCredibility(this.credibility, credibilityChange);
-        const newFollowers = adjustFollowers(this.followers, followersChange);
-        const newUses = Math.max(-1, this.remainingUses - 1);
-        return new GameSource(this.study, this.source, newCredibility, newFollowers, newUses);
-    }
-
-    toJSON() {
-        return {
-            "sourceID": this.source.id,
-            "credibility": this.credibility,
-            "followers": this.followers,
-            "remainingUses": this.remainingUses
-        };
-    }
-
-    static fromJSON(json, study) {
-        return new GameSource(
-            study,
-            study.getSource(json["sourceID"]),
-            json["credibility"],
-            json["followers"],
-            json["remainingUses"]
-        );
-    }
-
-    /**
-     * Selects a random source to show, weighted by source's max posts.
-     */
-    static selectRandomSource(sources) {
-        const availableSources = filterArray(
-            sources,
-            (source) => source.remainingUses === -1 || source.remainingUses > 0
-        );
-        if (availableSources.length === 0)
-            throw new Error("All sources hit their maximum number of posts");
-
-        return selectWeightedRandomElement(
-            availableSources,
-            () => false,
-            (source) => source.source.maxPosts === -1 ? 0 : source.source.maxPosts
-        );
-    }
-
-    /**
-     * Returns the first source in {@param sources} that has the ID {@param id}.
-     */
-    static findById(sources, id) {
-        for (let index = 0; index < sources.length; ++index) {
-            const source = sources[index];
-            if (source.source.id === id)
-                return source;
-        }
-        throw new Error("Could not find source with ID " + id);
-    }
-
-    /**
-     * Creates a new source for use in the game by sampling its
-     * credibility and followers from the supplied distribution.
-     */
-    static sampleNewSource(study, source) {
-        doTypeCheck(study, Study, "Study")
-        doTypeCheck(source, Source, "Source");
-        const credibility = source.credibility.sample();
-        const followers = source.followers.sample();
-        return new GameSource(study, source, credibility, followers, source.maxPosts);
-    }
-}
-
-export class GamePostComment {
-    comment; // BaseComment
-    numberOfReactions; // {String: Number}
-
-    constructor(comment, numberOfReactions) {
-        doTypeCheck(comment, PostComment, "Comment's Metadata");
-        doTypeCheck(numberOfReactions, "object", "Number of reactions for the comment");
-        this.comment = comment;
-        this.numberOfReactions = numberOfReactions;
-    }
-
-    toJSON() {
-        return {
-            "numberOfReactions": this.numberOfReactions
-        };
-    }
-
-    static fromJSON(json, index, post) {
-        return new GamePostComment(
-            post.comments[index],
-            json["numberOfReactions"]
-        );
-    }
-}
-
-/**
- * A post in the game that may have been shown already.
- */
-export class GamePost {
-    // The study is not saved as part of the game states, it is only here for convenience.
-    study; // Study
-
-    post; // Post
-    numberOfReactions; // {String: Number}
-    comments; // GamePostComment[]
-    shown; // Boolean
-
-    constructor(study, post, numberOfReactions, comments, shown) {
-        doTypeCheck(study, Study, "Post's Study");
-        doTypeCheck(post, Post, "Post's Metadata");
-        doTypeCheck(numberOfReactions, "object", "Number of reactions for the post");
-        doArrayTypeCheck(comments, GamePostComment, "Comments on Post");
-        doNullableTypeCheck(shown, "boolean", "Whether the post has been shown");
-        this.study = study;
-        this.post = post;
-        this.numberOfReactions = numberOfReactions;
-        this.comments = comments;
-        this.shown = !!shown;
-    }
-
-    /**
-     * Returns a new GamePost for this post after it has been shown.
-     */
-    adjustAfterShown() {
-        return new GamePost(this.study, this.post, this.numberOfReactions, this.comments, true);
-    }
-
-    static commentsToJSON(comments) {
-        const commentsJSON = [];
-        for (let index = 0; index < comments.length; ++index) {
-            commentsJSON.push(comments[index].toJSON())
-        }
-        return commentsJSON;
-    }
-
-    static commentsFromJSON(json, post) {
-        const comments = [];
-        for (let index = 0; index < json.length; ++index) {
-            comments.push(GamePostComment.fromJSON(json[index], index, post));
-        }
-        return comments;
-    }
-
-    toJSON() {
-        return {
-            "postID": this.post.id,
-            "numberOfReactions": this.numberOfReactions,
-            "comments": GamePost.commentsToJSON(this.comments),
-            "shown": this.shown
-        };
-    }
-
-    static fromJSON(json, study) {
-        const post = study.getPost(json["postID"]);
-        const comments = GamePost.commentsFromJSON(json["comments"], post);
-        return new GamePost(
-            study,
-            post,
-            json["numberOfReactions"],
-            comments,
-            json["shown"]
-        );
-    }
-
-    /**
-     * Selects a random post to show, with a {@param truePostPercentage}
-     * percent chance of selecting a true post.
-     *
-     * @param posts The array of posts to choose from.
-     * @param truePostPercentage A percentage value between 0 and 100.
-     */
-    static selectRandomPost(posts, truePostPercentage) {
-        const selectTruePosts = 100 * Math.random() < truePostPercentage;
-        const availablePosts = filterArray(posts, (post) => !post.shown);
-        if (availablePosts.length === 0)
-            throw new Error("Used up all available posts");
-
-        return selectRandomElement(
-            availablePosts,
-            (post) => selectTruePosts === post.post.isTrue // Soft Filter
-        );
-    }
-
-    /**
-     * Returns the first post in {@param posts} that has the ID {@param id}.
-     */
-    static findById(posts, id) {
-        for (let index = 0; index < posts.length; ++index) {
-            const post = posts[index];
-            if (post.post.id === id)
-                return post;
-        }
-        throw new Error("Could not find post with ID " + id);
-    }
-
-    /**
-     * Creates a new post for use in the game by sampling its
-     * number of reactions from the supplied distribution.
-     */
-    static sampleNewPost(study, post) {
-        doTypeCheck(study, Study, "Study")
-        doTypeCheck(post, Post, "Post");
-        const numberOfReactions = post.numberOfReactions.sampleAll();
-        const comments = [];
-        for (let index = 0; index < post.comments.length; ++index) {
-            const comment = post.comments[index];
-            const commentNumberOfReactions = comment.numberOfReactions.sampleAll();
-            comments.push(new GamePostComment(comment, commentNumberOfReactions));
-        }
-        return new GamePost(study, post, numberOfReactions, comments, false);
-    }
-}
-
-/**
- * Holds the current state of a game.
- */
-export class GameState {
-    // The study is not saved as part of the game states, it is only here for convenience.
-    study; // Study
-    indexInGame; // Number
-
-    currentSource; // GameSource
-    currentPost; // GamePost
-
-    constructor(study, indexInGame, currentSource, currentPost) {
-        doTypeCheck(study, Study, "Game's Study");
-        doTypeCheck(indexInGame, "number", "Index of State in the Game")
-        doTypeCheck(currentSource, GameSource, "Game's Current Source");
-        doTypeCheck(currentPost, GamePost, "Game's Current Post");
-        this.study = study;
-        this.indexInGame = indexInGame;
-        this.currentSource = currentSource;
-        this.currentPost = currentPost;
-    }
-
-    toJSON() {
-        return {
-            "currentSource": this.currentSource.toJSON(),
-            "currentPost": this.currentPost.toJSON()
-        };
-    }
-
-    static fromJSON(json, study, indexInGame) {
-        return new GameState(
-            study,
-            indexInGame,
-            GameSource.fromJSON(json["currentSource"], study),
-            GamePost.fromJSON(json["currentPost"], study),
-            null,
-            null
-        );
-    }
-}
-
-
-/**
- * Stores the reactions, credibility, and followers
- * of a participant throughout the game.
- */
-export class GameParticipant {
-    participantID; // String?
-    postInteractions; // GamePostInteractionStore
-    credibility; // Number
-    followers; // Number
-    credibilityHistory; // Number[]
-    followerHistory; // Number[]
-
-    constructor(participantID, credibility, followers,
-                postInteractions, credibilityHistory, followerHistory) {
-
-        doNullableTypeCheck(participantID, "string", "Participant's ID");
-        doTypeCheck(credibility, "number", "Participant's Credibility");
-        doTypeCheck(followers, "number", "Participant's Followers");
-        doTypeCheck(postInteractions, GamePostInteractionStore, "Participant's Interactions with Posts");
-        doNullableArrayTypeCheck(credibilityHistory, "number", "Participant's Credibility History");
-        doNullableArrayTypeCheck(followerHistory, "number", "Participant's Follower History");
-        this.participantID = participantID;
-        this.credibility = credibility;
-        this.followers = followers;
-        this.postInteractions = postInteractions;
-        this.credibilityHistory = credibilityHistory || [credibility];
-        this.followerHistory = followerHistory || [followers];
-    }
-
-    addReaction(interaction, credibilityChange, followersChange) {
-        doNullableTypeCheck(interaction, GamePostInteraction, "Participant's Interactions with a Post");
-        doTypeCheck(credibilityChange, "number", "Participant's Credibility Change after Reaction");
-        doTypeCheck(followersChange, "number", "Participant's Followers Change after Reaction");
-        this.postInteractions.push(interaction);
-        this.credibility = adjustCredibility(this.credibility, credibilityChange);
-        this.followers = adjustFollowers(this.followers, followersChange);
-        this.credibilityHistory.push(this.credibility);
-        this.followerHistory.push(this.followers);
-    }
-
-    toJSON() {
-        return {
-            "participantID": this.participantID,
-            "credibility": this.credibility,
-            "followers": this.followers,
-            "interactions": this.postInteractions.toJSON(),
-            "credibilityHistory": this.credibilityHistory,
-            "followerHistory": this.followerHistory
-        };
-    }
-
-    static fromJSON(json) {
-        return new GameParticipant(
-            json["participantID"],
-            json["credibility"],
-            json["followers"],
-            GamePostInteractionStore.fromJSON(json["interactions"]),
-            json["credibilityHistory"],
-            json["followerHistory"]
-        );
-    }
-}
 
 /**
  * Provides the logic for running a game.
@@ -388,13 +24,12 @@ export class Game {
     latestStatePosts; // GameSource[], or null
     latestStateSources; // GamePost[], or null
     participant; // GameParticipant
-    dismissedPrompt; // Boolean
     completionCode; // String
 
     saveResultsToDatabasePromise; // Promise, not saved
 
     constructor(study, studyModTime, sessionID, startTime, endTime,
-                states, participant, dismissedPrompt, completionCode) {
+                states, participant, completionCode) {
 
         doTypeCheck(study, Study, "Game Study");
         doTypeCheck(studyModTime, "number", "Game Study Modification Time");
@@ -403,7 +38,6 @@ export class Game {
         doNullableTypeCheck(endTime, "number", "Game End Time");
         doTypeCheck(states, Array, "Game States");
         doTypeCheck(participant, GameParticipant, "Game Participant");
-        doTypeCheck(dismissedPrompt, "boolean", "Whether the prompt has been dismissed");
         doNullableTypeCheck(completionCode, "string", "Game Completion Code");
         this.sessionID = sessionID;
         this.study = study;
@@ -414,7 +48,6 @@ export class Game {
         this.latestStatePosts = null;
         this.latestStateSources = null;
         this.participant = participant;
-        this.dismissedPrompt = dismissedPrompt;
         this.completionCode = completionCode;
 
         this.saveResultsToDatabasePromise = null;
@@ -462,16 +95,16 @@ export class Game {
             return "identification";
         if (this.isFinished())
             return "debrief";
-        if (this.dismissedPrompt)
+        if (this.participant.postInteractions.getSubmittedPostsCount() > 0)
             return "game";
-        return "introduction";
+        return "introduction-or-game";
     }
 
-    getCurrentState() {
+    getState(index) {
         if (this.isFinished())
             throw new Error("The game has been finished!");
 
-        return this.states[this.participant.postInteractions.getSubmittedPostsCount()];
+        return this.states[index];
     }
 
     /**
@@ -502,17 +135,19 @@ export class Game {
     }
 
     /**
-     * Advances to the next state in the game after the participant interacted with the
-     * highest current post. The highest current post is the visible post if not in
-     * feed-mode, or the first visible post in feed-mode.
+     * Updates the state of the game based upon the given interactions.
      *
-     * @param interactions the interactions that the participant made with the highest current post.
+     * @param interactions all interactions that the participant made with posts in the game.
      */
-    advanceStates(interactions) {
+    submitInteractions(interactions) {
         doArrayTypeCheck(interactions, GamePostInteraction, "Interactions with the Current Post")
 
-        for (let index = 0; index < interactions.length; ++index) {
-            this.submitInteraction(interactions[index]);
+        const submittedPostCount = this.participant.postInteractions.getSubmittedPostsCount();
+        if (submittedPostCount >= interactions.length)
+            return;
+
+        for (let index = submittedPostCount; index < interactions.length; ++index) {
+            this.submitInteraction(index, interactions[index]);
         }
 
         // Generate a completion code when the game is finished.
@@ -532,16 +167,16 @@ export class Game {
         }
     }
 
-    submitInteraction(interaction) {
-        if (!interaction.isCompleted())
-            throw new Error("The interaction with the current post must be completed");
+    submitInteraction(postIndex, postInteraction) {
+        if (!postInteraction.isCompleted())
+            throw new Error("Interactions with posts must be completed to be submitted");
 
         // Calculate and apply the changes to participant's credibility and followers.
-        const postReactions = interaction.postReactions;
+        const postReactions = postInteraction.postReactions;
         let credibilityChange = 0,
             followerChange = 0;
 
-        const post = this.getCurrentState().currentPost.post;
+        const post = this.getState(postIndex).currentPost.post;
         for (let index = 0; index < postReactions.length; ++index) {
             const reaction = postReactions[index];
             if (reaction === "skip")
@@ -550,7 +185,7 @@ export class Game {
             credibilityChange += post.changesToCredibility[reaction].sample();
             followerChange += post.changesToFollowers[reaction].sample();
         }
-        this.participant.addReaction(interaction, credibilityChange, followerChange);
+        this.participant.addSubmittedPost(postIndex, postInteraction, credibilityChange, followerChange);
     }
 
     calculateAllStates() {
@@ -642,7 +277,6 @@ export class Game {
             "endTime": this.endTime,
             "states": Game.statesToJSON(this.states),
             "participant": this.participant.toJSON(),
-            "dismissedPrompt": this.dismissedPrompt,
             "completionCode": this.completionCode || null  // Firebase doesn't like undefined
         };
         return json;
@@ -655,7 +289,7 @@ export class Game {
             const legacyStudy = Study.fromJSON(json["studyID"], json["study"]);
             studyModTime = legacyStudy.lastModifiedTime;
         } else {
-            studyModTime = json["studyModTime"]
+            studyModTime = json["studyModTime"];
         }
         return new Game(
             study, studyModTime,
@@ -664,7 +298,6 @@ export class Game {
             json["endTime"],
             Game.statesFromJSON(json["states"], study),
             GameParticipant.fromJSON(json["participant"]),
-            json["dismissedPrompt"],
             json["completionCode"] || null
         );
     }
@@ -678,7 +311,8 @@ export class Game {
 
         doTypeCheck(study, Study, "Game Study");
         const sessionID = generateUID();
-        const participant = new GameParticipant(null, 50, 0);
+        const interactionStore = new GamePostInteractionStore();
+        const participant = new GameParticipant(null, 50, 0, interactionStore);
         const game = new Game(
             study, study.lastModifiedTime, sessionID,
             getUnixEpochTimeSeconds(),

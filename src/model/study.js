@@ -955,7 +955,7 @@ export class Study {
 
 /**
  * Converts {@param study} to JSON and back, and
- * returns an array with all of the changes between
+ * returns an array with all changes between
  * the original study and the reconstructed one.
  * This should return an empty array if everything
  * is working correctly.

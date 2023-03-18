@@ -34,6 +34,7 @@ export class ContinueButton extends MountAwareComponent {
         return (
             <ConditionalLink
                 to={this.props.to}
+                onSubmit={this.props.onSubmit}
                 condition={enabled}
                 onClick={() => this.props.onClick(enabled)}
                 tooltip={

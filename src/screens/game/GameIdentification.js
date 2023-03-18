@@ -2,13 +2,12 @@ import {ErrorLabel} from '../../components/StatusLabel';
 import {getDataManager} from "../../model/manager";
 import {ContinueButton} from "../../components/ContinueButton"
 import {ActiveGameScreen} from "./ActiveGameScreen";
-import {Navigate} from "react-router-dom";
 import React from "react";
 
 
 export class GameIdentification extends ActiveGameScreen {
     constructor(props) {
-        super(props);
+        super(props, ["identification"]);
         this.state = {
             ...this.state,
             value: "",
@@ -87,17 +86,17 @@ export class GameIdentification extends ActiveGameScreen {
     }
 
     updateID(game, id) {
-        game.participant.participantID = id;
-        game.saveLocally();
         this.setState(() => {
             return {value: id};
         });
     }
 
-    renderWithStudyAndGame(study, game) {
-        if (game.getCurrentStage() === "debrief")
-            return (<Navigate to={"/study/" + study.id + "/debrief" + window.location.search} />);
+    submitID(game, id) {
+        game.participant.participantID = id;
+        game.saveLocally();
+    }
 
+    renderWithStudyAndGame(study, game) {
         const target = "/study/" + study.id + window.location.search;
         return (
             <div className="w-full bg-gray-100" style={{minHeight: "100vh"}}>
@@ -118,6 +117,7 @@ export class GameIdentification extends ActiveGameScreen {
 
                     <ContinueButton
                         to={target}
+                        onSubmit={() => this.submitID(game, this.state.value)}
                         condition={GameIdentification.isValidValue(this.state.value)}
                         disabledTooltip="Enter your access ID to continue"
                         onClick={() => this.setState(() => {

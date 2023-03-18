@@ -1,6 +1,10 @@
 import {getDataManager} from "../../model/manager";
 import {ErrorLabel, ProgressLabel} from "../../components/StatusLabel";
 import ActiveStudyScreen from "../ActiveStudyScreen";
+import {doArrayTypeCheck} from "../../utils/types";
+import {Navigate} from "react-router-dom";
+import React from "react";
+import {getGameStageURL} from "../../index";
 
 /**
  * Automatically sets the active study, and retrieves
@@ -8,8 +12,10 @@ import ActiveStudyScreen from "../ActiveStudyScreen";
  * only render once the study and game is loaded.
  */
 export class ActiveGameScreen extends ActiveStudyScreen {
-    constructor(props) {
+    constructor(props, expectedStages) {
         super(props);
+        doArrayTypeCheck(expectedStages, "string", "The expected stage of the game")
+        this.expectedStages = expectedStages;
 
         const manager = getDataManager();
 
@@ -143,6 +149,10 @@ export class ActiveGameScreen extends ActiveStudyScreen {
         const game = this.state.game;
         if (!game)
             return <ErrorLabel className="text-2xl m-2" value="The game did not load correctly." />;
+
+        const stage = game.getCurrentStage();
+        if (!this.expectedStages.includes(stage))
+            return (<Navigate to={getGameStageURL(game)} />);
 
         return this.renderWithStudyAndGame(game.study, game);
     }

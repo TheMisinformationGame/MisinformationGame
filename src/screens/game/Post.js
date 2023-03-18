@@ -11,6 +11,10 @@ import {isOfType} from "../../utils/types";
 import {CommentSubmissionRow} from "./CommentEntry";
 import {Comment} from "./Comment";
 import {ReactButton} from "./ReactButton";
+import {capitalise} from "../../utils/text";
+
+
+export const POST_SUBMITTED_TOOLTIP = "You may no longer interact with this post, as it has been saved";
 
 
 /**
@@ -87,12 +91,6 @@ class PostReactionsRow extends Component {
 
         const buttons = [];
         const reactions = ["like", "dislike", "share", "flag"];
-        const titles = {
-            "like": "Like",
-            "dislike": "Dislike",
-            "share": "Share",
-            "flag": "Flag"
-        };
         const icons = {
             "like": <ThumbUpIcon/>,
             "dislike": <ThumbDownIcon/>,
@@ -130,7 +128,7 @@ class PostReactionsRow extends Component {
                              enabled={enabled}
                              reactionCount={reactionCount}
                              childClassName={transforms}
-                             title={titles[reaction]}
+                             title={enabled ? capitalise(reaction) : POST_SUBMITTED_TOOLTIP}
                              className="mr-1"
                              fontSize={fontSize}>
 
@@ -172,6 +170,8 @@ export class PostComponent extends Component {
     render() {
         const state = this.props.state;
         const interactions = this.props.interactions;
+        const enabled = this.props.enabled && !interactions.isCompleted();
+
         const post = state.currentPost.post;
         const commentComponents = [];
 
@@ -186,7 +186,7 @@ export class PostComponent extends Component {
                     comment={userComment}
                     study={state.study}
                     key="user.comment"
-                    enabled={false}
+                    enabled={enabled}
                     editable={true}
                     onCommentEdit={() =>  this.props.onCommentEdit()}
                     onCommentDelete={() => this.props.onCommentDelete()} />);
@@ -200,7 +200,7 @@ export class PostComponent extends Component {
                     className={showCommentBox || interactions.comment || index > 0 ? "mt-1" : "mt-0"}
                     key={index + "." + comment.sourceName}
                     onReact={r => this.props.onCommentReact(index, r)}
-                    enabled={this.props.enableReactions}
+                    enabled={enabled}
                     editable={false}
                     interaction={interactions.findCommentReaction(index)} />
             );
@@ -220,7 +220,13 @@ export class PostComponent extends Component {
         }
 
         return (
-            <div id={this.props.id} className="flex flex-col bg-gray-100 shadow-md">
+            <div
+                id={this.props.id}
+                className={
+                    "flex flex-col bg-gray-100 shadow-md " +
+                    (this.props.className || "")
+                }>
+
                 <div className="bg-white">
                     {/* The source of the post. */}
                     <div className="flex p-2 bg-white">
@@ -239,7 +245,7 @@ export class PostComponent extends Component {
                     <hr />
                     <PostReactionsRow
                         onReact={this.props.onPostReact}
-                        enabled={this.props.enableReactions}
+                        enabled={enabled}
                         interactions={interactions}
                         study={state.study}
                         post={state.currentPost} />
@@ -257,8 +263,7 @@ export class PostComponent extends Component {
                         study={state.study}
                         initialValue={interactions.lastComment}
                         submit={value => this.props.onCommentSubmit(value)}
-                        onCommentEditedStatusUpdate={edited => this.props.onCommentEditedStatusUpdate(edited)}
-                        enabled={this.props.enableReactions} />}
+                        enabled={enabled} />}
 
                 {commentComponents}
             </div>

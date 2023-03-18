@@ -1,5 +1,5 @@
 import {readAllStudies, readIsAdmin, readStudyImage, readStudySettings} from "../database/getFromDB";
-import {Game} from "./game";
+import {Game} from "./game/game";
 import {doTypeCheck, isOfType} from "../utils/types";
 import {BrokenStudy, Study} from "./study";
 import {StudyImage, StudyImageMetadata} from "./images";
