@@ -135,7 +135,7 @@ class GameFinished extends MountAwareComponent {
  */
 export class GameScreen extends ActiveGameScreen {
     constructor(props) {
-        super(props, ["game", "introduction-or-game"]);
+        super(props, ["introduction-or-game", "game", "debrief"]);
         this.defaultState = {
             ...this.defaultState,
 
@@ -167,7 +167,10 @@ export class GameScreen extends ActiveGameScreen {
         const inters = game.participant.postInteractions;
         this.setStateIfMounted(() => {
             this.scrollToNextPostAfterNextUpdate = inters.getSubmittedPostsCount();
-            return {interactions: inters.copy()};
+            return {
+                interactions: inters.copy(),
+                dismissedPrompt: game.isFinished()
+            };
         });
     }
 

@@ -2,7 +2,7 @@ import {doArrayTypeCheck, doNullableTypeCheck, doTypeCheck, isOfType} from "../.
 import {BrokenStudy, Study} from "../study";
 import {odiff} from "../../utils/odiff";
 import {getDataManager} from "../manager";
-import { postResults } from "../../database/postToDB";
+import {postResults} from "../../database/postToDB";
 import {generateUID} from "../../utils/uid";
 import {getUnixEpochTimeSeconds} from "../../utils/time";
 import {compressJson, decompressJson} from "../../database/compressJson";
@@ -29,7 +29,7 @@ export class Game {
     saveResultsToDatabasePromise; // Promise, not saved
 
     constructor(study, studyModTime, sessionID, startTime, endTime,
-                states, participant, completionCode) {
+                states, participant, completionCode, savedResults) {
 
         doTypeCheck(study, Study, "Game Study");
         doTypeCheck(studyModTime, "number", "Game Study Modification Time");
@@ -39,6 +39,7 @@ export class Game {
         doTypeCheck(states, Array, "Game States");
         doTypeCheck(participant, GameParticipant, "Game Participant");
         doNullableTypeCheck(completionCode, "string", "Game Completion Code");
+        doTypeCheck(savedResults, "boolean", "Whether Game Results are Saved");
         this.sessionID = sessionID;
         this.study = study;
         this.studyModTime = studyModTime;
@@ -49,6 +50,7 @@ export class Game {
         this.latestStateSources = null;
         this.participant = participant;
         this.completionCode = completionCode;
+        this.savedResults = savedResults;
 
         this.saveResultsToDatabasePromise = null;
     }
@@ -66,7 +68,18 @@ export class Game {
      * Saves this game to the database.
      */
     saveToDatabase() {
-        this.saveResultsToDatabasePromise = postResults(this.study, this);
+        if (this.saveResultsToDatabasePromise)
+            return this.saveResultsToDatabasePromise;
+
+        if (this.savedResults) {
+            this.saveResultsToDatabasePromise = Promise.resolve("Previously Saved");
+            return this.saveResultsToDatabasePromise
+        }
+
+        this.savedResults = false;
+        this.saveResultsToDatabasePromise = postResults(this.study, this).then(() => {
+            this.savedResults = true;
+        });
         return this.saveResultsToDatabasePromise;
     }
 
@@ -93,7 +106,7 @@ export class Game {
     getCurrentStage() {
         if (!this.participant.participantID && this.study.basicSettings.requireIdentification)
             return "identification";
-        if (this.isFinished())
+        if (this.isFinished() && this.savedResults)
             return "debrief";
         if (this.participant.postInteractions.getSubmittedPostsCount() > 0)
             return "game";
@@ -277,7 +290,8 @@ export class Game {
             "endTime": this.endTime,
             "states": Game.statesToJSON(this.states),
             "participant": this.participant.toJSON(),
-            "completionCode": this.completionCode || null  // Firebase doesn't like undefined
+            "completionCode": this.completionCode || null,  // Firebase doesn't like undefined
+            "savedResults": this.savedResults
         };
         return json;
     }
@@ -298,7 +312,8 @@ export class Game {
             json["endTime"],
             Game.statesFromJSON(json["states"], study),
             GameParticipant.fromJSON(json["participant"]),
-            json["completionCode"] || null
+            json["completionCode"] || null,
+            json["savedResults"] || true
         );
     }
 
@@ -316,7 +331,7 @@ export class Game {
         const game = new Game(
             study, study.lastModifiedTime, sessionID,
             getUnixEpochTimeSeconds(),
-            null, [], participant, false
+            null, [], participant, null, false
         );
         game.calculateAllStates();
         game.saveLocally();
