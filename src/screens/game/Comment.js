@@ -101,7 +101,11 @@ export class Comment extends Component {
                     Are you sure you wish to delete your comment?
                 </ConfirmationDialog>
 
-                <div className={"flex flex-col m-2 rounded-lg p-1 pr-2 bg-white " + (this.props.className || "")}>
+                <div className={
+                    "flex flex-col m-2 rounded-lg p-1 pr-2 " +
+                    (enabled ? " bg-white " : " bg-gray-25 ") +
+                    (this.props.className || "")
+                }>
                     <div className="flex mb-3">
                         <div className="flex-grow pl-2">
                             <div className="w-full">

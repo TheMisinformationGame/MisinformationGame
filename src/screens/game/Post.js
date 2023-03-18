@@ -224,18 +224,18 @@ export class PostComponent extends Component {
                 id={this.props.id}
                 className={
                     "flex flex-col bg-gray-100 shadow-md " +
+                    (enabled ? " text-black " : " text-gray-700 ") +
                     (this.props.className || "")
                 }>
 
-                <div className="bg-white">
+                <div className={enabled ? "bg-white" : "bg-gray-25"}>
                     {/* The source of the post. */}
-                    <div className="flex p-2 bg-white">
+                    <div className="flex p-2">
                         <SourceElement source={state.currentSource} />
                     </div>
 
                     {/* The content of the post. */}
-                    <div className="flex flex-col flex-grow text-left text-2xl bg-white
-                                    font-bold">
+                    <div className="flex flex-col flex-grow text-left text-2xl font-bold">
 
                         <p className="p-2 mb-1">{post.headline}</p>
                         {postContent}
