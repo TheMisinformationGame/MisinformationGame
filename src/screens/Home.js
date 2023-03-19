@@ -58,7 +58,7 @@ function Home() {
             <GithubCorner />
             <div className="flex flex-col items-center min-h-screen py-24 px-8">
 
-                <a href="https://themisinformationgame.github.io/">
+                <a href="https://misinfogame.com">
                     <img src={Logo} alt="Misinformation Game Logo"
                          className="absolute left-2 top-2 h-16" />
                 </a>
@@ -70,7 +70,7 @@ function Home() {
                         behaviour when they interact with social media. To achieve this, The Misinformation
                         Game simulates a social media feed for research participants. You may read more
                         about The Misinformation Game in&nbsp;
-                        <a href="https://themisinformationgame.github.io/">its documentation</a>.
+                        <a href="https://misinfogame.com">its documentation</a>.
                     </p>
                     <p className="text-lg mb-2">
                         Press the button below to access the admin interface to manage your studies,
@@ -93,7 +93,7 @@ function Home() {
 
                     <p className="text-lg mb-2">
                         <a className="text-xl underline text-purple-600 hover:text-purple-900"
-                           href="https://themisinformationgame.github.io/">
+                           href="https://misinfogame.com">
 
                             Documentation
                         </a>:

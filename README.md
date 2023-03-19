@@ -21,7 +21,7 @@ questions.
 # Example Game
 If you would like to try a study created using
 The Misinformation Game, you can access an example game from
-[here](https://themisinformationgame.github.io/link/ExampleGame).
+[here](https://misinfogame.com/link/ExampleGame).
 You may enter any ID to access the example game.
 
 ![Example Game](docs/screenshots/example-game.png)
