@@ -29,3 +29,105 @@ p a:hover, p a:active {
     transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     fill: currentColor;
 }
+
+/**
+ * The Misinformation Game Banner.
+ */
+hr.strong-line {
+    border-top-color: rgb(128, 128, 128);
+    border-top-width: 2px;
+    margin-bottom: 1rem;
+}
+
+
+/* These _are not_ shared by the game and docs. */
+#logo-banner {
+    display: inline-block;
+    margin-top: 0.72rem;
+    margin-bottom: 1.44rem;
+}
+#logo-banner .logo {
+    height: 8.15rem;
+    padding: 1.32rem 0.6rem 0 0;
+}
+
+/* These _are_ shared by the game and docs. */
+#logo-banner {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    height: auto;
+    font-family: 'Roboto', 'Noto Sans', 'Helvetica', 'Arial', sans-serif;
+}
+#logo-banner .logo {
+    display: inline-block;
+    vertical-align: middle;
+}
+#logo-banner {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    height: auto;
+    font-family: 'Roboto', 'Noto Sans', 'Helvetica', 'Arial', sans-serif;
+}
+#logo-banner .logo {
+    display: inline-block;
+    vertical-align: middle;
+}
+#logo-banner .logo img {
+    display: inline-block;
+    vertical-align: middle;
+    width: auto;
+    height: auto;
+    max-height: 100%;
+    box-shadow: none;
+    margin: 0;
+}
+#logo-banner .titles {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    margin-top: 1.2rem;
+}
+#logo-banner .titles h1,
+#logo-banner .titles h2 {
+    line-height: 1;
+}
+#logo-banner .titles h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    letter-spacing: 0;
+    margin-top: 0;
+    margin-bottom: 0.4rem;
+}
+#logo-banner .titles h2 {
+    font-size: 1.9rem;
+    font-weight: normal;
+    color: #555555;
+    margin-top: 0;
+    margin-left: 0.4rem;
+    letter-spacing: 0.005rem;
+}
+@media (max-width: 48rem) {
+    #logo-banner {
+        padding-bottom: 0.6rem;
+    }
+    #logo-banner .logo {
+        padding-top: 0.6rem;
+        padding-bottom: 0.6rem;
+    }
+    #logo-banner .titles h1 {
+        font-size: 2.5rem;
+    }
+    #logo-banner .titles h2 {
+        font-size: 1.65rem;
+    }
+}
+@media (max-width: 36rem) {
+    #logo-banner .titles h1 {
+        font-size: 2.3rem;
+    }
+    #logo-banner .titles h2 {
+        font-size: 1.5rem;
+    }
+}

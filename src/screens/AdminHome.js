@@ -178,7 +178,7 @@ class AdminPage extends MountAwareComponent {
         }
 
         return (
-            <div className="min-h-screen w-full bg-gray-100" >
+            <div className="min-h-screen w-full bg-gray-100 font-roboto" >
                 {/* The navigation bar. */}
                 <div className="flex items-center justify-between w-full bg-white shadow">
                     <Link to="/" className="font-bold text-xl p-3">

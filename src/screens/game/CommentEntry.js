@@ -197,7 +197,7 @@ export class CommentSubmissionRow extends MountAwareComponent {
                                     "transition-max-height duration-300 ease-out w-full px-3 py-2 " +
                                     "border rounded-md justify-self-center bg-gray-100 " +
                                     (enabled ? "border-gray-400" : "border-gray-300")}
-                                style={{minHeight: "2.8em", height: "6em", maxHeight: submitVisible ? "12em" : "2.8em"}}
+                                style={{minHeight: "2.6em", height: "6em", maxHeight: submitVisible ? "12em" : "2.6em"}}
                                 placeholder={enabled ? "Write your comment here" : "You may no longer comment on this post"}
                                 rows="1"
                                 value={enabled ? this.state.value : ""}

@@ -448,7 +448,7 @@ export class AdminStudyPage extends SimpleActiveStudyScreen {
 
     renderWithStudy(study) {
         return (
-            <div className="min-h-screen w-full bg-gray-100" >
+            <div className="min-h-screen w-full bg-gray-100 font-roboto" >
                 {/* The navigation bar. */}
                 <div className="flex items-stretch justify-between w-full bg-white shadow">
                     <Link to="/" className="font-bold text-xl p-3">

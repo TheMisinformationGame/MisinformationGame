@@ -71,7 +71,7 @@ export class AdminSignIn extends MountAwareComponent {
             return (<Navigate to="/admin" />);
 
         return (
-            <div className="w-full bg-gray-100" style={{minHeight: "100vh"}}>
+            <div className="w-full bg-gray-100 font-roboto" style={{minHeight: "100vh"}}>
                 <div className="w-full max-w-md bg-white rounded-xl shadow-xl
                                 border border-gray-400 grid p-4
                                 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

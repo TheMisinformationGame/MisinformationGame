@@ -1,7 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import Logo from "../logo.png";
-import {GithubCorner} from "../components/GithubCorner";
 import {setDefaultPageTitle} from "../index";
 
 function Home() {
@@ -54,39 +53,39 @@ function Home() {
     }
 
     return (
-        <div className="text-center min-h-screen bg-gray-100">
-            <GithubCorner />
-            <div className="flex flex-col items-center min-h-screen py-24 px-8">
+        <div className="text-center min-h-screen bg-gray-50 text-gray-975 font-roboto">
+            <div className="flex flex-col items-center">
+                <div className="max-w-home text-left">
+                    <div id="logo-banner">
+                        <div className="logo">
+                            <img src={Logo} alt="The Misinformation Game Logo"/>
+                        </div>
+                        <div className="titles">
+                            <h1>The Misinformation Game</h1>
+                            <h2>A social-media simulator for research.</h2>
+                        </div>
+                    </div>
+                    <hr className="strong-line" />
 
-                <a href="https://misinfogame.com">
-                    <img src={Logo} alt="Misinformation Game Logo"
-                         className="absolute left-2 top-2 h-16" />
-                </a>
-
-                <div className="max-w-2xl text-left">
-                    <h1 className="text-5xl mb-4">The Misinformation Game</h1>
-                    <p className="text-lg mb-6">
+                    <p className="text-lg">
                         The Misinformation Game is a social media simulator built to study people’s
                         behaviour when they interact with social media. To achieve this, The Misinformation
                         Game simulates a social media feed for research participants. You may read more
                         about The Misinformation Game in&nbsp;
                         <a href="https://misinfogame.com">its documentation</a>.
                     </p>
-                    <p className="text-lg mb-2">
-                        Press the button below to access the admin interface to manage your studies,
-                    </p>
                     <div className="flex justify-center">
-                        <div className="flex my-4">
+                        <div className="flex my-8">
                             <Link to="/admin" name="Admin"
-                                  className="text-xl text-white px-6 py-3 rounded bg-gray-700 shadow
-                                             hover:bg-gray-800">
+                                  className="text-xl text-white px-5 py-2 rounded-xl shadow
+                                             bg-brand-500 hover:bg-brand-600">
 
                                 Access the Admin Dashboard
                             </Link>
                         </div>
                     </div>
 
-                    <h2 className="text-4xl mb-4 mt-8">Resources</h2>
+                    <h2 className="text-4xl mb-4">Resources</h2>
 
                     {/* The example games only exists on the example website. */}
                     {exampleGameElements}

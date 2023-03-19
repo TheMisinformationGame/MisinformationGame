@@ -1,0 +1,91 @@
+
+/* These _are not_ shared by the game and docs. */
+#logo-banner {
+  margin-top: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+#logo-banner .logo {
+  height: 6.8rem;
+  padding: 1.1rem 0.5rem 0 0;
+}
+
+/* These _are_ shared by the game and docs. */
+#logo-banner {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  height: auto;
+  font-family: 'Roboto', 'Noto Sans', 'Helvetica', 'Arial', sans-serif;
+}
+#logo-banner .logo {
+  display: inline-block;
+  vertical-align: middle;
+}
+#logo-banner {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  height: auto;
+  font-family: 'Roboto', 'Noto Sans', 'Helvetica', 'Arial', sans-serif;
+}
+#logo-banner .logo {
+  display: inline-block;
+  vertical-align: middle;
+}
+#logo-banner .logo img {
+  display: inline-block;
+  vertical-align: middle;
+  width: auto;
+  height: auto;
+  max-height: 100%;
+  box-shadow: none;
+  margin: 0;
+}
+#logo-banner .titles {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: left;
+  margin-top: 1.2rem;
+}
+#logo-banner .titles h1,
+#logo-banner .titles h2 {
+  line-height: 1;
+}
+#logo-banner .titles h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  letter-spacing: 0;
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+}
+#logo-banner .titles h2 {
+  font-size: 1.9rem;
+  font-weight: normal;
+  color: #555555;
+  margin-top: 0;
+  margin-left: 0.4rem;
+  letter-spacing: 0.005rem;
+}
+@media (max-width: 48rem) {
+  #logo-banner {
+    padding-bottom: 0.6rem;
+  }
+  #logo-banner .logo {
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+  }
+  #logo-banner .titles h1 {
+    font-size: 2.5rem;
+  }
+  #logo-banner .titles h2 {
+    font-size: 1.65rem;
+  }
+}
+@media (max-width: 36rem) {
+  #logo-banner .titles h1 {
+    font-size: 2.3rem;
+  }
+  #logo-banner .titles h2 {
+    font-size: 1.5rem;
+  }
+}

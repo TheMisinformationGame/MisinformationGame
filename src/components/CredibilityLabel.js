@@ -31,7 +31,7 @@ export class CredibilityLabel extends Component {
                     }
                     style={{backgroundColor: colour, width: "1.6em", height: "1.57em"}}>
 
-                <span className="table-cell align-middle transform -translate-y-px"
+                <span className="table-cell align-middle"
                       style={{fontSize: "0.9em"}}>
                     &nbsp;{cred}&nbsp;
                 </span>
