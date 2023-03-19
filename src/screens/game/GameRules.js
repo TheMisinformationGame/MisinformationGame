@@ -86,11 +86,15 @@ export class GameRules extends GameIntroductionScreen {
                     displayProgress = {study.uiSettings.displayProgress}
                     overrideFollowers={13}
                     overrideCredibility={56}
+                    progressPercentage={85}
                     hideTooltip={true}
-                    nextPostText="Continue to Next Post"
+                    nextPostText={
+                        study.uiSettings.displayPostsInFeed ?
+                            "Scroll to Next Post" :
+                            "Continue to Next Post"
+                    }
                     onNextPost={() => {}}
-                    nextPostEnabled={false}
-                    progressPercentage = {0} />
+                    nextPostEnabled={false} />
             </div>;
         }).content;
 

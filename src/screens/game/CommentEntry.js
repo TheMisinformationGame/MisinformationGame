@@ -22,11 +22,14 @@ export class ExampleCommentEntryBox extends Component {
                         <span>Add Comment: </span>
                     </div>
                     <textarea
-                        className="w-full px-3 py-2 border border-gray-400 rounded-md justify-self-center bg-gray-100"
-                        style={{minHeight: "2.8em", height: "6em", maxHeight: "2.8em"}}
+                        className={
+                            "transition-max-height duration-300 ease-out w-full px-3 py-2 " +
+                            "border rounded-md justify-self-center bg-gray-100 border-gray-300"
+                        }
+                        style={{minHeight: "2.6em", height: "6em", maxHeight: "2.6em"}}
                         placeholder="Write your comment here"
                         rows="1"
-                        value="Write your comment here"
+                        value=""
                         disabled>
                     </textarea>
 
