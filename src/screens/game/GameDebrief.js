@@ -46,8 +46,7 @@ class CompletionCodeWidget extends Component {
                 </div>
                 <button id="copy-completion-code"
                         className="ml-1 p-2 rounded-lg transform translate-y-2
-                                   text-gray-500 cursor-default
-                                   hover:bg-gray-100 active:bg-gray-300">
+                                   text-gray-500 cursor-default">
 
                     <ContentCopyIcon  />
                 </button>
@@ -112,7 +111,16 @@ export class GameDebrief extends ActiveGameScreen {
         super(props, ["debrief"]);
     }
 
+    componentDidMount() {
+        super.componentDidMount();
+        this.makeCompletionCodeInteractive();
+    }
+
     componentDidUpdate() {
+        this.makeCompletionCodeInteractive();
+    }
+
+    makeCompletionCodeInteractive() {
         // This must be run after every time the DOM of this component has been updated.
         window.requestAnimationFrame(CompletionCodeWidget.makeInteractive);
     }
