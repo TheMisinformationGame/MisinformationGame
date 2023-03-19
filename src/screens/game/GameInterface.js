@@ -9,6 +9,7 @@ import smoothscroll from 'smoothscroll-polyfill';
 import {PostComponent} from "./Post";
 import {GamePostInteractionStore} from "../../model/game/interactions";
 import {ScrollTracker} from "../../model/game/scrollTracker";
+import {DynamicFeedbackController} from "./dynamicFeedback";
 
 
 // We want to ensure that we have smooth element scrollIntoView behaviour.
@@ -162,6 +163,16 @@ export class GameScreen extends ActiveGameScreen {
             this.onPostMove.bind(this)
         );
         this.scrollToNextPostAfterNextUpdate = null;
+
+        const dynamicFeedbackAnimateTime = 500;
+        this.dynamicFeedbackFollowers = new DynamicFeedbackController(
+            dynamicFeedbackAnimateTime, this.updateDynamicFeedbackFollowers.bind(this)
+        );
+        this.dynamicFeedbackCredibility = new DynamicFeedbackController(
+            dynamicFeedbackAnimateTime, this.updateDynamicFeedbackCredibility.bind(this)
+        );
+
+        this.changeTimeoutID = null;
     }
 
     afterGameLoaded(game) {
@@ -198,6 +209,12 @@ export class GameScreen extends ActiveGameScreen {
     componentWillUnmount() {
         super.componentWillUnmount();
         this.scrollTracker.stop();
+        this.dynamicFeedbackFollowers.cancel();
+        this.dynamicFeedbackCredibility.cancel();
+        if (this.changeTimeoutID) {
+            clearTimeout(this.changeTimeoutID);
+            this.changeTimeoutID = null;
+        }
     }
 
     onPromptContinue() {
@@ -314,7 +331,69 @@ export class GameScreen extends ActiveGameScreen {
     }
 
     submitInteractionsToGame(game, inters) {
+        const beforeFollowers = Math.round(game.participant.followers);
+        const beforeCredibility = Math.round(game.participant.credibility);
+
         game.submitInteractions(inters.getSubmittedPosts());
+
+        const afterFollowers = Math.round(game.participant.followers);
+        const afterCredibility = Math.round(game.participant.credibility);
+
+        const followerChange = (afterFollowers - beforeFollowers) || null;
+        const credibilityChange = (afterCredibility - beforeCredibility) || null;
+
+        if (followerChange) {
+            this.dynamicFeedbackFollowers.addFeedback(beforeFollowers, afterFollowers);
+        }
+        if (credibilityChange) {
+            this.dynamicFeedbackCredibility.addFeedback(beforeCredibility, afterCredibility);
+        }
+        if (followerChange || credibilityChange) {
+            this.setStateIfMounted(() => {
+                return {
+                    followerChange: followerChange,
+                    credibilityChange: credibilityChange
+                };
+            });
+
+            if (this.changeTimeoutID) {
+                clearTimeout(this.changeTimeoutID);
+                this.changeTimeoutID = null;
+            }
+
+            this.changeTimeoutID = setTimeout(() => {
+                this.setStateIfMounted(() => {
+                    return {
+                        followerChange: null,
+                        credibilityChange: null
+                    };
+                });
+            }, 1500);
+        }
+    }
+
+    updateDynamicFeedbackFollowers(followers, finished) {
+        if (finished) {
+            this.setStateIfMounted(() => {
+                return {overrideFollowers: null};
+            });
+        } else {
+            this.setStateIfMounted(() => {
+                return {overrideFollowers: followers};
+            });
+        }
+    }
+
+    updateDynamicFeedbackCredibility(credibility, finished) {
+        if (finished) {
+            this.setStateIfMounted(() => {
+                return {overrideCredibility: null};
+            });
+        } else {
+            this.setStateIfMounted(() => {
+                return {overrideCredibility: credibility};
+            });
+        }
     }
 
     submitPost(postIndex) {
@@ -322,15 +401,16 @@ export class GameScreen extends ActiveGameScreen {
         if (!game)
             throw new Error("There is no active game");
 
-        this.setState((state) => {
-            const inters = state.interactions;
-            const postInters = inters.get(postIndex);
+        const inters = this.state.interactions;
+        const postInters = inters.get(postIndex);
 
-            if (postInters.isCompleted() || postInters.isEmpty())
-                return {};
+        if (postInters.isCompleted() || postInters.isEmpty())
+            return {};
 
-            const newInters = GameScreen.completePostInteractions(inters, postIndex);
-            this.submitInteractionsToGame(game, newInters);
+        const newInters = GameScreen.completePostInteractions(inters, postIndex);
+        this.submitInteractionsToGame(game, newInters);
+
+        this.setState(() => {
             return {interactions: newInters};
         });
     }
@@ -340,11 +420,12 @@ export class GameScreen extends ActiveGameScreen {
         if (!game)
             throw new Error("There is no active game");
 
+        const inters = this.state.interactions;
         const postCount = game.study.basicSettings.length;
-        this.setState((state) => {
-            const inters = state.interactions;
-            const newInters = GameScreen.completePostInteractions(inters, postCount - 1);
-            this.submitInteractionsToGame(game, newInters);
+        const newInters = GameScreen.completePostInteractions(inters, postCount - 1);
+        this.submitInteractionsToGame(game, newInters);
+
+        this.setState(() => {
             return {interactions: newInters};
         });
     }

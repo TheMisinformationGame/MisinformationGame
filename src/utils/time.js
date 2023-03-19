@@ -20,3 +20,14 @@ export function createDateFromUnixEpochTimeSeconds(unixEpochTimeSeconds) {
 export function formatUTCDate(date) {
     return date.toLocaleString("en-GB", {timeZone: "UTC"});
 }
+
+
+/**
+ * Returns a timestamp in milliseconds that can be used to
+ * accurately measure durations between events.
+ */
+export const getPerformanceTime = (
+    (window.performance.now && (() => window.performance.now())) ||
+    (window.performance.webkitNow && (() => window.performance.webkitNow())) ||
+    (() => new Date().getTime())
+);
