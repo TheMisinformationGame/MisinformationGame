@@ -146,7 +146,6 @@ export class GameScreen extends ActiveGameScreen {
             error: null,
 
             interactions: GamePostInteractionStore.empty(),
-            reactionsAllowed: true,
             dismissedPrompt: false,
 
             displayScrollToNewPostsSuggestion: false,
@@ -155,7 +154,6 @@ export class GameScreen extends ActiveGameScreen {
             overrideCredibility: null,
             followerChange: null,
             credibilityChange: null,
-            inputEnabled: true,
         };
         this.state = this.defaultState;
         this.scrollTracker = new ScrollTracker(
@@ -348,19 +346,19 @@ export class GameScreen extends ActiveGameScreen {
         if (credibilityChange) {
             this.dynamicFeedbackCredibility.addFeedback(beforeCredibility, afterCredibility);
         }
+
+        this.setStateIfMounted(() => {
+            return {
+                followerChange: followerChange,
+                credibilityChange: credibilityChange
+            };
+        });
+        if (this.changeTimeoutID) {
+            clearTimeout(this.changeTimeoutID);
+            this.changeTimeoutID = null;
+        }
+
         if (followerChange || credibilityChange) {
-            this.setStateIfMounted(() => {
-                return {
-                    followerChange: followerChange,
-                    credibilityChange: credibilityChange
-                };
-            });
-
-            if (this.changeTimeoutID) {
-                clearTimeout(this.changeTimeoutID);
-                this.changeTimeoutID = null;
-            }
-
             this.changeTimeoutID = setTimeout(() => {
                 this.setStateIfMounted(() => {
                     return {
@@ -487,7 +485,7 @@ export class GameScreen extends ActiveGameScreen {
     }
 
     renderWithStudyAndGame(study, game) {
-        const states = game.states;
+        let displayStates = game.states;
 
         const participant = game.participant;
         const displayPrompt = !this.state.dismissedPrompt;
@@ -495,53 +493,52 @@ export class GameScreen extends ActiveGameScreen {
         const finished = game.isFinished();
 
         const interactions = this.state.interactions;
-        const currentPostNumber = interactions.getSubmittedPostsCount();
+        const currentPostIndex = interactions.getSubmittedPostsCount();
 
         const totalPosts = game.study.basicSettings.length;
-        const progressPercentage = Math.round(currentPostNumber / totalPosts * 100);
+        const progressPercentage = Math.round(currentPostIndex / totalPosts * 100);
 
         let nextPostEnabled = true;
         let nextPostError = "";
-        if (!study.uiSettings.displayPostsInFeed && states !== null) {
-            if (states.length > 1)
-                throw new Error("It is unexpected to be in non-feed mode with more than one state active");
+        let reactionsAllowed = true;
+        let displayGameEnd = game.isFinished();
+        if (!study.uiSettings.displayPostsInFeed) {
+            let displayPostIndex = currentPostIndex;
+            const pauseOnPost = (
+                this.state.overrideFollowers !== null ||
+                this.state.overrideCredibility !== null ||
+                this.state.followerChange !== null ||
+                this.state.credibilityChange !== null
+            );
+            if (pauseOnPost) {
+                reactionsAllowed = false;
+                displayGameEnd = false;
+                displayPostIndex -= 1;
+            }
 
-            const postInteraction = interactions.get(states[0].indexInGame)
-            const madePostReaction = (postInteraction.postReactions.length > 0);
-            const madeUserComment = (postInteraction.comment !== null);
+            if (displayPostIndex < displayStates.length) {
+                displayStates = [displayStates[displayPostIndex]];
+                const postInteraction = interactions.get(displayPostIndex)
+                const madePostReaction = (postInteraction.postReactions.length > 0);
+                const madeUserComment = (postInteraction.comment !== null);
 
-            nextPostEnabled = false;
-            if (postInteraction.isEditingComment()) {
+                nextPostEnabled = false;
                 if (study.basicSettings.requireReactions && !madePostReaction) {
                     nextPostError = "Please react to the post";
-                } else {
-                    nextPostError = "Please complete your comment";
-                }
-            } else if (study.basicSettings.requireReactions && study.areUserCommentsRequired()) {
-                if (!madePostReaction) {
-                    nextPostError = "Please react to the post";
-                } else if (!madeUserComment) {
-                    nextPostError = "Comment on the post to continue";
+                } else if (study.areUserCommentsRequired() && !madeUserComment) {
+                    nextPostError = "Please comment on the post";
                 } else {
                     nextPostEnabled = true;
                 }
-            } else if (study.basicSettings.requireReactions) {
-                nextPostEnabled = madePostReaction;
-                nextPostError = "React to the post to continue";
-            } else if (study.areUserCommentsRequired()) {
-                nextPostEnabled = madeUserComment;
-                nextPostError = "Comment on the post to continue";
-            } else {
-                nextPostEnabled = true;
             }
         }
 
         // Generate the post components.
         const postComponents = [];
-        if (!error && !finished) {
-            for (let index = 0; index < states.length; ++index) {
-                const state = states[index];
-                const interaction = interactions.get(index);
+        if (!error && !displayGameEnd) {
+            for (let index = 0; index < displayStates.length; ++index) {
+                const state = displayStates[index];
+                const interaction = interactions.get(state.indexInGame);
                 const postIndex = state.indexInGame,
                       postID = "post-" + state.indexInGame;
 
@@ -555,7 +552,7 @@ export class GameScreen extends ActiveGameScreen {
                         onCommentSubmit={value => this.onCommentSubmit(postIndex, value)}
                         onCommentEdit={() => this.onCommentEdit(postIndex)}
                         onCommentDelete={() => this.onCommentDelete(postIndex)}
-                        enabled={this.state.reactionsAllowed && this.state.inputEnabled}
+                        enabled={reactionsAllowed}
                         interactions={interaction}
                         className={(study.uiSettings.displayPostsInFeed ? "mt-6 scroll-mt-4" : "")}/>
                 );
@@ -588,7 +585,7 @@ export class GameScreen extends ActiveGameScreen {
                             participant={participant}
                             overrideFollowers={this.state.overrideFollowers}
                             overrideCredibility={this.state.overrideCredibility}
-                            nextPostEnabled={nextPostEnabled && this.state.reactionsAllowed && this.state.inputEnabled}
+                            nextPostEnabled={nextPostEnabled && reactionsAllowed}
                             progressPercentage = {progressPercentage}
                             onNextPost={() => {
                                 if (nextPostEnabled) {
@@ -596,11 +593,11 @@ export class GameScreen extends ActiveGameScreen {
                                 }
                             }}
                             nextPostText={
-                                finished ?
+                                displayGameEnd ?
                                     "The simulation is complete!" :
                                 (!nextPostEnabled ?
                                     nextPostError :
-                                (!this.state.reactionsAllowed ?
+                                (!reactionsAllowed ?
                                     "Please wait to continue" :
                                 (study.uiSettings.displayPostsInFeed ?
                                     "Scroll to next post" :
@@ -622,11 +619,11 @@ export class GameScreen extends ActiveGameScreen {
                         {postComponents}
 
                         {/* The end of the feed. */}
-                        {!finished && study.uiSettings.displayPostsInFeed &&
+                        {!displayGameEnd && study.uiSettings.displayPostsInFeed &&
                             <FeedEnd onContinue={() => this.submitAll(game)} />}
 
                         {/* If the game is finished, display a game completed prompt. */}
-                        {finished && <GameFinished study={study} game={game} />}
+                        {displayGameEnd && <GameFinished study={study} game={game} />}
 
                         {/* If there is an error, display it here. */}
                         {error && <ErrorLabel value={error} />}
