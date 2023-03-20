@@ -54,7 +54,7 @@ function Home() {
 
     return (
         <div className="text-center min-h-screen bg-gray-50 text-gray-975 font-roboto">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center p-4">
                 <div className="max-w-home text-left">
                     <div id="logo-banner">
                         <div className="logo">
