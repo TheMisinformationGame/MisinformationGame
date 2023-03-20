@@ -44,7 +44,7 @@ hr.strong-line {
 #logo-banner {
     display: inline-block;
     margin-top: 0.72rem;
-    margin-bottom: 1.44rem;
+    margin-bottom: 0.72rem;
 }
 #logo-banner .logo {
     height: 8.15rem;
@@ -97,6 +97,7 @@ hr.strong-line {
     font-size: 3rem;
     font-weight: bold;
     letter-spacing: 0;
+    line-height: 0.95em;
     margin-top: 0;
     margin-bottom: 0.4rem;
 }
@@ -110,11 +111,12 @@ hr.strong-line {
 }
 @media (max-width: 48rem) {
     #logo-banner {
-        padding-bottom: 0.6rem;
+        margin-bottom: 0.6em;
     }
     #logo-banner .logo {
-        padding-top: 0.6rem;
-        padding-bottom: 0.6rem;
+        padding-top: 0.2rem;
+        padding-bottom: 0;
+        height: 6rem;
     }
     #logo-banner .titles h1 {
         font-size: 2.5rem;
@@ -126,6 +128,7 @@ hr.strong-line {
 @media (max-width: 36rem) {
     #logo-banner .titles h1 {
         font-size: 2.3rem;
+        margin-bottom: 0.3em;
     }
     #logo-banner .titles h2 {
         font-size: 1.5rem;
