@@ -313,7 +313,7 @@ export class Game {
             Game.statesFromJSON(json["states"], study),
             GameParticipant.fromJSON(json["participant"]),
             json["completionCode"] || null,
-            json["savedResults"] || true
+            (json["savedResults"] !== undefined ? json["savedResults"] : true)
         );
     }
 
