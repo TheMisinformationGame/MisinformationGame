@@ -462,6 +462,12 @@ export class GameScreen extends ActiveGameScreen {
             } while (true);
 
             postIndex = nextPostIndex;
+
+            // Preemptively submit the post we will scroll past.
+            const postToSubmit = postIndex - 1;
+            if (postToSubmit >= 0) {
+                this.onPostScrolledOffScreen(postToSubmit);
+            }
         }
 
         // Get the post to scroll it into view.
