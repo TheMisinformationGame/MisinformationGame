@@ -148,8 +148,6 @@ export class GameScreen extends ActiveGameScreen {
             interactions: GamePostInteractionStore.empty(),
             dismissedPrompt: false,
 
-            displayScrollToNewPostsSuggestion: false,
-
             overrideFollowers: null,
             overrideCredibility: null,
             followerChange: null,
@@ -272,45 +270,37 @@ export class GameScreen extends ActiveGameScreen {
 
     onPostMove(lastLoc, newLoc) {
         const postIndex = newLoc.postIndex;
-        if ((!lastLoc || !lastLoc.aboveScreen) && newLoc.aboveScreen) {
-            this.onPostScrolledAboveScreen(postIndex);
-        } else if ((!lastLoc || !lastLoc.onScreen) && newLoc.onScreen) {
+        if ((!lastLoc || !lastLoc.onScreen) && newLoc.onScreen) {
             this.onPostScrolledOnScreen(postIndex);
-        } else if ((!lastLoc || !lastLoc.belowScreen) && newLoc.belowScreen) {
-            this.onPostScrolledBelowScreen(postIndex);
-        }
-
-        if (lastLoc && lastLoc.belowScreen && newLoc.onScreen) {
-            this.onPostScrolledOnScreenFromBelow(postIndex);
+        } else if ((!lastLoc || lastLoc.onScreen) && !newLoc.onScreen) {
+            this.onPostScrolledOffScreen(postIndex);
         }
     }
 
-    onPostScrolledOnScreen(postIndex) {}
+    onPostScrolledOnScreen(postIndex) {
+        this.setState((state) => {
+            const inters = state.interactions;
+            const postInters = inters.get(postIndex);
+            if (postInters.isCompleted())
+                return {};
 
-    onPostScrolledAboveScreen(postIndex) {
-        this.submitPost(postIndex);
-    }
-
-    onPostScrolledBelowScreen(postIndex) {
-        this.updateDisplayScrollToNewPosts(postIndex - 1);
-    }
-
-    onPostScrolledOnScreenFromBelow(postIndex) {
-        this.updateDisplayScrollToNewPosts(postIndex);
-    }
-
-    updateDisplayScrollToNewPosts(highestVisiblePostIndex) {
-        const inters = this.state.interactions;
-        let newPostVisible = false;
-        for (let index = 0; index <= highestVisiblePostIndex; ++index) {
-            if (!inters.get(index).isCompleted()) {
-                newPostVisible = true;
-                break;
-            }
-        }
-        this.setState(() => {
             return {
-                displayScrollToNewPostsSuggestion: !newPostVisible
+                interactions: inters.update(postIndex, postInters.asVisible())
+            };
+        });
+    }
+
+    onPostScrolledOffScreen(postIndex) {
+        this.submitPost(postIndex);
+
+        this.setState((state) => {
+            const inters = state.interactions;
+            const postInters = inters.get(postIndex);
+            if (postInters.isCompleted())
+                return {};
+
+            return {
+                interactions: inters.update(postIndex, postInters.asHidden())
             };
         });
     }
@@ -490,7 +480,6 @@ export class GameScreen extends ActiveGameScreen {
         const participant = game.participant;
         const displayPrompt = !this.state.dismissedPrompt;
         const error = this.state.error;
-        const finished = game.isFinished();
 
         const interactions = this.state.interactions;
         const currentPostIndex = interactions.getSubmittedPostsCount();
@@ -630,28 +619,6 @@ export class GameScreen extends ActiveGameScreen {
 
                         {/* Used for reserving space below reactions and progress. */}
                         <div className="h-56 md:h-8" />
-
-                        {/* Suggestion for users to scroll to new posts. */}
-                        <div className="absolute left-1/2">
-                            <div id="scroll-to-new-posts-suggestion"
-                                 className={
-                                     "fixed top-3 block transform -translate-x-1/2 px-3 py-1 cursor-pointer " +
-                                     "bg-white rounded-full shadow-floatingbutton text-blue-600 hover:text-blue-800 " +
-                                     "text-lg transition " +
-                                     (this.state.displayScrollToNewPostsSuggestion ?
-                                        " opacity-100 translate-y-0 " :
-                                        " opacity-0 -translate-y-5 ")
-                                 }
-                                 onClick={() => {
-                                     if (nextPostEnabled) {
-                                         this.onNextPost();
-                                     }
-                                 }}>
-
-                                Scroll To New Posts
-                            </div>
-                        </div>
-
                     </div>
 
                     {/* Space to the right. */}
