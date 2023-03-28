@@ -176,7 +176,7 @@ export class GameScreen extends ActiveGameScreen {
 
         const inters = game.participant.postInteractions;
         this.setStateIfMounted(() => {
-            this.scrollToNextPostAfterNextUpdate = inters.getCurrentPostIndex() + 1;
+            this.scrollToNextPostAfterNextUpdate = inters.getCurrentPostIndex();
             return {
                 interactions: inters.copy(),
                 dismissedPrompt: game.isFinished()
@@ -190,7 +190,7 @@ export class GameScreen extends ActiveGameScreen {
         if (this.scrollToNextPostAfterNextUpdate) {
             const postIndex = this.scrollToNextPostAfterNextUpdate;
             this.scrollToNextPostAfterNextUpdate = null;
-            window.requestAnimationFrame(() => this.scrollToNextPost(postIndex, false));
+            window.requestAnimationFrame(() => this.scrollToNextPost(false, postIndex));
         }
     }
 
@@ -198,7 +198,7 @@ export class GameScreen extends ActiveGameScreen {
         if (this.scrollToNextPostAfterNextUpdate) {
             const postIndex = this.scrollToNextPostAfterNextUpdate;
             this.scrollToNextPostAfterNextUpdate = null;
-            window.requestAnimationFrame(() => this.scrollToNextPost(postIndex, false));
+            window.requestAnimationFrame(() => this.scrollToNextPost(false, postIndex));
         }
     }
 
@@ -434,36 +434,40 @@ export class GameScreen extends ActiveGameScreen {
         // Search by submitted posts.
         const study = game.study;
         let currentPostIndex = this.getCurrentPostIndex();
-        if (currentPostIndex < 0)
+        if (currentPostIndex >= study.basicSettings.length)
             return;
 
         if (study.uiSettings.displayPostsInFeed) {
-            this.scrollToNextPost(currentPostIndex, true);
+            this.scrollToNextPost(true);
         } else {
             this.submitPost(currentPostIndex);
         }
     }
 
-    scrollToNextPost(currentPostIndex, smoothScroll) {
+    scrollToNextPost(smoothScroll, postIndex) {
         this.scrollTracker.detect();
 
-        // Search visually for the next post.
-        let nextPostIndex = currentPostIndex;
-        let nextPostBBox;
-        do {
-            nextPostBBox = this.scrollTracker.get(nextPostIndex);
-            if (!nextPostBBox)
-                return;
-            if (nextPostBBox.y > 80)
-                break;
+        if (postIndex === undefined) {
+            // Search visually for the next post.
+            let nextPostIndex = 0;
+            let nextPostBBox;
+            do {
+                nextPostBBox = this.scrollTracker.get(nextPostIndex);
+                if (!nextPostBBox)
+                    return;
+                if (nextPostBBox.y > 80)
+                    break;
 
-            nextPostIndex += 1;
-        } while (true);
+                nextPostIndex += 1;
+            } while (true);
+
+            postIndex = nextPostIndex;
+        }
 
         // Get the post to scroll it into view.
-        const nextPostElement = document.getElementById("post-" + nextPostIndex);
+        const nextPostElement = document.getElementById("post-" + postIndex);
         if (!nextPostElement)
-            throw new Error("Unable to find the element for the next post (" + nextPostIndex + ")");
+            throw new Error("Unable to find the element for the next post (" + postIndex + ")");
 
         nextPostElement.scrollIntoView({
             behavior: (smoothScroll ? "smooth" : "auto")

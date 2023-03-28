@@ -614,7 +614,7 @@ export class GamePostInteractionStore {
                 highestCompletedIndex = index;
             }
         }
-        return highestCompletedIndex;
+        return highestCompletedIndex + 1;
     }
 
     update(postIndex, postInteraction) {
