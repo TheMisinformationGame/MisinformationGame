@@ -72,15 +72,16 @@ export class GameIdentification extends ActiveGameScreen {
         }
     }
 
-    handleKeyUp(e, target) {
+    handleKeyUp(game, e, target) {
         if (!GameIdentification.isEnterKey(e))
             return;
 
         if (this.state.submitOnEnterUp && GameIdentification.isValidValue(this.state.value)) {
+            this.submitID(game, this.state.value);
             this.props.navigate(target);
         } else if (this.state.ignoreKeyDowns) {
             this.setState(() => {
-                return {ignoreKeyDowns: false};
+                return {ignoreKeyDowns: false, submitOnEnterUp: false};
             });
         }
     }
@@ -110,7 +111,7 @@ export class GameIdentification extends ActiveGameScreen {
                            value={this.state.value}
                            onChange={e => this.updateID(game, e.target.value)}
                            onKeyDown={e => this.handleKeyDown(e)}
-                           onKeyUp={e => this.handleKeyUp(e, target)}>
+                           onKeyUp={e => this.handleKeyUp(game, e, target)}>
                     </input>
                     {this.state.displayError && (!this.state.value || this.state.value.trim() === "") &&
                         <ErrorLabel value="Please enter an ID" />}
