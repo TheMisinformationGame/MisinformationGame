@@ -176,7 +176,7 @@ export class GameScreen extends ActiveGameScreen {
 
         const inters = game.participant.postInteractions;
         this.setStateIfMounted(() => {
-            this.scrollToNextPostAfterNextUpdate = inters.getSubmittedPostsCount();
+            this.scrollToNextPostAfterNextUpdate = inters.getCurrentPostIndex() + 1;
             return {
                 interactions: inters.copy(),
                 dismissedPrompt: game.isFinished()
@@ -305,24 +305,11 @@ export class GameScreen extends ActiveGameScreen {
         });
     }
 
-    /**
-     * Submits all posts up to and including maxPostIndex.
-     */
-    static completePostInteractions(inters, maxPostIndex) {
-        for (let index = 0; index <= maxPostIndex; ++index) {
-            const previousPostInters = inters.get(index);
-            if (!previousPostInters.isCompleted()) {
-                inters = inters.update(index, previousPostInters.complete());
-            }
-        }
-        return inters;
-    }
-
     submitInteractionsToGame(game, inters) {
         const beforeFollowers = Math.round(game.participant.followers);
         const beforeCredibility = Math.round(game.participant.credibility);
 
-        game.submitInteractions(inters.getSubmittedPosts());
+        game.submitInteractions(inters);
 
         const afterFollowers = Math.round(game.participant.followers);
         const afterCredibility = Math.round(game.participant.credibility);
@@ -395,12 +382,25 @@ export class GameScreen extends ActiveGameScreen {
         if (postInters.isCompleted() || postInters.isEmpty())
             return {};
 
-        const newInters = GameScreen.completePostInteractions(inters, postIndex);
+        const newInters = inters.update(postIndex, postInters.complete());
         this.submitInteractionsToGame(game, newInters);
 
         this.setState(() => {
             return {interactions: newInters};
         });
+    }
+
+    /**
+     * Submits all posts up to and including maxPostIndex.
+     */
+    static completeAllPostInteractions(inters, maxPostIndex) {
+        for (let index = 0; index <= maxPostIndex; ++index) {
+            const previousPostInters = inters.get(index);
+            if (!previousPostInters.isCompleted()) {
+                inters = inters.update(index, previousPostInters.complete());
+            }
+        }
+        return inters;
     }
 
     submitAll() {
@@ -410,7 +410,7 @@ export class GameScreen extends ActiveGameScreen {
 
         const inters = this.state.interactions;
         const postCount = game.study.basicSettings.length;
-        const newInters = GameScreen.completePostInteractions(inters, postCount - 1);
+        const newInters = GameScreen.completeAllPostInteractions(inters, postCount - 1);
         this.submitInteractionsToGame(game, newInters);
 
         this.setState(() => {
@@ -434,7 +434,7 @@ export class GameScreen extends ActiveGameScreen {
         // Search by submitted posts.
         const study = game.study;
         let currentPostIndex = this.getCurrentPostIndex();
-        if (currentPostIndex >= study.basicSettings.length)
+        if (currentPostIndex < 0)
             return;
 
         if (study.uiSettings.displayPostsInFeed) {

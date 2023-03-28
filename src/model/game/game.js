@@ -153,14 +153,18 @@ export class Game {
      * @param interactions all interactions that the participant made with posts in the game.
      */
     submitInteractions(interactions) {
-        doArrayTypeCheck(interactions, GamePostInteraction, "Interactions with the Current Post")
+        doTypeCheck(interactions, GamePostInteractionStore, "Interactions with the Current Post")
 
-        const submittedPostCount = this.participant.postInteractions.getSubmittedPostsCount();
-        if (submittedPostCount >= interactions.length)
-            return;
+        const knownInters = this.participant.postInteractions;
+        for (let postIndex = 0; postIndex < interactions.postInteractions.length; ++postIndex) {
+            const knownInter = knownInters.get(postIndex);
+            if (knownInter.isCompleted())
+                continue;
 
-        for (let index = submittedPostCount; index < interactions.length; ++index) {
-            this.submitInteraction(index, interactions[index]);
+            const newInter = interactions.get(postIndex);
+            if (newInter.isCompleted()) {
+                this.submitInteraction(postIndex, newInter);
+            }
         }
 
         // Generate a completion code when the game is finished.

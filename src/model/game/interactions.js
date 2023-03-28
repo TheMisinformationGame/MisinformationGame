@@ -576,27 +576,6 @@ export class GamePostInteractionStore {
                 this.postInteractions.push(templateInteraction);
             }
         }
-        this.checkIntegrity();
-    }
-
-    /**
-     * Ensures that the state of this store is valid.
-     */
-    checkIntegrity() {
-        if (this.postInteractions === null)
-            throw new Error("Missing postInteractions of GamePostInteractionStore");
-
-        // Check that all complete posts are stored to the front of the interactions.
-        let foundIncomplete = false;
-        const interactions = this.postInteractions;
-        for (let index = 0; index < interactions.length; ++index) {
-            const inter = interactions[index];
-            if (!inter.isCompleted()) {
-                foundIncomplete = true;
-            } else if (foundIncomplete) {
-                throw new Error("There exists a complete post after incomplete posts")
-            }
-        }
     }
 
     copy() {
@@ -607,21 +586,14 @@ export class GamePostInteractionStore {
         return new GamePostInteractionStore();
     }
 
-    getSubmittedPosts() {
-        let submitted = [];
-        const interactions = this.postInteractions;
-        for (let index = 0; index < interactions.length; ++index) {
-            const inter = interactions[index];
-            if (!inter.isCompleted())
-                break
-
-            submitted.push(interactions[index]);
+    getSubmittedPostsCount() {
+        let submitted = 0;
+        for (let index = 0; index < this.postInteractions.length; ++index) {
+            if (this.postInteractions[index].isCompleted()) {
+                submitted += 1;
+            }
         }
         return submitted;
-    }
-
-    getSubmittedPostsCount() {
-        return this.getSubmittedPosts().length;
     }
 
     ensureExists(postIndex) {
@@ -635,25 +607,20 @@ export class GamePostInteractionStore {
         return this.postInteractions[postIndex];
     }
 
-    /**
-     * Gets the index of the first post that hasn't been submitted.
-     * If all posts have been submitted, this returns an index one
-     * greater than the index of the last submitted post.
-     */
     getCurrentPostIndex() {
-        let index = 0
-        for (; index < this.postInteractions.length; ++index) {
-            if (!this.postInteractions[index].isCompleted())
-                return index;
+        let highestCompletedIndex = -1;
+        for (let index = 0; index < this.postInteractions.length; ++index) {
+            if (this.postInteractions[index].isCompleted()) {
+                highestCompletedIndex = index;
+            }
         }
-        return this.postInteractions.length;
+        return highestCompletedIndex;
     }
 
     update(postIndex, postInteraction) {
         const copy = this.copy();
         copy.ensureExists(postIndex);
         copy.postInteractions[postIndex] = postInteraction;
-        copy.checkIntegrity();
         return copy;
     }
 
