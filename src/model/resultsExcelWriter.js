@@ -134,7 +134,7 @@ function constructWorkbook(study, results, problems) {
             const dislikes = state.currentPost.numberOfReactions.dislike;
             const shares = state.currentPost.numberOfReactions.share;
             const flags = state.currentPost.numberOfReactions.flag;
-            const interaction = participant.postInteractions[stateIndex];
+            const interaction = participant.postInteractions.get(stateIndex);
             const beforeCredibility = Math.round(participant.credibilityHistory[stateIndex]);
             const afterCredibility = Math.round(participant.credibilityHistory[stateIndex + 1]);
             const beforeFollowers = Math.round(participant.followerHistory[stateIndex]);
@@ -209,7 +209,7 @@ function constructWorkbook(study, results, problems) {
 
         for (let stateIndex = 0 ; stateIndex < game.states.length; ++stateIndex) {
             const state = game.states[stateIndex];
-            const interaction = participant.postInteractions[stateIndex];
+            const interaction = participant.postInteractions.get(stateIndex);
 
             for (let commentIndex = 0; commentIndex < state.currentPost.comments.length; ++commentIndex) {
                 const comment = state.currentPost.comments[commentIndex];
