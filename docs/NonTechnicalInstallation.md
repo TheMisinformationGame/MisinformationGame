@@ -65,7 +65,7 @@ _If you already have Visual Studio Code installed, then you may skip this step._
 
 This guide uses Visual Studio Code (VSCode) to allow you to access and modify the source code, and to allow
 you to run command-line scripts in a cross-platform way. This section
-describes the process to install VSCode on Windows, although the process should be similar on Mac or Linux.
+describes the process to install VSCode on Windows, although the process should be similar on Mac or Linux (although steps 2 through 8 may not be required on some computers). 
 In-depth guides to install VSCode can also be found for most operating systems in the official
 [VSCode documentation](https://code.visualstudio.com/docs/setup/setup-overview).
 
