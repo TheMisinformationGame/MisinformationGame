@@ -294,9 +294,9 @@ export class StudyUploadForm extends MountAwareComponent {
         });
         const reader = new FileReader();
 
-        // Callbacks on callbacks on callbacks on callbacks.
+        // Callbacks are fun... maybe it's time to learn async.
         reader.onload = (event) => {
-            const updateStatusFn = (status) => this.setStateIfMounted((state, props) => {
+            const updateStatusFn = (status) => this.setStateIfMounted(() => {
                 return {fileStatus: status};
             });
             this.readXLSX(
