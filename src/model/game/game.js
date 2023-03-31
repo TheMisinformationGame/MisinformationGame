@@ -1,4 +1,4 @@
-import {doArrayTypeCheck, doNullableTypeCheck, doTypeCheck, isOfType} from "../../utils/types";
+import {doNullableTypeCheck, doTypeCheck, isOfType} from "../../utils/types";
 import {BrokenStudy, Study} from "../study";
 import {odiff} from "../../utils/odiff";
 import {getDataManager} from "../manager";
@@ -6,7 +6,7 @@ import {postResults} from "../../database/postToDB";
 import {generateUID} from "../../utils/uid";
 import {getUnixEpochTimeSeconds} from "../../utils/time";
 import {compressJson, decompressJson} from "../../database/compressJson";
-import {GamePostInteraction, GamePostInteractionStore} from "./interactions";
+import {GamePostInteractionStore} from "./interactions";
 import {GamePost, GameSource, GameState} from "./gameState";
 import {GameParticipant} from "./gameParticipant";
 

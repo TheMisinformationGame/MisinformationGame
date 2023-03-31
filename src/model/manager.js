@@ -274,10 +274,14 @@ class DataManager {
     getStudy(studyID) {
         if (!studyID)
             return Promise.reject("Please specify a study ID");
-        if (!this.studyPromiseGenerators[studyID])
-            return this.readStudy(studyID);
 
-        return this.studyPromiseGenerators[studyID]();
+        if (this.studyPromiseGenerators[studyID])
+            return this.studyPromiseGenerators[studyID]();
+
+        if (studyID === this.activeGameStudyID && this.activeStudy)
+            return this.activeStudy;
+
+        return this.readStudy(studyID);
     }
 
     /**
