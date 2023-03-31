@@ -131,17 +131,6 @@ export class Game {
     }
 
     /**
-     * Preloads the images required for the next states.
-     */
-    preloadNextState() {
-        const nextIndex = this.participant.postInteractions.getSubmittedPostsCount() + 1;
-        if (nextIndex >= this.states.length)
-            return;
-
-        this.preloadState(this.states[nextIndex]);
-    }
-
-    /**
      * Preloads the images required for the given state.
      */
     preloadState(state) {
