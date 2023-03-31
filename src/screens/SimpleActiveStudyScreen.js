@@ -46,7 +46,7 @@ class SimpleActiveStudyScreen extends ActiveStudyScreen {
         // Preload the game.
         if (this.preloadGame) {
             manager.getActiveGame().then((game) => {
-                game.preloadCurrentStates();
+                game.preload();
             }).catch(err => {
                 console.error(err);
                 this.setStateIfMounted(() => {
@@ -62,14 +62,14 @@ class SimpleActiveStudyScreen extends ActiveStudyScreen {
     }
 
     /**
-     * This method or the render method must be overridden in sub-classes.
+     * This method or the render method must be overridden in subclasses.
      */
     renderWithStudy(study) {
         throw new Error("Implement the renderWithStudy(study) method");
     }
 
     /**
-     * This method or the renderWithStudy method must be overridden in sub-classes.
+     * This method or the renderWithStudy method must be overridden in subclasses.
      */
     render() {
         if (this.state.studyLoadError) {

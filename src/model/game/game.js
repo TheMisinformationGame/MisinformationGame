@@ -121,6 +121,16 @@ export class Game {
     }
 
     /**
+     * Preloads the images required for the current and next posts to be displayed.
+     */
+    preload() {
+        // TODO : Do this better.
+        if (this.states.length > 0) {
+            this.preloadState(this.states[0]);
+        }
+    }
+
+    /**
      * Preloads the images required for the next states.
      */
     preloadNextState() {
