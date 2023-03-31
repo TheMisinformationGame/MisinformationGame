@@ -781,10 +781,6 @@ export class Study {
         return this.areUserCommentsRequired() || this.areUserCommentsOptional();
     }
 
-    areUserCommentsDisabled() {
-        return !this.areUserCommentsEnabled();
-    }
-
     /**
      * Updates the last modified time to now.
      * This does not update the database.
@@ -914,11 +910,11 @@ export class Study {
 
     static fromJSON(id, json) {
         let version = json["version"];
-        if (version === undefined) {
-            version = 1;
-        } else if (version !== 1 && version !== 2) {
+
+        // No special settings are required for each version yet.
+        // Undefined represents the version before versions were added.
+        if (version !== undefined && version !== 1 && version !== 2)
             throw new Error("Unknown study version " + version)
-        }
 
         let basicSettingsJSON = json["basicSettings"],
             uiSettingsJSON = json["uiSettings"],
