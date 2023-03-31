@@ -252,7 +252,7 @@ export function convertRichTextPieceToHTML(richTextPiece) {
  * Converts Google Sheets rich text to HTML for displaying
  * in the browser.
  */
-export function convertRichTextToHTML(richText, themeColours) {
+export function convertRichTextToHTML(richText) {
     const excelPieces = richText["richText"];
     if (!excelPieces)
         throw new RichTextParseError("Missing 'richText' attribute.");
