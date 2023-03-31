@@ -47,7 +47,8 @@ export class TruncatedNormalDistribution {
     skewShape; // Number
     min; // Number
     max; // Number
-    cdf; // Number[]
+    cdfX; // Number[]
+    cdfY; // Number[]
     cdfBuckets; // Number
 
     constructor(mean, stdDeviation, skewShape, min, max) {
