@@ -129,14 +129,14 @@ export class ActiveGameScreen extends ActiveStudyScreen {
     }
 
     /**
-     * This method or the render method must be overridden in sub-classes.
+     * This method or the render method must be overridden in subclasses.
      */
     renderWithStudyAndGame(study, game) {
         throw new Error("Implement the renderWithStudyAndGame(study, game) method");
     }
 
     /**
-     * This method or the renderWithStudyAndGame method must be overridden in sub-classes.
+     * This method or the renderWithStudyAndGame method must be overridden in subclasses.
      */
     render() {
         const error = this.state.gameLoadError;
