@@ -194,15 +194,21 @@ class AdminStudy extends MountAwareComponent {
         }, 50);
     }
 
-    enableStudy(study) {
+    promptToEnableStudy() {
         this.setState(() => {
             return {...this.defaultState, confirmation: "enable-study"};
         });
     }
 
-    disableStudy(study) {
+    promptToDisableStudy() {
         this.setState(() => {
             return {...this.defaultState, confirmation: "disable-study"};
+        });
+    }
+
+    promptToDeleteStudy() {
+        this.setState(() => {
+            return {...this.defaultState, confirmation: "delete-study"};
         });
     }
 
@@ -212,12 +218,6 @@ class AdminStudy extends MountAwareComponent {
 
     confirmDisableStudy(study) {
         this.updateStudyEnabled(study, false, "Disabling Study...", "Disabling the study...", "Disabled Study");
-    }
-
-    deleteStudy(study) {
-        this.setState(() => {
-            return {...this.defaultState, confirmation: "delete-study"};
-        });
     }
 
     confirmDeleteStudy(study) {
@@ -236,7 +236,7 @@ class AdminStudy extends MountAwareComponent {
             if (!this.state.deletingStudy)
                 return;
 
-            deleteStudy(study).then((study) => {
+            deleteStudy(study).then(() => {
                 getDataManager().clearCachedStudies();
                 this.setStateIfMounted(() => {
                     return {
@@ -250,7 +250,7 @@ class AdminStudy extends MountAwareComponent {
                 }, 500);
             }).catch((error) => {
                 console.error(error);
-                this.setStateIfMounted((state, props) => {
+                this.setStateIfMounted(() => {
                     return {
                         ...this.defaultState,
                         progressTitle: "Error Deleting Study",
@@ -331,7 +331,7 @@ class AdminStudy extends MountAwareComponent {
                     {/* Disable Study Button.js. */}
                     {study.enabled && <>
                         <AdminStudyActionButton className="bg-yellow-300 hover:bg-yellow-400"
-                                                onClick={() => this.disableStudy(study)}>
+                                                onClick={() => this.promptToDisableStudy()}>
 
                             <BlockIcon className="mr-2 mb-0.5" />
                             Disable Study
@@ -361,7 +361,7 @@ class AdminStudy extends MountAwareComponent {
                     {/* Enable Study Button.js. */}
                     {!study.enabled && <>
                         <AdminStudyActionButton className="bg-green-400 hover:bg-green-500"
-                                                onClick={() => this.enableStudy(study)}>
+                                                onClick={() => this.promptToEnableStudy()}>
 
                             <ControlPointIcon className="mr-2 mb-0.5" />
                             Enable Study
@@ -402,7 +402,7 @@ class AdminStudy extends MountAwareComponent {
 
                 {/* Delete Study Button.js. */}
                 <AdminStudyActionButton className="bg-red-400 hover:bg-red-500"
-                                        onClick={() => this.deleteStudy(study)}>
+                                        onClick={() => this.promptToDeleteStudy()}>
 
                     <DeleteForeverIcon className="mr-1 mb-1" />
                     Delete Study
