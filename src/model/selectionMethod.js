@@ -81,7 +81,7 @@ export class OverallRatioSelectionMethod extends SourcePostSelectionMethod {
 /**
  * A method of selecting source and post pairs that randomly selects
  * a source, and then chooses a true or false post based upon the
- * a true post percentage set for each source.
+ * true post percentage set for each source.
  */
 export class SourceRatioSelectionMethod extends SourcePostSelectionMethod {
     constructor() {
