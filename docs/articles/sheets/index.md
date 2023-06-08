@@ -1,12 +1,12 @@
 ---
-title: 'Google Sheets: An Unlikely Hero for Configuring Research Tools'
+title: 'Google Sheets: An Unlikely Hero for Complex Configuration'
 showPath: true
 underArticlesPath: true
 isArticle: true
 showBackToTop: true
 ---
 
-# Google Sheets: An Unlikely Hero for Configuring Research Tools
+# Google Sheets: An Unlikely Hero for Complex Configuration
 {:#intro}
 
 
