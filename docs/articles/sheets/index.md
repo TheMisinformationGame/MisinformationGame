@@ -20,7 +20,7 @@ showBackToTop: true
     </a>
 </div>
 
-In this roller-coaster ride of an article, brace yourself for a trifecta of
+In this thrill-ride of an article, brace yourself for a trifecta of
 misinformation, a quest to engineer a research tool, and the
 unlikely hero of the tale – good ol' Google Sheets.
 
