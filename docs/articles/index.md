@@ -9,4 +9,4 @@ showBackToTop: false
 # Articles
 {:#intro}
 
-* 8th June, 2023: [Google Sheets: An Unlikely Hero for Configuring Research Tools](/articles/building) by Padraig Lamont
+* 8th June, 2023: [Google Sheets: An Unlikely Hero for Configuring Research Tools](/articles/sheets/) by Padraig Lamont
