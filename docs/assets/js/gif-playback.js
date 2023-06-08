@@ -112,6 +112,11 @@ function getFrameAtTime(gif, timeMS) {
 }
 
 function readGIFOptions(element) {
+    let playbackType = element.getAttribute("gif-playback");
+    if (!playbackType) {
+        playbackType = "advanced";
+    }
+
     const dataSpeed = element.getAttribute("data-speed");
     let playbackSpeed = 1;
     if (dataSpeed && dataSpeed.length > 0) {
@@ -119,12 +124,15 @@ function readGIFOptions(element) {
     }
     return {
         src: element.src,
-        playbackSpeed: playbackSpeed
+        playbackSpeed: playbackSpeed,
+        playbackType: playbackType
     }
 }
 
 function initGIF(element) {
     const options = readGIFOptions(element);
+    if (options.playbackType !== "advanced")
+        return;
 
     // Create the Canvas.
     const canvas = document.createElement("Canvas");

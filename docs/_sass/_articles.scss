@@ -1,0 +1,28 @@
+.article-metadata {
+    display: block;
+}
+
+.article-metadata,
+.article-metadata a,
+.article-metadata span {
+    color: #777777;
+}
+
+.article-metadata a,
+.article-metadata span {
+    display: inline-block;
+}
+
+.striked {
+    color: #444444;
+    font-style: italic;
+    text-decoration: line-through;
+}
+
+.quote {
+    color: #777777;
+    font-style: italic;
+    margin-left: 0.4em;
+    padding-left: 1em;
+    border-left: 2px solid #777777;
+}

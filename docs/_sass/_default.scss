@@ -122,11 +122,14 @@ ul#markdown-toc > li > ul > li > ul > li {
   }
 }
 
-.content-wrapper {
+.container .content-wrapper {
   display: block;
   padding: $header-thickness+10px 1.8em 0;
   margin: auto;
   max-width: $container-width;
+}
+.container.article .content-wrapper {
+  max-width: $article-width;
 }
 .content-wrapper h1 {
   margin: 20px 0 5px;

@@ -6,7 +6,13 @@
   <a id="top"></a>
 
   {% include header.html %}
+
+  {% if page.isArticle %}
+  <div class="container article">
+  {% else %}
   <div class="container">
+  {% endif %}
+
     <div class="content-wrapper">
 
       <!-- Show the path to this page on non-home pages. -->
@@ -16,6 +22,10 @@
           &gt;
           {% if page.underDocsPath %}
           <a href="/DocumentationIndex">Docs</a>
+          &gt;
+          {% endif %}
+          {% if page.underArticlesPath %}
+          <a href="/articles">Articles</a>
           &gt;
           {% endif %}
           <a href="{{ page.url }}">
