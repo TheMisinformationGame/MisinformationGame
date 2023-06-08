@@ -112,7 +112,7 @@ function getFrameAtTime(gif, timeMS) {
 }
 
 function readGIFOptions(element) {
-    let playbackType = element.getAttribute("gif-playback");
+    let playbackType = element.getAttribute("data-gif-playback");
     if (!playbackType) {
         playbackType = "advanced";
     }

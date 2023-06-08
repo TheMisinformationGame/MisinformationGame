@@ -1,12 +1,12 @@
 ---
-title: 'Google Sheets: An Unlikely Hero for Complex Configuration'
+title: 'Google Sheets: An Unlikely Hero for Configuring Research Tools'
 showPath: true
 underArticlesPath: true
 isArticle: true
 showBackToTop: true
 ---
 
-# Google Sheets: An Unlikely Hero for Complex Configuration
+# Google Sheets: An Unlikely Hero for Configuring Research Tools
 {:#intro}
 
 
@@ -142,6 +142,12 @@ Maybe, but let me tell you about all of Google Sheets' quirks and features!
   into a spreadsheet is familiar territory. To me, this is the biggest advantage, as we didn't have to worry about
   nearly as many user-experience headaches when building our backend user interface.
 
+* **_Spreadsheets can be Shared._** It is now common in many fields for researchers to share the source code of
+  their projects to aid in reproducing results. This is great! However, for tools that require complex
+  configuration, this can still be difficult to achieve and is often not possible. Our use of spreadsheets is
+  one example that does allow the sharing of complex configurations, as all the configuration can be shared
+  as a single file.
+
 
 ## Google Sheets for All Configuration! 🌈
 
@@ -149,7 +155,7 @@ So you're saying, we can **_just use spreadsheets_** instead of configuration fi
 
 
 <figure id="celebration">
-    <img style="height: 300px" src="celebration.gif" gif-playback="normal" width="498" height="278" alt="An animation of animals celebrating." />
+    <img style="height: 300px" src="celebration.gif" data-gif-playback="normal" width="498" height="278" alt="An animation of animals celebrating." />
     <figcaption>
         The world when configuration has been solved.
     </figcaption>
