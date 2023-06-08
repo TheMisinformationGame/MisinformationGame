@@ -51,7 +51,9 @@ research how misinformation spreads and how we can combat it. This is a _really 
 
 Thankfully, our group of 3rd and 4th-year university students weren't tasked with fighting misinformation, but
 instead we were tasked with developing a tool that the experts can use to research how to fight misinformation.
-With this goal in mind, we set out on our quest to develop [The Misinformation Game](/)!
+With this goal in mind, we set out on our quest to develop [The Misinformation Game](/)! This article details
+the unlikely advantages we got in our development by making a generally poor decision - using Google Sheets
+for configuration.
 
 <figure id="spider">
     <img style="height: 300px" src="spider.gif" data-gif-playback="normal" width="498" height="405" alt="An animation showing a cute spider." />
@@ -68,9 +70,6 @@ to help run controlled social-media experiments. In short, it lets researchers s
 the posts, so that they can observe how participants interact with them. If you'd like to try it out, we have a
 [live demo](/link/ExampleGame) that you can try!
 
-The development of this project involved making one tech decision in particular that is quite unorthodox. Therefore,
-I thought it would be interesting to write this article to explore that decision, and how it went!
-
 <figure id="example_game">
     <img src="/screenshots/example-game.png" alt="Screenshot of the user interface within a game." height="614" />
     <figcaption>
@@ -80,14 +79,14 @@ I thought it would be interesting to write this article to explore that decision
 
 ## The Stack 🥞
 
-The Misinformation Game was built using Firebase, Tailwind, React, and _Google Sheets_ (yes, you read that right!).
+The Misinformation Game was built using Firebase, Tailwind, React, and _Google Sheets_ (the star of the show!).
 The first three, Firebase, Tailwind, and React, are all pretty standard choices. They have a free tier, are quick,
 and are good for UI, respectively.
 
-However, if you're a software engineer reading through this post, your eyebrows might have just hit the ceiling
-at the mention of _choosing_ to put spreadsheets in a tech stack. Stories from my friends and lecturers who've had
-the, ahem, pleasure of wrestling with Excel databases or yanking companies out of the suffocating clutches of Excel sheets,
-make the nightmares that spreadsheets can cause pretty clear.
+However, if you're a software engineer reading through this post, you may have just groaned at the mention
+of _choosing_ to put spreadsheets in a tech stack. Stories from my friends and lecturers who've had the,
+ahem, pleasure of wrestling with Excel databases or yanking companies out of the suffocating clutches of
+Excel sheets, make the nightmares that spreadsheets can cause pretty clear.
 
 But, let me just say, _I think using Google Sheets for this project was one of the best tech choices we made_.
 
@@ -114,6 +113,16 @@ for presentation to research participants.
 
 Maybe, but let me tell you about all of Google Sheets' quirks and features!
 
+* **_UX for Free._** Researchers understand spreadsheets! The user experience of navigating and entering information
+  into a spreadsheet is familiar territory. To me, this is the biggest advantage, as we didn't have to worry about
+  nearly as many user-experience headaches when building our backend user interface.
+
+* **_Spreadsheets can be Shared._** It is now common in many fields for researchers to share the source code of
+  their projects to aid in reproducing results. This is great! However, for tools that require complex
+  configuration, this can still be difficult to achieve and is often not possible. Our use of spreadsheets is
+  one example that does allow the sharing of complex configurations, as all the configuration can be shared
+  as a single file.
+
 * **_Images in the Config._** Social-media is full of images. Therefore, it was crucial that our platform had
   to support them as well. Google Sheets allows users to easily place images right into spreadsheet cells.
   This makes it really easy and intuitive to add post and avatar images right in your config!
@@ -137,16 +146,6 @@ Maybe, but let me tell you about all of Google Sheets' quirks and features!
 <figure id="live_error_checking">
     <img style="height: 140px" src="live_error_checking.png" alt="A row showing an error in a config." height="271" />
 </figure>
-
-* **_UX for Free._** Researchers understand spreadsheets! The user experience of navigating and entering information
-  into a spreadsheet is familiar territory. To me, this is the biggest advantage, as we didn't have to worry about
-  nearly as many user-experience headaches when building our backend user interface.
-
-* **_Spreadsheets can be Shared._** It is now common in many fields for researchers to share the source code of
-  their projects to aid in reproducing results. This is great! However, for tools that require complex
-  configuration, this can still be difficult to achieve and is often not possible. Our use of spreadsheets is
-  one example that does allow the sharing of complex configurations, as all the configuration can be shared
-  as a single file.
 
 
 ## Google Sheets for All Configuration! 🌈
