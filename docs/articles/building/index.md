@@ -39,7 +39,7 @@ to catch myself every now and then.
 </span>
 
 <figure id="irish_jig">
-    <img style="height: 180px" src="irish_jig.gif" gif-playback="normal" width="498" height="405" alt="An animation showing a man wearing green dancing (probably Irish?)." />
+    <img style="height: 180px" src="irish_jig.gif" data-gif-playback="normal" width="498" height="405" alt="An animation showing a man wearing green dancing (probably Irish?)." />
     <figcaption>
         Who doesn't love a good Irish jig?
     </figcaption>
@@ -54,7 +54,7 @@ instead we were tasked with developing a tool that the experts can use to resear
 With this goal in mind, we set out on our quest to develop [The Misinformation Game](/)!
 
 <figure id="spider">
-    <img style="height: 300px" src="spider.gif" gif-playback="normal" width="498" height="405" alt="An animation showing a cute spider." />
+    <img style="height: 300px" src="spider.gif" data-gif-playback="normal" width="498" height="405" alt="An animation showing a cute spider." />
     <figcaption>
         A cute spider that would never climb into your mouth.
     </figcaption>
@@ -199,7 +199,7 @@ And let's face it, in a world where misinformation is as easy to spread as a cut
 And if that help comes in the form of a spreadsheet... well, bring it on.
 
 <figure id="puppy">
-    <img style="height: 300px" src="puppy.gif" gif-playback="normal" width="640" height="640" alt="A cute puppy pawing at the camera." />
+    <img style="height: 300px" src="puppy.gif" data-gif-playback="normal" width="640" height="640" alt="A cute puppy pawing at the camera." />
     <figcaption>
         A loyal pupper fighting to improve technology.
     </figcaption>
