@@ -20,8 +20,8 @@ showBackToTop: true
     </a>
 </div>
 
-In this roller-coaster ride of an article, brace yourself for a hard-hitting trifecta of
-misinformation, an audacious quest of students engineering a research tool, and the
+In this roller-coaster ride of an article, brace yourself for a trifecta of
+misinformation, a quest to engineer a research tool, and the
 unlikely hero of the tale – good ol' Google Sheets.
 
 If you've surfed the internet, chances are that you have swallowed a dose of misinformation
