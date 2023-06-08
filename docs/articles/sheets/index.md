@@ -53,7 +53,7 @@ Thankfully, our group of 3rd and 4th-year university students weren't tasked wit
 instead we were tasked with developing a tool that the experts can use to research how to fight misinformation.
 With this goal in mind, we set out on our quest to develop [The Misinformation Game](/)! This article details
 the unlikely advantages we got in our development by making a generally poor decision - using Google Sheets
-for configuration.
+for configuration!
 
 <figure id="spider">
     <img style="height: 300px" src="spider.gif" data-gif-playback="normal" width="498" height="405" alt="An animation showing a cute spider." />
