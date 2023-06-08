@@ -9,4 +9,4 @@ showBackToTop: false
 # Articles
 {:#intro}
 
-* 8th June, 2023: [The Quirks of Building Software to Research Misinformation 🔬](/articles/building) by Padraig Lamont
+* 8th June, 2023: [How Google Sheets became the MVP of the Misinformation Game](/articles/building) by Padraig Lamont

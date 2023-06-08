@@ -1,12 +1,12 @@
 ---
-title: 'The Quirks of Building Software to Research Misinformation'
+title: 'How Google Sheets became the MVP of the Misinformation Game'
 showPath: true
 underArticlesPath: true
 isArticle: true
 showBackToTop: true
 ---
 
-# The Quirks of Building Software to Research Misinformation 🔬
+# How Google Sheets became the MVP of the Misinformation Game
 {:#intro}
 
 
