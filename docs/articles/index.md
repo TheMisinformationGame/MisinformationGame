@@ -9,4 +9,4 @@ showBackToTop: false
 # Articles
 {:#intro}
 
-* 8th June, 2023: [How Google Sheets became the MVP of the Misinformation Game](/articles/building) by Padraig Lamont
+* 8th June, 2023: [Google Sheets: An Unlikely Hero for Complex Configuration](/articles/building) by Padraig Lamont

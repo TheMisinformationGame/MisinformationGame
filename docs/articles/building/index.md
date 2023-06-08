@@ -1,12 +1,12 @@
 ---
-title: 'How Google Sheets became the MVP of the Misinformation Game'
+title: 'Google Sheets: An Unlikely Hero for Complex Configuration'
 showPath: true
 underArticlesPath: true
 isArticle: true
 showBackToTop: true
 ---
 
-# How Google Sheets became the MVP of the Misinformation Game
+# Google Sheets: An Unlikely Hero for Complex Configuration
 {:#intro}
 
 
