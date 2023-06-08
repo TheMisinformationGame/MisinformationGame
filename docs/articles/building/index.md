@@ -31,7 +31,7 @@ combat the misinformation, we have all developed robust BS detectors to filter o
 However, regrettably, our BS detectors often have bugs, and I know personally I still have
 to catch myself every now and then.
 
-* Did I fall for the urban legend of spiders climbing into people's mouthes while they sleep? Yes.
+* Did I fall for the urban legend of spiders climbing into people's mouths while they sleep? Yes.
 * Did I think American Vandal was real? This one was so obvious, and yet, also _yes_... (Only for a brief time, I swear.)
 * <span>
     <span class="striked">Did I believe AI would subjugate humanity? Thankfully, I didn't fall for that one.</span>
@@ -104,7 +104,7 @@ _Absolutely everything!_
 
 Well, not everything. Actually, **configuration!**
 
-All configuration for studies in the Misinformation Game is done in big Google Sheets spreadsheets.
+All configuration for studies in the Misinformation Game is done in big spreadsheets on Google Sheets.
 These spreadsheets may then be downloaded from Google Sheets and uploaded to The Misinformation Game
 for presentation to research participants.
 
@@ -112,7 +112,7 @@ for presentation to research participants.
     You: That seems overcomplicated...
 </div>
 
-Maybe, but let me tell you about all of Google Sheet's quirks and features!
+Maybe, but let me tell you about all of Google Sheets' quirks and features!
 
 * **_Images in the Config._** Social-media is full of images. Therefore, it was crucial that our platform had
   to support them as well. Google Sheets allows users to easily place images right into spreadsheet cells.
@@ -180,7 +180,7 @@ way may be difficult_**.
   possible when using this configuration system. While we use spreadsheets, there will always be friction when users must
   download their spreadsheets to upload them into the Misinformation Game, where we can provide those features.
 
-## The Wise Man's use of Spreadsheets 🦉
+## The Wise Man's Use of Spreadsheets 🦉
 
 Sure, spreadsheets have their fare share of hurdles. We don't control the hosting of Google Sheets,
 it's difficult to update people's configurations, and it makes it hard for us to add bespoke features.
