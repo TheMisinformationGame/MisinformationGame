@@ -15,7 +15,7 @@ showBackToTop: true
         8th June, 2023
     </span>
     by
-    <a class="author" href="https://paddy-lamont.com/">
+    <a class="author" href="https://padraiglamont.com/">
         Padraig X. Lamont
     </a>
 </div>

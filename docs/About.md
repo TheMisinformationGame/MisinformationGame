@@ -13,7 +13,7 @@ tool that it is today. The idea for the project was originally conceived by
 [Ullrich Ecker](https://twitter.com/UlliEcker), and the project is now led by
 [Lucy Butler](https://twitter.com/lucy_h_butler) from the
 [Ecker Memory & Cognition Lab](https://www.emc-lab.org/). The project continues
-to be developed and maintained by [Padraig Lamont](https://paddy-lamont.com/),
+to be developed and maintained by [Padraig Lamont](https://twitter.com/paddy_lamont),
 although foundational work on the project was also undertaken by Dean Law Yim Wan,
 Danny Marwick, Yunhui Rao, Andrew Pilkington, and Xiyu Gao. The project also
 received significant contributions in its conception, design, and testing by
