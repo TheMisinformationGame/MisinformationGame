@@ -145,15 +145,23 @@ ul#markdown-toc > li > ul > li > ul > li {
   display: inline-block;
   padding: 0.5em 1.1em;
   border-radius: 0.6em;
-  background-color: $brand-color;
+  border: 2px solid $brand-color;
+  color: $brand-color;
   box-shadow: 1px 1px 4px -1px rgba(0,0,0,0.65);
-  color: white;
   text-decoration: none;
   font-size: 1.1em;
   transition: background-color 0.2s;
 }
+.content-wrapper .big a.call-to-action-button {
+  background-color: $brand-color;
+  color: white;
+  padding: 0.5em 1.6em;
+  font-size: 1.2em;
+}
 .content-wrapper a.call-to-action-button:hover {
-  background-color: $brand-color-lighter;
   text-decoration: underline;
+}
+.content-wrapper .big a.call-to-action-button:hover {
+  background-color: $brand-color-lighter;
   transition: background-color 0.2s;
 }

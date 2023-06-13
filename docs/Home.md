@@ -81,7 +81,7 @@ results from two validation studies that were conducted to test it. If you use
 the Misinformation Game for your research, we would really appreciate it if
 you [cited this paper](#cite).
 
-<div class="call-to-action-container">
+<div class="call-to-action-container big">
     <a href="/GettingStarted" class="call-to-action-button">
         Get Started!
     </a>
@@ -94,7 +94,21 @@ you [cited this paper](#cite).
 The Misinformation Game has extensive documentation to help you use the tool.
 This documentation ranges from high-level guides on the use of the
 Misinformation Game, to reference guides for configuring studies and using
-their results. The documentation can be found [here](/DocumentationIndex).
+their results.
+
+Some highlights from our documentation:
+
+- [Getting Started Guide](/GettingStarted) - A guide to create your first study
+  using the Misinformation Game.
+- [Study Configuration](/StudyConfiguration) - A reference guide for creating your own study.
+- [Results](/Results) - A reference guide on the results that are recorded by the game.
+- [About](/About) - A description of the history behind the development of this tool.
+
+<div class="call-to-action-container">
+    <a href="/DocumentationIndex" class="call-to-action-button">
+        Read the Docs
+    </a>
+</div>
 
 
 ## Cite the Misinformation Game
