@@ -20,9 +20,10 @@ showBackToTop: true
     </a>
 </div>
 
-In this thrill-ride of an article, brace yourself for a trifecta of
-misinformation, a quest to engineer a research tool, and the
-unlikely hero of the tale – good ol' Google Sheets.
+Google Sheets, or spreadsheets in general, are _never_ a good choice to
+include when designing your apps. Despite this, we show how we used them
+anyway for the Misinformation Game, and how this choice was ultimately an
+unlikely success!
 
 If you've surfed the internet, chances are that you have swallowed a dose of misinformation
 or two. It is so common, and so widespread, that misinformation will find you even if all
@@ -49,11 +50,10 @@ to catch myself every now and then.
 in order to maintain public health, uphold the integrity of our political systems, and prevent radicalism, we must
 research how misinformation spreads and how we can combat it. This is a _really hard_ problem.
 
-Thankfully, our group of 3rd and 4th-year university students weren't tasked with fighting misinformation, but
-instead we were tasked with developing a tool that the experts can use to research how to fight misinformation.
-With this goal in mind, we set out on our quest to develop [The Misinformation Game](/)! This article details
-the unlikely advantages we got in our development by making a generally poor decision - using Google Sheets
-for configuration!
+Thankfully, we weren't tasked with fighting misinformation, but instead we were tasked with developing a tool that
+the experts can use to research how to fight misinformation. With this goal in mind, we set out on our quest to
+develop [The Misinformation Game](/)! This article details the unlikely advantages we got in our development by
+making a generally poor decision - using Google Sheets for configuration!
 
 <figure id="spider">
     <img style="height: 300px" src="spider.gif" data-gif-playback="normal" width="498" height="405" alt="An animation showing a cute spider." />
@@ -65,10 +65,10 @@ for configuration!
 
 ## So... what is it?
 
-The Misinformation Game is a [free and open-source](https://github.com/TheMisinformationGame/MisinformationGame) social-media simulator
-to help run controlled social-media experiments. In short, it lets researchers set up social-media feeds where they made all
-the posts, so that they can observe how participants interact with them. If you'd like to try it out, we have a
-[live demo](/link/ExampleGame) that you can try!
+The Misinformation Game is a [free and open-source](https://github.com/TheMisinformationGame/MisinformationGame)
+social-media simulator to help run controlled social-media experiments. In short, it lets researchers set up
+social-media feeds where they made all the posts, so that they can observe how participants interact with them.
+If you'd like to try it out, we have a [live demo](/link/ExampleGame) that you can try!
 
 <figure id="example_game">
     <img src="/screenshots/example-game.png" alt="Screenshot of the user interface within a game." height="614" />
