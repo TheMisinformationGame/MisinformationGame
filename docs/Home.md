@@ -7,7 +7,7 @@ permalink: /
 
 <div id="logo-banner">
     <div class="logo">
-        <img src="assets/img/logo.png" alt="The Misinformation Game Logo" />
+        <img src="assets/img/logo.png" alt="The Misinformation Game Logo" height="486" width="486" />
     </div>
     <div class="titles">
         <h1>The Misinformation Game</h1>
