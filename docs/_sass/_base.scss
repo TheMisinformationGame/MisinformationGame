@@ -133,11 +133,19 @@ a.about-link-logo, a.about-link-logo img {
   box-shadow: none;
 }
 
+iframe {
+  display: block;
+  margin-top: 0.4em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 figure {
   padding-bottom: 0.3em;
 }
 figure img,
-figure canvas {
+figure canvas,
+figure iframe {
   max-width: 100%;
 }
 figure canvas.gif {

@@ -34,7 +34,6 @@ questions.
 **Source Code:** [MisinformationGame Repository on GitHub](https://github.com/TheMisinformationGame/MisinformationGame)
 
 
-
 ## Example Game
 {:#example-game}
 
@@ -72,6 +71,23 @@ of your study.
 </figure>
 
 <p class="spacer"></p>
+
+
+## Play-Through Video
+{:#example-playthrough}
+
+The following video shows the experience of participants taking part in
+a study made using the Misinformation Game. If you'd like to experience
+this same study for yourself, you can access it through
+[the example game page](/link/ExampleGame). In fact, we recommend you
+try it yourself, to get the full experience!
+
+<figure id="fig3">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/QygfV2fhWRY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <figcaption>
+        <a href="#fig3">Figure 3.</a> Video of playing through the example study.
+    </figcaption>
+</figure>
 
 
 
