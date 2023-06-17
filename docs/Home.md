@@ -43,7 +43,7 @@ The Misinformation Game, you can access an example game from
 [the example game page](/link/ExampleGame).
 
 <figure id="fig1" class="blue-figure-border">
-    <img src="screenshots/example-game.png" alt="Screenshot of the user interface within a game." height="614" />
+    <img src="screenshots/example-game.png" alt="Screenshot of the user interface within a game." width="1223" height="614" />
     <figcaption>
         <a href="#fig1">Figure 1.</a> Screenshot of the user interface within a game.
     </figcaption>
@@ -63,6 +63,15 @@ Additional information about the results that are made available for your
 analysis are described in the [Results documentation](/Results). The
 results that are recorded for your study will depend upon the configuration
 of your study.
+
+<figure id="fig2" class="blue-figure-border">
+    <img src="diagrams/example-results.png" alt="Screenshot of the user interface within a game." width="1389" height="577" />
+    <figcaption>
+        <a href="#fig2">Figure 2.</a> Screenshot from the example results.
+    </figcaption>
+</figure>
+
+<p class="spacer"></p>
 
 
 
