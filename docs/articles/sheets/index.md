@@ -6,7 +6,9 @@ isArticle: true
 showBackToTop: true
 ---
 
-# Google Sheets: An Unlikely Hero for Complex Configuration
+# A Remarkable Case of Leveraging Google Sheets not Backfiring
+
+[//]: # (Google Sheets: An Unlikely Hero for Complex Configuration)
 {:#intro}
 
 
@@ -25,6 +27,10 @@ include when designing your apps. Despite this, we show how we used them
 anyway for the Misinformation Game, and how this choice was ultimately an
 unlikely success!
 
+<figure id="header-image">
+    <img src="../../diagrams/getting-started-header.png" />
+</figure>
+
 If you've surfed the internet, chances are that you have swallowed a dose of misinformation
 or two. It is so common, and so widespread, that misinformation will find you even if all
 you view online is cooking recipes, cute puppies, and Irish dancing videos. Therefore, to
@@ -39,10 +45,10 @@ to catch myself every now and then.
     <span>(Let's be real, the will-they won't-they is what keeps it interesting!)</span>
 </span>
 
-<figure id="irish_jig">
-    <img style="height: 180px" src="irish_jig.gif" data-gif-playback="normal" width="498" height="405" alt="An animation showing a man wearing green dancing (probably Irish?)." />
+<figure id="spider">
+    <img style="height: 300px" src="spider.gif" data-gif-playback="normal" width="498" height="405" alt="An animation showing a cute spider." />
     <figcaption>
-        Who doesn't love a good Irish jig?
+        A cute spider that would never climb into your mouth.
     </figcaption>
 </figure>
 
@@ -54,13 +60,6 @@ Thankfully, we weren't tasked with fighting misinformation, but instead we were 
 the experts can use to research how to fight misinformation. With this goal in mind, we set out on our quest to
 develop [The Misinformation Game](/)! This article details the unlikely advantages we got in our development by
 making a generally poor decision - using Google Sheets for configuration!
-
-<figure id="spider">
-    <img style="height: 300px" src="spider.gif" data-gif-playback="normal" width="498" height="405" alt="An animation showing a cute spider." />
-    <figcaption>
-        A cute spider that would never climb into your mouth.
-    </figcaption>
-</figure>
 
 
 ## So... what is it?
@@ -214,6 +213,12 @@ Game, we have written extensive documentation for it on [this very website](/) (
 I promise). We also have a preprint paper available [on PsyArXiv](https://psyarxiv.com/628wc/), and hopefully the
 full peer-reviewed version will be available soon.
 
+Here's to hoping that Google Sheets doesn't suffer the same
+fate as [Google Domains](https://twitter.com/killedbygoogle/status/1669465621342605312)!
+
+## Author
+
 This is the first software article that I've written, but I hope to write more. If you'd like to find out about
 those when I do, you can find me (Padraig Lamont) on [Twitter](https://twitter.com/paddy_lamont) or
-[Mastodon](https://sigmoid.social/@paddy)!
+[Mastodon](https://sigmoid.social/@paddy)! I also run another site called [RoyalUr.net](https://royalur.net),
+which doesn't have game in the name, but is actually a game.
