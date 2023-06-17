@@ -165,3 +165,8 @@ ul#markdown-toc > li > ul > li > ul > li {
   background-color: $brand-color-lighter;
   transition: background-color 0.2s;
 }
+
+.content-wrapper .blue-figure-border img {
+  border: 5px solid $brand-color;
+  border-radius: 5px;
+}

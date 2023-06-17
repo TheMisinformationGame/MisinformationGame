@@ -42,7 +42,7 @@ If you would like to experience participating in a study created using
 The Misinformation Game, you can access an example game from
 [the example game page](/link/ExampleGame).
 
-<figure id="fig1">
+<figure id="fig1" class="blue-figure-border">
     <img src="screenshots/example-game.png" alt="Screenshot of the user interface within a game." height="614" />
     <figcaption>
         <a href="#fig1">Figure 1.</a> Screenshot of the user interface within a game.
