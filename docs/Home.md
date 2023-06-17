@@ -45,7 +45,7 @@ The Misinformation Game, you can access an example game from
 <figure id="fig1" class="blue-figure-border">
     <img src="screenshots/example-game.png" alt="Screenshot of the user interface within a game." width="1223" height="614" />
     <figcaption>
-        <a href="#fig1">Figure 1.</a> Screenshot of the user interface within a game.
+        <a href="#fig1">Figure 1.</a> Screenshot from an example game.
     </figcaption>
 </figure>
 

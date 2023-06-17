@@ -151,6 +151,12 @@ ul#markdown-toc > li > ul > li > ul > li {
   text-decoration: none;
   font-size: 1.1em;
   transition: background-color 0.2s;
+  margin: 0.6em;
+}
+.content-wrapper a.call-to-action-button.solid,
+.content-wrapper .big a.call-to-action-button {
+  background-color: $brand-color;
+  color: white;
 }
 .content-wrapper .big a.call-to-action-button {
   background-color: $brand-color;
@@ -161,6 +167,7 @@ ul#markdown-toc > li > ul > li > ul > li {
 .content-wrapper a.call-to-action-button:hover {
   text-decoration: underline;
 }
+.content-wrapper a.call-to-action-button.solid:hover,
 .content-wrapper .big a.call-to-action-button:hover {
   background-color: $brand-color-lighter;
   transition: background-color 0.2s;

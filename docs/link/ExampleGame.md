@@ -17,23 +17,33 @@ you wish for all your participants to consider one post at a time,
 whereas the latter is closer to real social-media platforms. We hope you
 enjoy playing through these games!
 
-Additionally, the study configuration spreadsheets that were used to
-create the example games can be found [here](/link/ExampleStudy).
-You may use these as examples when building your own study using the
-Misinformation Game.
+<div class="call-to-action-container">
+    <a href="https://try.misinfogame.com/study/zc7s3qqh0rrc30cx" class="call-to-action-button solid">
+        Play Feed Mode (Recommended)
+    </a>
+    <a href="https://try.misinfogame.com/study/0m3eots70fhyo6ns" class="call-to-action-button">
+        Play Single-Post Mode
+    </a>
+</div>
 
+<figure id="fig1" class="blue-figure-border">
+    <img src="/screenshots/example-game.png" alt="Screenshot of the user interface within a game." width="1223" height="614" />
+    <figcaption>
+        <a href="#fig1">Figure 1.</a> Screenshot from an example game.
+    </figcaption>
+</figure>
 
-## Access
-{:#access}
+<p class="spacer"></p>
+
+## Links
+{:#links}
 
 You may access example studies from the following URLs:
 
 - [Example Game (Single-Post Mode)](https://try.misinfogame.com/study/0m3eots70fhyo6ns)
 - [Example Game (Feed Mode)](https://try.misinfogame.com/study/zc7s3qqh0rrc30cx)
 
-<p class="info">
-    If the game doesn't load correctly for you, then that may be caused due
-    to hosting limits. The example games are hosted under the free tier of
-    Firebase. You can read more about Firebase's limits and pricing in
-    the <a href="/FirebasePricing">Firebase Pricing Documentation</a>.
-</p>
+Additionally, the study configuration spreadsheets that were used to
+create the example games can be found [here](/link/ExampleStudy).
+You may use these as examples when building your own study using the
+Misinformation Game.
