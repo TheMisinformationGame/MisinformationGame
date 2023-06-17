@@ -65,7 +65,7 @@ results that are recorded for your study will depend upon the configuration
 of your study.
 
 <figure id="fig2" class="blue-figure-border">
-    <img src="diagrams/example-results.png" alt="Screenshot of the user interface within a game." width="1389" height="577" />
+    <img src="diagrams/example-results.png" alt="Screenshot from the example results." width="1389" height="577" />
     <figcaption>
         <a href="#fig2">Figure 2.</a> Screenshot from the example results.
     </figcaption>
