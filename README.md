@@ -27,7 +27,7 @@ You may enter any ID to access the example game.
 ![Screenshot from within a study](/docs/assets/img/marketing/game-ss.png)
 
 
-# Features
+# 🚀 Features
 
 - Social media simulator with posts that may be displayed
   in a feed, or one at a time.
