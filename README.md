@@ -33,7 +33,7 @@ You may enter any ID to access the example game.
   in a feed, or one at a time.
 - Participants may react to posts, or comment on them.
 - Dynamically updating follower numbers and credibility scores
-  based on participants' interactions with posts.
+  based on participants' interactions with posts (optional).
 - Several options for the dynamic selection of sources and posts
   to show to participants.
 - Customisable engagement metric information.
