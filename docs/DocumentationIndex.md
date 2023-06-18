@@ -15,7 +15,7 @@ the Misinformation Game, then the best place for you to start is the
 [Getting Started Guide](/GettingStarted).
 
 <figure id="header-image">
-    <img src="diagrams/documentation-index-header.jpg" height="977" alt="Old books" />
+    <img src="diagrams/documentation-index-header.jpg" width="2400" height="977" alt="Old books" />
 </figure>
 
 
