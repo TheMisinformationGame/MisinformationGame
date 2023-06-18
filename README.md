@@ -24,7 +24,7 @@ The Misinformation Game, you can access an example game from
 [here](https://misinfogame.com/link/ExampleGame).
 You may enter any ID to access the example game.
 
-![Example Game](docs/screenshots/example-game.png)
+![Screenshot from within a study](/docs/assets/img/marketing/game-ss.png)
 
 
 # Features
