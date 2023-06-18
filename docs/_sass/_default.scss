@@ -186,3 +186,19 @@ ul#markdown-toc > li > ul > li > ul > li {
     border-radius: 4px;
   }
 }
+
+.content-wrapper .icons-list {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: -8px;
+  a {
+    text-decoration: none;
+  }
+  img {
+    display: inline-block;
+    box-shadow: none;
+    height: 40px;
+    width: auto;
+    margin-right: 12px;
+  }
+}

@@ -22,6 +22,8 @@ figure img {
     </div>
 </div>
 
+----
+
 The Misinformation Game is a
 [free and open-source](https://github.com/TheMisinformationGame/MisinformationGame)
 social-media simulator
@@ -34,6 +36,18 @@ be highly customisable so that a broad range of tightly controlled
 experiences can be created for participants. This customisability is
 a core focus of The Misinformation Game, to facilitate the research of
 a wide array of social-media related questions.
+
+<div id="link-icons" class="icons-list">
+    <a href="https://github.com/TheMisinformationGame/MisinformationGame">
+        <img src="assets/img/github-logo.svg" alt="GitHub logo" />
+    </a>
+    <a href="https://www.producthunt.com/posts/the-misinformation-game">
+        <img src="assets/img/producthunt-logo.svg" alt="Product Hunt logo" />
+    </a>
+    <a href="https://psyarxiv.com/628wc/">
+        <img src="assets/img/psyarxiv-logo.png" width="240" height="228" alt="PsyArxiv logo" />
+    </a>
+</div>
 
 ## Try it Out!
 {:#example-game}
