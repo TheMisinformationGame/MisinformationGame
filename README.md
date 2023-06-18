@@ -73,6 +73,14 @@ for the Misinformation Game. This documentation can be accessed from
 
 # 🖥️ Gallery
 
+### Participating in a Study
+
+![Screenshot from within a study](/docs/assets/img/marketing/game-ss.png)
+
+### Study Configuration
+
+![Screenshot of the settings spreadsheet](/docs/assets/img/marketing/settings-ss.png)
+
 ### Admin dashboard
 
 ![Example Admin Dashboard](docs/screenshots/example-admin-dashboard.png)
