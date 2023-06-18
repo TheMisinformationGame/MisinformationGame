@@ -161,7 +161,7 @@ ul#markdown-toc > li > ul > li > ul > li {
 .content-wrapper .big a.call-to-action-button {
   background-color: $brand-color;
   color: white;
-  padding: 0.45em 1.2em 0.5em;
+  padding: 0.35em 1.2em 0.45em;
   font-size: 1.2em;
 }
 .content-wrapper a.call-to-action-button:hover {
@@ -173,7 +173,16 @@ ul#markdown-toc > li > ul > li > ul > li {
   transition: background-color 0.2s;
 }
 
-.content-wrapper .blue-figure-border img {
-  border: 4px solid $brand-color;
-  border-radius: 4px;
+.content-wrapper .blue-figure-border {
+  img, iframe, canvas {
+    border: 4px solid $brand-color;
+    border-radius: 4px;
+  }
+}
+
+.content-wrapper .black-figure-border {
+  img, iframe, canvas {
+    border: 4px solid black;
+    border-radius: 4px;
+  }
 }

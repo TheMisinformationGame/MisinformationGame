@@ -5,7 +5,9 @@
   <!-- Allows linking to the top of the page. -->
   <a id="top"></a>
 
+  {% unless page.hideHeader %}
   {% include header.html %}
+  {% endunless %}
 
   {% if page.isArticle %}
   <div class="container article">

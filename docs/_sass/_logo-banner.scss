@@ -1,12 +1,12 @@
 
 /* These _are not_ shared by the game and docs. */
 #logo-banner {
-  margin-top: 0.6rem;
-  margin-bottom: 0.6rem;
+  margin-top: 0;
+  margin-bottom: 1.6rem;
 }
 #logo-banner .logo {
   height: 6.8rem;
-  padding: 1.1rem 0.5rem 0 0;
+  padding: 0 0.5rem 0 0;
 }
 
 /* These _are_ shared by the game and docs. */
@@ -45,7 +45,6 @@
   display: inline-block;
   vertical-align: middle;
   text-align: left;
-  margin-top: 1.2rem;
 }
 #logo-banner .titles h1,
 #logo-banner .titles h2 {

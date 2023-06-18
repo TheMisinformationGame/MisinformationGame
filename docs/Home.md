@@ -2,8 +2,15 @@
 title: 'Misinformation Game: A social-media simulator for research.'
 skipTitleSuffix: true
 showPath: false
+hideHeader: true
 permalink: /
 ---
+
+<style>
+figure img {
+    max-width: 85%;
+}
+</style>
 
 <div id="logo-banner">
     <div class="logo">
@@ -15,26 +22,20 @@ permalink: /
     </div>
 </div>
 
---------
+The Misinformation Game is a
+[free and open-source](https://github.com/TheMisinformationGame/MisinformationGame)
+social-media simulator
+built to study how people interact with information on social-media. To
+achieve this, The Misinformation Game simulates a social-media feed for
+research participants. Participants are shown fake social-media posts,
+either one at a time or in a feed format. Participants may then react to the
+posts and their comments. The Misinformation Game has been designed to
+be highly customisable so that a broad range of tightly controlled
+experiences can be created for participants. This customisability is
+a core focus of The Misinformation Game, to facilitate the research of
+a wide array of social-media related questions.
 
-The Misinformation Game is a social-media simulator built to study
-how people interact with information on social-media. To achieve
-this, The Misinformation Game simulates a social-media feed for
-research participants. Participants are shown fake social-media
-posts, either one at a time or in a feed format. They may then
-react to the posts and their comments. The Misinformation Game has
-been designed to be highly customisable so that a range of tightly
-controlled experiences can be created for participants. This
-customisability is a core focus of The Misinformation Game, to
-facilitate the research of a wide array of social-media related
-questions.
-
-**Preprint Paper:** [The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
-
-**Source Code:** [MisinformationGame Repository on GitHub](https://github.com/TheMisinformationGame/MisinformationGame)
-
-
-## Example Game
+## Try it Out!
 {:#example-game}
 
 If you would like to experience participating in a study created using
@@ -52,16 +53,17 @@ The Misinformation Game, you can access an example game from
 
 
 
-## Example Results
+## What is Recorded?
 {:#example-results}
 
-If you would like to view an example of the results output by a study
-run using The Misinformation Game, the results of a user experience
-study are available from [the example results page](/link/ExampleResults).
-Additional information about the results that are made available for your
-analysis are described in the [Results documentation](/Results). The
-results that are recorded for your study will depend upon the configuration
-of your study.
+The Misinformation Game records a wealth of information about how each
+participant acts within studies. If you would like to view example results
+that were recorded, we provide results from a user experience study on
+[the example results page](/link/ExampleResults).
+Additionally, all information recorded by The Misinformation Game
+is described in detail in [the Results documentation](/Results). The results
+that are recorded for your study will depend upon how your study
+is configured.
 
 <figure id="fig2" class="blue-figure-border">
     <img src="diagrams/example-results.png" alt="Screenshot from the example results." width="1389" height="577" />
@@ -73,38 +75,41 @@ of your study.
 <p class="spacer"></p>
 
 
-## Play-Through Video
-{:#example-playthrough}
+## Watch
+{:#watch}
 
 The following video shows the experience of participants taking part in
 a study made using the Misinformation Game. If you'd like to experience
-this same study for yourself, you can access it through
+this study yourself, you can access it through
 [the example game page](/link/ExampleGame). In fact, we recommend you
 try it yourself, to get the full experience!
 
-<figure id="fig3">
+<figure id="fig3" class="black-figure-border">
     <iframe width="560" height="315" src="https://www.youtube.com/embed/QygfV2fhWRY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     <figcaption>
         <a href="#fig3">Figure 3.</a> Video of playing through the example study.
     </figcaption>
 </figure>
 
+<p class="spacer"></p>
+<p class="spacer"></p>
 
 
-## Getting Started
+
+## Getting Started 🚀
 {:#getting-started}
 
 If you are new to the tool, or you would like a refresher on its use, we recommend
 that you read our [Getting Started Guide](/GettingStarted). This guide is a great
-place to learn the most important concepts for using the Misinformation Game
+place to learn the most important concepts for using The Misinformation Game
 effectively for your research.
 
 The paper
 [The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
 also provides an in-depth introduction to the Misinformation Game, alongside
 results from two validation studies that were conducted to test it. If you use
-the Misinformation Game for your research, we would really appreciate it if
-you [cited this paper](#cite).
+The Misinformation Game for your research, we would really appreciate it if
+you [cited this paper](#cite)!
 
 <div class="call-to-action-container big">
     <a href="/GettingStarted" class="call-to-action-button">
@@ -117,17 +122,20 @@ you [cited this paper](#cite).
 {:#docs}
 
 The Misinformation Game has extensive documentation to help you use the tool.
-This documentation ranges from high-level guides on the use of the
-Misinformation Game, to reference guides for configuring studies and using
-their results.
+This documentation ranges from high-level guides on the use of The
+Misinformation Game, to reference guides for configuring studies and
+interpreting their results.
 
-Some highlights from our documentation:
+Some highlights from the documentation:
 
+- [Our Paper](https://psyarxiv.com/628wc/) - An in-depth introduction to the tool,
+  alongside results from two validation studies.
 - [Getting Started Guide](/GettingStarted) - A guide to create your first study
-  using the Misinformation Game.
-- [Study Configuration](/StudyConfiguration) - A reference guide for creating your own study.
-- [Results](/Results) - A reference guide on the results that are recorded by the game.
-- [About](/About) - A description of the history behind the development of this tool.
+  using The Misinformation Game.
+- [Results](/Results) - A reference guide on the results that are recorded by
+  The Misinformation Game.
+- [About](/About) - A description of the history behind the development of
+  this tool.
 
 <div class="call-to-action-container">
     <a href="/DocumentationIndex" class="call-to-action-button">
@@ -136,8 +144,10 @@ Some highlights from our documentation:
 </div>
 
 
-## Cite the Misinformation Game
+## Cite Our Work!
 {:#cite}
+
+We would appreciate it greatly 😊
 
 ```bibtex
 @misc{butler_lamont_wan_prike_nasim_walker_fay_ecker_2022,
