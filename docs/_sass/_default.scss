@@ -190,6 +190,7 @@ ul#markdown-toc > li > ul > li > ul > li {
 .content-wrapper .icons-list {
   display: flex;
   flex-direction: row-reverse;
+  align-items: center;
   margin-top: -8px;
   a {
     text-decoration: none;
@@ -197,8 +198,12 @@ ul#markdown-toc > li > ul > li > ul > li {
   img {
     display: inline-block;
     box-shadow: none;
-    height: 40px;
+    height: 44px;
     width: auto;
-    margin-right: 12px;
+    margin-right: 14px;
+  }
+  a.left {
+    margin-right: auto;
+    padding-top: 0;
   }
 }
