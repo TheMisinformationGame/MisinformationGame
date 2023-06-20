@@ -4,6 +4,7 @@
   text-align: center;
   width: 100%;
   height: auto;
+  margin-top: 1.6em;
   font-family: 'Roboto', 'Noto Sans', 'Helvetica', 'Arial', sans-serif;
 }
 #logo-banner .logo,
@@ -54,12 +55,11 @@
 }
 @media (max-width: 48rem) {
   #logo-banner {
-    margin-bottom: 0.6em;
+    margin-top: 1em;
   }
   #logo-banner .logo {
-    padding-top: 0.2rem;
-    padding-bottom: 0;
-    height: 6rem;
+    height: 5.8rem;
+    margin-bottom: 2em;
   }
   #logo-banner .titles h1 {
     font-size: 2.5rem;
@@ -70,7 +70,7 @@
 }
 @media (max-width: 36rem) {
   #logo-banner .logo {
-    display: none;
+    height: 5.4rem;
   }
   #logo-banner .titles h1 {
     font-size: 2.3rem;

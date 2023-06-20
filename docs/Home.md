@@ -7,6 +7,9 @@ permalink: /
 ---
 
 <style>
+div.container div.content-wrapper {
+    padding-top: 1em;
+}
 figure img {
     max-width: 85%;
 }
