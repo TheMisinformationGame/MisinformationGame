@@ -190,7 +190,9 @@ ul#markdown-toc > li > ul > li > ul > li {
 .content-wrapper .icons-list {
   display: flex;
   flex-direction: row-reverse;
+  flex-wrap: wrap;
   align-items: center;
+  row-gap: 1em;
   margin-top: -8px;
   a {
     text-decoration: none;
