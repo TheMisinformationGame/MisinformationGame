@@ -11,7 +11,7 @@ div.container div.content-wrapper {
     padding-top: 1em;
 }
 figure img {
-    max-width: 85%;
+    max-width: 95%;
 }
 </style>
 
@@ -49,9 +49,6 @@ a wide array of social-media related questions.
     </a>
     <a href="https://psyarxiv.com/628wc/">
         <img src="assets/img/psyarxiv-logo.png" width="240" height="228" alt="PsyArxiv logo" />
-    </a>
-    <a class="left" href="https://www.producthunt.com/posts/the-misinformation-game?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-the&#0045;misinformation&#0045;game" target="_blank">
-        <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=400112&theme=light" alt="The&#0032;Misinformation&#0032;Game - A&#0032;social&#0045;media&#0032;simulator&#0032;for&#0032;research | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" />
     </a>
 </div>
 
