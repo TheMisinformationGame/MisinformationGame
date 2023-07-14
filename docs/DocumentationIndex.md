@@ -24,7 +24,7 @@ the Misinformation Game, then the best place for you to start is the
 {:#paper}
 
 The paper
-[The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
+[The (Mis)Information Game: A social media simulator](https://doi.org/10.3758/s13428-023-02153-x)
 provides an in-depth introduction to the Misinformation Game, alongside
 results from two validation studies that were conducted to test it. It
 is a great resource to read to learn about the Misinformation Game and

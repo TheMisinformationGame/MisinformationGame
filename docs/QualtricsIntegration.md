@@ -12,8 +12,8 @@ showBackToTop: false
     <span style="font-weight: bold">This page is incomplete.</span>
     This guide only shows one method to include The Misinformation Game
     in Qualtrics surveys, but several more options are discussed in
-    <a href="https://psyarxiv.com/628wc/">
-        The (Mis)information Game paper on PsyArXiv</a>.
+    <a href="https://doi.org/10.3758/s13428-023-02153-x">
+        The (Mis)information Game paper</a>.
 </p>
 
 If you are using the Qualtrics Online Survey Platform to direct

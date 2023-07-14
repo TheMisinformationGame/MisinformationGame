@@ -368,18 +368,20 @@ the [Results documentation](/Results). We hope that the results you
 gather using the Misinformation Game are valuable!
 
 If you publish your research, we would also really appreciate it if you
-cited [The (Mis)Information Game paper](https://psyarxiv.com/628wc/) in
+cited [The (Mis)Information Game paper](https://doi.org/10.3758/s13428-023-02153-x) in
 your work! The BibTex for this citation is included below:
 
 ```bibtex
-@misc{butler_lamont_wan_prike_nasim_walker_fay_ecker_2022,
- title={The (Mis)Information Game: A Social Media Simulator},
- url={psyarxiv.com/628wc},
- DOI={10.31234/osf.io/628wc},
- publisher={PsyArXiv},
- author={Butler, Lucy and Lamont, Padraig and Wan, Dean L Y and Prike, Toby and Nasim, Mehwish and Walker, Bradley and Fay, Nicolas and Ecker, Ullrich K H},
- year={2022},
- month={Jul}
+@Article{Butler2023,
+title={The (Mis)Information Game: A social media simulator},
+url={https://doi.org/10.3758/s13428-023-02153-x},
+doi={10.3758/s13428-023-02153-x},
+journal={Behavior Research Methods},
+issn={1554-3528},
+year={2023},
+month={Jul},
+day={11},
+author={Butler, Lucy H. and Lamont, Padraig and Wan, Dean Law Yim and Prike, Toby and Nasim, Mehwish and Walker, Bradley and Fay, Nicolas and Ecker, Ullrich K. H.}
 }
 ```
 

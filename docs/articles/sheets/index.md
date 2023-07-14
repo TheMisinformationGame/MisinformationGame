@@ -210,8 +210,7 @@ And if that help comes in the form of a spreadsheet... well, bring it on.
 So, there you have it, folks. I probably won't be using Google Sheets for any future projects any time soon,
 but I'm sure glad we had it in the arsenal for this one. If you're interested to learn more about the Misinformation
 Game, we have written extensive documentation for it on [this very website](/) (it's more serious than this post,
-I promise). We also have a preprint paper available [on PsyArXiv](https://psyarxiv.com/628wc/), and hopefully the
-full peer-reviewed version will be available soon.
+I promise). We also have a [peer-reviewed paper available](https://doi.org/10.3758/s13428-023-02153-x).
 
 Here's to hoping that Google Sheets doesn't suffer the same
 fate as [Google Domains](https://twitter.com/killedbygoogle/status/1669465621342605312)!

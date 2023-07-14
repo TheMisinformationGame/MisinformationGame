@@ -13,7 +13,7 @@ customisability is a core focus of The Misinformation Game, to
 facilitate the research of a wide array of social-media related
 questions.
 
-**Preprint Paper:** [The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
+**Paper:** [The (Mis)Information Game: A social media simulator](https://doi.org/10.3758/s13428-023-02153-x)
 
 **Documentation:** [MisinfoGame.com](https://misinfogame.com)
 
@@ -59,14 +59,16 @@ for the Misinformation Game. This documentation can be accessed from
 
 # 📖 Cite the Misinformation Game
 ```bibtex
-@misc{butler_lamont_wan_prike_nasim_walker_fay_ecker_2022,
- title={The (Mis)Information Game: A Social Media Simulator},
- url={psyarxiv.com/628wc},
- DOI={10.31234/osf.io/628wc},
- publisher={PsyArXiv},
- author={Butler, Lucy and Lamont, Padraig and Wan, Dean L Y and Prike, Toby and Nasim, Mehwish and Walker, Bradley and Fay, Nicolas and Ecker, Ullrich K H},
- year={2022},
- month={Jul}
+@Article{Butler2023,
+title={The (Mis)Information Game: A social media simulator},
+url={https://doi.org/10.3758/s13428-023-02153-x},
+doi={10.3758/s13428-023-02153-x},
+journal={Behavior Research Methods},
+issn={1554-3528},
+year={2023},
+month={Jul},
+day={11},
+author={Butler, Lucy H. and Lamont, Padraig and Wan, Dean Law Yim and Prike, Toby and Nasim, Mehwish and Walker, Bradley and Fay, Nicolas and Ecker, Ullrich K. H.}
 }
 ```
 

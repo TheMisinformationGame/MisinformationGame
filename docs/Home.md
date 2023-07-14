@@ -38,19 +38,8 @@ posts and their comments. The Misinformation Game has been designed to
 be highly customisable so that a broad range of tightly controlled
 experiences can be created for participants. This customisability is
 a core focus of The Misinformation Game, to facilitate the research of
-a wide array of social-media related questions.
-
-<div id="link-icons" class="icons-list">
-    <a href="https://github.com/TheMisinformationGame/MisinformationGame">
-        <img src="assets/img/github-logo.svg" alt="GitHub logo" />
-    </a>
-    <a href="https://www.producthunt.com/posts/the-misinformation-game">
-        <img src="assets/img/producthunt-logo.svg" alt="Product Hunt logo" />
-    </a>
-    <a href="https://psyarxiv.com/628wc/">
-        <img src="assets/img/psyarxiv-logo.png" width="240" height="228" alt="PsyArxiv logo" />
-    </a>
-</div>
+a wide array of social-media related questions. You may
+[read more in our paper](https://doi.org/10.3758/s13428-023-02153-x).
 
 ## Try it Out!
 {:#example-game}
@@ -122,7 +111,7 @@ place to learn the most important concepts for using The Misinformation Game
 effectively for your research.
 
 The paper
-[The (Mis)Information Game: A Social Media Simulator](https://psyarxiv.com/628wc/)
+[The (Mis)Information Game: A social media simulator](https://doi.org/10.3758/s13428-023-02153-x)
 also provides an in-depth introduction to the Misinformation Game, alongside
 results from two validation studies that were conducted to test it. If you use
 The Misinformation Game for your research, we would really appreciate it if
@@ -145,8 +134,8 @@ interpreting their results.
 
 Some highlights from the documentation:
 
-- [Our Paper](https://psyarxiv.com/628wc/) - An in-depth introduction to the tool,
-  alongside results from two validation studies.
+- [Our Paper](https://doi.org/10.3758/s13428-023-02153-x) - An in-depth
+  introduction to the tool, alongside results from two validation studies.
 - [Getting Started Guide](/GettingStarted) - A guide to create your first study
   using The Misinformation Game.
 - [Results](/Results) - A reference guide on the results that are recorded by
@@ -161,19 +150,21 @@ Some highlights from the documentation:
 </div>
 
 
-## Cite Our Work!
+## Cite Our Work
 {:#cite}
 
-We would appreciate it greatly 😊
+We would appreciate it greatly!
 
 ```bibtex
-@misc{butler_lamont_wan_prike_nasim_walker_fay_ecker_2022,
- title={The (Mis)Information Game: A Social Media Simulator},
- url={psyarxiv.com/628wc},
- DOI={10.31234/osf.io/628wc},
- publisher={PsyArXiv},
- author={Butler, Lucy and Lamont, Padraig and Wan, Dean L Y and Prike, Toby and Nasim, Mehwish and Walker, Bradley and Fay, Nicolas and Ecker, Ullrich K H},
- year={2022},
- month={Jul}
+@Article{Butler2023,
+title={The (Mis)Information Game: A social media simulator},
+url={https://doi.org/10.3758/s13428-023-02153-x},
+doi={10.3758/s13428-023-02153-x},
+journal={Behavior Research Methods},
+issn={1554-3528},
+year={2023},
+month={Jul},
+day={11},
+author={Butler, Lucy H. and Lamont, Padraig and Wan, Dean Law Yim and Prike, Toby and Nasim, Mehwish and Walker, Bradley and Fay, Nicolas and Ecker, Ullrich K. H.}
 }
 ```
