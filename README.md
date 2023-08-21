@@ -1,6 +1,6 @@
 ![The Misinformation Game](docs/assets/img/banner.png)
 ------------------------------------------------------
-
+# IMPORTANT NOTICE: Please note that the Misinformation Game was updated on the 21/08/2023 to remove a bug. If you are currently using a version earlier than v2.2.2 please update to the newest version of the Game before running experiments.
 The Misinformation Game is a social-media simulator built to study
 how people interact with information on social-media. To achieve
 this, The Misinformation Game simulates a social-media feed for
