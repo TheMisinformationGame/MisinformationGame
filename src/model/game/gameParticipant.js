@@ -38,8 +38,34 @@ export class GameParticipant {
         doTypeCheck(credibilityChange, "number", "Participant's Credibility Change after Reaction");
         doTypeCheck(followersChange, "number", "Participant's Followers Change after Reaction");
         this.postInteractions = this.postInteractions.update(postIndex, postInteraction);
+
+        // The first element in the history arrays is the starting value.
+        const postNumber = postIndex + 1;
+
+        // Account for skipped posts.
+        while (postNumber > this.credibilityHistory.length) {
+            this.credibilityHistory.push(this.credibility);
+        }
+        while (postNumber > this.followerHistory.length) {
+            this.followerHistory.push(this.followers);
+        }
+
+        // Make the change to credibility and followers.
         this.credibility = adjustCredibility(this.credibility, credibilityChange);
         this.followers = adjustFollowers(this.followers, followersChange);
+
+        // Check for correctness.
+        if (postNumber !== this.credibilityHistory.length || postNumber !== this.followerHistory.length) {
+            // Hidden posts all get submitted at the end in feed mode.
+            if (credibilityChange === 0 && followersChange === 0)
+                return;
+
+            throw new Error(
+                "Post index does not match the expected next submitted post"
+            );
+        }
+
+        // Add to the credibility & follower history.
         this.credibilityHistory.push(this.credibility);
         this.followerHistory.push(this.followers);
     }
