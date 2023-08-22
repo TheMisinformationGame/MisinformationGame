@@ -41,6 +41,14 @@ a core focus of The Misinformation Game, to facilitate the research of
 a wide array of social-media related questions. You may
 [read more in our paper](https://doi.org/10.3758/s13428-023-02153-x).
 
+<p class="update">
+    <span class="bold">v2.2.2</span>
+    <span>has been released with fixes to results in feed mode.</span>
+    <a href="https://github.com/TheMisinformationGame/MisinformationGame/releases/tag/v2.2.2">
+        Read More
+    </a>
+</p>
+
 ## Try it Out!
 {:#example-game}
 

@@ -271,6 +271,7 @@ th, td {
  * Info boxes.
  */
 p.info,
+p.update,
 p.error {
   display: inline-block;
   border-radius: 0.4rem;
@@ -285,6 +286,11 @@ p.info {
   background-color: #f0f6fc;
   border-color: #006be2;
   color: #011933;
+}
+p.update {
+  background-color: #e1ebe4;
+  border-color: #30db69;
+  color: #013313;
 }
 p.error {
   background-color: #fcf0f1;
