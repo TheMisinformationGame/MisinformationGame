@@ -111,3 +111,16 @@ that you wish to update. A guide to answer these questions is provided in the
 
 **Step 4:** Once you have completed your deployment, you should now be able to
 reload your instance of The Misinformation Game and see the new updates.
+
+
+## 4. Learn about Future Updates 🚀
+{:#stay-updated}
+
+We share updates about the Misinformation Game in our Slack channel. If you wish to stay up-to-date
+and get notified when we release new updates, please join our community on Slack!
+
+<div class="call-to-action-container big">
+    <a href="https://join.slack.com/t/themisinformationgame/shared_invite/zt-1oruoc0s2-OLscp581nAJ2hxpDYGnvJQ" class="call-to-action-button">
+        Join our Slack Community
+    </a>
+</div>

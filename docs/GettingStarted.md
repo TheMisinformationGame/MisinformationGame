@@ -385,18 +385,14 @@ author={Butler, Lucy H. and Lamont, Padraig and Wan, Dean Law Yim and Prike, Tob
 }
 ```
 
-## 6. Join the Community
+## 6. Learn about Future Updates 🚀
+{:#stay-updated}
 
-We have created a Slack community in the hopes that we will be able
-to meet our users, and get your feedback to help improve the tool.
-We also hope that this will become a good place to ask questions,
-share your research, and meet others working in the same area. If
-you are conducting Psychology research, teaching Psychology, or
-are interested in using this tool for other purposes, we'd love to
-hear from you! If Slack isn't your speed, a contact email is also
-available at the bottom of this page.
+We share updates about the Misinformation Game in our Slack channel. If you wish to stay up-to-date,
+or if you'd like to share what you're working on in relation to the Misinformation Game, please join
+our community on Slack!
 
-<div class="call-to-action-container">
+<div class="call-to-action-container big">
     <a href="https://join.slack.com/t/themisinformationgame/shared_invite/zt-1oruoc0s2-OLscp581nAJ2hxpDYGnvJQ" class="call-to-action-button">
         Join our Slack Community
     </a>

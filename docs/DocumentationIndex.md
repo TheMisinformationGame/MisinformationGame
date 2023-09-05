@@ -52,11 +52,23 @@ for your research, we would also really appreciate it if you
 - [How to Play](/HowToPlay) -
   The default rules page given to participants before they start a study.
 - [About](/About) - A description of the history behind the development of this tool.
-- [Slack](https://join.slack.com/t/themisinformationgame/shared_invite/zt-1oruoc0s2-OLscp581nAJ2hxpDYGnvJQ) -
-  Join our Slack community to ask questions, share your research, and meet other academics!
 
 
-## 3. Usage
+## 3. Learn about Future Updates 🚀
+{:#stay-updated}
+
+We share updates about the Misinformation Game in our Slack channel. If you wish to stay up-to-date,
+or if you'd like to share what you're working on in relation to the Misinformation Game, please join
+our community on Slack!
+
+<div class="call-to-action-container big">
+    <a href="https://join.slack.com/t/themisinformationgame/shared_invite/zt-1oruoc0s2-OLscp581nAJ2hxpDYGnvJQ" class="call-to-action-button">
+        Join our Slack Community
+    </a>
+</div>
+
+
+## 4. Usage
 {:#usage-docs}
 
 - [Study Configuration](/StudyConfiguration) - A reference guide for creating your own study.
@@ -68,7 +80,7 @@ for your research, we would also really appreciate it if you
 
 
 
-## 4. Hosting
+## 5. Hosting
 {:#hosting-docs}
 
 - [Installation](/Installation) -
@@ -79,7 +91,7 @@ for your research, we would also really appreciate it if you
 
 
 
-## 5. Technical
+## 6. Technical
 {:#system-docs}
 
 - [Simulation](/Simulation) - A description of the simulation behind the game,
@@ -92,7 +104,7 @@ for your research, we would also really appreciate it if you
 
 
 
-## 6. Additional Resources
+## 7. Additional Resources
 {:#resources}
 
 - [Source Code](https://github.com/TheMisinformationGame/MisinformationGame) -

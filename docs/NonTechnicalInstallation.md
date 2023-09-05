@@ -532,7 +532,7 @@ You can now access the website on your browser at the domain \[Your Project ID\]
 
 
 
-## 6. Conclusion
+## 6. Run your Studies!
 {:#conclusion}
 
 You should now have a fully deployed instance of The Misinformation Game! You may now sign in to your
@@ -543,3 +543,17 @@ Once you have registered yourself as an admin, then you can read more about uplo
 studies in the [Managing Studies documentation](ManagingStudies). Additionally, information on configuring
 your studies can be found in the [Study Configuration documentation](/StudyConfiguration). I hope The
 Misinformation Game proves useful for your research!
+
+## 7. Learn about Future Updates 🚀
+{:#stay-updated}
+
+We share updates about the Misinformation Game in our Slack channel. If you wish to stay up-to-date,
+or if you'd like to share what you're working on in relation to the Misinformation Game, please join
+our community on Slack!
+
+<div class="call-to-action-container big">
+    <a href="https://join.slack.com/t/themisinformationgame/shared_invite/zt-1oruoc0s2-OLscp581nAJ2hxpDYGnvJQ" class="call-to-action-button">
+        Join our Slack Community
+    </a>
+</div>
+

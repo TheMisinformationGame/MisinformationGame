@@ -406,10 +406,25 @@ Successfully Deployed!
 Your Firebase project should now be hosted at the URL
 you set up in step 1!
 
-## 3. Conclusion
+## 3. Run your Studies!
 {:#conclusion}
+
 You should now have successfully deployed your own instance
 of The Misinformation Game! However, before you can upload
 studies, you will need to register your Google account as
 an administrator. A guide to register users as administrators
 can be found in the [Administrators](/Administrators) documentation.
+I hope The Misinformation Game proves useful for your research!
+
+## 4. Learn about Future Updates 🚀
+{:#stay-updated}
+
+We share updates about the Misinformation Game in our Slack channel. If you wish to stay up-to-date,
+or if you'd like to share what you're working on in relation to the Misinformation Game, please join
+our community on Slack!
+
+<div class="call-to-action-container big">
+    <a href="https://join.slack.com/t/themisinformationgame/shared_invite/zt-1oruoc0s2-OLscp581nAJ2hxpDYGnvJQ" class="call-to-action-button">
+        Join our Slack Community
+    </a>
+</div>
