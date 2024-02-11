@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import {BrowserRouter, Navigate, Route, Routes, useNavigate, useParams} from "react-router-dom";
+import {BrowserRouter, Route, Routes, useNavigate, useParams} from "react-router-dom";
 import Home from "./screens/Home";
 import AdminHome from "./screens/AdminHome";
 import {AdminStudyPage} from "./screens/AdminStudy";

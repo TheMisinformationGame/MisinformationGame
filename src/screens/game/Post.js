@@ -15,6 +15,7 @@ import {capitalise} from "../../utils/text";
 
 
 export const POST_SUBMITTED_TOOLTIP = "You may no longer interact with this post, as it has been saved";
+export const REACTION_DISABLED_TOOLTIP = "Please wait before reacting to this post";
 
 
 /**
@@ -128,7 +129,12 @@ class PostReactionsRow extends Component {
                              enabled={enabled}
                              reactionCount={reactionCount}
                              childClassName={transforms}
-                             title={enabled ? capitalise(reaction) : POST_SUBMITTED_TOOLTIP}
+                             title={
+                                    enabled ?
+                                        capitalise(reaction) :
+                                        (study.uiSettings.displayPostsInFeed ?
+                                            POST_SUBMITTED_TOOLTIP :
+                                            REACTION_DISABLED_TOOLTIP)}
                              className="mr-1"
                              fontSize={fontSize}>
 

@@ -145,6 +145,7 @@ export class GameScreen extends ActiveGameScreen {
 
             error: null,
 
+            allowReactions: false,
             interactions: GamePostInteractionStore.empty(),
             dismissedPrompt: false,
 
@@ -169,6 +170,7 @@ export class GameScreen extends ActiveGameScreen {
         );
 
         this.changeTimeoutID = null;
+        this.reactDelayTimeoutID = null;
     }
 
     afterGameLoaded(game) {
@@ -182,6 +184,42 @@ export class GameScreen extends ActiveGameScreen {
                 dismissedPrompt: game.isFinished()
             };
         });
+    }
+
+    cancelReactDelay() {
+        if (this.reactDelayTimeoutID !== null) {
+            clearTimeout(this.reactDelayTimeoutID);
+            this.reactDelayTimeoutID = null;
+        }
+    }
+
+    startReactDelay(game) {
+        this.cancelReactDelay();
+
+        if (!game) {
+            game = this.state.game;
+            if (!game)
+                throw new Error("There is no active game!");
+        }
+
+        const setAllowReactions = (allowReactions) => {
+            this.setStateIfMounted(() => {
+                return {
+                    allowReactions: allowReactions,
+                };
+            });
+        };
+
+        const reactDelay = game.study.advancedSettings.reactDelaySeconds;
+        if (reactDelay <= 0) {
+            setAllowReactions(true);
+            return;
+        }
+
+        setAllowReactions(false);
+        this.reactDelayTimeoutID = setTimeout(() => {
+            setAllowReactions(true);
+        }, 1000 * reactDelay);
     }
 
     componentDidMount() {
@@ -211,12 +249,17 @@ export class GameScreen extends ActiveGameScreen {
             clearTimeout(this.changeTimeoutID);
             this.changeTimeoutID = null;
         }
+        this.cancelReactDelay();
     }
 
     onPromptContinue() {
-        this.setState(() => {
-            return {dismissedPrompt: true};
-        })
+        this.setState((prevState) => {
+            return {
+                ...prevState,
+                dismissedPrompt: true
+            };
+        });
+        this.startReactDelay();
     }
 
     onPostReaction(postIndex, reaction, study) {
@@ -343,7 +386,11 @@ export class GameScreen extends ActiveGameScreen {
                         credibilityChange: null
                     };
                 });
+                this.startReactDelay();
             }, 1500);
+
+        } else {
+            this.startReactDelay();
         }
     }
 
@@ -499,7 +546,7 @@ export class GameScreen extends ActiveGameScreen {
 
         let nextPostEnabled = true;
         let nextPostError = "";
-        let reactionsAllowed = true;
+        let reactionsAllowed = this.state.allowReactions;
         let displayGameEnd = game.isFinished();
         if (!study.uiSettings.displayPostsInFeed) {
             let displayPostIndex = currentPostIndex;
@@ -587,7 +634,7 @@ export class GameScreen extends ActiveGameScreen {
                             nextPostEnabled={nextPostEnabled && reactionsAllowed}
                             progressPercentage = {progressPercentage}
                             onNextPost={() => {
-                                if (nextPostEnabled) {
+                                if (nextPostEnabled && reactionsAllowed) {
                                     this.onNextPost();
                                 }
                             }}
