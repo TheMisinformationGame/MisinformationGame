@@ -42,9 +42,9 @@ a wide array of social-media related questions. You may
 [read more in our paper](https://doi.org/10.3758/s13428-023-02153-x).
 
 <p class="update">
-    <span class="bold">v2.2.2</span>
-    <span>has been released with fixes to results in feed mode.</span>
-    <a href="https://github.com/TheMisinformationGame/MisinformationGame/releases/tag/v2.2.2">
+    <span class="bold">v2.3.0</span>
+    <span>has been released with a fix to allow the delaying of users in single-post mode.</span>
+    <a href="https://github.com/TheMisinformationGame/MisinformationGame/releases/tag/v2.3.0">
         Read More
     </a>
 </p>
