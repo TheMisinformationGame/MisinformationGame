@@ -22,12 +22,12 @@
     "web-vitals": "^3.1.1"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "npx craco start",
     "emulators": "firebase emulators:start --import=\"test/firebase-dev-environment\"",
     "docs": "cd docs && bundle exec jekyll serve --baseurl=\"\" -o --watch",
-    "build": "craco build",
-    "test": "craco test",
-    "ci-build": "CI=false INLINE_RUNTIME_CHUNK=false craco build"
+    "build": "npx craco build",
+    "test": "npx craco test",
+    "ci-build": "CI=false INLINE_RUNTIME_CHUNK=false npx craco build"
   },
   "eslintConfig": {
     "extends": [
