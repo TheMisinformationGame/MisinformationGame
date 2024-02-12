@@ -145,7 +145,7 @@ export class GameScreen extends ActiveGameScreen {
 
             error: null,
 
-            allowReactions: false,
+            allowReactions: true,
             interactions: GamePostInteractionStore.empty(),
             dismissedPrompt: false,
 
@@ -252,14 +252,17 @@ export class GameScreen extends ActiveGameScreen {
         this.cancelReactDelay();
     }
 
-    onPromptContinue() {
+    onPromptContinue(study) {
         this.setState((prevState) => {
             return {
                 ...prevState,
                 dismissedPrompt: true
             };
         });
-        this.startReactDelay();
+
+        if (!study.uiSettings.displayPostsInFeed) {
+            this.startReactDelay();
+        }
     }
 
     onPostReaction(postIndex, reaction, study) {
@@ -378,6 +381,7 @@ export class GameScreen extends ActiveGameScreen {
             this.changeTimeoutID = null;
         }
 
+        const doStartReactDelay = !game.study.uiSettings.displayPostsInFeed;
         if (followerChange || credibilityChange) {
             this.changeTimeoutID = setTimeout(() => {
                 this.setStateIfMounted(() => {
@@ -386,10 +390,12 @@ export class GameScreen extends ActiveGameScreen {
                         credibilityChange: null
                     };
                 });
-                this.startReactDelay();
+                if (doStartReactDelay) {
+                    this.startReactDelay();
+                }
             }, 1500);
 
-        } else {
+        } else if (doStartReactDelay) {
             this.startReactDelay();
         }
     }
@@ -610,7 +616,7 @@ export class GameScreen extends ActiveGameScreen {
                 {displayPrompt &&
                     <GamePrompt study={study} onClick={(enabled) => {
                         if (enabled) {
-                            this.onPromptContinue();
+                            this.onPromptContinue(study);
                         }
                     }} />}
 
