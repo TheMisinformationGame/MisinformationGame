@@ -11,6 +11,7 @@ usage() {
 # =========================
 do_install_gcloud=false
 do_skip_cors=false
+in_docker=false
 
 for var in "$@"
 do
@@ -18,6 +19,8 @@ do
     do_install_gcloud=true
   elif [[ "$var" == "--skip-cors" ]]; then
     do_skip_cors=true
+  elif [[ "$var" == "--docker" ]]; then
+      in_docker=true
   else
     usage
     exit 1
@@ -89,7 +92,11 @@ echo " "
 echo "========================================================="
 echo "Connecting to Firebase, you may be prompted to sign in..."
 echo "========================================================="
-npx firebase login || { echo "Signing you into Firebase failed!" ; exit 1; }
+if [ "$in_docker" = true ]; then
+  npx firebase login --no-localhost || { echo "Signing you into Firebase failed!" ; exit 1; }
+else
+  npx firebase login || { echo "Signing you into Firebase failed!" ; exit 1; }
+fi
 
 echo " "
 echo "================================================================="
