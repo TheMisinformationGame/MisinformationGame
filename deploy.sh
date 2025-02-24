@@ -93,9 +93,9 @@ echo "========================================================="
 echo "Connecting to Firebase, you may be prompted to sign in..."
 echo "========================================================="
 if [ "$in_docker" = true ]; then
-  npx firebase login --no-localhost || { echo "Signing you into Firebase failed!" ; exit 1; }
+  npx firebase-tools login --no-localhost || { echo "Signing you into Firebase failed!" ; exit 1; }
 else
-  npx firebase login || { echo "Signing you into Firebase failed!" ; exit 1; }
+  npx firebase-tools login || { echo "Signing you into Firebase failed!" ; exit 1; }
 fi
 
 echo " "
@@ -105,7 +105,7 @@ echo "================================================================="
 echo " "
 echo "When prompted for an alias, enter 'main'."
 echo " "
-npx firebase use --add || { echo "Connecting to your Firebase project failed!" ; exit 1; }
+npx firebase-tools use --add || { echo "Connecting to your Firebase project failed!" ; exit 1; }
 
 echo " "
 echo "==========================="
@@ -117,7 +117,7 @@ echo " "
 echo "========================================"
 echo "Deploying the application to Firebase..."
 echo "========================================"
-npx firebase deploy || { echo "Deploying to Firebase failed!" ; exit 1; }
+npx firebase-tools deploy || { echo "Deploying to Firebase failed!" ; exit 1; }
 
 if [ ! "$do_skip_cors" = true ]; then
   echo " "

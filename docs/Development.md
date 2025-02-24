@@ -61,8 +61,8 @@ it is best to link to that project instead.
 Once you have created your Firebase project, you can link to it by
 running the following commands:
 ```shell
-npx firebase login
-npx firebase use --add
+npx firebase-tools login
+npx firebase-tools use --add
 ```
 
 
