@@ -6,16 +6,6 @@ showBackToTop: true
 ---
 
 
-<p class="spacer"></p>
-
-<p class="update">
-    <span class="bold">v2.2.2</span>
-    <span>has been released with fixes to results in feed mode.</span>
-    <a href="https://github.com/TheMisinformationGame/MisinformationGame/releases/tag/v2.2.2">
-        Read More
-    </a>
-</p>
-
 # Documentation Index
 {:#intro .no_toc}
 
