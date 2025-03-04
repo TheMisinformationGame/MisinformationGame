@@ -4,8 +4,8 @@ showPath: true
 underDocsPath: true
 showBackToTop: true
 ---
-
 # Installation (Technical Guide)
+
 {:#intro .no_toc}
 
 This guide outlines the steps required to deploy your
@@ -20,16 +20,15 @@ with these processes, then the
 [non-technical installation guide](/NonTechnicalInstallation)
 may be easier to follow.
 
-
-
 ## Table of Contents
+
 {:#toc .no_toc}
+
 * toc
-{:toc}
-
-
+  {:toc}
 
 ## 1. Installation of Required Dependencies
+
 {:#install-dependencies}
 Deployment of this project requires the use of
 [NPM](https://www.npmjs.com/) to install its dependencies.
@@ -38,11 +37,13 @@ A guide to install NPM can be found in the
 
 Once you have NPM installed, run the following commands to
 download the source code of this project,
+
 ```shell
 cd [path/to/download/project/into]
 git clone https://github.com/TheMisinformationGame/MisinformationGame
 cd MisinformationGame
 ```
+
 In the above commands, replace `[path/to/download/project/into]`
 with a path to where you want the source code of the project
 to be downloaded on your computer. The source code will be
@@ -50,14 +51,17 @@ created as a new directory in that path, so `~/Documents` is
 a sensible option (e.g. `cd ~/Documents`).
 
 ## 2. Firebase Initialisation
+
 {:#firebase-initialisation}
 You will now need to create your own Firebase project,
 and link to it from the source code.
 
 ### 2.1. Set up your Firebase Project
+
 {:#firebase-setup}
 
 #### 2.1.1. Create Project
+
 {:#firebase-create-project}
 Navigate to the
 [Firebase Console](https://console.firebase.google.com/)
@@ -91,6 +95,7 @@ project.
 <img src="diagrams/firebase-console.png" alt="Screenshot of the Firebase console" height="252" />
 
 #### 2.1.2. Enable Firestore Database
+
 {:#enable-firebase-firestore}
 The Misinformation Game uses Firestore to store the
 studies and their results, however it is not enabled
@@ -119,24 +124,18 @@ a screen like the one below.
 <img src="diagrams/created-firestore-database.png" alt="Screen after creating Firestore database" height="242" />
 
 #### 2.1.3. Enable Firebase Storage
+
 {:#enable-firebase-storage}
 Any images that are embedded within studies will be stored within
 Firebase Storage. Therefore, Firebase Storage will need to be
-enabled for your Firebase project.
+enabled for your Firebase project. As of September 2024, you must have a Blaze pay-as-you-go account to set up storage.
 
-**Step 1:** Select **Storage** under the **Build** tab on the left of the project page.
+**Step 1:** Select **Storage** under the **Build** tab on the left of the project page.  You will now be asked to set up default budget. Here, select "All locations" before continuing. You will be then asked again to set up security rules. Here, again select **Production Mode** before selecting create. Your storage should now be set up
 
-<img src="diagrams/accessing-firebase-storage.png" alt="access firebase storage" height="218" />
-
-**Step 2:** Your storage should now be set up. If you see a page that looks like the page shown above,
-then this has been successful. However, if you see the **Get started** page, as shown
-below, then you will need to first enable the Firestore Database as explained in the
-[Enable Firebase Firestore section](#enable-firebase-firestore) of this guide.
-This should automatically enable Firebase Storage when you start Firestore in **production mode**.
-
-<img src="screenshots/storage-get-started.png" alt="firebase storage" height="240" />
+<img src="diagrams/New_diagrams/storage-with-blaze-new.png" alt="figure 10" height="218" />
 
 #### 2.1.4. Enable Google Authentication
+
 {:#firebase-enable-google-auth}
 The Misinformation Game uses Google accounts to
 authenticate researchers so that only they can
@@ -168,11 +167,12 @@ that shows the Google authentication as _Enabled_.
 <img src="diagrams/enabled-auth.png" alt="Screen after enabling Google authentication" height="122" />
 
 ### 2.2. Add a Web App to your Firebase Project
+
 {:#firebase-add-web-app}
 To connect the source code to your deployment, you must
 create a Web App for your Firebase project. To do this,
 navigate to the home-page of your Firebase project from
-the console by selecting the _Project Overview_ button. 
+the console by selecting the _Project Overview_ button.
 There should be an icon on the home-page that looks like
 `</>` that you can click to create a new Web App.
 
@@ -194,6 +194,7 @@ steps. Finally, click _Continue to console_ to skip
 deploying to Firebase. We will perform this step later.
 
 ### 2.3. Link your Web App in the Source Code
+
 {:#firebase-link-web-app}
 From the home-page of your Firebase console, navigate to
 the project settings by selecting the cog wheel in the
@@ -211,6 +212,7 @@ configuration**, and select **Config**.
 You should now be shown a code snippet containing
 your Firebase configuration object. It should
 look similar to the code snippet below.
+
 ```javascript
 const firebaseConfig = {
   apiKey: "AIzaSyDbBqOrit6Kj3FUsmI3i3AOOu27PLtkwTM",
@@ -248,14 +250,14 @@ list in the Firebase console -> Auth section ->
 Sign in method tab.
 ```
 
-
-
 ### 2.4. Deploy to your Firebase Project
+
 {:#deploy}
 The Misinformation Game has the helper script
 [deploy.sh](/deploy.sh) to help you to deploy to your
 Firebase project. It can be run using the following
 command from within the _MisinformationGame_ directory,
+
 ```shell
 ./deploy.sh
 ```
@@ -265,6 +267,7 @@ install dependencies, initialise your project, and
 deploy it to your live website.
 
 #### 2.4.1. Installing Dependencies
+
 {:#deploy-installing-dependencies}
 
 ```
@@ -272,17 +275,21 @@ deploy it to your live website.
 Installing dependencies...
 ==========================
 ```
+
 This step may take some time to install all the
 dependencies of The Misinformation Game using
 NPM.
 
 #### 2.4.2. Installing Google Cloud SDK
+
 {:#deploy-installing-google-cloud-sdk}
+
 ```
 ==================================
 Installing the Google Cloud SDK...
 ==================================
 ```
+
 This step will download and install the Google Cloud
 SDK that will later be used to configure the CORS
 settings for the storage of images in the app.
@@ -292,12 +299,15 @@ prompted for your password so that the script can
 automatically install Python 3 for you.
 
 #### 2.4.3. Connect to Firebase
+
 {:#deploy-connect-firebase}
+
 ```
 =========================================================
 Connecting to Firebase, you may be prompted to sign in...
 =========================================================
 ```
+
 This step will prompt you to log in to your Firebase
 account, so that the Firebase project you created can
 be accessed.
@@ -308,34 +318,43 @@ press the enter key to accept it, or you can type `n`
 and the enter key to disable the analytics.
 
 #### 2.4.4. Select Firebase Project
+
 {:#deploy-select-firebase-project}
+
 ```
 =================================================================
 Please select the Firebase project you would like to deploy to...
 =================================================================
 ```
+
 This step will ask you to select the Firebase project
 you created, so that we can deploy the website to the
 project. Enter the number next to the name of your Firebase
 project and press the _enter key_.
 
 #### 2.4.5. Building the Application
+
 {:#deploy-build}
+
 ```
 echo "==========================="
 echo "Building the application..."
 echo "==========================="
 ```
+
 This step will compile the application so that it
 can be deployed. This step may take some time.
 
 #### 2.4.6. Deploying to Firebase
+
 {:#deploy-deploy}
+
 ```
 ========================================
 Deploying the application to Firebase...
 ========================================
 ```
+
 This step will deploy your application to your
 Firebase project! After this step, you will be able
 to access your website from its .web.app domain.
@@ -344,12 +363,15 @@ the website will not be able to load the avatars
 of sources, or the images for posts.
 
 #### 2.4.7. Initialise Google Cloud
+
 {:#deploy-initialise-google-cloud}
+
 ```
 ============================
 Initialising Google Cloud...
 ============================
 ```
+
 This step will ask you to initialise the Google
 Cloud SDK to point to your account and project.
 You will be prompted for several inputs through
@@ -381,12 +403,15 @@ project to use. Enter the number in square brackets
 next to the name of your Firebase project.
 
 #### 2.4.8. Uploading the CORS settings
+
 {:#deploy-upload-cors-settings}
+
 ```
 ===============================================
 Setting up the CORS settings for the website...
 ===============================================
 ```
+
 This step will update the CORS settings of your
 website so that the images for sources and posts
 can be loaded. You will be prompted for your
@@ -394,19 +419,23 @@ project's .appspot.com domain. This domain is the
 same as your .web.app domain, just with a different
 extension. For example, for the example website for
 this project, misinformation-game.web.app, you would
-have to enter misinformation-game.appspot.com.
+have to enter misinformation-game.firebasestorage.app.
 
 #### 2.4.9. Complete!
+
 {:#deploy-complete}
+
 ```
 ======================
 Successfully Deployed!
 ======================
 ```
+
 Your Firebase project should now be hosted at the URL
 you set up in step 1!
 
 ## 3. Run your Studies!
+
 {:#conclusion}
 
 You should now have successfully deployed your own instance
@@ -417,6 +446,7 @@ can be found in the [Administrators](/Administrators) documentation.
 I hope The Misinformation Game proves useful for your research!
 
 ## 4. Learn about Future Updates 🚀
+
 {:#stay-updated}
 
 We share updates about the Misinformation Game in our Slack channel. If you wish to stay up-to-date,

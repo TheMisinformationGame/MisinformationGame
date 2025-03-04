@@ -4,8 +4,8 @@ showPath: true
 underDocsPath: true
 showBackToTop: true
 ---
-
 # Installation (Non-Technical Guide)
+
 {:#intro .no_toc}
 
 This document outlines a step-by-step process to install and host your own instance of The Misinformation
@@ -17,16 +17,15 @@ This guide is aimed to require less technical knowledge than the
 comfortable installing software and using the command line, then the technical installation guide will
 likely be easier and quicker to follow.
 
-
-
 ## Table of Contents
+
 {:#toc .no_toc}
+
 * toc
-{:toc}
-
-
+  {:toc}
 
 ## 1. Download the Codebase From GitHub
+
 {:#download-codebase}
 
 The Misinformation Game must be deployed using its source code. To download and save the codebase onto your
@@ -56,9 +55,8 @@ instance.
     </figcaption>
 </figure>
 
-
-
 ## 2. Install Visual Studio Code
+
 {:#install-vscode}
 
 _If you already have Visual Studio Code installed, then you may skip this step._
@@ -87,9 +85,8 @@ and then click **Next**.
 **Step 8:** Wait for the installation to complete. If no errors are displayed, then
 you have successfully installed VSCode!
 
-
-
 ## 3. Install Node.js and NPM
+
 {:#install-nodejs}
 
 The next step in the process is to download [Node.js](https://nodejs.org) and [NPM](https://www.npmjs.com/).
@@ -115,15 +112,15 @@ The default selections include all the components we require, so click **Next**.
 
 **Step 7:** Click **Install**. Once the installation finishes, click **Finish**.
 
-
-
 ### 3.1. Verify that Node.js and NPM were installed correctly (Optional)
+
 {:#verify-nodejs-install}
 
 You may verify that Node.js and NPM were successfully installed through the
 command line.
 
 **Step 1:** Open a command-line program,
+
 - **On Windows:** Open the application _Command Prompt_.
 - **On Mac:** Open the application _Terminal_.
 
@@ -135,9 +132,8 @@ by pressing enter. This command should output the version of Node.js that was in
 by pressing enter. This command should output the version of NPM that was installed
 (e.g. `6.14.14`). If it displays an error, then NPM may not have been installed correctly.
 
-
-
 ## 4. Create your Firebase Project
+
 {:#create-firebase-project}
 
 Firebase is a technology platform made by Google, which provides a platform to host websites. The
@@ -179,6 +175,8 @@ Once you have selected a name, click **Continue**.
 disable it, as it doesn't provide any functionality that is used by The Misinformation Game. The
 toggle to disable Google Analytics is highlighted in [Figure 4](#fig4).
 
+You may also be asked if you wish to enable Gemini for Firebase, as well as join the Google Developer program. We recommend that you **disable** Gemini, and **do not** join the develop program as these are not needed for this project.
+
 <figure id="fig4">
     <img src="diagrams/disabling-analytics.png" alt="figure 4" height="348" />
     <figcaption>
@@ -190,8 +188,8 @@ toggle to disable Google Analytics is highlighted in [Figure 4](#fig4).
 host The Misinformation Game. However, some additional set-up is still required to deploy the
 source code of The Misinformation Game to your new project.
 
-
 ### 4.1. Enable Firebase Firestore
+
 {:#enable-firebase-firestore}
 
 The Misinformation Game uses Firebase's Firestore Database to store users, studies, and study results.
@@ -201,7 +199,7 @@ Therefore, you will need to enable it.
 The buttons to click are highlighted in [Figure 5](#fig5).
 
 <figure id="fig5">
-    <img src="diagrams/accessing-firestore-for-create.png" alt="figure 5" height="529" />
+    <img src="diagrams/New_Diagrams/Firebase-database-sidepanel-new.png" alt="figure 5" height="529" />
     <figcaption>
         <a href="#fig5">Figure 5.</a> Diagram highlighting the buttons to click to
         access the Firestore Database.
@@ -213,20 +211,20 @@ shown in [Figure 6](#fig6). If a table is shown instead (as in [Figure 7](#fig7)
 Firestore database has already been enabled.
 
 <figure id="fig6">
-    <img src="diagrams/enabling-firestore.png" alt="figure 6" height="475" />
+    <img src="diagrams/New_diagrams/firestore-database-new.png" alt="figure 6" height="400" />
     <figcaption>
         <a href="#fig6">Figure 6.</a> Diagram highlighting the button to click to enable
         Firestore database for your Firebase instance.
     </figcaption>
 </figure>
 
-**Step 3:** You will be asked what rules you would like to set for the project’s database. These will be
-configured later in the installation process, so select **Start in production mode** and click **Next**.
-
-**Step 4:** You will be asked to select the geographical location for where your database should be hosted.
+**Step 3:** You will be asked to select the geographical location for where your database should be hosted.
 Select the geographical location that is closest to you and your participants. This selection does not restrict
 who can access your instance, but instead just helps to speed up access to the site by hosting it closer to you.
 Once you have selected a location, click **Enable**.
+
+**Step 4:** You will be asked what rules you would like to set for the project’s database. These will be
+configured later in the installation process, so select **Start in production mode** and click **Next**.
 
 **Step 5:** Your database should now be ready to go. You should now see a page similar to the page
 shown in [Figure 7](#fig7).
@@ -238,8 +236,8 @@ shown in [Figure 7](#fig7).
     </figcaption>
 </figure>
 
-
 ### 4.2. Enable Firebase Storage
+
 {:#enable-firebase-storage}
 
 Any images that are embedded within studies will be stored within Firebase Storage. Therefore, Firebase Storage
@@ -249,41 +247,66 @@ will need to be enabled for your Firebase project.
 The buttons to click are highlighted in [Figure 8](#fig8).
 
 <figure id="fig8">
-    <img src="diagrams/accessing-firebase-storage.png" alt="figure 8" height="218" />
+    <img src="diagrams/New_diagrams/Firebase-storage-sidepanel-new.png" alt="figure 8" height="618" />
     <figcaption>
-        <a href="#fig8">Figure 8.</a> Blank Firebase storage.
+        <a href="#fig8">Figure 8.</a> Diagram highlighting the buttons to click to
+        access the Firestore Storage.
     </figcaption>
 </figure>
 
-**Step 2:** Your storage should now be set up. If you see a page that looks like the page shown in [Figure 8](#fig8),
-then this has been successful. However, if you see the **Get started** page as shown in [Figure 9](#fig9),
-then you will need to first enable the Firestore Database as explained in the
-[Enable Firebase Firestore section](#enable-firebase-firestore) of this guide.
-This should automatically enable Firebase Storage when you start Firestore in **production mode**.
+**Step 2:** As of **September 2024** you will need to ensure that you have a **Blaze account** to set up storage. If you have not set up a blaze account you will be informed that you need to update your account here (see [Figure 9](#fig9)).
 
 <figure id="fig9">
-    <img src="screenshots/storage-get-started.png" alt="figure 9" height="372" />
+    <img src="diagrams/New_diagrams/storage-upgrade-required-new.png" alt="figure 9" height="372" />
     <figcaption>
-        <a href="#fig9">Figure 9.</a> Screenshot of the Firebase Storage page before it is enabled.
+        <a href="#fig9">Figure 9.</a> Screenshot of the Firebase Storage page before Blaze account has been set up
     </figcaption>
 </figure>
 
+Due to this you will now need to set up a **Pay-as-you-go Blaze account** before continuing. To do so select the **Upgrade** button and follow the steps to set up an account. This will require you linking a payment method. The card will only be charged if you go over the free tier. More information about pricing is available in the [Firebase Pricing Documentation](/FirebasePricing).
+
+**Step 3:** If you see the **Get started** page as shown in [Figure 10](#fig10), then you have sucessfully set up your Blaze account. Now. you will need to enable Firebase storage. To do so first select "get started".
+
+<figure id="fig10">
+    <img src="diagrams/New_diagrams/storage-with-blaze-new.png" alt="figure 10" height="372" />
+    <figcaption>
+        <a href="#fig10">Figure 10.</a> Screenshot of the Firebase Storage page before it is enabled.
+    </figcaption>
+</figure>
+
+**Step 4:** You will now be asked to set up default budget. Here, select "All locations" as shown in [Figure 11](#fig11), before continuing. You will be then asked again to set up security rules. Here, again select **Production Mode** before selecting create.
+
+<figure id="fig11">
+    <img src="diagrams/New_diagrams/storage-bucket-setup-new.png" alt="figure 11" height="372" />
+    <figcaption>
+        <a href="#fig11">Figure 11.</a> Diagram of storage default bucket setup.
+    </figcaption>
+</figure>
+
+**Step 5:** Your storage should now be ready to go. You should now see a page similar to the page shown in [Figure 12](#fig12).
+
+<figure id="fig12">
+    <img src="diagrams/New_diagrams/Storage-setup-new.png" alt="figure 12" height="372" />
+    <figcaption>
+        <a href="#fig12">Figure 12.</a> Screenshot of Firebase storage.
+    </figcaption>
+</figure>
 
 ### 4.3. Enable Firebase Authentication
+
 {:#enable-firebase-auth}
 
 The Misinformation Game uses Firebase Authentication to authenticate administrators. Administrators
 are the users that are given access to upload studies and download their results. This authentication
 is not used for participants in your studies.
 
-
 **Step 1:** Select **Authentication** under the **Build** tab on the left of the project page.
-The option to select is shown in [Figure 10](#fig10) below.
+The option to select is shown in [Figure 13](#fig13) below.
 
-<figure id="fig10">
-    <img src="diagrams/non-technical-installation-guide/10-auth-setup-pt1.png" alt="figure 10" height="232" />
+<figure id="fig13">
+    <img src="diagrams/New_diagrams/authentication-start-page-new.png" alt="figure 13" height="332" />
     <figcaption>
-        <a href="#fig10">Figure 10.</a> Accessing Firebase authentication to enable it.
+        <a href="#fig13">Figure 13.</a> Accessing Firebase authentication to enable it.
     </figcaption>
 </figure>
 
@@ -293,38 +316,38 @@ The option to select is shown in [Figure 10](#fig10) below.
 icon, as we will be making use of Google accounts for authentication.
 
 **Step 4:** After you click on the Google icon, you will be shown more options. First, click **Enable**,
-as shown in [Figure 11](#fig11) below.
+as shown in [Figure 14](#fig14) below.
 
 **Step 5:** You may now enter your own email under the **Project Support Email** field shown in
 Figure 11 below. This contact email is required by Google's authentication service.
 
-**Step 6:** Click the **Save** button, as shown in [Figure 11](#fig11) below.
+**Step 6:** Click the **Save** button, as shown in [Figure 14](#fig14) below.
 
-<figure id="fig11">
-    <img src="diagrams/non-technical-installation-guide/11-auth-setup-pt2.png" alt="figure 11" height="423" />
+<figure id="fig14">
+    <img src="diagrams/non-technical-installation-guide/11-auth-setup-pt2.png" alt="figure 14" height="423" />
     <figcaption>
-        <a href="#fig11">Figure 11.</a> Enabling Firebase Google authentication.
+        <a href="#fig14">Figure 14.</a> Enabling Firebase Google authentication.
     </figcaption>
 </figure>
 
 **Step 7:** The next stage of authentication is to give yourself administrator rights. This step
 will be explained later in this guide, as it requires additional set-up to be performed first.
 
-
 ### 4.4. Configure your Firebase Project as a Web-App
+
 {:#enable-firebase-webapp}
 
 Firebase supports mobile apps as well as websites. We must configure the project as a web-app.
 
-**Step 1:** Click **Project Overview** on the left of the project page, as shown in [Figure 12](#fig12).
+**Step 1:** Click **Project Overview** on the left of the project page. This should look similar to what is shown in [Figure 15](#fig15).
 
-**Step 2:** Click the **Web** icon, which is highlighted in [Figure 12](#fig12).
+**Step 2:** Click the **Web** icon, which is highlighted in [Figure 15](#fig15).
 The icon should resemble &lt;/&gt;.
 
-<figure id="fig12">
-    <img src="diagrams/non-technical-installation-guide/12-webapp-setup-pt1.png" alt="figure 12" height="308" />
+<figure id="fig15">
+    <img src="diagrams/non-technical-installation-guide/12-webapp-setup-pt1.png" alt="figure 15" height="308" />
     <figcaption>
-        <a href="#fig12">Figure 12.</a> Accessing Firebase web-app setup.
+        <a href="#fig15">Figure 15.</a> Accessing Firebase web-app setup.
     </figcaption>
 </figure>
 
@@ -339,69 +362,68 @@ Select **"Use npm"**.
 **Step 6:** Copy the larger block of code to a text file on your computer. This configuration
 will be required to link The Misinformation Game to your project later. When it is required later,
 this code will be referred to as the **"Configuration Information File"**. There is a button in the
-bottom-right of this code block that can be pressed to copy it, as shown in [Figure 13](#fig13).
+bottom-right of this code block that can be pressed to copy it, as shown in [Figure 16](#fig16).
 
-<figure id="fig13">
-    <img src="diagrams/non-technical-installation-guide/13-webapp-setup-pt2.png" alt="figure 13" height="446" />
+<figure id="fig16">
+    <img src="diagrams/non-technical-installation-guide/13-webapp-setup-pt2.png" alt="figure 16" height="446" />
     <figcaption>
-        <a href="#fig13">Figure 13.</a> Accessing your Firebase web-app config.
+        <a href="#fig16">Figure 16.</a> Accessing your Firebase web-app config.
     </figcaption>
 </figure>
 
 **Step 7:** Once you have saved the configuration information file, click **Continue to console**.
 
-
-
 ## 5. Deploying the Website
+
 {:#deploying}
 
 The next step of the process is to deploy The Misinformation Game to your Firebase project.
 This step will require the software that we installed earlier (Visual Studio Code, Node.js, and NPM).
 
-
 ### 5.1. Opening and Setting Up the Code
+
 {:#opening-codebase}
 
-Step 1: Open the Visual Studio Code app. <br/>
-Step 2: Click on File > Open Folder and find the extracted project folder that you saved in section 2.1. <br/>
-Step 3: Once the folder is open, you should see a screen similar to [Figure 14](#fig14). On the left
+Step 1: Open the Visual Studio Code app. `<br/>`
+Step 2: Click on File > Open Folder and find the extracted project folder that you saved in section 2.1. `<br/>`
+Step 3: Once the folder is open, you should see a screen similar to [Figure 17](#fig17). On the left
 of the screen, you will notice the “Explorer” area. We will be using this section of the screen quite often.
 
-<figure id="fig14">
-    <img src="diagrams/non-technical-installation-guide/14-default-visual-studio-screen.png" alt="figure 14" height="454" />
+<figure id="fig17">
+    <img src="diagrams/non-technical-installation-guide/14-default-visual-studio-screen.png" alt="figure 17" height="454" />
     <figcaption>
-        <a href="#fig14">Figure 14.</a> Default Visual Studio View.
+        <a href="#fig17">Figure 17.</a> Default Visual Studio View.
     </figcaption>
 </figure>
 
 Step 4: In the “Explorer” section, click the “config” toggle and find and click on the “firebase-config.js”
-file. You should see a page like [Figure 14](#fig14).
+file. You should see a page like [Figure 17](#fig17).
 
 Step 5: Replace the firebaseConfig information with your own information. This information is in the
 Configuration Information File, which was saved in section 5.4 of this guide. The area that you need to
-replace is circled in [Figure 15](#fig15).
+replace is circled in [Figure 18](#fig18).
 
 Step 6: Finally, save the file by pressing _Ctrl + S_ on your keyboard.
 
-<figure id="fig15">
-    <img src="diagrams/non-technical-installation-guide/15-edit-firebase-config.png" alt="figure 15" height="543" />
+<figure id="fig18">
+    <img src="diagrams/non-technical-installation-guide/15-edit-firebase-config.png" alt="figure 18" height="543" />
     <figcaption>
-        <a href="#fig15">Figure 15.</a> Firebase configuration file in the source code.
+        <a href="#fig18">Figure 18.</a> Firebase configuration file in the source code.
     </figcaption>
 </figure>
 
-
 ### 5.2. Install Git Bash
+
 {:#install-git-bash}
 
 Windows users will also need to install Git Bash. You can download it from the below link, by clicking
-the Windows icon, as shown in [Figure 16](#fig16).
+the Windows icon, as shown in [Figure 19](#fig19).
 https://git-scm.com/download/win
 
-<figure id="fig16">
-    <img src="diagrams/non-technical-installation-guide/16-download-git-installer.png" alt="figure 16" height="300" />
+<figure id="fig19">
+    <img src="diagrams/non-technical-installation-guide/16-download-git-installer.png" alt="figure 19" height="300" />
     <figcaption>
-        <a href="#fig16">Figure 16.</a> Downloading the git installer.
+        <a href="#fig19">Figure 19.</a> Downloading the git installer.
     </figcaption>
 </figure>
 
@@ -409,39 +431,39 @@ After downloading, double-click on the executable. Follow the installation proce
 of the default settings. After this you should have a working Git for Windows instance running on your
 computer.
 
-
 ### 5.3. Running the Deployment Script
+
 {:#running-deployment-script}
 
 Now the environment is completely set up and ready for you to edit and to deploy. To deploy a version of
 this application on the internet, follow the below steps.
 
 Step 1:  In the top toolbar of Visual Studio Code, click on Terminal > New Terminal. This will open at the
-bottom of the application and look like [Figure 17](#fig17).
+bottom of the application and look like [Figure 20](#fig20).
 
-<figure id="fig17">
-    <img src="diagrams/non-technical-installation-guide/17-visual-studio-command-prompt.png" alt="figure 17" height="410" />
+<figure id="fig20">
+    <img src="diagrams/non-technical-installation-guide/17-visual-studio-command-prompt.png" alt="figure 20" height="410" />
     <figcaption>
-        <a href="#fig17">Figure 17.</a> Opening the Visual Studio command prompt.
+        <a href="#fig20">Figure 20.</a> Opening the Visual Studio command prompt.
     </figcaption>
 </figure>
 
 Step 1.5: If you are on Windows, you will also need to change to the Git Bash terminal. As shown in
-[Figure 18](#fig18), first click on the down arrow and then select “Git Bash”.
+[Figure 21](#fig21), first click on the down arrow and then select “Git Bash”.
 
-<figure id="fig18">
-    <img src="diagrams/non-technical-installation-guide/18-switch-to-git-bash.png" alt="figure 18" height="199" />
+<figure id="fig21">
+    <img src="diagrams/non-technical-installation-guide/18-switch-to-git-bash.png" alt="figure 21" height="199" />
     <figcaption>
-        <a href="#fig18">Figure 18.</a> Switching the command prompt to Git Bash.
+        <a href="#fig21">Figure 21.</a> Switching the command prompt to Git Bash.
     </figcaption>
 </figure>
 
-This will open a terminal that looks like [Figure 19](#fig19).
+This will open a terminal that looks like [Figure 22](#fig22).
 
-<figure id="fig19">
-    <img src="diagrams/non-technical-installation-guide/19-blank-git-bash.png" alt="figure 19" height="160" />
+<figure id="fig22">
+    <img src="diagrams/non-technical-installation-guide/19-blank-git-bash.png" alt="figure 22" height="160" />
     <figcaption>
-        <a href="#fig19">Figure 19.</a> Visual Studio command prompt in Git Bash mode.
+        <a href="#fig22">Figure 22.</a> Visual Studio command prompt in Git Bash mode.
     </figcaption>
 </figure>
 
@@ -449,90 +471,89 @@ Step 2: In the terminal at the bottom of the screen run the following command: `
 
 You will now see text beginning to be displayed at the bottom of the terminal screen. This will be installing
 all the necessary packages and deploy the app. Please note that this process may take a while. See
-[Figure 20](#fig20) for an example.
+[Figure 23](#fig23) for an example.
 
-<figure id="fig20">
-    <img src="diagrams/non-technical-installation-guide/20-start-deployment.png" alt="figure 20" height="182" />
+<figure id="fig23">
+    <img src="diagrams/non-technical-installation-guide/20-start-deployment.png" alt="figure 23" height="182" />
     <figcaption>
-        <a href="#fig20">Figure 20.</a> Beginning the deployment process.
+        <a href="#fig23">Figure 23.</a> Beginning the deployment process.
     </figcaption>
 </figure>
 
 During this deployment process you will be asked many questions which require a response. These questions
-are as follows: <br/>
+are as follows: `<br/>`
 Question 1: You will be asked to login to your Google Firebase account. If you are not already logged
 in, this will open a browser window. Please sign in to your Google Firebase account and return to Visual
-Studio Code. <br/>
+Studio Code. `<br/>`
 Question 2: You will be asked to select a Firebase Project. Select the relevant Firebase project made earlier
-and then press Enter to continue. This is shown in [Figure 21](#fig21).
+and then press Enter to continue. This is shown in [Figure 24](#fig24).
 
-<figure id="fig21">
-    <img src="diagrams/non-technical-installation-guide/21-deploy--select-firebase-project.png" alt="figure 21" height="153" />
+<figure id="fig24">
+    <img src="diagrams/non-technical-installation-guide/21-deploy--select-firebase-project.png" alt="figure 24" height="153" />
     <figcaption>
-        <a href="#fig21">Figure 21.</a> Selecting the Firebase project in the deployment process.
+        <a href="#fig24">Figure 24.</a> Selecting the Firebase project in the deployment process.
     </figcaption>
 </figure>
 
 Question 3: You will be asked to give an alias to this project. This can be whatever you would like.
-For example, “test”. Press Enter to continue. <br/>
+For example, “test”. Press Enter to continue. `<br/>`
 Question 4: You will be asked to sign in to Google Cloud. Press Y and then Enter. This will open a
 login page in your browser, please login with the same Google Account you are using for Firebase. After
-this return to Visual Studio Code. <br/>
+this return to Visual Studio Code. `<br/>`
 Question 5: You will be asked to select the cloud project. Press the number next to your project and
-then press Enter to continue. This is shown in [Figure 22](#fig22).
-
-<figure id="fig22">
-    <img src="diagrams/non-technical-installation-guide/22-deploy--select-cloud-project.png" alt="figure 22" height="138" />
-    <figcaption>
-        <a href="#fig22">Figure 22.</a> Selecting the cloud project in the deployment process.
-    </figcaption>
-</figure>
-
-Question 6: Next you will be asked to make a domain name. <br/>
-Before entering the URL, please note that the domain name **must** be your Firebase Project ID. You can get
-the Project ID from Firebase by clicking on the “Gear” icon on the left and then on “Project Settings”.
-[Figure 23](#fig23) and [Figure 24](#fig24) below demonstrates this.
-
-<figure id="fig23">
-    <img src="diagrams/non-technical-installation-guide/23-deploy--access-project-settings.png" alt="figure 23" height="267" />
-    <figcaption>
-        <a href="#fig23">Figure 23.</a> Accessing the Firebase project settings.
-    </figcaption>
-</figure>
-
-<figure id="fig24">
-    <img src="diagrams/non-technical-installation-guide/24-deploy--copy-project-id.png" alt="figure 24" height="241" />
-    <figcaption>
-        <a href="#fig24">Figure 24.</a> The Project ID on the project settings page.
-    </figcaption>
-</figure>
-
-The URL must be in the format of “<projectID>. appspot.com.” For example, “test-15cff.appspot.com” is
-a valid domain. See [Figure 25](#fig25) for an example. After entering the URL, press Enter to continue.
+then press Enter to continue. This is shown in [Figure 25](#fig25).
 
 <figure id="fig25">
-    <img src="diagrams/non-technical-installation-guide/25-deploy--enter-project-id.png" alt="figure 25" height="122" />
+    <img src="diagrams/non-technical-installation-guide/22-deploy--select-cloud-project.png" alt="figure 25" height="138" />
     <figcaption>
-        <a href="#fig25">Figure 25.</a> Entering a Firebase project's domain name.
+        <a href="#fig25">Figure 25.</a> Selecting the cloud project in the deployment process.
+    </figcaption>
+</figure>
+
+Question 6: Next you will be asked to make a domain name. `<br/>`
+Before entering the URL, please note that the domain name **must** be your Firebase Project ID. You can get
+the Project ID from Firebase by clicking on the “Gear” icon on the left and then on “Project Settings”.
+[Figure 26](#fig26) and [Figure 27](#fig27) below demonstrates this.
+
+<figure id="fig26">
+    <img src="diagrams/non-technical-installation-guide/23-deploy--access-project-settings.png" alt="figure 26" height="267" />
+    <figcaption>
+        <a href="#fig26">Figure 26.</a> Accessing the Firebase project settings.
+    </figcaption>
+</figure>
+
+<figure id="fig27">
+    <img src="diagrams/non-technical-installation-guide/24-deploy--copy-project-id.png" alt="figure 27" height="241" />
+    <figcaption>
+        <a href="#fig27">Figure 27.</a> The Project ID on the project settings page.
+    </figcaption>
+</figure>
+
+The URL must be in the format of “`<projectID>`. firebasestorage.app.” For example, “test-15cff.firebasestorage.app” is
+a valid domain. See [Figure 28](#fig28) for an example. After entering the URL, press Enter to continue.
+
+<figure id="fig28">
+    <img src="diagrams/non-technical-installation-guide/25-deploy--enter-project-id.png" alt="figure 28" height="122" />
+    <figcaption>
+        <a href="#fig28">Figure 28.</a> Entering a Firebase project's domain name. <i>Note that the domain name here is outdated as of September 2024, and your domain name will be in a .firebasestorage.app format. </i>
     </figcaption>
 </figure>
 
 Step 4: The site is now fully deployed and ready to be accessed. You will see something similar to
-[Figure 26](#fig26).
+[Figure 29](#fig29).
 
-<figure id="fig26">
-    <img src="diagrams/non-technical-installation-guide/26-deploy--success.png" alt="figure 26" height="129" />
+<figure id="fig29">
+    <img src="diagrams/non-technical-installation-guide/26-deploy--success.png" alt="figure 29" height="129" />
     <figcaption>
-        <a href="#fig26">Figure 26.</a> Command prompt after a successful deployment.
+        <a href="#fig29">Figure 29.</a> Command prompt after a successful deployment.
     </figcaption>
 </figure>
 
 You can now access the website on your browser at the domain \[Your Project ID\].web.app.
 \[Your Project ID\]” is the project ID obtained for question 6 above.
 
-
-
 ## 6. Run your Studies!
+
 {:#conclusion}
 
 You should now have a fully deployed instance of The Misinformation Game! You may now sign in to your
@@ -545,6 +566,7 @@ your studies can be found in the [Study Configuration documentation](/StudyConfi
 Misinformation Game proves useful for your research!
 
 ## 7. Learn about Future Updates 🚀
+
 {:#stay-updated}
 
 We share updates about the Misinformation Game in our Slack channel. If you wish to stay up-to-date,
@@ -556,4 +578,3 @@ our community on Slack!
         Join our Slack Community
     </a>
 </div>
-
