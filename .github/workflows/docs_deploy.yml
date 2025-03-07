@@ -1,0 +1,23 @@
+name: Deploy documentation to themisinformationgame.github.io
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Transfer docs to themisinformationgame.github.io
+        uses: cpina/github-action-push-to-another-repository@v1.5
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        with:
+          source-directory: docs/
+          destination-github-username: TheMisinformationGame
+          destination-repository-name: themisinformationgame.github.io
+          user-email: padraiglamont@gmail.com
+          target-branch: main
