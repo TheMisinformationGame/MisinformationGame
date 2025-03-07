@@ -10,7 +10,7 @@ showBackToTop: true
 
 This document describes how to set up your development
 environment to work on The Misinformation Game documentation
-website, and host  it locally for testing.
+website, and host it locally for testing.
 
 
 <!-- TODO: Split this into installation & running sections -->
