@@ -114,6 +114,12 @@ export class GameDebrief extends ActiveGameScreen {
     componentDidMount() {
         super.componentDidMount();
         this.makeCompletionCodeInteractive();
+
+        // Useful for integrations like Qualtrics to know when the user is done.
+        window.postMessage({ type: "gamecomplete" }, "*");
+        if (window.parent) {
+            window.parent.postMessage({ type: "gamecomplete" }, "*");
+        }
     }
 
     componentDidUpdate() {
