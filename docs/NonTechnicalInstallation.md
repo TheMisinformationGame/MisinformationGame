@@ -20,9 +20,9 @@ likely be easier and quicker to follow.
 ## Table of Contents
 
 {:#toc .no_toc}
-
 * toc
-  {:toc}
+{:toc}
+
 
 ## 1. Download the Codebase From GitHub
 

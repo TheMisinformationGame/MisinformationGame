@@ -23,9 +23,9 @@ may be easier to follow.
 ## Table of Contents
 
 {:#toc .no_toc}
-
 * toc
-  {:toc}
+{:toc}
+
 
 ## 1. Installation of Required Dependencies
 
