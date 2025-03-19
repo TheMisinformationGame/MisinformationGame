@@ -520,13 +520,18 @@ function readV1PostDefaults(workbook, defaultsSpec, enabledReactions) {
     };
 }
 
+function trimBrAndWhitespace(str) {
+    // Remove leading or trailing whitespace, including HTML linebreaks.
+    return str.replace(/^(<br\s*\/?>|\s)+|(<br\s*\/?>|\s)+$/gi, '');
+}
+
 export function readV1MaybeHTML(content) {
     if (typeof content !== "string")
         return content;
 
     const htmlPrefix = "!HTML";
     if (content.startsWith(htmlPrefix))
-        return content.substring(htmlPrefix.length);
+        return trimBrAndWhitespace(content.substring(htmlPrefix.length));
 
     return he.encode(content);
 }

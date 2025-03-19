@@ -1,6 +1,7 @@
 import FileSaver from 'file-saver';
 import {readAllCompletedStudyResults} from "../database/getFromDB";
 import {createDateFromUnixEpochTimeSeconds, formatUTCDate} from "../utils/time";
+import * as he from "he";
 
 const excel = require("exceljs");
 
@@ -160,7 +161,7 @@ function constructWorkbook(study, results, problems) {
                 sharedPost: interaction.hasPostReaction("share"),
                 flaggedPost: interaction.hasPostReaction("flag"),
                 skippedPost: interaction.hasPostReaction("skip"),
-                comment: interaction.comment || "",
+                comment: he.decode(interaction.comment || ""),
 
                 dwellTime: numToCellValue(interaction.timer.getDwellTimeMS()),
                 firstInteractTime: numToCellValue(interaction.timer.getTimeToFirstInteractMS()),
@@ -223,7 +224,7 @@ function constructWorkbook(study, results, problems) {
                     postID: state.currentPost.post.id,
 
                     commentOrder: (comment.comment.index + 1),
-                    commentContent: comment.comment.message,
+                    commentContent: he.decode(comment.comment.message),
                     commentLikes: (likes === undefined ? "" : likes),
                     commentDislikes: (dislikes === undefined ? "" : dislikes),
 
