@@ -4,6 +4,7 @@ import {ConfirmationDialog} from "../../components/ConfirmationDialog";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import {ErrorLabel} from "../../components/StatusLabel";
 import {POST_SUBMITTED_TOOLTIP} from "./Post";
+import * as he from "he";
 
 
 /**
@@ -65,11 +66,12 @@ export class CommentSubmissionRow extends MountAwareComponent {
     constructor(props) {
         super(props);
 
-        const isEditing = (props.initialValue && props.initialValue.trim().length > 0);
+        const initialValue = (props.initialValue ? he.decode(props.initialValue) : null);
+        const isEditing = (initialValue && initialValue.trim().length > 0);
         this.state = {
             enabled: isEditing,
             isEditingComment: isEditing,
-            value: (props.initialValue || ""),
+            value: (initialValue || ""),
             showDiscardConfirmation: false,
             displayError: false,
         };
@@ -126,7 +128,7 @@ export class CommentSubmissionRow extends MountAwareComponent {
         }
 
         if (this.isValidValue(value)) {
-            this.props.submit(value);
+            this.props.submit(he.encode(value));
         } else {
             this.props.submit(null);
             // If the ID is invalid, display the error.

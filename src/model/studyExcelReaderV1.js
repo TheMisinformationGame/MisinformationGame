@@ -26,6 +26,7 @@ import {
 } from "./selectionMethod";
 import {LinearFunction, TruncatedNormalDistribution} from "./math";
 import {StudyImage} from "./images";
+import * as he from "he";
 
 
 /**
@@ -453,7 +454,7 @@ function readV1Comments(workbook, firstRow) {
         comments.push(new PostComment(
             index,
             readCell(workbook, V1.post.comment.sourceName.row(row)),
-            readCell(workbook, V1.post.comment.message.row(row)),
+            readV1MaybeHTML(readCell(workbook, V1.post.comment.message.row(row))),
             new ReactionValues(
                 TruncatedNormalDistribution.exactly(likes),
                 TruncatedNormalDistribution.exactly(dislikes),
@@ -519,6 +520,17 @@ function readV1PostDefaults(workbook, defaultsSpec, enabledReactions) {
     };
 }
 
+export function readV1MaybeHTML(content) {
+    if (typeof content !== "string")
+        return content;
+
+    const htmlPrefix = "!HTML";
+    if (content.startsWith(htmlPrefix))
+        return content.substring(htmlPrefix.length);
+
+    return he.encode(content);
+}
+
 /**
  * Returns a Promise to a list of posts read from the workbook.
  */
@@ -559,7 +571,7 @@ export function readV1Posts(workbook, study) {
                 return new Post(
                     postID,
                     headline,
-                    content,
+                    readV1MaybeHTML(content),
                     isTrue,
                     readV1ReactionValues(
                         workbook, V1.post.changesToFollowers, row, defaults.changesToFollowers, enabledReactions),

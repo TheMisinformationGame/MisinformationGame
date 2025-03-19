@@ -142,7 +142,10 @@ export class Comment extends Component {
                                     </div>}
                             </div>
 
-                            <p className="w-full text-lg ml-1" style={{whiteSpace: "pre-wrap"}}>{comment.message}</p>
+                            <p
+                                className="w-full text-lg ml-1"
+                                style={{ whiteSpace: "pre-wrap" }}
+                                dangerouslySetInnerHTML={{__html: comment.message}} />
                         </div>
 
                         <div className="flex flex-row-reverse flex-grow-0 p-1 pr-0">
