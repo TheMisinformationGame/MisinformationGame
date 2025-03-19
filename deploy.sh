@@ -137,8 +137,14 @@ if [ ! "$do_skip_cors" = true ]; then
   echo "Setting up the CORS settings for the website..."
   echo "==============================================="
   echo " "
-  echo "Please enter the URL of your project as a .appspot.com domain (e.g. misinformation-game.appspot.com):"
-  read -r URL || exit 1
+
+  # Automatically extract storageBucket from the config file
+  URL=$(grep 'storageBucket' config/firebase-config.js | sed -E 's/.*"([^"]+)".*/\1/')
+  if [ -z "$URL" ]; then
+    echo "Error: storageBucket value not found in config/firebase-config.js" && exit 1
+  fi
+
+  echo "Uploading CORS settings to $URL..."
   "$gsutil_command" cors set src/config/cors.json "gs://$URL" || { echo "Uploading CORS settings failed!" ; exit 1; }
 fi
 
