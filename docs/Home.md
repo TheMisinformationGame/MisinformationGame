@@ -44,11 +44,11 @@ a wide array of social-media related questions. You may
 <p class="update">
     <span class="bold">v2.4.0</span>
     <span>
-      has been released with new HTML comments and posts,
-      and updates for third-party integration with Qualtrics.
+      has been released with a new way to use raw HTML in posts and comments,
+      and updates for integrating the Misinformation Game into Qualtrics.
     </span>
     <a href="https://github.com/TheMisinformationGame/MisinformationGame/releases/tag/v2.4.0">
-        Read Mores
+        Read More.
     </a>
 </p>
 
