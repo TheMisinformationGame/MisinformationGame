@@ -1,6 +1,4 @@
-# .github/workflows/deploy-prod.yml
-name: Deploy to Firebase Hosting on merge
-
+name: Deploy to Firebase Hosting
 on:
   push:
     branches:
