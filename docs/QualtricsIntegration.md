@@ -36,7 +36,7 @@ Game URL. This allows users to not have to enter their ID manually.
     Due to browser settings, iframe integrations may <b>fail</b> if a participant is using Safari. Because of this, we recommend preventing people on Safari from completing your survey if using an iframe integration option.
 </p>
 
-We have now updated the debrief page within the misinfo game (v2.3.2) to allow for basic communication with a parent page (e.g., Qualtrics survey) when the tool is embedded as an iframe. This allows the game to 'tell' Qualtrics that the participant has reached the debrief page of the misinfo game study that you have embedded, which you can then use to trigger the next button. This integration is based on a paper by Benjamin Carter & Alessandro Del Ponte which can be found [here](https://doi.org/10.3758/s13428-022-01792-w), and we strongly recommend that you cite their paper (along with our paper) if you use this integration method.
+We have now updated the debrief page within the misinfo game (v2.4.0) to allow for basic communication with a parent page (e.g., Qualtrics survey) when the tool is embedded as an iframe. This allows the game to 'tell' Qualtrics that the participant has reached the debrief page of the misinfo game study that you have embedded, which you can then use to trigger the next button. This integration is based on a paper by Benjamin Carter & Alessandro Del Ponte which can be found [here](https://doi.org/10.3758/s13428-022-01792-w), and we strongly recommend that you cite their paper (along with our paper) if you use this integration method.
 
 Before you insert the misinfo game, you will need to ensure that the formatting in your qualtrics survey is appropriate. To do so, navigate to the look and feel tab of your Qualtrics survey.
 

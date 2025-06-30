@@ -42,10 +42,13 @@ a wide array of social-media related questions. You may
 [read more in our paper](https://doi.org/10.3758/s13428-023-02153-x).
 
 <p class="update">
-    <span class="bold">v2.3.2</span>
-    <span>has been released with upgrades to dependencies.</span>
-    <a href="https://github.com/TheMisinformationGame/MisinformationGame/releases/tag/v2.3.2">
-        Read More
+    <span class="bold">v2.4.0</span>
+    <span>
+      has been released with new HTML comments and posts,
+      and updates for third-party integration with Qualtrics.
+    </span>
+    <a href="https://github.com/TheMisinformationGame/MisinformationGame/releases/tag/v2.4.0">
+        Read Mores
     </a>
 </p>
 
