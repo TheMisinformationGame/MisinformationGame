@@ -259,7 +259,7 @@ function readV1PredefinedSourcePostPairsFixedLength(workbook, length) {
         throw new Error("Length must be positive");
 
     const order = [];
-    const lastRow = V1.predefinedOrder.firstRow + length;
+    const lastRow = V1.predefinedOrder.firstRow + length - 1;
     if (lastRow > V1.predefinedOrder.lastRow) {
         const maxLength = V1.predefinedOrder.lastRow - V1.predefinedOrder.firstRow + 1;
         throw new Error(

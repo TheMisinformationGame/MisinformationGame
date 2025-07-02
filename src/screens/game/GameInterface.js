@@ -432,7 +432,7 @@ export class GameScreen extends ActiveGameScreen {
         const inters = this.state.interactions;
         const postInters = inters.get(postIndex);
 
-        if (postInters.isCompleted() || postInters.isEmpty())
+        if (postInters.isCompleted())
             return {};
 
         const newInters = inters.update(postIndex, postInters.complete());
