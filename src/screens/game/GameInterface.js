@@ -432,7 +432,9 @@ export class GameScreen extends ActiveGameScreen {
         const inters = this.state.interactions;
         const postInters = inters.get(postIndex);
 
-        if (postInters.isCompleted())
+        // Only skip empty posts in feed mode
+        const isFeedMode = game.study.uiSettings.displayPostsInFeed;
+        if (postInters.isCompleted() || (isFeedMode && postInters.isEmpty()))
             return {};
 
         const newInters = inters.update(postIndex, postInters.complete());
