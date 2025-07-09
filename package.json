@@ -1,6 +1,6 @@
 {
   "name": "misinformation-game",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "author": "Padraig X. Lamont",
   "private": true,
   "dependencies": {
