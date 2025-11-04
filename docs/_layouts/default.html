@@ -23,7 +23,7 @@
 
       <!-- Show the path to this page on non-home pages. -->
       {% if page.showPath %}
-        <div class="page-path">
+        <nav class="page-path" aria-label="Breadcrumb">
           <a href="/">Home</a>
           &gt;
           {% if page.underDocsPath %}
@@ -34,14 +34,14 @@
           <a href="/articles">Articles</a>
           &gt;
           {% endif %}
-          <a href="{{ page.url }}">
+          <a href="{{ page.url }}" aria-current="page">
             {% if page.pathNameOverride %}
               {{ page.pathNameOverride }}
             {% else %}
               {{ page.title }}
             {% endif %}
           </a>
-        </div>
+        </nav>
       {% endif %}
 
       <!-- This includes the content of the page. -->
