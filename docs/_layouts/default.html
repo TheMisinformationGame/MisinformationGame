@@ -9,6 +9,7 @@
   {% include header.html %}
   {% endunless %}
 
+  <main>
   {% if page.isArticle %}
   <div class="container article">
   {% else %}
@@ -48,6 +49,7 @@
       {% endif %}
     </div>
   </div>
+  </main>
   {% include footer.html %}
 
   {% if page.showBackToTop %}
