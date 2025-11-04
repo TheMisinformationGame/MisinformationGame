@@ -11,7 +11,7 @@
             </h3>
             <nav class="menu-list menu-right">
                 {% for item in site.data.settings.social %}
-                    <a href="{{ item.link }}" class="menu-link menu-link-social-icon" target="_blank" rel="noopener">
+                    <a href="{{ item.link }}" class="menu-link menu-link-social-icon" target="_blank" rel="noopener" aria-label="{{ item.icon | capitalize }} (opens in new tab)">
                         <i class="fa fa-{{ item.icon }}" aria-hidden="true"></i>
                     </a>
                 {% endfor %}

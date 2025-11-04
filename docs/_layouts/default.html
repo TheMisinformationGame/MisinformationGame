@@ -42,7 +42,7 @@
       {% endif %}
 
       <!-- This includes the content of the page. -->
-      {% include anchor_headings.html html=content anchorBody="#" anchorClass="header-link" %}
+      {% include anchor_headings.html html=content anchorBody="#" anchorClass="header-link" anchorAttrs='aria-label="Link to %heading%"' %}
 
       {% if page.showBackToTop %}
         <a class="back-to-top" href="#top">Back to Top</a>
