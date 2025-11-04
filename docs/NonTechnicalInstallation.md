@@ -560,7 +560,7 @@ You should now have a fully deployed instance of The Misinformation Game! You ma
 instance of The Misinformation Game, and register yourself as an administrator, through the process
 described in the [Registering Administrators documentation](/Administrators).
 
-Once you have registered yourself as an admin, then you can read more about uploading and managing your
+Once you have registered yourself as an admin, you can learn about uploading and managing your
 studies in the [Managing Studies documentation](ManagingStudies). Additionally, information on configuring
 your studies can be found in the [Study Configuration documentation](/StudyConfiguration). I hope The
 Misinformation Game proves useful for your research!

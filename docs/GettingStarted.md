@@ -38,7 +38,7 @@ link. Once opened, select **_File -> Make a copy_** to clone the
 spreadsheet, as shown in [Figure 1](#fig1). Your copy of the
 spreadsheet will now be linked to your Google account, and you
 may edit it to build your own study. More information about this
-process can be found [here](/StudyConfiguration#create). It is
+process can be found in the [Study Configuration guide](/StudyConfiguration#create). It is
 important to note that the configuration spreadsheet **must be
 opened in Google Sheets**. Excel is not supported.
 
@@ -133,7 +133,7 @@ study may be added by entering the necessary information into the table
 in the **Sources** sheet in your study configuration. The columns to
 enter values in are highlighted in [Figure 5](#fig5). Additional
 documentation about the available configuration options for sources can
-be found [here](/StudyConfiguration#sources).
+be found in the [Sources configuration reference](/StudyConfiguration#sources).
 
 <figure id="fig5">
     <img src="diagrams/add-a-source.png" height="637" alt="A diagram highlighting where to enter new sources." />
@@ -158,11 +158,11 @@ table in the **Posts** sheet in your study configuration. The columns to enter
 values in are highlighted in [Figure 6](#fig6). Images may be included for the
 content of posts by selecting **Insert -> Image -> Insert image in cell** in
 the top menu. However, it is important that any images that you add are
-optimised to reduce your hosting costs. A guide for including images can be
-found [here](/Images). Additional documentation on the available configuration
-options for posts can also be found [here](/StudyConfiguration#posts). For
-example, you may include additional comments on each post, which is described
-[here](/StudyConfiguration#posts-comments).
+optimised to reduce your hosting costs. See the [guide for including images](/Images)
+for recommendations. Additional documentation on the available configuration
+options for posts can be found in the [Posts configuration reference](/StudyConfiguration#posts). For
+example, you may include additional comments on each post, as described in
+the [Posts comments documentation](/StudyConfiguration#posts-comments).
 
 <figure id="fig6">
     <img src="diagrams/add-a-post.png" height="639" alt="A diagram highlighting where to enter new posts." />
@@ -183,16 +183,16 @@ available responses for your participants, which can be set within the
 **General** sheet. You should select the options that are most applicable
 for your research. The major available options are listed below:
 
-- You may enable or disable the available reactions for posts and comments as described
-  [here](/StudyConfiguration#general-post-likes-enabled).
-- You may set reactions to be required or optional as described
-  [here](/StudyConfiguration#general-require-reactions).
-- You may set comments to be required, optional, or disabled as described
-  [here](/StudyConfiguration#general-enable-user-comments).
-- You may set whether multiple reactions to posts and comments is possible as described
-  [here](/StudyConfiguration#general-allow-multiple-reactions).
-- You may set whether reaction counts should be displayed below the reactions as described
-  [here](/StudyConfiguration#general-display-reaction-counts).
+- You may enable or disable the available reactions for posts and comments
+  (see [Post Likes Enabled](/StudyConfiguration#general-post-likes-enabled)).
+- You may set reactions to be required or optional
+  (see [Require Reactions](/StudyConfiguration#general-require-reactions)).
+- You may set comments to be required, optional, or disabled
+  (see [Enable User Comments](/StudyConfiguration#general-enable-user-comments)).
+- You may set whether multiple reactions to posts and comments is possible
+  (see [Allow Multiple Reactions](/StudyConfiguration#general-allow-multiple-reactions)).
+- You may set whether reaction counts should be displayed below the reactions
+  (see [Display Reaction Counts](/StudyConfiguration#general-display-reaction-counts)).
 
 <figure id="fig7">
     <div class="figure-side-by-side">
@@ -213,8 +213,8 @@ of participants based upon their reactions to a post. These changes
 can be chosen by you for each post. An example of the follower count
 and credibility number of a participant changing is shown in
 [Figure 8](#fig8). If you wish, you may also disable followers and/or
-credibility from being shown to participants at all (see
-[here](/StudyConfiguration#general-display-followers)).
+credibility from being shown to participants at all (see the
+[Display Followers configuration](/StudyConfiguration#general-display-followers)).
 
 <figure id="fig8">
     <img style="height: 186px" src="screenshots/dynamic-feedback.gif" data-speed="1.2" width="340" height="186" alt="An animation showing reacting to a post." />
@@ -241,9 +241,9 @@ sheet. Additionally, exact changes to followers and credibility for
 reactions can be specified for each post individually in the posts
 table (within the row where post information has been included).
 Additional documentation about configuring the default post values can
-be found [here](/StudyConfiguration#posts-default-values), and
+be found in the [Default Post Values reference](/StudyConfiguration#posts-default-values), and
 documentation about configuring the exact changes for a post can be
-found [here](/StudyConfiguration#posts-changes-to-followers).
+found in the [Changes to Followers reference](/StudyConfiguration#posts-changes-to-followers).
 
 <figure id="fig9">
     <img src="diagrams/edit-dynamic-feedback.png" width="1678" height="724" alt="A diagram highlighting where to configure the dynamic feedback from reactions to posts." />
@@ -260,7 +260,7 @@ found [here](/StudyConfiguration#posts-changes-to-followers).
 The sources that are shown for each post is dynamically selected when
 each participant starts the study. This can be set in a number of
 different ways based upon the needs of your study
-(see [here](/StudyConfiguration#selection)). However, if you don't wish
+(see the [Selection configuration reference](/StudyConfiguration#selection)). However, if you don't wish
 to dive into the details, the "Credibility" mode is a good default pick.
 It selects true or false posts to pair with a source based on the
 credibility score of that source. If the source has a high credibility,
@@ -271,8 +271,8 @@ on the **Source and Post Selection** sheet. Additionally, if you want
 more control, then you can also define the pairings of sources and
 posts manually, by selecting the "Pre-Defined" mode and adding the
 pairings in the **Pre-Defined Source/Post Pairs** sheet. Additional
-detail on the available source/post selection modes can be found
-[here](/Simulation).
+detail on the available source/post selection modes can be found in the
+[Simulation documentation](/Simulation).
 
 
 ### 2.6. Update your Study's Introduction and Debriefing Pages
@@ -287,8 +287,8 @@ support the use of HTML for additional control if needed. Additionally,
 there are several placeholders that may be used to include richer
 components within pages (e.g., icons or completion codes). The
 introduction pages may also be disabled by deleting their content.
-Additional documentation on these pages can be found
-[here](/StudyConfiguration#pages).
+Additional documentation on these pages can be found in the
+[Pages configuration reference](/StudyConfiguration#pages).
 
 <figure id="fig10">
     <img src="diagrams/edit-pages.png" width="1110" height="823" alt="A diagram showing the pages sheet." />
@@ -309,30 +309,30 @@ considerations that we consider important are listed below:
 - Select whether you wish your study to be displayed as a feed, or whether only
   a single post should be shown at a time. This option will have
   a significant impact on the experience of your participants.
-  The option to use a feed is documented
-  [here](/StudyConfiguration#general-display-feed).
+  See the [Display Feed configuration](/StudyConfiguration#general-display-feed)
+  for details.
 
 - Enter the prompt to display to participants before they start a study.
   This can be used to test hypotheses about participant's actions after
   different prompts, or it can simply be used to encourage your
-  participant's to have focus during the study. This option is documented
-  [here](/StudyConfiguration#general-prompt).
+  participant's to have focus during the study. See the
+  [Prompt configuration](/StudyConfiguration#general-prompt) for details.
 
 - Select whether you wish to enforce participant identification through
   a text identifier. This is vital if you wish to identify participants
   as they move from other platforms (e.g., Qualtrics or Prolific).
   This participant identifier can be provided through URL parameters,
-  as discussed [here](/ManagingStudies#access-study-url). Documentation
-  for this option is also provided
-  [here](/StudyConfiguration#general-require-identification).
+  as discussed in [Accessing the study URL](/ManagingStudies#access-study-url). See the
+  [Require Identification configuration](/StudyConfiguration#general-require-identification)
+  for details.
 
 - Select whether you wish to generate completion codes for participants.
   These completion codes are only shown to participants after they have
   completed the study, and they are saved in the results. This can be
   used to verify that a participant has completed the study, by
   requiring that they enter the completion code into another platform
-  such as Qualtrics. Documentation for this option is provided
-  [here](/StudyConfiguration#general-generate-completion-code).
+  such as Qualtrics. See the [Generate Completion Code configuration](/StudyConfiguration#general-generate-completion-code)
+  for details.
 
 
 ## 3. Install The Misinformation Game
@@ -340,15 +340,15 @@ considerations that we consider important are listed below:
 
 You must host your own version of the Misinformation Game to use it for
 your studies. The installation process can take a few hours, but you only
-have to follow it once. This process is described [here](/Installation).
+have to follow it once. See the [Installation guide](/Installation) for step-by-step instructions.
 
 
 ## 4. Test your Study
 {:#test}
 
 Once you have deployed your own instance of the Misinformation Game, you
-may upload your study to test it! The process to download your study,
-upload it, and test it, is described [here](/StudyConfiguration#upload).
+may upload your study to test it! See the [Upload your Study guide](/StudyConfiguration#upload)
+for instructions on downloading, uploading, and testing your study.
 You may also use the **Update Study** button to introduce changes to your
 study, as you fine-tune it for your research.
 

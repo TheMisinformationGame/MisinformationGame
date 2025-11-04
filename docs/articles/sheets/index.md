@@ -81,7 +81,7 @@ If you'd like to try it out, we have a [live demo](/link/ExampleGame) that you c
 We chose to build The Misinformation Game using Firebase, Tailwind, React, and _Google Sheets_ (the star of the show!).
 The first three, Firebase, Tailwind, and React, are all pretty standard choices. They have a free tier, are quick,
 and are good for UI, respectively. If you'd like to read more about those choices,
-[you can read more here](/TechnicalOverview).
+see the [Technical Overview](/TechnicalOverview).
 
 However, if you're a software engineer reading through this post, you may have just groaned at the mention
 of _choosing_ to put spreadsheets in a tech stack. Stories from my friends and lecturers who've had the,

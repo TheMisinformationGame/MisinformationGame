@@ -38,8 +38,8 @@ posts and their comments. The Misinformation Game has been designed to
 be highly customisable so that a broad range of tightly controlled
 experiences can be created for participants. This customisability is
 a core focus of The Misinformation Game, to facilitate the research of
-a wide array of social-media related questions. You may
-[read more in our paper](https://doi.org/10.3758/s13428-023-02153-x).
+a wide array of social-media related questions. Read more in
+[our research paper](https://doi.org/10.3758/s13428-023-02153-x).
 
 <p class="update">
     <span class="bold">v2.4.0</span>
@@ -48,7 +48,7 @@ a wide array of social-media related questions. You may
       and updates for integrating the Misinformation Game into Qualtrics.
     </span>
     <a href="https://github.com/TheMisinformationGame/MisinformationGame/releases/tag/v2.4.0">
-        Read More.
+        Read the v2.4.0 release notes.
     </a>
 </p>
 

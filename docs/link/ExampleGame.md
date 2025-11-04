@@ -44,6 +44,6 @@ You may access example studies from the following URLs:
 - [Example Game (Feed Mode)](https://try.misinfogame.com/study/zc7s3qqh0rrc30cx)
 
 Additionally, the study configuration spreadsheets that were used to
-create the example games can be found [here](/link/ExampleStudy).
+create the example games are available on the [Example Study Configuration page](/link/ExampleStudy).
 You may use these as examples when building your own study using the
 Misinformation Game.

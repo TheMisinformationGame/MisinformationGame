@@ -305,9 +305,8 @@ participant ID before starting the study. If this value
 is true, then participants will be shown an identification
 screen for them to manually enter their ID if it has not
 already been automatically populated from the URL they
-have been given. The method to include a participant
-identifier in URL parameters is discussed
-[here](/ManagingStudies#access-study-url).
+have been given. See [Accessing the study URL](/ManagingStudies#access-study-url)
+for details on including a participant identifier in URL parameters.
 
 
 ### 3.2. User Interface Settings
@@ -1154,8 +1153,8 @@ credibility is zero.
 
 An exact set of source/post pairs is manually defined to be presented
 to participants. The source/post pairs can be manually defined in the
-_Pre-Defined Source & Post Order_ sheet, which is
-documented [here](#predefined).
+_Pre-Defined Source & Post Order_ sheet, documented in the
+[Pre-Defined Source & Post Order Worksheet](#predefined) section.
 
 
 
