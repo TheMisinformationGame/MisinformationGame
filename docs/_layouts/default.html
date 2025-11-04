@@ -2,6 +2,9 @@
 <html lang="en">
 {% include head.html %}
 <body>
+  <!-- Skip link for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
   <!-- Allows linking to the top of the page. -->
   <a id="top" aria-hidden="true"></a>
 
@@ -9,7 +12,7 @@
   {% include header.html %}
   {% endunless %}
 
-  <main>
+  <main id="main-content">
   {% if page.isArticle %}
   <div class="container article">
   {% else %}

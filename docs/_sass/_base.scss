@@ -226,6 +226,23 @@ a {
   text-decoration: none;
 }
 
+/* Skip links for accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 200;
+  border-radius: 0 0 4px 0;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
 /* Offsets heading and figure links so that they aren't hidden below the header. */
 h1::before, h2::before, h3::before,
 h4::before, h5::before, h6::before,
