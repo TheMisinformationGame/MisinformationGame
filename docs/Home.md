@@ -20,7 +20,7 @@ figure img {
         <img src="assets/img/logo.png" alt="The Misinformation Game Logo" height="486" width="486" />
     </div>
     <div class="titles">
-        <h1>The Misinformation Game</h1>
+        <h1 id="intro">The Misinformation Game</h1>
         <h2>A social-media simulator for research.</h2>
     </div>
 </div>

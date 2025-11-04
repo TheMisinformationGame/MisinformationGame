@@ -5,6 +5,7 @@ sitemap: false
 ---
 
 # Study Configuration Template Spreadsheet
+{:#intro}
 
 The study configuration template spreadsheet should be used as the basis
 to create your own studies. More documentation on the spreadsheet can be
