@@ -20,7 +20,7 @@ your results.
 </figure>
 
 
-# Table of Contents
+## Table of Contents
 {:#toc .no_toc}
 * toc
 {:toc}

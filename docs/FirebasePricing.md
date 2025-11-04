@@ -22,7 +22,7 @@ Misinformation Game.
     <a href="https://firebase.google.com/pricing">Firebase website</a>.
 </p>
 
-# Table of Contents
+## Table of Contents
 {:#toc .no_toc}
 * toc
 {:toc}
