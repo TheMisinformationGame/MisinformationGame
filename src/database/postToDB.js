@@ -8,7 +8,7 @@ import {compressJson} from "./compressJson";
 import {STUDY_UNCOMPRESSED_KEYS} from "../model/study";
 import {collection, setDoc} from "@firebase/firestore";
 import {doc} from "firebase/firestore";
-import {uploadBytes} from "@firebase/storage";
+import {uploadBytesResumable} from "@firebase/storage";
 import {ref} from "firebase/storage";
 
 /**
@@ -22,10 +22,11 @@ export function uploadStudyConfiguration(study) {
 
 /**
  * Uploads the image {@param image} to storage at the path {@param path}.
- * @return {firebase.storage.UploadTask} a task object for tracking the upload.
+ * @return {UploadTask} a task object for tracking the upload.
  */
 export function uploadImageToStorage(path, image) {
-    return uploadBytes(ref(storage, path), image.buffer);
+    const metadata = { contentType: "image/" + image.type };
+    return uploadBytesResumable(ref(storage, path), image.buffer, metadata);
 }
 
 /**
@@ -62,16 +63,16 @@ export function uploadImagesToStorage(imageDict, progressFn) {
                 }
             }).catch((error) => {
                 console.log("Error uploading " + path);
-                try {
-                    console.error(error);
-                    progress.errored = true;
-                    // If any upload errors, cancel all other uploads.
-                    for (let index = 0; index < tasks.length; ++index) {
-                        tasks[index].cancel();
-                    }
-                } finally {
-                    reject(error);
+                console.error(error);
+                if (progress.errored)
+                    return;
+
+                progress.errored = true;
+                // If any upload errors, cancel all other uploads.
+                for (let index = 0; index < tasks.length; ++index) {
+                    tasks[index].cancel();
                 }
+                reject(error);
             });
             tasks.push(task);
             progress.started += 1;
