@@ -597,7 +597,7 @@ Using HTML, you can make links appear more advanced, similar to link cards prese
 <div style="padding:0 16px;">
   <div onclick="window.open('https://example.com','_blank');"
        style="border:1px solid #ccd0d5;border-radius:14px;overflow:hidden;background:#fff;max-width:500px;cursor:pointer;margin:0 auto;">
-    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" # Replace with image URL
+    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"
          style="width:100%;height:261px;object-fit:cover;display:block;">
     <div style="padding:10px 12px 12px;background:#f2f3f5;border-top:1px solid #ccd0d5;">
       <div style="font-size:12px;color:#65676b;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:3px;">
