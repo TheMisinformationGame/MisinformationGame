@@ -48,8 +48,8 @@ export class InteractionTimer {
     lastHideTime; // Number? (UNIX Milliseconds)
     visibleDuration; // Number (Milliseconds)
 
-    firstInteractTime; // Number? (UNIX Milliseconds)
-    lastInteractTime; // Number? (UNIX Milliseconds)
+    firstInteractTime; // Number? (Milliseconds of visible time)
+    lastInteractTime; // Number? (Milliseconds of visible time)
 
     constructor(firstShowTime, lastShowTime, lastHideTime, visibleDuration, firstInteractTime, lastInteractTime) {
         doNullableTypeCheck(firstShowTime, "number", "Time when First Visible");
@@ -75,17 +75,17 @@ export class InteractionTimer {
     }
 
     getTimeToFirstInteractMS() {
-        if (this.firstInteractTime === null || this.firstShowTime === null)
+        if (this.firstInteractTime === null)
             return NaN;
 
-        return this.firstInteractTime - this.firstShowTime;
+        return this.firstInteractTime;
     }
 
     getTimeToLastInteractMS() {
-        if (this.lastInteractTime === null || this.firstShowTime === null)
+        if (this.lastInteractTime === null)
             return NaN;
 
-        return this.lastInteractTime - this.firstShowTime;
+        return this.lastInteractTime;
     }
 
     /**
@@ -143,9 +143,15 @@ export class InteractionTimer {
 
     withNewInteraction() {
         const time = Date.now();
+        
+        // Calculate the current visible duration (including time since last shown)
+        let currentVisibleDuration = this.visibleDuration;
+        if (this.lastShowTime !== null) {
+            currentVisibleDuration += (time - this.lastShowTime);
+        }
 
-        const firstInteractTime = (this.firstInteractTime !== null ? this.firstInteractTime : time);
-        const lastInteractTime = time;
+        const firstInteractTime = (this.firstInteractTime !== null ? this.firstInteractTime : currentVisibleDuration);
+        const lastInteractTime = currentVisibleDuration;
 
         return new InteractionTimer(
             this.firstShowTime, this.lastShowTime,
@@ -192,8 +198,16 @@ export class InteractionTimer {
             const lastShowTime = null;
             const lastHideTime = null;
             const visibleDuration = legacyHideTime - legacyShowTime;
-            const firstInteractTime = json["firstInteractTime"];
-            const lastInteractTime = json["lastInteractTime"];
+            
+            // Convert old timestamp-based interaction times to duration-based
+            let firstInteractTime = json["firstInteractTime"];
+            let lastInteractTime = json["lastInteractTime"];
+            if (firstInteractTime !== null && firstInteractTime !== undefined) {
+                firstInteractTime = firstInteractTime - legacyShowTime;
+            }
+            if (lastInteractTime !== null && lastInteractTime !== undefined) {
+                lastInteractTime = lastInteractTime - legacyShowTime;
+            }
 
             return new InteractionTimer(
                 firstShowTime, lastShowTime,
@@ -202,13 +216,33 @@ export class InteractionTimer {
             );
         }
 
+        // Handle modern format that might still have old timestamp-based interaction times
+        const firstShowTime = json["firstShowTime"];
+        let firstInteractTime = json["firstInteractTime"];
+        let lastInteractTime = json["lastInteractTime"];
+        
+        // Detect if interaction times are timestamps (very large numbers) vs durations
+        // Timestamps will be > 1 trillion (milliseconds since 1970), durations will be much smaller
+        if (firstInteractTime !== null && firstInteractTime !== undefined && firstInteractTime > 1000000000000) {
+            // Convert timestamp to duration
+            if (firstShowTime !== null) {
+                firstInteractTime = firstInteractTime - firstShowTime;
+            }
+        }
+        if (lastInteractTime !== null && lastInteractTime !== undefined && lastInteractTime > 1000000000000) {
+            // Convert timestamp to duration
+            if (firstShowTime !== null) {
+                lastInteractTime = lastInteractTime - firstShowTime;
+            }
+        }
+
         return new InteractionTimer(
-            json["firstShowTime"],
+            firstShowTime,
             json["lastShowTime"],
             json["lastHideTime"],
             json["visibleDuration"],
-            json["firstInteractTime"],
-            json["lastInteractTime"],
+            firstInteractTime,
+            lastInteractTime,
         );
     }
 }
@@ -220,20 +254,23 @@ export class InteractionTimer {
 export class GameCommentInteraction {
     commentIndex; // Number
     reactions; // String[]
+    linkClicks; // Array<{url: String, timestamp: Number}>
     timer; // InteractionTimer
 
-    constructor(commentIndex, reactions, timer) {
+    constructor(commentIndex, reactions, linkClicks, timer) {
         doTypeCheck(commentIndex, "number", "Comment ID for Comment Reaction");
         doArrayTypeCheck(reactions, "string", "Comment Reaction");
+        doArrayTypeCheck(linkClicks, "object", "Comment Link Clicks");
         doTypeCheck(timer, InteractionTimer, "Comment Reaction Timer")
         this.commentIndex = commentIndex;
         this.reactions = reactions;
+        this.linkClicks = linkClicks || [];
         this.timer = timer;
     }
 
     static create(commentIndex, commentReaction, postTimer) {
         return new GameCommentInteraction(
-            commentIndex, [commentReaction],
+            commentIndex, [commentReaction], [],
             postTimer.withClearedInteractions().withNewInteraction()
         )
     }
@@ -242,6 +279,7 @@ export class GameCommentInteraction {
         return new GameCommentInteraction(
             this.commentIndex,
             this.reactions,
+            this.linkClicks,
             this.timer.complete()
         )
     }
@@ -250,6 +288,7 @@ export class GameCommentInteraction {
         return new GameCommentInteraction(
             this.commentIndex,
             this.reactions,
+            this.linkClicks,
             this.timer.asVisible()
         )
     }
@@ -258,6 +297,7 @@ export class GameCommentInteraction {
         return new GameCommentInteraction(
             this.commentIndex,
             this.reactions,
+            this.linkClicks,
             this.timer.asHidden()
         )
     }
@@ -276,7 +316,71 @@ export class GameCommentInteraction {
         return new GameCommentInteraction(
             this.commentIndex,
             reactions,
+            this.linkClicks,
             this.timer.withNewInteraction()
+        );
+    }
+
+    withLinkClick(clickData) {
+        // Handle video events
+        if (clickData.event) {
+            const newLinkClicks = [...this.linkClicks, {
+                tagName: 'video',
+                url: clickData.videoId || null,
+                text: `${clickData.event} at ${clickData.currentTime}s (${clickData.percentWatched}%)`,
+                hasOnClick: false,
+                videoEvent: clickData.event,
+                videoId: clickData.videoId,
+                currentTime: clickData.currentTime,
+                duration: clickData.duration,
+                percentWatched: clickData.percentWatched,
+                timestamp: Date.now() - this.timer.firstShowTime
+            }];
+            return new GameCommentInteraction(
+                this.commentIndex,
+                this.reactions,
+                newLinkClicks,
+                this.timer
+            );
+        }
+        
+        // Handle regular link clicks
+        const newLinkClicks = [...this.linkClicks, {
+            tagName: clickData.tagName,
+            url: clickData.url || null,
+            text: (clickData.text || "").substring(0, 200), // Limit text length
+            hasOnClick: clickData.hasOnClick || false,
+            timestamp: Date.now() - this.timer.firstShowTime
+        }];
+        return new GameCommentInteraction(
+            this.commentIndex,
+            this.reactions,
+            newLinkClicks,
+            this.timer
+        );
+    }
+
+    withPopupData(popupData) {
+        // Update the most recent link click with popup data
+        if (this.linkClicks.length === 0) {
+            return this;
+        }
+        
+        const updatedLinkClicks = [...this.linkClicks];
+        const lastClickIndex = updatedLinkClicks.length - 1;
+        updatedLinkClicks[lastClickIndex] = {
+            ...updatedLinkClicks[lastClickIndex],
+            popupOpened: true,
+            popupOpenTime: popupData.openTime,
+            popupCloseTime: popupData.closeTime,
+            popupDuration: popupData.duration
+        };
+        
+        return new GameCommentInteraction(
+            this.commentIndex,
+            this.reactions,
+            updatedLinkClicks,
+            this.timer
         );
     }
 
@@ -284,6 +388,7 @@ export class GameCommentInteraction {
         return {
             "commentID": this.commentIndex,
             "reactions": this.reactions,
+            "linkClicks": this.linkClicks,
             "timer": this.timer.toJSON()
         };
     }
@@ -309,6 +414,7 @@ export class GameCommentInteraction {
         return new GameCommentInteraction(
             json["commentID"],
             (reactions !== undefined ? reactions : (reaction ? [reaction] : [])),
+            json["linkClicks"] || [],
             timer
         );
     }
@@ -322,23 +428,29 @@ export class GamePostInteraction {
     commentReactions; // GameCommentInteraction[]
     lastComment; // String?
     comment; // String?
+    linkClicks; // Array<{url: String, timestamp: Number}>
+    commentVisibilityToggles; // Array<{action: String, timestamp: Number, fromDefault: Boolean}>
     timer; // InteractionTimer
 
-    constructor(postReactions, commentReactions, lastComment, comment, timer) {
+    constructor(postReactions, commentReactions, lastComment, comment, linkClicks, commentVisibilityToggles, timer) {
         doArrayTypeCheck(postReactions, "string", "Reactions to Post");
         doArrayTypeCheck(commentReactions, GameCommentInteraction, "Reactions to Comments");
         doNullableTypeCheck(lastComment, "string", "Participant's Last Comment");
         doNullableTypeCheck(comment, "string", "Participant's Comment");
+        doArrayTypeCheck(linkClicks, "object", "Post Link Clicks");
+        doArrayTypeCheck(commentVisibilityToggles, "object", "Comment Visibility Toggles");
         doNullableTypeCheck(timer, InteractionTimer, "Post Reaction Timer");
         this.postReactions = postReactions;
         this.commentReactions = commentReactions;
         this.lastComment = lastComment;
         this.comment = comment;
+        this.linkClicks = linkClicks || [];
+        this.commentVisibilityToggles = commentVisibilityToggles || [];
         this.timer = timer;
     }
 
     static empty() {
-        return new GamePostInteraction([], [], null, null, InteractionTimer.empty());
+        return new GamePostInteraction([], [], null, null, [], [], InteractionTimer.empty());
     }
 
     isEmpty() {
@@ -365,6 +477,8 @@ export class GamePostInteraction {
             completedCommentReactions,
             this.lastComment,
             this.comment,
+            this.linkClicks,
+            this.commentVisibilityToggles,
             this.timer.complete()
         );
     }
@@ -379,6 +493,8 @@ export class GamePostInteraction {
             updatedCommentReactions,
             this.lastComment,
             this.comment,
+            this.linkClicks,
+            this.commentVisibilityToggles,
             this.timer.asVisible()
         );
     }
@@ -393,6 +509,8 @@ export class GamePostInteraction {
             updatedCommentReactions,
             this.lastComment,
             this.comment,
+            this.linkClicks,
+            this.commentVisibilityToggles,
             this.timer.asHidden()
         );
     }
@@ -411,6 +529,8 @@ export class GamePostInteraction {
             this.commentReactions,
             lastComment,
             comment,
+            this.linkClicks,
+            this.commentVisibilityToggles,
             this.timer.withNewInteraction()
         );
     }
@@ -421,6 +541,8 @@ export class GamePostInteraction {
             this.commentReactions,
             null,
             null,
+            this.linkClicks,
+            this.commentVisibilityToggles,
             this.timer.withNewInteraction()
         );
     }
@@ -441,6 +563,53 @@ export class GamePostInteraction {
             this.commentReactions,
             this.lastComment,
             this.comment,
+            this.linkClicks,
+            this.commentVisibilityToggles,
+            this.timer.withNewInteraction()
+        );
+    }
+
+    withLinkClick(clickData) {
+        // Handle video events
+        if (clickData.event) {
+            const newLinkClicks = [...this.linkClicks, {
+                tagName: 'video',
+                url: clickData.videoId || null,
+                text: `${clickData.event} at ${clickData.currentTime}s (${clickData.percentWatched}%)`,
+                hasOnClick: false,
+                videoEvent: clickData.event,
+                videoId: clickData.videoId,
+                currentTime: clickData.currentTime,
+                duration: clickData.duration,
+                percentWatched: clickData.percentWatched,
+                timestamp: Date.now() - this.timer.firstShowTime
+            }];
+            return new GamePostInteraction(
+                this.postReactions,
+                this.commentReactions,
+                this.lastComment,
+                this.comment,
+                newLinkClicks,
+                this.commentVisibilityToggles,
+                this.timer.withNewInteraction()
+            );
+        }
+        
+        // Handle regular link clicks
+        const newLinkClicks = [...this.linkClicks, {
+            tagName: clickData.tagName,
+            url: clickData.url || null,
+            text: (clickData.text || "").substring(0, 200), // Limit text length
+            hasOnClick: clickData.hasOnClick || false,
+            timestamp: Date.now() - this.timer.firstShowTime
+        }];
+        return new GamePostInteraction(
+            this.postReactions,
+            this.commentReactions,
+            this.lastComment,
+            this.comment,
+            newLinkClicks,
+            this.commentVisibilityToggles,
             this.timer.withNewInteraction()
         );
     }
@@ -481,7 +650,54 @@ export class GamePostInteraction {
             commentReactions,
             this.lastComment,
             this.comment,
+            this.linkClicks,
+            this.commentVisibilityToggles,
             this.timer.withNewInteraction()
+        );
+    }
+
+    withCommentVisibilityToggle(action, fromDefault) {
+        const newToggle = {
+            action: action, // "show" or "hide"
+            timestamp: Date.now() - this.timer.firstShowTime,
+            fromDefault: fromDefault
+        };
+        const newToggles = [...this.commentVisibilityToggles, newToggle];
+        return new GamePostInteraction(
+            this.postReactions,
+            this.commentReactions,
+            this.lastComment,
+            this.comment,
+            this.linkClicks,
+            newToggles,
+            this.timer.withNewInteraction()
+        );
+    }
+
+    withPopupData(popupData) {
+        // Update the most recent link click with popup data
+        if (this.linkClicks.length === 0) {
+            return this;
+        }
+        
+        const updatedLinkClicks = [...this.linkClicks];
+        const lastClickIndex = updatedLinkClicks.length - 1;
+        updatedLinkClicks[lastClickIndex] = {
+            ...updatedLinkClicks[lastClickIndex],
+            popupOpened: true,
+            popupOpenTime: popupData.openTime,
+            popupCloseTime: popupData.closeTime,
+            popupDuration: popupData.duration
+        };
+        
+        return new GamePostInteraction(
+            this.postReactions,
+            this.commentReactions,
+            this.lastComment,
+            this.comment,
+            updatedLinkClicks,
+            this.commentVisibilityToggles,
+            this.timer
         );
     }
 
@@ -516,6 +732,8 @@ export class GamePostInteraction {
             "postReactions": this.postReactions,
             "commentReactions": GamePostInteraction.commentReactionsToJSON(this.commentReactions),
             "comment": this.comment,
+            "linkClicks": this.linkClicks,
+            "commentVisibilityToggles": this.commentVisibilityToggles,
             "timer": this.timer.toJSON()
         };
     }
@@ -552,6 +770,8 @@ export class GamePostInteraction {
             GamePostInteraction.commentReactionsFromJSON(json["commentReactions"]),
             comment,
             comment,
+            json["linkClicks"] || [],
+            json["commentVisibilityToggles"] || [],
             timer
         );
     }

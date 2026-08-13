@@ -139,6 +139,14 @@ shown to the participant. This is the same headline
 that was specified in the configuration spreadsheet for the
 post. This will be empty if the post did not have a headline.
 
+#### Post Content
+{:#posts-post-content .no_toc}
+The content of the post as it was shown to the participant.
+For text-based posts, this is the raw HTML content of the post.
+For image-based posts, the cell contains `img` instead of the
+underlying binary image data, so that the spreadsheet remains
+readable and compact.
+
 #### Post Likes
 {:#posts-post-likes .no_toc}
 The number of like reactions to the post shown to
@@ -204,8 +212,15 @@ a post without interacting with it. In those cases, this
 value will be `FALSE`, as they did not select the skip
 post reaction.
 
+#### Viewed Comments
+{:#posts-viewed-comments .no_toc}
+Whether the participant viewed the comments beneath the post.
+This is `TRUE` if the comments were visible to them, either
+because they were already shown by default or because the
+participant chose to reveal them.
+
 #### User Comment
-{:#posts-skipped-post .no_toc}
+{:#posts-user-comment .no_toc}
 The comment that the participant made on a post. If the
 participant did not comment on the post, then this cell
 will be empty. This column will only be included if
@@ -260,14 +275,64 @@ The number of followers of the participant before
 they interacted with the post.
 
 #### Credibility After
-{:#posts-credibility-before .no_toc}
+{:#posts-credibility-after .no_toc}
 The credibility of the participant after they
 interacted with the post.
 
 #### Followers After
-{:#posts-followers-before .no_toc}
+{:#posts-followers-after .no_toc}
 The number of followers of the participant after
 they interacted with the post.
+
+#### Links in Post
+{:#posts-links-in-post .no_toc}
+The number of hyperlinks present in the post's HTML content.
+This is computed from the post text itself and is useful for
+understanding how many external links were available to the
+participant in a given post.
+
+#### Clickable Components
+{:#posts-clickable-components .no_toc}
+The total number of clickable elements detected in the post,
+including links, buttons, and any elements with an `onclick`
+attribute. This is a broader count than just links and can help
+identify interactive content included in the post.
+
+#### HTML Clicks Count
+{:#posts-html-clicks-count .no_toc}
+The number of interactions recorded when a participant clicked
+on an element in the post, including HTML link/button content.
+
+#### Clicked Elements
+{:#posts-clicked-elements .no_toc}
+A semicolon-separated list of the interactive elements a
+participant clicked. Each entry includes the element tag and any
+available text or URL information for that interaction.
+
+#### Click Times (MS)
+{:#posts-click-times .no_toc}
+The millisecond timestamps for each recorded click interaction
+with the post, expressed in order and separated by semicolons.
+
+#### Popup Opens Count
+{:#posts-popup-opens-count .no_toc}
+The number of times a link in the post opened a pop-up window
+or in-page pop-up overlay during the participant's interaction.
+
+#### Total Popup Time (MS)
+{:#posts-total-popup-time .no_toc}
+The total time spent with pop-up content open across all popup
+interactions for this post, measured in milliseconds.
+
+#### Popup URLs
+{:#posts-popup-urls .no_toc}
+A semicolon-separated list of the URLs that were opened in pop-ups
+while the participant interacted with the post.
+
+#### Popup Durations (MS)
+{:#posts-popup-durations .no_toc}
+A semicolon-separated list of the durations for each popup
+interaction, measured in milliseconds.
 
 
 
@@ -353,6 +418,57 @@ will only be included if
 Whether the participant disliked this comment. This column
 will only be included if
 [Comment Dislikes are Enabled](/StudyConfiguration#general-comment-dislikes-enabled).
+
+#### Links in Comment
+{:#comments-links-in-comment .no_toc}
+The number of hyperlinks present in the comment's HTML content.
+This is computed from the comment text itself and can be used to
+understand how many clickable links were available to the
+participant within that comment.
+
+#### Clickable Components
+{:#comments-clickable-components .no_toc}
+The total number of clickable elements detected in the comment,
+including links, buttons, and any elements with an `onclick`
+attribute. This is a broader count than just hyperlinks and can
+help identify interactive content included in the comment.
+
+#### HTML Clicks Count
+{:#comments-html-clicks-count .no_toc}
+The number of recorded click interactions on the comment,
+including HTML link/button content.
+
+#### Clicked Elements
+{:#comments-clicked-elements .no_toc}
+A semicolon-separated list of the interactive elements a
+participant clicked while viewing the comment. Each entry includes
+the element tag and any available text or URL information for that
+interaction.
+
+#### Click Times (MS)
+{:#comments-click-times .no_toc}
+The millisecond timestamps for each recorded click interaction
+with the comment, expressed in order and separated by semicolons.
+
+#### Popup Opens Count
+{:#comments-popup-opens-count .no_toc}
+The number of times a link in the comment opened a pop-up window
+or in-page pop-up overlay during the participant's interaction.
+
+#### Total Popup Time (MS)
+{:#comments-total-popup-time .no_toc}
+The total time spent with pop-up content open across all popup
+interactions for this comment, measured in milliseconds.
+
+#### Popup URLs
+{:#comments-popup-urls .no_toc}
+A semicolon-separated list of the URLs that were opened in pop-ups
+while the participant interacted with the comment.
+
+#### Popup Durations (MS)
+{:#comments-popup-durations .no_toc}
+A semicolon-separated list of the durations for each popup
+interaction, measured in milliseconds.
 
 #### First Time to Interact (MS)
 {:#comments-first-time-to-interact .no_toc}

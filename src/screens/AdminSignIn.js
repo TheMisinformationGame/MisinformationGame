@@ -35,6 +35,20 @@ export class AdminSignIn extends MountAwareComponent {
 
     componentDidMount() {
         super.componentDidMount();
+
+        // If auth is already available (e.g., popup resolved before listener tick),
+        // continue immediately without waiting for another auth event.
+        if (auth.currentUser) {
+            this.setStateIfMounted(() => {
+                return {
+                    signingIn: false,
+                    signedIn: true,
+                    status: Status.success("Successfully signed in.")
+                };
+            });
+            return;
+        }
+
         getDataManager().addAuthChangeListener(this.onAuthStateChange);
     }
 
@@ -52,7 +66,27 @@ export class AdminSignIn extends MountAwareComponent {
             };
         });
 
-        signInWithPopup(auth, authProvider).catch(error => {
+        signInWithPopup(auth, authProvider).then((result) => {
+            const user = result && result.user;
+            if (!user) {
+                this.setStateIfMounted(() => {
+                    return {
+                        signingIn: false,
+                        signedIn: false,
+                        status: Status.error("Sign-in completed, but no user was returned.")
+                    };
+                });
+                return;
+            }
+
+            this.setStateIfMounted(() => {
+                return {
+                    signingIn: false,
+                    signedIn: true,
+                    status: Status.success("Successfully signed in.")
+                };
+            });
+        }).catch(error => {
             this.setStateIfMounted(() => {
                 return {
                     signingIn: false,

@@ -121,12 +121,21 @@ export class Game {
     }
 
     /**
-     * Preloads the images required for the current and next posts to be displayed.
+     * Preloads images required for the current and upcoming posts.
      */
     preload() {
-        // TODO : Do this better.
-        if (this.states.length > 0) {
-            this.preloadState(this.states[0]);
+        if (this.states.length <= 0) {
+            return;
+        }
+
+        // Keep a rolling preload window ahead of the participant.
+        const submittedPosts = this.participant.postInteractions.getSubmittedPostsCount();
+        const preloadWindowSize = 8;
+        const startIndex = Math.max(0, Math.min(submittedPosts, this.states.length - 1));
+        const endIndex = Math.min(this.states.length - 1, startIndex + preloadWindowSize - 1);
+
+        for (let index = startIndex; index <= endIndex; ++index) {
+            this.preloadState(this.states[index]);
         }
     }
 

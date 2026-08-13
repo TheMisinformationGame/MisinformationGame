@@ -18,10 +18,10 @@ whereas the latter is closer to real social-media platforms. We hope you
 enjoy playing through these games!
 
 <div class="call-to-action-container">
-    <a href="https://try.misinfogame.com/study/zc7s3qqh0rrc30cx" class="call-to-action-button solid">
+    <a href="https://mgtester15.firebaseapp.com/study/4mvpparjzfkvwwx2" class="call-to-action-button solid">
         Play Feed Mode (Recommended)
     </a>
-    <a href="https://try.misinfogame.com/study/0m3eots70fhyo6ns" class="call-to-action-button">
+    <a href="https://mgtester15.firebaseapp.com/study/n2xpx9a56irdyt82" class="call-to-action-button">
         Play Single-Post Mode
     </a>
 </div>
@@ -40,8 +40,8 @@ enjoy playing through these games!
 
 You may access example studies from the following URLs:
 
-- [Example Game (Single-Post Mode)](https://try.misinfogame.com/study/0m3eots70fhyo6ns)
-- [Example Game (Feed Mode)](https://try.misinfogame.com/study/zc7s3qqh0rrc30cx)
+- [Example Game (Single-Post Mode)](https://mgtester15.firebaseapp.com/study/4mvpparjzfkvwwx2)
+- [Example Game (Feed Mode)](https://mgtester15.firebaseapp.com/study/n2xpx9a56irdyt82)
 
 Additionally, the study configuration spreadsheets that were used to
 create the example games are available on the [Example Study Configuration page](/link/ExampleStudy).

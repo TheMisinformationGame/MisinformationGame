@@ -4,8 +4,8 @@ showPath: true
 underDocsPath: true
 showBackToTop: true
 ---
-
 # Study Configuration Guide
+
 {:#intro .no_toc}
 
 Studies in The Misinformation Game are configured through the
@@ -20,16 +20,15 @@ guides for its use.
     <img src="diagrams/study-configuration-header.png" height="554" alt="Screenshot from a study configuration." />
 </figure>
 
-
-
 ## Table of Contents
+
 {:#toc .no_toc}
+
 * toc
-{:toc}
-
-
+  {:toc}
 
 ## Guide: Create a new Configuration Spreadsheet
+
 {:#create}
 
 Before you can start configuring your study, you will first
@@ -48,8 +47,8 @@ Sheets, or by uploading the Study Template file.
     Microsoft Excel.
 </p>
 
-
 ### Method 1: Copy the Template (Recommended)
+
 {:#create-copy}
 
 You can access the Study Configuration Template Spreadsheet
@@ -66,13 +65,12 @@ spreadsheet so that you can make your own study, as shown in
     </figcaption>
 </figure>
 
-
-
 ### Method 2: Upload the Template
+
 {:#create-upload}
 
 You can download the Study Template file from
-[StudyTemplate.xlsx](StudyTemplate-V1.xlsx). This file can then
+[StudyTemplate-V3.xlsx](https://docs.google.com/spreadsheets/d/1xmeEOmxMCnm_uFi27sGEdFI2GgtDP-nNhTB2P6asTVM/export?format=xlsx&gid=582914869). This file can then
 be uploaded to your Google Sheets using the following steps:
 
 **Step 1:** Access Google Sheets at
@@ -85,7 +83,7 @@ spreadsheet.
 -> **_Select a file from your device_**.
 
 **Step 4:** Use the file chooser to select the
-[StudyTemplate.xlsx](StudyTemplate-V1.xlsx) file that you
+[StudyTemplate-V3.xlsx](https://docs.google.com/spreadsheets/d/1xmeEOmxMCnm_uFi27sGEdFI2GgtDP-nNhTB2P6asTVM/export?format=xlsx&gid=582914869) file that you
 downloaded to upload.
 
 **Step 5:** Select the **_Import Location_** to be
@@ -96,8 +94,8 @@ downloaded to upload.
 Your spreadsheet should now contain everything you need
 to create your new study.
 
-
 ## Guide: Upload your Study
+
 {:#upload}
 
 Once you have completed configuring your study, it is recommended
@@ -134,9 +132,8 @@ information about managing your study after you have uploaded
 it can be found in the
 [Managing Studies documentation](/ManagingStudies).
 
-
-
 ## 1. About Worksheet
+
 {:#configure}
 
 The _About_ sheet gives an overview of the structure of
@@ -149,9 +146,8 @@ you should read for help. Taking a look through the legend
 will help when reading the rest of the configuration
 spreadsheet.
 
-
-
 ## 2. Overview Worksheet
+
 {:#overview}
 
 The _Overview_ sheet provides a summary of all the settings
@@ -161,8 +157,10 @@ easily identify if there are any errors in your
 configuration.
 
 ##### Status
+
 {:#overview-status .no_toc}
-<p class="config-loc">(Overview &gt; Status)</p>
+
+<p class="config-loc">(Overview > Status)</p>
 
 The status of the spreadsheet gives an indication of
 whether there are any errors in the spreadsheet. If
@@ -170,8 +168,10 @@ there are any errors in any of the sheets, an error
 will be shown here.
 
 ##### Opened in Google Sheets
+
 {:#overview-opened-in-sheets .no_toc}
-<p class="config-loc">(Overview &gt; Opened in Google Sheets)</p>
+
+<p class="config-loc">(Overview > Opened in Google Sheets)</p>
 
 This attempts to detect whether the spreadsheet was
 opened in Google Sheets, and will error if it can
@@ -181,8 +181,10 @@ Sheets and Microsoft Excel, and it therefore may not
 be 100% accurate.
 
 ##### General Settings
+
 {:#overview-general .no_toc}
-<p class="config-loc">(Overview &gt; General Settings)</p>
+
+<p class="config-loc">(Overview > General Settings)</p>
 
 This section gives an overview of the general settings
 of your study, as well as their validity in the top-left.
@@ -191,16 +193,20 @@ that participants will be shown when they participate
 in your study.
 
 ##### Sources
+
 {:#overview-sources .no_toc}
-<p class="config-loc">(Overview &gt; Sources)</p>
+
+<p class="config-loc">(Overview > Sources)</p>
 
 This will show the validity of all the sources you have
 entered, and includes the number of sources that have been
 included in the _Sources_ sheet.
 
 ##### Posts
+
 {:#overview-posts .no_toc}
-<p class="config-loc">(Overview &gt; Posts)</p>
+
+<p class="config-loc">(Overview > Posts)</p>
 
 This will show the validity of all posts, as well as the
 number of true and false posts that have been included
@@ -210,15 +216,14 @@ If there are fewer true or false posts than the length of
 the study, a warning will be shown. This warning is shown
 as it is possible that the post selection will try to select
 a true post but fail due to having already shown all the
-true posts (depending on settings; see the 
-[Simulation](/Simulation) documentation for details). 
+true posts (depending on settings; see the
+[Simulation](/Simulation) documentation for details).
 The post selection will instead have to display
 a false post in this case. This could lead to a false post
 being shown, even if the true post percentage is 100%.
 
-
-
 ## 3. General Worksheet
+
 {:#general}
 
 The General sheet is the best place to start when creating
@@ -226,29 +231,36 @@ a study. It contains all the most broad settings of
 studies including their name, description, and length.
 
 ### 3.1. Basic Settings
+
 {:#general-basic-settings}
 This section contains the most basic settings that likely
 should be changed for each study.
 
 ##### Name
+
 {:#general-name .no_toc}
-<p class="config-loc">(General &gt; Basic Settings &gt; Name)</p>
+
+<p class="config-loc">(General > Basic Settings > Name)</p>
 
 The name that is used for the browser tab title for
 participants in this study. This name is also used to
 identify the study in your admin dashboard.
 
 ##### Description
+
 {:#general-description .no_toc}
-<p class="config-loc">(General &gt; Basic Settings &gt; Description)</p>
+
+<p class="config-loc">(General > Basic Settings > Description)</p>
 
 The description of your study is used to include
 information about the study in your admin dashboard.
 This description is not shown to participants.
 
 ##### Prompt
+
 {:#general-prompt .no_toc}
-<p class="config-loc">(General &gt; Basic Settings &gt; Prompt)</p>
+
+<p class="config-loc">(General > Basic Settings > Prompt)</p>
 
 The prompt text to be shown to participants before they
 start the study. An example prompt is shown in [Figure 2](#fig2).
@@ -261,16 +273,20 @@ start the study. An example prompt is shown in [Figure 2](#fig2).
 </figure>
 
 ##### Length of Game
+
 {:#general-length .no_toc}
-<p class="config-loc">(General &gt; Basic Settings &gt; Length of Game)</p>
+
+<p class="config-loc">(General > Basic Settings > Length of Game)</p>
 
 The exact number of posts to show to participants before
 they complete the study. The length of studies must
 be at least 1 post.
 
 ##### Require Reactions
+
 {:#general-require-reactions .no_toc}
-<p class="config-loc">(General &gt; Basic Settings &gt; Require Reactions)</p>
+
+<p class="config-loc">(General > Basic Settings > Require Reactions)</p>
 
 Whether participants are required to react to every post.
 Participants will still be able to skip posts, but to do
@@ -280,6 +296,7 @@ This option is not available when posts are displayed in a
 feed.
 
 Only available if:
+
 <ul class="param-links">
     <li><a class="param-link" href="#general-display-feed">
         General > UI Settings > Display Posts in a Feed
@@ -287,8 +304,10 @@ Only available if:
 </ul>
 
 ##### Enable User Comments
+
 {:#general-enable-user-comments .no_toc}
-<p class="config-loc">(General &gt; Basic Settings &gt; Enable User Comments)</p>
+
+<p class="config-loc">(General > Basic Settings > Enable User Comments)</p>
 
 Whether participants are required to comment on posts
 ("Required"), can comment on posts ("Optional"), or
@@ -297,8 +316,10 @@ cannot be required when
 [posts are displayed in a feed](#general-display-feed).
 
 ##### Require Participant Identification
+
 {:#general-require-identification .no_toc}
-<p class="config-loc">(General &gt; Basic Settings &gt; Require Participant Identification)</p>
+
+<p class="config-loc">(General > Basic Settings > Require Participant Identification)</p>
 
 Whether participants will be required to provide a
 participant ID before starting the study. If this value
@@ -308,8 +329,8 @@ already been automatically populated from the URL they
 have been given. See [Accessing the study URL](/ManagingStudies#access-study-url)
 for details on including a participant identifier in URL parameters.
 
-
 ### 3.2. User Interface Settings
+
 {:#general-ui-settings}
 This section contains the settings that change the user
 interface of The Misinformation Game for participants.
@@ -317,82 +338,105 @@ These options change the way that participants are able
 to interact with your study.
 
 ##### Display Posts in a Feed
+
 {:#general-display-feed .no_toc}
-<p class="config-loc">(General &gt; User Interface Settings &gt; Display Posts in a Feed)</p>
+
+<p class="config-loc">(General > User Interface Settings > Display Posts in a Feed)</p>
 
 Whether to display the posts to participants in a feed,
 instead of one at a time.
 
 ##### Display Followers
+
 {:#general-display-followers .no_toc}
-<p class="config-loc">(General &gt; User Interface Settings &gt; Display Followers)</p>
+
+<p class="config-loc">(General > User Interface Settings > Display Followers)</p>
 
 Whether follower counts are shown to participants.
 The followers of sources and participants will still
 be simulated.
 
 ##### Display Credibility
+
 {:#general-display-credibility .no_toc}
-<p class="config-loc">(General &gt; User Interface Settings &gt; Display Credibility)</p>
+
+<p class="config-loc">(General > User Interface Settings > Display Credibility)</p>
 
 Whether credibility ratings are shown to participants.
 The credibility of sources and participants will still
 be simulated.
 
 ##### Display Progress
+
 {:#general-display-progress .no_toc}
-<p class="config-loc">(General &gt; User Interface Settings &gt; Display Progress)</p>
+
+<p class="config-loc">(General > User Interface Settings > Display Progress)</p>
 
 Whether to show participants their progress as a
 percentage (e.g. "55%").
 
 ##### Display Number of Reactions
+
 {:#general-display-reaction-counts .no_toc}
-<p class="config-loc">(General &gt; User Interface Settings &gt; Display Number of Reactions)</p>
+
+<p class="config-loc">(General > User Interface Settings > Display Number of Reactions)</p>
 
 Whether to show the ostensible number of prior reactions
 to posts and comments adjacent to the reaction buttons.
 
 ##### Allow Multiple Reactions at Once
+
 {:#general-allow-multiple-reactions .no_toc}
-<p class="config-loc">(General &gt; User Interface Settings &gt; Allow Multiple Reactions at Once)</p>
+
+<p class="config-loc">(General > User Interface Settings > Allow Multiple Reactions at Once)</p>
 
 Whether participants may select multiple reactions to a
 post or comment. For example, a user may choose to like
 and share a post if this is enabled.
 
 ##### Post Likes Enabled
+
 {:#general-post-likes-enabled .no_toc}
-<p class="config-loc">(General &gt; User Interface Settings &gt; Post Likes Enabled)</p>
+
+<p class="config-loc">(General > User Interface Settings > Post Likes Enabled)</p>
 
 Whether to allow participants to like posts.
 
 ##### Post Dislikes Enabled
+
 {:#general-post-dislikes-enabled .no_toc}
-<p class="config-loc">(General &gt; User Interface Settings &gt; Post Dislikes Enabled)</p>
+
+<p class="config-loc">(General > User Interface Settings > Post Dislikes Enabled)</p>
 
 Whether to allow participants to dislike posts.
 
 ##### Post Shares Enabled
+
 {:#general-post-shares-enabled .no_toc}
-<p class="config-loc">(General &gt; User Interface Settings &gt; Post Shares Enabled)</p>
+
+<p class="config-loc">(General > User Interface Settings > Post Shares Enabled)</p>
 
 Whether to allow participants to share posts.
 
 ##### Post Flags Enabled
+
 {:#general-post-flags-enabled .no_toc}
-<p class="config-loc">(General &gt; User Interface Settings &gt; Post Flags Enabled)</p>
+
+<p class="config-loc">(General > User Interface Settings > Post Flags Enabled)</p>
 
 Whether to allow participants to flag posts.
 
 ##### Post Skip Enabled
+
 {:#general-post-skip-enabled .no_toc}
-<p class="config-loc">(General &gt; User Interface Settings &gt; Post Skip Enabled)</p>
+
+<p class="config-loc">(General > User Interface Settings > Post Skip Enabled)</p>
 
 Whether to allow participants to select an option
 to skip reacting to a post.
 
 Only available if:
+
 <ul class="param-links">
     <li><a class="param-link" href="#general-require-reactions">
         General > Basic Settings > Require Reactions
@@ -403,43 +447,61 @@ Only available if:
 </ul>
 
 ##### Comment Likes Enabled
+
 {:#general-comment-likes-enabled .no_toc}
-<p class="config-loc">(General &gt; User Interface Settings &gt; Comment Likes Enabled)</p>
+
+<p class="config-loc">(General > User Interface Settings > Comment Likes Enabled)</p>
 
 Whether to allow participants to like comments.
 
 ##### Comment Dislikes Enabled
+
 {:#general-comment-dislikes-enabled .no_toc}
-<p class="config-loc">(General &gt; User Interface Settings &gt; Comment Dislikes Enabled)</p>
+
+<p class="config-loc">(General > User Interface Settings > Comment Dislikes Enabled)</p>
 
 Whether to allow participants to dislike comments.
 
+##### Hide Comments by Default (new in 2026)
+
+{:#general-hide-comments-by-default .no_toc}
+
+<p class="config-loc">(General > User Interface Settings > Hide Comments by Default)</p>
+
+Whether comments are automatically shown to participants, or hidden. If **yes** is selected, comments will not be automatically displayed in the feed. Rather, participants will have to select 'show comments' to see comments associated with a post. Whether comments are viewed is collected in the results output column labeled "Viewed Comments", with TRUE denoting a comment was viewed, and FALSE denoting a comment was not viewed. In conditions where Hide Comments by Default is set to **no** all values in this column will display as TRUE.
 
 ### 3.3. Advanced Settings
+
 {:#general-advanced-settings}
 
 These settings can be used to fine-tune your study.
 It is unlikely that you will need to edit these settings.
 
 ##### Minimum Comment Length
+
 {:#general-minimum-comment-length .no_toc}
-<p class="config-loc">(General &gt; Advanced Settings &gt; Minimum Comment Length)</p>
+
+<p class="config-loc">(General > Advanced Settings > Minimum Comment Length)</p>
 
 The minimum number of characters that participants must
 enter for their comments. The minimum length of comments
 must be at least 1 character.
 
 ##### Prompt Continue Delay (Seconds)
+
 {:#general-prompt-continue-delay .no_toc}
-<p class="config-loc">(General &gt; Advanced Settings &gt; Prompt Continue Delay)</p>
+
+<p class="config-loc">(General > Advanced Settings > Prompt Continue Delay)</p>
 
 The period of time in which participants are not able
 to continue past the prompt page to start the game.
 This delay cannot be negative, but it can be zero.
 
 ##### Next Post Delay (Seconds)
+
 {:#general-next-post-delay .no_toc}
-<p class="config-loc">(General &gt; Advanced Settings &gt; Next Post Delay)</p>
+
+<p class="config-loc">(General > Advanced Settings > Next Post Delay)</p>
 
 The period of time after the current post is shown
 in which participants are not able to continue to
@@ -447,6 +509,7 @@ the next post. This delay cannot be negative, but
 it can be zero.
 
 Only available if:
+
 <ul class="param-links">
     <li><a class="param-link" href="#general-display-feed">
         General > UI Settings > Display Posts in a Feed
@@ -454,8 +517,10 @@ Only available if:
 </ul>
 
 ##### Generate Completion Code
+
 {:#general-generate-completion-code .no_toc}
-<p class="config-loc">(General &gt; Advanced Settings &gt; Generate Completion Code)</p>
+
+<p class="config-loc">(General > Advanced Settings > Generate Completion Code)</p>
 
 Whether to generate and display a completion code
 to participants once they have completed the study.
@@ -470,8 +535,10 @@ completion code for a participant is shown in [Figure 3](#fig3).
 </figure>
 
 ##### Completion Code Digits
+
 {:#general-completion-code-digits .no_toc}
-<p class="config-loc">(General &gt; Advanced Settings &gt; Completion Code Digits)</p>
+
+<p class="config-loc">(General > Advanced Settings > Completion Code Digits)</p>
 
 The number of digits to generate for the completion
 code (e.g. If this value is 4, then completion codes
@@ -479,8 +546,10 @@ from 1000 to 9999 will be generated). The number of
 digits in completion codes must be at least 1.
 
 ##### Generate Random Default Avatars
+
 {:#general-generate-random-default-avatars .no_toc}
-<p class="config-loc">(General &gt; Advanced Settings &gt; Generate Random Default Avatars)</p>
+
+<p class="config-loc">(General > Advanced Settings > Generate Random Default Avatars)</p>
 
 Whether to use a random background colour for the
 default source avatars. If set to "No", the default
@@ -496,28 +565,115 @@ background is randomised are shown in [Figure 4](#fig4).
     </figcaption>
 </figure>
 
+##### Open Links in Pop-up (new in 2026)
+
+<p class="config-loc">(General > Advanced Settings > Open Links in Pop-up)</p>
+
+Displays links in an in-page pop-up overlay instead of sending users to a separate browser tab or window. If set as **yes** any links included in HTML (using !HTML `<a href="https://example.com" target="_blank">`Example link `</a>)` will open as a pop-up taking up 80% of the participant's screen. This function should also stop a participant from being able to progress in the game until the link is closed. If a link is clicked is recorded in the Results Output as "Clicked Element", with the amount of time the pop-up was open for collected in "Total Pop-up Time (ms)".
+
+Using HTML, you can make links appear more advanced, similar to link cards present on real-world social media platforms. Below example code is provided to create realistic looking link cards for posts (top) and comments (bottom). Note that some links and images may perform differently, and so you may need to make some tweaks to the display on a case-by-case basis. 
+
+```
+!HTML <a href="[URL]" target="_blank"
+   style="display:block;padding:0 16px;text-decoration:none;color:inherit;">
+  <div style="border:1px solid #ccd0d5;border-radius:14px;overflow:hidden;background:#fff;max-width:500px;cursor:pointer;margin:0 auto;">
+    <img src="[IMAGE_URL]"
+         style="width:100%;height:261px;object-fit:cover;display:block;">
+    <div style="padding:10px 12px 12px;background:#f2f3f5;border-top:1px solid #ccd0d5;">
+      <div style="font-size:12px;color:#65676b;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:3px;">
+        [SITE_NAME]
+      </div>
+      <div style="font-size:16px;font-weight:600;color:#1c1e21;line-height:1.3;margin-bottom:3px;">
+        [TITLE]
+      </div>
+      <div style="font-size:14px;color:#65676b;line-height:1.4;">
+        [DESCRIPTION]
+      </div>
+    </div>
+  </div>
+</a>
+```
+
+<div style="padding:0 16px;">
+  <div onclick="window.open('https://example.com','_blank');"
+       style="border:1px solid #ccd0d5;border-radius:14px;overflow:hidden;background:#fff;max-width:500px;cursor:pointer;margin:0 auto;">
+    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" # Replace with image URL
+         style="width:100%;height:261px;object-fit:cover;display:block;">
+    <div style="padding:10px 12px 12px;background:#f2f3f5;border-top:1px solid #ccd0d5;">
+      <div style="font-size:12px;color:#65676b;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:3px;">
+        example.com
+      </div>
+      <div style="font-size:16px;font-weight:600;color:#1c1e21;line-height:1.3;margin-bottom:3px;">
+        Example Headline
+      </div>
+      <div style="font-size:14px;color:#65676b;line-height:1.4;">
+        Summary text goes here.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+```
+!HTML <div onclick="window.open('[URL]','_blank');"
+     style="border:1px solid #e6ecf0;border-radius:14px;overflow:hidden;background:#f7f9f9;max-width:560px;cursor:pointer;">
+  <div style="display:flex;align-items:stretch;">
+    <div style="width:96px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;">
+      <img src="[FAVICON_URL]"
+           style="width:90%;height:90%;object-fit:cover;display:block;">
+    </div>
+    <div style="padding:12px 14px;min-width:0;">
+      <div style="font-size:15px;font-weight:700;color:#0f1419;line-height:1.2;margin-bottom:4px;">
+        [HEADLINE]
+      </div>
+      <div style="font-size:13px;color:#536471;line-height:1.2;">
+        [DOMAIN]
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+<div onclick="window.open('https://example.com','_blank');"
+     style="border:1px solid #e6ecf0;border-radius:14px;overflow:hidden;background:#f7f9f9;max-width:560px;cursor:pointer;">
+  <div style="display:flex;align-items:stretch;">
+    <div style="width:96px;background:#e5e7eb;display:flex;align-items:center;justify-content:center;">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/google.svg"
+           style="width:90%;height:90%;object-fit:cover;display:block;">
+    </div>
+    <div style="padding:12px 14px;min-width:0;">
+      <div style="font-size:15px;font-weight:700;color:#0f1419;line-height:1.2;margin-bottom:4px;">
+        Example Headline
+      </div>
+      <div style="font-size:13px;color:#536471;line-height:1.2;">
+        example.com
+      </div>
+    </div>
+  </div>
+</div>
 
 
 ## 4. Pages Worksheet
+
 {:#pages}
 
 The _Pages_ sheet allows you to edit the content of
 the instructions and debriefing that the users may be
-shown. It also allows you to edit the enforced delays 
+shown. It also allows you to edit the enforced delays
 (with disabled continue button) on these pages.
 
-
 ### 4.1. Formatting the Text
+
 {:#pages-formatting}
 
 The text on these pages can be formatted to include **bold**,
 _italic_,
-<span style="font-size: 1.2em">larger text</span>,
-<span style="font-size: 0.8em">smaller text</span>,
-<span style="color: purple">coloured text</span>,
+`<span style="font-size: 1.2em">`larger text,
+`<span style="font-size: 0.8em">`smaller text,
+`<span style="color: purple">`coloured text,
 or any other formatting that is available in Google Sheets.
 This formatting will be converted to HTML to be shown to
-participants. Your text can also be moved onto new lines by 
+participants. Your text can also be moved onto new lines by
 pressing **_Alt + Enter_**. This is equivalent to typing
 **_Enter_** in most text editors.
 
@@ -536,6 +692,7 @@ of these blue links within cells. Therefore, links must be included through
 the use of HTML `<a>` tags. For example, the HTML below creates a link
 [GitHub](https://github.com/TheMisinformationGame/MisinformationGame)
 that links to The Misinformation Game's GitHub page,
+
 ```html
 <a href="https://github.com/TheMisinformationGame/MisinformationGame">
   GitHub
@@ -545,20 +702,23 @@ that links to The Misinformation Game's GitHub page,
 ### 4.2. Available Pages
 
 ##### Introduction before game rules
+
 {:#pages-intro-before-rules .no_toc}
-<p class="config-loc">(Pages &gt; Introduction before game rules)</p>
+
+<p class="config-loc">(Pages > Introduction before game rules)</p>
 
 This page will be shown to participants after they have
 identified themselves, and before they are shown the
-rules of the game. This page can be used for instructions. 
-It is _optional_, so if you do not wish to show participants 
-an introduction before they are shown the game rules, then 
+rules of the game. This page can be used for instructions.
+It is _optional_, so if you do not wish to show participants
+an introduction before they are shown the game rules, then
 leave this page blank.
 
-
 ##### Game Rules
+
 {:#pages-rules .no_toc}
-<p class="config-loc">(Pages &gt; Game Rules)</p>
+
+<p class="config-loc">(Pages > Game Rules)</p>
 
 This page will be shown to participants after they have
 viewed the introduction before the game rules page. This
@@ -571,7 +731,7 @@ The **Game Rules** page also supports several placeholders
 to include icons and example UI elements in the page. The
 placeholders can be included anywhere in this page's content,
 and they will be replaced by their corresponding UI elements
-for participants. For example, if you type 
+for participants. For example, if you type
 {% raw %}`{{LIKE}}`{% endraw %}
 anywhere in the content of the page, then it will be replaced
 by the like icon.
@@ -585,6 +745,7 @@ detected and replaced with the UI elements. For example, if
 be replaced.
 
 The available placeholders are:
+
 - {% raw %}`{{LIKE}}`{% endraw %}:
   The Like reaction icon.
 - {% raw %}`{{DISLIKE}}`{% endraw %}:
@@ -604,21 +765,23 @@ The available placeholders are:
 - {% raw %}`{{YOUR-PROGRESS-EXAMPLE}}`{% endraw %}:
   An example Your Progress box with placeholder values.
 
-
 ##### Introduction after game rules
+
 {:#pages-intro-after-rules .no_toc}
-<p class="config-loc">(Pages &gt; Introduction after game rules)</p>
+
+<p class="config-loc">(Pages > Introduction after game rules)</p>
 
 This page will be shown to participants after they have
-been shown the rules of the game. This page can also be 
-used for instructions. It is _optional_, so if you do not 
-wish to show participants an introduction after they are 
+been shown the rules of the game. This page can also be
+used for instructions. It is _optional_, so if you do not
+wish to show participants an introduction after they are
 shown the game rules, then leave this page blank.
 
-
 ##### Debriefing
+
 {:#pages-debriefing .no_toc}
-<p class="config-loc">(Pages &gt; Debriefing)</p>
+
+<p class="config-loc">(Pages > Debriefing)</p>
 
 This page will be shown to participants after they have
 completed the study. This page is not optional. An
@@ -652,9 +815,8 @@ their completion code.
     </figcaption>
 </figure>
 
-
-
 ## 5. Sources Worksheet
+
 {:#sources}
 
 The _Sources_ sheet allows you to add all the sources that can
@@ -674,8 +836,8 @@ about all the settings that can be defined for each source.
 To the right there is also a widget that can be used to
 preview the settings for your sources.
 
-
 ### 5.1. Default Source Values
+
 {:#sources-defaults}
 
 This section defines defaults for some source parameters
@@ -719,8 +881,8 @@ count and credibility for a source is shown in [Figure 7](#fig7).
     </figcaption>
 </figure>
 
-
 ### 5.2. Sources Table
+
 {:#sources-table}
 
 The table below the Default Source Values is where the sources
@@ -732,8 +894,10 @@ are used instead. If an **Avatar** for a source is omitted, it will
 use a default based upon the **Name** of the source instead.
 
 ##### Source ID
+
 {:#sources-id .no_toc}
-<p class="config-loc">(Sources &gt; Source ID)</p>
+
+<p class="config-loc">(Sources > Source ID)</p>
 
 The ID's of sources are used to uniquely identify them. For example,
 the ID of a source will be used to reference it in the results of
@@ -743,15 +907,19 @@ template sheet, all the IDs are already filled in, and you should not
 have to edit them.
 
 ##### Name
+
 {:#sources-name .no_toc}
-<p class="config-loc">(Sources &gt; Name)</p>
+
+<p class="config-loc">(Sources > Name)</p>
 
 The name of the source will be shown to participants when this source
 is used alongside a post.
 
 ##### Avatar
+
 {:#sources-avatar .no_toc}
-<p class="config-loc">(Sources &gt; Avatar)</p>
+
+<p class="config-loc">(Sources > Avatar)</p>
 
 The avatar of a source is an optional image that is displayed in a circle
 alongside the source. If the avatar is not square, it will be cropped.
@@ -776,8 +944,10 @@ be able to find the image to use for the avatar.
 </figure>
 
 ##### Max Posts
+
 {:#sources-max-posts .no_toc}
-<p class="config-loc">(Sources &gt; Max Posts)</p>
+
+<p class="config-loc">(Sources > Max Posts)</p>
 
 The maximum posts for a source allows you to set a hard limit on the number
 of times a source is shown to the participant. This value can either be an
@@ -797,8 +967,10 @@ source with Max Posts = 100 will be selected 10x more than a
 source with Max Posts = 10).
 
 ##### Initial Followers
+
 {:#sources-initial-followers .no_toc}
-<p class="config-loc">(Sources &gt; Initial Followers)</p>
+
+<p class="config-loc">(Sources > Initial Followers)</p>
 
 This optional value lets you set an exact initial
 follower count for this source. However, the actual
@@ -807,6 +979,7 @@ participant's games (see the [Simulation](/Simulation)
 page for details).
 
 Only used if:
+
 <ul class="param-links">
     <li><a class="param-link" href="#general-display-followers">
         General > UI Settings > Display Followers
@@ -814,8 +987,10 @@ Only used if:
 </ul>
 
 ##### Initial Credibility
+
 {:#sources-initial-credibility .no_toc}
-<p class="config-loc">(Sources &gt; Initial Credibility)</p>
+
+<p class="config-loc">(Sources > Initial Credibility)</p>
 
 This optional value lets you set an exact initial
 credibility number for this source. However, the actual
@@ -824,6 +999,7 @@ participant's games (see the [Simulation](/Simulation)
 page for details).
 
 Only used if:
+
 <ul class="param-links">
     <li><a class="param-link" href="#general-display-credibility">
         General > UI Settings > Display Credibility
@@ -831,8 +1007,10 @@ Only used if:
 </ul>
 
 ##### True Post Percentage
+
 {:#sources-true-post-percentage .no_toc}
-<p class="config-loc">(Sources &gt; True Post Percentage)</p>
+
+<p class="config-loc">(Sources > True Post Percentage)</p>
 
 When using the _Source-Ratios_ source/post selection method,
 this value is used to define the percentage of true posts that
@@ -841,15 +1019,15 @@ will indicate the probability of it being paired a true post
 rather than a false post.
 
 Only used if:
+
 <ul class="param-links">
     <li><a class="param-link" href="#selection-selecting-method">
         Source & Post Selection > Method
     </a> is "Source-Ratios".</li>
 </ul>
 
-
-
 ## 6. Posts Worksheet
+
 {:#posts}
 
 The _Posts_ sheet allows you to add all the posts that could
@@ -862,8 +1040,8 @@ the settings that can be defined for each post. To
 the right there is also a table to display the total
 number of true and false posts that you have entered.
 
-
 ### 6.1. Default Post Values
+
 {:#posts-default-values}
 This section defines separate defaults for true posts and
 false posts. This is done to reduce the effort in creating
@@ -876,8 +1054,8 @@ _like_, _dislike_, _share_, or _flag_ a post. There is also
 a default distribution for the number of reactions to display
 for _likes_, _dislikes_, _shares_, or _flags_ for posts.
 
-
 ### 6.2. Posts Table
+
 {:#posts-table}
 The table below the Default Post Values allows you to enter
 all the posts that may be shown to participants during the
@@ -891,8 +1069,10 @@ credibility are omitted, the default settings will be
 used instead.
 
 ##### Post ID
+
 {:#posts-post-id .no_toc}
-<p class="config-loc">(Posts &gt; Post ID)</p>
+
+<p class="config-loc">(Posts > Post ID)</p>
 
 The ID of each post is used to uniquely identify
 the post. This ID should be of the form `Px` where x is
@@ -902,8 +1082,10 @@ In the template sheet, all the IDs are already pre-filled,
 and there should be no need to edit them.
 
 ##### Headline
+
 {:#posts-headline .no_toc}
-<p class="config-loc">(Posts &gt; Headline)</p>
+
+<p class="config-loc">(Posts > Headline)</p>
 
 The headline of the post is used to provide a title above the
 content of the post. This headline is optional, and if it is
@@ -919,8 +1101,10 @@ in [Figure 9](#fig9).
 </figure>
 
 ##### Content
+
 {:#posts-content .no_toc}
-<p class="config-loc">(Posts &gt; Content)</p>
+
+<p class="config-loc">(Posts > Content)</p>
 
 The content of the post is used to provide a  more substantial
 piece of text, or an image to display to participants. The content
@@ -952,17 +1136,37 @@ be able to find the image to use for the content.
     </figcaption>
 </figure>
 
+If post content relies on HTML, remember to include !HTML prior to the HTML content. Videos can be included in a post by providing a supported video URL in HTML (see code block below for a template). The system will render the video in the post when the content is valid. In the study, participants will have the ability to play the video. If a video is scrolled off the screen while it is still playing, it will automatically pause, and partipants have to scroll up and press play to continue watching. Whether participants watch the video, and when they play and pause the content is collected in the results output within the "Links Clicked" column. 
+
+```
+!HTML <div style="max-width:560px; margin:0 auto;">
+  <iframe
+    width="560"
+    height="315"
+    src= [VIDEO_EMBED_URL]
+    title="Example Title"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+```
+
 ##### Is True
+
 {:#posts-is-true .no_toc}
-<p class="config-loc">(Posts &gt; Is True)</p>
+
+<p class="config-loc">(Posts > Is True)</p>
 
 This should be set to whether the post should be considered true or false.
 This value is used for the post selection, and for choosing the default
 settings to use for the post. This value is never shown to participants.
 
 ##### Changes to Followers
+
 {:#posts-changes-to-followers .no_toc}
-<p class="config-loc">(Posts &gt; Changes to Followers)</p>
+
+<p class="config-loc">(Posts > Changes to Followers)</p>
 
 These settings allow you to set the exact change to a participant's followers
 after they _like_, _dislike_, _share_, or _flag_ a post. This value can be a
@@ -971,8 +1175,10 @@ If this value is not provided for a particular post, the change is sampled from
 the default normal distribution instead.
 
 ##### Changes to Credibility
+
 {:#posts-changes-to-credibility .no_toc}
-<p class="config-loc">(Posts &gt; Changes to Credibility)</p>
+
+<p class="config-loc">(Posts > Changes to Credibility)</p>
 
 These settings allow you to set the exact change to a participant's credibility
 after they _like_, _dislike_, _share_, or _flag_ a post. This value can be a
@@ -981,8 +1187,10 @@ If this value is not provided for a particular post, the change is sampled from
 the default normal distribution instead.
 
 ##### Number of Reactions
+
 {:#posts-number-of-reactions .no_toc}
-<p class="config-loc">(Posts &gt; Number of Reactions)</p>
+
+<p class="config-loc">(Posts > Number of Reactions)</p>
 
 These settings allow you to set the ostensible number of prior reactions to
 display for each post. These numbers are displayed below the available reactions
@@ -990,6 +1198,7 @@ of the post or comment. If this value is not provided for a particular post, the
 change is sampled from the default normal distribution instead.
 
 Only available if:
+
 <ul class="param-links">
     <li><a class="param-link" href="#general-display-reaction-counts">
         General > UI Settings > Display Reaction Counts
@@ -1000,12 +1209,14 @@ Only available if:
 </ul>
 
 ##### Comments
+
 {:#posts-comments .no_toc}
-<p class="config-loc">(Posts &gt; Comments)</p>
+
+<p class="config-loc">(Posts > Comments)</p>
 
 Up to three optional comments can be configured for each post. Each comment must
 include both a _Source Name_ and a _Message_, which are described below. An
-example comment is shown in [Figure 11](#fig11).
+example comment is shown in [Figure 11](#fig11). As with posts, if comment content relies on HTML, remember to include !HTML prior to the HTML content.
 
 <figure id="fig11">
     <img src="screenshots/example-comment.png" alt="A screenshot of an example comment in the game." height="123" />
@@ -1015,26 +1226,33 @@ example comment is shown in [Figure 11](#fig11).
 </figure>
 
 ##### Comment Source Name
+
 {:#posts-comment-source-name .no_toc}
-<p class="config-loc">(Posts &gt; Comments &gt; Source Name)</p>
+
+<p class="config-loc">(Posts > Comments > Source Name)</p>
 
 The name of the source to display as having made the comments.
 
 ##### Comment Message
+
 {:#posts-comment-message .no_toc}
-<p class="config-loc">(Posts &gt; Comments &gt; Message)</p>
+
+<p class="config-loc">(Posts > Comments > Message)</p>
 
 The text to display as the content of the comments.
 
 ##### Comment Likes
+
 {:#posts-comment-likes .no_toc}
-<p class="config-loc">(Posts &gt; Comments &gt; Likes)</p>
+
+<p class="config-loc">(Posts > Comments > Likes)</p>
 
 The number of likes to display for comments. These likes will only be shown if
 comments are enabled, comment likes are enabled, and displaying the number of
 reactions is enabled.
 
 Only used if:
+
 <ul class="param-links">
     <li><a class="param-link" href="#general-display-reaction-counts">
         General > UI Settings > Display Reaction Counts
@@ -1045,12 +1263,15 @@ Only used if:
 </ul>
 
 ##### Comment Dislikes
+
 {:#posts-comment-dislikes .no_toc}
-<p class="config-loc">(Posts &gt; Comments &gt; Dislikes)</p>
+
+<p class="config-loc">(Posts > Comments > Dislikes)</p>
 
 The number of dislikes to display for comments.
 
 Only used if:
+
 <ul class="param-links">
     <li><a class="param-link" href="#general-display-reaction-counts">
         General > UI Settings > Display Reaction Counts
@@ -1060,9 +1281,8 @@ Only used if:
     </a> is true.</li>
 </ul>
 
-
-
 ## 7. Source & Post Selection Worksheet
+
 {:#selection}
 
 The Source & Post Selection sheet allows you to edit the
@@ -1074,20 +1294,20 @@ four options for source/post selection: **Overall-Ratio**,
 In-depth descriptions of each selection method are available
 in the [Simulation documentation](/Simulation).
 
-
 ### 7.1. Selecting a Method
+
 {:#selection-selecting-method}
 
 The **Source & Post Selection Method** value at the top of
-this sheet should be changed manually to the name of the method 
+this sheet should be changed manually to the name of the method
 to be used. This should be one of _Overall-Ratio_,
 _Source-Ratios_, _Credibility_, or _Pre-Defined_. Once you
 have entered your desired source/post selection method, the
 settings for all the other selection methods will be
 disabled.
 
-
 ### 7.2. Method 1: Overall-Ratio
+
 {:#selection-overall-ratio}
 
 Sources will be selected randomly, and the associated
@@ -1096,8 +1316,10 @@ true:false posts. The settings for this method are
 available in the **Overall-Ratio Settings** section.
 
 ##### True Post Percentage
+
 {:#selection-overall-ratio-tpp .no_toc}
-<p class="config-loc">(Source & Post Selection &gt; Overall-Ratio Settings &gt; True Post Percentage)</p>
+
+<p class="config-loc">(Source & Post Selection > Overall-Ratio Settings > True Post Percentage)</p>
 
 The percentage of true posts to display to users. This
 percentage is used to probabilistically sample posts.
@@ -1106,8 +1328,8 @@ will differ from this value. However, the percentage
 of true posts shown to all participants collectively
 should approach this value.
 
-
 ### 7.3. Method 2: Source-Ratios
+
 {:#selection-source-ratios}
 
 Sources will be selected randomly, and the associated
@@ -1120,8 +1342,8 @@ source in one game. However, over all games played, the
 actual percentage of true posts that a source is selected
 to show should approach their defined **True Post Percentage**.
 
-
 ### 7.4. Method 3: Credibility
+
 {:#selection-credibility}
 
 Sources will be selected randomly, and then a **True Post
@@ -1134,31 +1356,34 @@ The parameters of the linear relationship between the two
 can be configured under the **Credibility Settings** section.
 
 ##### Linear Slope
+
 {:#selection-credibility-slope .no_toc}
-<p class="config-loc">(Source & Post Selection &gt; Credibility Settings &gt; Linear Slope)</p>
+
+<p class="config-loc">(Source & Post Selection > Credibility Settings > Linear Slope)</p>
 
 The increase in the **True Post Percentage** for every unit
 increase in a source's credibility.
 
 ##### Linear Intercept
+
 {:#selection-credibility-intercept .no_toc}
-<p class="config-loc">(Source & Post Selection &gt; Credibility Settings &gt; Linear Intercept)</p>
+
+<p class="config-loc">(Source & Post Selection > Credibility Settings > Linear Intercept)</p>
 
 The **True Post Percentage** to use when a source's
 credibility is zero.
 
-
 ### 7.5. Method 4: Pre-Defined
+
 {:#selection-predefined}
 
 An exact set of source/post pairs is manually defined to be presented
 to participants. The source/post pairs can be manually defined in the
 _Pre-Defined Source & Post Order_ sheet, documented in the
-[Pre-Defined Source & Post Order Worksheet](#predefined) section.
-
-
+[Pre-Defined Source &amp; Post Order Worksheet](#predefined) section.
 
 ## 8. Pre-Defined Source & Post Order Worksheet
+
 {:#predefined}
 
 This worksheet is only used if the Source & Post Selection
@@ -1168,23 +1393,29 @@ present to participants. The order that these pairs are
 presented may also be randomised.
 
 ##### Randomise Order
+
 {:#predefined-randomise .no_toc}
-<p class="config-loc">(Pre-Defined Source & Post Order &gt; Randomise Order)</p>
+
+<p class="config-loc">(Pre-Defined Source & Post Order > Randomise Order)</p>
 
 Whether the presentation order of the pairs should
 be randomised. Otherwise, the pairs will be shown
 in the exact order specified, from top to bottom.
 
 ##### Source ID
+
 {:#predefined-source-id .no_toc}
-<p class="config-loc">(Pre-Defined Source & Post Order &gt; Source ID)</p>
+
+<p class="config-loc">(Pre-Defined Source & Post Order > Source ID)</p>
 
 The ID of the source to be used for the post (e.g. **S1**).
 These IDs can be found in the _Sources_ sheet.
 
 ##### Post ID
+
 {:#predefined-post-id .no_toc}
-<p class="config-loc">(Pre-Defined Source & Post Order &gt; Post ID)</p>
+
+<p class="config-loc">(Pre-Defined Source & Post Order > Post ID)</p>
 
 The ID of the post to display (e.g. **S1**).
 These IDs can be found in the _Posts_ sheet.

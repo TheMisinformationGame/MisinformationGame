@@ -15,7 +15,7 @@ export function LikeIcon(props) {
 export function DislikeIcon(props) {
     return (
         <span {...props} className={"inline-block text-gray-700 mr-2 " + (props.className || "")}>
-            <ThumbDownIcon />
+            <ThumbDownIcon /> 
         </span>
     );
 }

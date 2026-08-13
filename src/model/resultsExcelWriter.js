@@ -101,6 +101,7 @@ function constructWorkbook(study, results, problems) {
         {header: "Source Followers", key: "sourceFollowers", width: 22, enabled: showFollowers},
 
         {header: "Post Headline", key: "postHeadline", width: 32},
+        {header: "Post Content", key: "postContent", width: 50},
         {header: "Post Likes", key: "postLikes", width: 20, enabled: showPostLikes},
         {header: "Post Dislikes", key: "postDislikes", width: 20, enabled: showPostDislikes},
         {header: "Post Shares", key: "postShares", width: 20, enabled: showPostShares},
@@ -111,6 +112,7 @@ function constructWorkbook(study, results, problems) {
         {header: "Shared Post", key: "sharedPost", width: 20, enabled: showPostShares},
         {header: "Flagged Post", key: "flaggedPost", width: 20, enabled: showPostFlags},
         {header: "Skipped Post", key: "skippedPost", width: 20},
+        {header: "Viewed Comments", key: "viewedComments", width: 20},
         {header: "User Comment", key: "comment", width: 20, enabled: study.areUserCommentsEnabled()},
 
         {header: "Dwell Time (MS)", key: "dwellTime", width: 22},
@@ -124,6 +126,16 @@ function constructWorkbook(study, results, problems) {
         {header: "Followers Before", key: "beforeFollowers", width: 22, enabled: showFollowers},
         {header: "Credibility After", key: "afterCredibility", width: 22, enabled: showCredibility},
         {header: "Followers After", key: "afterFollowers", width: 22, enabled: showFollowers},
+
+        {header: "Links in Post", key: "linksInPost", width: 18},
+        {header: "Clickable Components", key: "clickableComponents", width: 22},
+        {header: "HTML Clicks Count", key: "htmlClicksCount", width: 22},
+        {header: "Clicked Elements", key: "clickedElements", width: 50},
+        {header: "Click Times (MS)", key: "clickTimes", width: 30},
+        {header: "Popup Opens Count", key: "popupOpensCount", width: 22},
+        {header: "Total Popup Time (MS)", key: "totalPopupTime", width: 24},
+        {header: "Popup URLs", key: "popupUrls", width: 50},
+        {header: "Popup Durations (MS)", key: "popupDurations", width: 30},
     ]);
     for(let index = 0; index < results.length; index++) {
         const game = results[index];
@@ -140,6 +152,59 @@ function constructWorkbook(study, results, problems) {
             const afterCredibility = Math.round(participant.credibilityHistory[stateIndex + 1]);
             const beforeFollowers = Math.round(participant.followerHistory[stateIndex]);
             const afterFollowers = Math.round(participant.followerHistory[stateIndex + 1]);
+            
+            // Count links in post content
+            const postContent = state.currentPost.post.content;
+            let linksInPost = 0;
+            let clickableComponents = 0;
+            if (typeof postContent === "string") {
+                // Count <a> tags in the HTML
+                const linkMatches = postContent.match(/<a[^>]*>/gi);
+                linksInPost = linkMatches ? linkMatches.length : 0;
+                
+                // Count all clickable components: <a>, <button>, elements with onclick
+                const aMatches = postContent.match(/<a[^>]*>/gi);
+                const buttonMatches = postContent.match(/<button[^>]*>/gi);
+                const onclickMatches = postContent.match(/onclick\s*=/gi);
+                
+                clickableComponents = (aMatches ? aMatches.length : 0) + 
+                                     (buttonMatches ? buttonMatches.length : 0) + 
+                                     (onclickMatches ? onclickMatches.length : 0);
+            }
+            
+            // Format click data
+            const linkClicks = interaction.linkClicks || [];
+            const clickedElements = linkClicks.map(click => {
+                if (click.url) {
+                    return `<a>${click.text}: ${click.url}`;
+                } else if (click.hasOnClick) {
+                    return `<${click.tagName} onclick>${click.text}`;
+                } else {
+                    return `<${click.tagName}>${click.text}`;
+                }
+            }).join("; ");
+            const clickTimes = linkClicks.map(click => click.timestamp).join("; ");
+            
+            // Extract popup data
+            const popupClicks = linkClicks.filter(click => click.popupOpened);
+            const popupOpensCount = popupClicks.length;
+            const totalPopupTime = popupClicks.reduce((sum, click) => sum + (click.popupDuration || 0), 0);
+            const popupUrls = popupClicks.map(click => click.url).join("; ");
+            const popupDurations = popupClicks.map(click => click.popupDuration || 0).join("; ");
+            
+            // Determine if participant viewed comments
+            const hideCommentsByDefault = study.uiSettings.hideCommentsByDefault;
+            const clickedToShowComments = (interaction.commentVisibilityToggles || []).some(toggle => toggle.action === "show");
+            const viewedComments = !hideCommentsByDefault || clickedToShowComments;
+            
+            // Format post content for export
+            let postContentForExport = "";
+            if (typeof postContent === "string") {
+                postContentForExport = postContent;
+            } else if (postContent) {
+                postContentForExport = "img";
+            }
+            
             postsWorksheet.addRow({
                 sessionID: game.sessionID,
                 participantID: participant.participantID || "",
@@ -151,6 +216,7 @@ function constructWorkbook(study, results, problems) {
                 sourceCredibility: Math.round(state.currentSource.credibility),
 
                 postHeadline: state.currentPost.post.headline || "",
+                postContent: postContentForExport,
                 postLikes: (likes === undefined ? "" : likes),
                 postDislikes: (dislikes === undefined ? "" : dislikes),
                 postShares: (shares === undefined ? "" : shares),
@@ -161,6 +227,7 @@ function constructWorkbook(study, results, problems) {
                 sharedPost: interaction.hasPostReaction("share"),
                 flaggedPost: interaction.hasPostReaction("flag"),
                 skippedPost: interaction.hasPostReaction("skip"),
+                viewedComments: viewedComments,
                 comment: he.decode(interaction.comment || ""),
 
                 dwellTime: numToCellValue(interaction.timer.getDwellTimeMS()),
@@ -174,6 +241,16 @@ function constructWorkbook(study, results, problems) {
                 beforeFollowers: beforeFollowers,
                 afterCredibility: afterCredibility,
                 afterFollowers: afterFollowers,
+
+                linksInPost: linksInPost,
+                clickableComponents: clickableComponents,
+                htmlClicksCount: linkClicks.length,
+                clickedElements: clickedElements,
+                clickTimes: clickTimes,
+                popupOpensCount: popupOpensCount,
+                totalPopupTime: totalPopupTime,
+                popupUrls: popupUrls,
+                popupDurations: popupDurations,
             });
             containsAnyPosts = true;
         }
@@ -201,6 +278,16 @@ function constructWorkbook(study, results, problems) {
         {header: "Liked Comment", key: "likedComment", width: 20, enabled: showCommentLikes},
         {header: "Disliked Comment", key: "dislikedComment", width: 20, enabled: showCommentDislikes},
 
+        {header: "Links in Comment", key: "linksInComment", width: 18},
+        {header: "Clickable Components", key: "clickableComponents", width: 22},
+        {header: "HTML Clicks Count", key: "htmlClicksCount", width: 22},
+        {header: "Clicked Elements", key: "clickedElements", width: 50},
+        {header: "Click Times (MS)", key: "clickTimes", width: 30},
+        {header: "Popup Opens Count", key: "popupOpensCount", width: 22},
+        {header: "Total Popup Time (MS)", key: "totalPopupTime", width: 24},
+        {header: "Popup URLs", key: "popupUrls", width: 50},
+        {header: "Popup Durations (MS)", key: "popupDurations", width: 30},
+
         {header: "First Time to Interact (MS)", key: "firstInteractTime", width: 32},
         {header: "Last Time to Interact (MS)", key: "lastInteractTime", width: 32},
     ]);
@@ -217,6 +304,44 @@ function constructWorkbook(study, results, problems) {
                 const likes = comment.numberOfReactions.like;
                 const dislikes = comment.numberOfReactions.dislike;
                 const cInter = interaction.findCommentReaction(commentIndex);
+                
+                // Count links and clickable components in comment content
+                const commentContent = comment.comment.message;
+                let linksInComment = 0;
+                let clickableComponents = 0;
+                if (typeof commentContent === "string") {
+                    // Count <a> tags in the HTML
+                    const linkMatches = commentContent.match(/<a[^>]*>/gi);
+                    linksInComment = linkMatches ? linkMatches.length : 0;
+                    
+                    // Count all clickable components: <a>, <button>, elements with onclick
+                    const aMatches = commentContent.match(/<a[^>]*>/gi);
+                    const buttonMatches = commentContent.match(/<button[^>]*>/gi);
+                    const onclickMatches = commentContent.match(/onclick\s*=/gi);
+                    
+                    clickableComponents = (aMatches ? aMatches.length : 0) + 
+                                         (buttonMatches ? buttonMatches.length : 0) + 
+                                         (onclickMatches ? onclickMatches.length : 0);
+                }
+                
+                // Format comment click data
+                const commentClicks = (cInter && cInter.linkClicks) || [];
+                const clickedElements = commentClicks.map(click => {
+                    if (click.url) {
+                        return `<a>${click.text}: ${click.url}`;
+                    } else if (click.hasOnClick) {
+                        return `<${click.tagName} onclick>${click.text}`;
+                    } else {
+                        return `<${click.tagName}>${click.text}`;
+                    }
+                }).join("; ");
+                const clickTimes = commentClicks.map(click => click.timestamp).join("; ");
+                const popupClicks = commentClicks.filter(click => click.popupOpened);
+                const popupOpensCount = popupClicks.length;
+                const totalPopupTime = popupClicks.reduce((sum, click) => sum + (click.popupDuration || 0), 0);
+                const popupUrls = popupClicks.map(click => click.url).join("; ");
+                const popupDurations = popupClicks.map(click => click.popupDuration || 0).join("; ");
+                
                 commentsWorksheet.addRow({
                     sessionID: game.sessionID,
                     participantID: participant.participantID || "",
@@ -230,6 +355,16 @@ function constructWorkbook(study, results, problems) {
 
                     likedComment: cInter !== null && cInter.hasReaction("like"),
                     dislikedComment: cInter !== null && cInter.hasReaction("dislike"),
+
+                    linksInComment: linksInComment,
+                    clickableComponents: clickableComponents,
+                    htmlClicksCount: commentClicks.length,
+                    clickedElements: clickedElements,
+                    clickTimes: clickTimes,
+                    popupOpensCount: popupOpensCount,
+                    totalPopupTime: totalPopupTime,
+                    popupUrls: popupUrls,
+                    popupDurations: popupDurations,
 
                     firstInteractTime: (cInter !== null ? numToCellValue(cInter.timer.getTimeToFirstInteractMS()) : ""),
                     lastInteractTime: (cInter !== null ? numToCellValue(cInter.timer.getTimeToLastInteractMS()) : "")

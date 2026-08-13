@@ -57,7 +57,9 @@ export const V2 = {
             commentEnabledReactions: {
                 like: new WorkbookLoc("Comment Likes Enabled", "General", "D25", ExcelBoolean),
                 dislike: new WorkbookLoc("Comment Dislikes Enabled", "General", "D26", ExcelBoolean),
-            }
+            },
+
+            hideCommentsByDefault: new WorkbookLoc("Hide Comments by Default", "General", "D27", ExcelBoolean),
         },
 
         advanced: {
@@ -67,6 +69,7 @@ export const V2 = {
             genCompletionCode: new WorkbookLoc("Generate Completion Code", "General", "D33", ExcelBoolean),
             completionCodeDigits: new WorkbookLoc("Completion Code Digits", "General", "D34", ExcelNumber),
             genRandDefaultAvatars: new WorkbookLoc("Generate Random Default Avatars", "General", "D35", ExcelBoolean),
+            openLinksInModal: new WorkbookLoc("Open Links in Pop-up", "General", "D36", ExcelBoolean),
         }
     },
 
@@ -228,6 +231,7 @@ function readV2StudyUserInterfaceSettings(workbook, displayPostsInFeed) {
         readCell(workbook, V2.general.userInterface.displayProgress),
         readCell(workbook, V2.general.userInterface.displayNumberOfReactions),
         readCell(workbook, V2.general.userInterface.allowMultipleReactions),
+        readCell(workbook, V2.general.userInterface.hideCommentsByDefault),
         { // postEnabledReactions
             "like": readCell(workbook, V2.general.userInterface.postEnabledReactions.like),
             "dislike": readCell(workbook, V2.general.userInterface.postEnabledReactions.dislike),
@@ -253,6 +257,7 @@ function readV2StudyAdvancedSettings(workbook, basicSettings) {
         genCompletionCode,
         (genCompletionCode ? readCellWithDefault(workbook, V2.general.advanced.completionCodeDigits, 4) : 0),
         readCellWithDefault(workbook, V2.general.advanced.genRandDefaultAvatars, true),
+        readCellWithDefault(workbook, V2.general.advanced.openLinksInModal, false),
     );
 }
 

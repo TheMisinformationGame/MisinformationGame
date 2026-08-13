@@ -198,8 +198,8 @@ export class PostComment {
  * A comment that a user made on a post.
  */
 export class UserComment extends PostComment {
-    constructor(message) {
-        super(-1, "You", message, ReactionValues.zero());
+    constructor(message, displayName = "You") {
+        super(-1, displayName, message, ReactionValues.zero());
     }
 }
 
@@ -418,6 +418,7 @@ export class StudyUserInterfaceSettings {
     displayProgress; // Boolean
     displayNumberOfReactions; // Boolean
     allowMultipleReactions; // Boolean
+    hideCommentsByDefault; // Boolean
 
     postEnabledReactions; // {String: Boolean}
     commentEnabledReactions; // {String: Boolean}
@@ -425,7 +426,7 @@ export class StudyUserInterfaceSettings {
     constructor(
             displayPostsInFeed, displayFollowers, displayCredibility,
             displayProgress, displayNumberOfReactions, allowMultipleReactions,
-            postEnabledReactions, commentEnabledReactions
+            hideCommentsByDefault, postEnabledReactions, commentEnabledReactions
     ) {
         doTypeCheck(displayPostsInFeed, "boolean", "Whether to display posts in a feed");
         doTypeCheck(displayFollowers, "boolean", "Whether to display followers");
@@ -433,6 +434,7 @@ export class StudyUserInterfaceSettings {
         doTypeCheck(displayProgress, "boolean", "Whether to display progress");
         doTypeCheck(displayNumberOfReactions, "boolean", "Whether to display number of reactions");
         doTypeCheck(allowMultipleReactions, "boolean", "Whether to allow selection of multiple reactions");
+        doTypeCheck(hideCommentsByDefault, "boolean", "Whether to hide comments by default");
 
         doTypeCheck(postEnabledReactions, "object", "The reactions enabled for posts");
         doTypeCheck(postEnabledReactions["like"], "boolean", "Whether likes are enabled for posts");
@@ -450,6 +452,7 @@ export class StudyUserInterfaceSettings {
         this.displayProgress = displayProgress;
         this.displayNumberOfReactions = displayNumberOfReactions;
         this.allowMultipleReactions = allowMultipleReactions;
+        this.hideCommentsByDefault = hideCommentsByDefault;
 
         this.postEnabledReactions = postEnabledReactions;
         this.commentEnabledReactions = commentEnabledReactions;
@@ -463,6 +466,7 @@ export class StudyUserInterfaceSettings {
             "displayProgress": this.displayProgress,
             "displayNumberOfReactions": this.displayNumberOfReactions,
             "allowMultipleReactions": this.allowMultipleReactions,
+            "hideCommentsByDefault": this.hideCommentsByDefault,
             "postEnabledReactions": this.postEnabledReactions,
             "commentEnabledReactions": this.commentEnabledReactions,
         };
@@ -470,7 +474,8 @@ export class StudyUserInterfaceSettings {
 
     static fromJSON(json) {
         const displayPostsInFeed = json["displayPostsInFeed"],
-              allowMultipleReactions = json["allowMultipleReactions"];
+              allowMultipleReactions = json["allowMultipleReactions"],
+              hideCommentsByDefault = json["hideCommentsByDefault"];
 
         const postEnabledReactions = json["postEnabledReactions"];
         // For backwards compatibility with V1 spreadsheets.
@@ -483,6 +488,7 @@ export class StudyUserInterfaceSettings {
             json["displayFollowers"], json["displayCredibility"],
             json["displayProgress"], json["displayNumberOfReactions"],
             (allowMultipleReactions === undefined ? false : allowMultipleReactions),
+            (hideCommentsByDefault === undefined ? false : hideCommentsByDefault),
             postEnabledReactions, json["commentEnabledReactions"]
         )
     }
@@ -493,12 +499,12 @@ export class StudyUserInterfaceSettings {
     static createV2(
         displayPostsInFeed, displayFollowers, displayCredibility,
         displayProgress, displayNumberOfReactions, allowMultipleReactions,
-        postEnabledReactions, commentEnabledReactions
+        hideCommentsByDefault, postEnabledReactions, commentEnabledReactions
     ) {
         return new StudyUserInterfaceSettings(
             displayPostsInFeed, displayFollowers, displayCredibility,
             displayProgress, displayNumberOfReactions, allowMultipleReactions,
-            postEnabledReactions, commentEnabledReactions
+            hideCommentsByDefault, postEnabledReactions, commentEnabledReactions
         )
     }
 
@@ -519,7 +525,7 @@ export class StudyUserInterfaceSettings {
 
         return StudyUserInterfaceSettings.createV2(
             false, displayFollowers, displayCredibility, displayProgress,
-            displayNumberOfReactions, false,
+            displayNumberOfReactions, false, false,
             postEnabledReactionsWithSkip, commentEnabledReactions
         )
     }
@@ -536,10 +542,11 @@ export class StudyAdvancedSettings {
     genCompletionCode; // Boolean
     completionCodeDigits; // Number
     genRandomDefaultAvatars; // Boolean
+    openLinksInModal; // Boolean
 
     constructor(
         minimumCommentLength, promptDelaySeconds, reactDelaySeconds,
-        genCompletionCode, completionCodeDigits, genRandomDefaultAvatars) {
+        genCompletionCode, completionCodeDigits, genRandomDefaultAvatars, openLinksInModal) {
 
         doTypeCheck(minimumCommentLength, "number", "Minimum Comment Length");
         doTypeCheck(promptDelaySeconds, "number", "Study Prompt Continue Delay");
@@ -548,6 +555,7 @@ export class StudyAdvancedSettings {
         doTypeCheck(genCompletionCode, "boolean", "Whether the study generates a completion code");
         doTypeCheck(completionCodeDigits, "number", "Study Completion Code Digits");
         doTypeCheck(genRandomDefaultAvatars, "boolean", "Whether the study generates random default avatars for sources");
+        doTypeCheck(openLinksInModal, "boolean", "Whether to open links in a pop-up");
 
         this.minimumCommentLength = minimumCommentLength;
         this.promptDelaySeconds = promptDelaySeconds;
@@ -556,6 +564,7 @@ export class StudyAdvancedSettings {
         this.genCompletionCode = genCompletionCode;
         this.completionCodeDigits = completionCodeDigits;
         this.genRandomDefaultAvatars = genRandomDefaultAvatars;
+        this.openLinksInModal = openLinksInModal;
     }
 
     toJSON() {
@@ -565,17 +574,20 @@ export class StudyAdvancedSettings {
             "reactDelaySeconds": this.reactDelaySeconds,
             "genCompletionCode": this.genCompletionCode,
             "completionCodeDigits": this.completionCodeDigits,
-            "genRandomDefaultAvatars": this.genRandomDefaultAvatars
+            "genRandomDefaultAvatars": this.genRandomDefaultAvatars,
+            "openLinksInModal": this.openLinksInModal
         };
     }
 
     static fromJSON(json) {
         const randDefaultAvatars = json["genRandomDefaultAvatars"];
+        const openLinksInModal = json["openLinksInModal"];
         return new StudyAdvancedSettings(
             json["minimumCommentLength"], json["promptDelaySeconds"],
             json["reactDelaySeconds"], json["genCompletionCode"],
             json["completionCodeDigits"],
-            (randDefaultAvatars === undefined ? true : randDefaultAvatars)
+            (randDefaultAvatars === undefined ? true : randDefaultAvatars),
+            (openLinksInModal === undefined ? false : openLinksInModal)
         )
     }
 
@@ -584,11 +596,11 @@ export class StudyAdvancedSettings {
      */
     static createV2(
         minimumCommentLength, promptDelaySeconds, reactDelaySeconds,
-        genCompletionCode, completionCodeDigits, genRandomDefaultAvatars) {
+        genCompletionCode, completionCodeDigits, genRandomDefaultAvatars, openLinksInModal) {
 
         return new StudyAdvancedSettings(
             minimumCommentLength, promptDelaySeconds, reactDelaySeconds,
-            genCompletionCode, completionCodeDigits, genRandomDefaultAvatars
+            genCompletionCode, completionCodeDigits, genRandomDefaultAvatars, openLinksInModal
         )
     }
 

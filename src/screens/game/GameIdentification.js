@@ -23,7 +23,9 @@ export class GameIdentification extends ActiveGameScreen {
             return;
 
         this.setStateIfMounted(() => {
-            return {value: game.participant.participantID};
+            return {
+                value: game.participant.participantID
+            };
         });
     }
 
@@ -105,7 +107,7 @@ export class GameIdentification extends ActiveGameScreen {
                                 grid space-y-2 px-10 py-4 max-w-full
                                 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 
-                    <p className="font-bold">Enter your access ID:</p>
+                    <p className="font-bold">Enter user access ID:</p>
                     <input className="px-3 py-2 border border-gray-400 rounded-md justify-self-center bg-gray-100"
                            placeholder="ID Number"
                            value={this.state.value}
@@ -120,7 +122,7 @@ export class GameIdentification extends ActiveGameScreen {
                         to={target}
                         onSubmit={() => this.submitID(game, this.state.value)}
                         condition={GameIdentification.isValidValue(this.state.value)}
-                        disabledTooltip="Enter your access ID to continue"
+                        disabledTooltip="Enter user access ID to continue"
                         onClick={() => this.setState(() => {
                             return {displayError: true};
                         })}

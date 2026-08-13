@@ -33,10 +33,10 @@ Game URL. This allows users to not have to enter their ID manually.
 
 <p class="error">
     <span style="font-weight: bold">Important note.</span>
-    Due to browser settings, iframe integrations may <b>fail</b> if a participant is using Safari. Because of this, we recommend preventing people on Safari from completing your survey if using an iframe integration option.
+    Due to browser settings, iframe integrations will likely <b>fail</b> if a participant is using Safari. Because of this, we recommend preventing people on Safari from completing your survey if using an iframe integration option. This integration is also <b><u>incompatable</u> with mobile devices.
 </p>
 
-We have now updated the debrief page within the misinfo game (v2.4.0) to allow for basic communication with a parent page (e.g., Qualtrics survey) when the tool is embedded as an iframe. This allows the game to 'tell' Qualtrics that the participant has reached the debrief page of the misinfo game study that you have embedded, which you can then use to trigger the next button. This integration is based on [a paper by Benjamin Carter & Alessandro Del Ponte](https://doi.org/10.3758/s13428-022-01792-w), and we strongly recommend that you cite their paper (along with our paper) if you use this integration method.
+We have now updated the debrief page within the misinfo game (v2.4.0) to allow for basic communication with a parent page (e.g., Qualtrics survey) when the tool is embedded as an iframe. This allows the game to 'tell' Qualtrics that the participant has reached the debrief page of the misinfo game study that you have embedded, which you can then use to trigger the next button. This integration is based on [a paper by Benjamin Carter &amp; Alessandro Del Ponte](https://doi.org/10.3758/s13428-022-01792-w), and we strongly recommend that you cite their paper (along with our paper) if you use this integration method.
 
 Before you insert the misinfo game, you will need to ensure that the formatting in your qualtrics survey is appropriate. To do so, navigate to the look and feel tab of your Qualtrics survey.
 
@@ -195,3 +195,86 @@ The final text in the question will be in the following format:
 After this your survey will contain the following questions in the
 following format:
 `<img src="screenshots/Qualtrics-Example.png" alt="Example Qualtrics Survey" height="258" />`
+
+### Preventing participants using Safari in Qualtrics
+
+To prevent people using Safari web browser from participating in the study, you can add the following to the Javascript of a Qualtrics text block on the landig page of your survey. If the use of Safari is detected, this will stop the participant from being able to select the "next" button, and provide them a copiable link to copy and paste into a different web browser, with participants instructed that a preference is for them to use Chrome. 
+
+```
+Qualtrics.SurveyEngine.addOnload(function()
+{
+    var qthis = this;
+
+    // Detect Safari (excludes Chrome, Android browser, and other Chromium-based
+    // browsers that also include "Safari" in their user agent string)
+    var userAgent = navigator.userAgent;
+    var isSafari = /^((?!chrome|android).)*safari/i.test(userAgent);
+
+    if (isSafari) {
+
+        // Disable the Next button so respondents can't proceed on Safari
+        qthis.disableNextButton();
+
+        var currentURL = window.location.href;
+        var urlBoxId = "safariURLBox_" + qthis.questionId;
+        var copyBtnId = "safariCopyBtn_" + qthis.questionId;
+        var copyMsgId = "safariCopyMsg_" + qthis.questionId;
+
+        var messageHTML =
+            "<div style='color:#B00020; font-weight:bold; margin-top:10px;'>" +
+            "It looks like you're using the Safari web browser. This study is not " +
+            "compatible with Safari, please switch to a different browser " +
+            "(<b>ideally Chrome</b>) to continue.</div>" +
+            "<div style='margin-top:10px;'>Copy the link below and paste it into " +
+            "a different browser:</div>" +
+            "<div style='display:flex; align-items:center; gap:8px; margin-top:5px;'>" +
+                "<div id='" + urlBoxId + "' style='word-break:break-all; padding:8px; " +
+                "background:#f4f4f4; border:1px solid #ccc; flex:1;'>" + currentURL + "</div>" +
+                "<button type='button' id='" + copyBtnId + "' style='padding:8px 14px; " +
+                "cursor:pointer; white-space:nowrap;'>Copy Link</button>" +
+            "</div>" +
+            "<div id='" + copyMsgId + "' style='color:#2E7D32; margin-top:5px; " +
+            "font-weight:bold; display:none;'>Link copied!</div>";
+
+        jQuery("#" + qthis.questionId).find(".QuestionText").after(messageHTML);
+
+        document.getElementById(copyBtnId).addEventListener("click", function() {
+            var showCopied = function() {
+                var msg = document.getElementById(copyMsgId);
+                msg.style.display = "block";
+                setTimeout(function() { msg.style.display = "none"; }, 2000);
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(currentURL).then(showCopied, function() {
+                    // Clipboard API failed (e.g. permissions) — fall back below
+                    fallbackCopy();
+                });
+            } else {
+                fallbackCopy();
+            }
+
+            function fallbackCopy() {
+                var tempInput = document.createElement("textarea");
+                tempInput.value = currentURL;
+                tempInput.style.position = "fixed";
+                tempInput.style.opacity = "0";
+                document.body.appendChild(tempInput);
+                tempInput.focus();
+                tempInput.select();
+                try {
+                    document.execCommand("copy");
+                    showCopied();
+                } catch (err) {
+                    // If even the fallback fails, leave the URL visible for manual copy
+                }
+                document.body.removeChild(tempInput);
+            }
+        });
+
+    } else {
+        // Make sure the Next button is enabled for everyone else
+        qthis.enableNextButton();
+    }
+});
+```

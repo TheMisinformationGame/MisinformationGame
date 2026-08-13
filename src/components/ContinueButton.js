@@ -42,13 +42,13 @@ export class ContinueButton extends MountAwareComponent {
                         "The continue button will be enabled shortly"
                         : this.props.disabledTooltip) : "")}
                 className={
-                    "px-3 py-2 rounded-md text-white " +
+                    "px-3 py-2 rounded-md text-center " +
                     (!enabled ? "" : "cursor-pointer ") +
                     "select-none " +
                     (this.props.className || "") + " " +
-                    (!enabled ? "bg-gray-400 " :
-                        (this.props.active ? "bg-blue-600 " : "bg-blue-500 active:bg-blue-600 ") +
-                        "hover:bg-blue-600")
+                    (!enabled ? "bg-gray-400 text-white " :
+                        (this.props.active ? "bg-blue-600 text-white " : "bg-blue-500 text-white active:bg-blue-600 ") +
+                        "hover:bg-blue-600 hover:text-white")
                 }>
 
                 {(disabledByTime ? "Continue" : this.props.buttonText || "Continue")}
@@ -124,11 +124,11 @@ export class ContinueBanner extends MountAwareComponent {
     }
 
     render() {
-        let text = "Continue";
+        let text = <span className="force-white-text">Continue</span>;
         let disabledTooltip = undefined;
         let disabled = false;
         if (this.props.requireScrollToBottom && !this.state.scrolledDown) {
-            text = <span className="text-lg">Scroll Down to Continue</span>;
+            text = <span className="text-lg force-white-text">Scroll Down to Continue</span>;
             disabledTooltip = "Scroll to the bottom of the page to continue";
             disabled = true;
         }
@@ -149,7 +149,7 @@ export class ContinueBanner extends MountAwareComponent {
                         disabledTooltip={disabledTooltip}
                         onClick={this.props.onClick}
                         delay={this.props.delay}
-                        className="text-xl px-4 py-2" />
+                        className="text-xl px-4 py-2 force-white-text" />
                 </div>
             </>
         );

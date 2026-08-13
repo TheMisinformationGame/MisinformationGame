@@ -6,11 +6,11 @@ import React, {Component} from "react";
  */
 export class ReactButton extends Component {
     getPositioningClassName(wide) {
-        return "h-12 pt-1.5 px-4 " + (wide ? "w-32" : "w-16");
+        return "h-10 pt-1 px-3 " + (wide ? "w-32" : "w-14");
     }
 
     getReactionCountClassName() {
-        return "absolute top-10 left-1/2 transform -translate-x-1/2 p-1 text-lg font-bold";
+        return "absolute top-9 left-1/2 transform -translate-x-1/2 p-0.5 text-base font-bold";
     }
 
     render() {
@@ -28,7 +28,7 @@ export class ReactButton extends Component {
             <div id={reaction}
                  title={this.props.title}
                  className={
-                     " relative group rounded text-center " +
+                     " relative group rounded text-center flex flex-col items-center justify-center " +
                      " fill-current transition duration-100 " +
                      " " + this.getPositioningClassName(wide) + " " +
                      (selected ? " bg-gray-100 font-semibold " : (enabled ? " hover:bg-gray-100 " : "")) +
@@ -68,10 +68,10 @@ export class ReactButton extends Component {
  */
 export class CommentReactButton extends ReactButton {
     getPositioningClassName() {
-        return "h-9 w-11 pt-1.5 pb-0.5 px-3 mr-1";
+        return "h-10 w-11 pt-1.5 pb-0.5 px-2";
     }
 
     getReactionCountClassName() {
-        return "absolute top-8 left-1/2 transform -translate-x-1/2 p-0.5 text-base font-bold";
+        return "absolute top-8 left-1/2 transform -translate-x-1/2 p-0.5 text-xs font-bold";
     }
 }

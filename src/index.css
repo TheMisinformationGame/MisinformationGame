@@ -6,12 +6,58 @@ html, body, #root {
     min-height: 100%;
 }
 
-p a {
-    color: #006be2;
+/* Buttons should not get link styling - highest priority */
+a[class*="bg-"], a[class*="text-white"] {
+    color: inherit !important;
+    text-decoration: none !important;
+    font-weight: inherit !important;
+}
+
+/* Force white text for continue buttons - highest priority */
+.force-white-text,
+.force-white-text *,
+.force-white-text span,
+a.force-white-text,
+a.force-white-text:link,
+a.force-white-text:visited,
+a.force-white-text:hover,
+a.force-white-text:active,
+div.force-white-text {
+    color: white !important;
+}
+
+/* Style content links */
+a:not([class*="bg-"]):not([class*="text-white"]) {
+    color: #1877f2;
+    text-decoration: none;
+    font-weight: 600;
+}
+a:not([class*="bg-"]):not([class*="text-white"]):hover,
+a:not([class*="bg-"]):not([class*="text-white"]):active {
+    color: #1877f2;
     text-decoration: underline;
 }
-p a:hover, p a:active {
-    color: #16418A
+
+/* Ensure HTML content links also get styled */
+p a:not([class*="bg-"]):not([class*="text-white"]) {
+    color: #1877f2 !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+}
+p a:not([class*="bg-"]):not([class*="text-white"]):hover,
+p a:not([class*="bg-"]):not([class*="text-white"]):active {
+    color: #1877f2 !important;
+    text-decoration: underline !important;
+}
+
+/* Clickable divs with cursor pointer should have hover effects */
+div[onclick], div[style*="cursor:pointer"], div[style*="cursor: pointer"] {
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+div[onclick]:hover, div[style*="cursor:pointer"]:hover, div[style*="cursor: pointer"]:hover {
+    opacity: 0.85;
+    background-color: rgba(0, 0, 0, 0.03) !important;
 }
 
 .no-overflow-anchor {

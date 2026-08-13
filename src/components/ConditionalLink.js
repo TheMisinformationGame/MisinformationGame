@@ -3,18 +3,20 @@ import {Component} from "react";
 
 export class ConditionalLink extends Component {
     render() {
+        const className = (this.props.className || "") + " force-white-text";
+        
         if (this.props.condition && this.props.to) {
             return (
                 <Link to={this.props.to}
                       onClick={this.props.onSubmit}
-                      className={this.props.className}
+                      className={className}
                       title={this.props.tooltip}>
 
                     {this.props.children}
                 </Link>
             );
         } else {
-            return <div className={this.props.className} onClick={this.props.onClick} title={this.props.tooltip}>
+            return <div className={className} onClick={this.props.onClick} title={this.props.tooltip}>
                 {this.props.children}
             </div>
         }

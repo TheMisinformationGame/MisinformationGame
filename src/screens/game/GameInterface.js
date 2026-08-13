@@ -7,7 +7,7 @@ import {MountAwareComponent} from "../../components/MountAwareComponent";
 import {ParticipantProgress} from "./ParticipantProgress";
 import smoothscroll from 'smoothscroll-polyfill';
 import {PostComponent} from "./Post";
-import {GamePostInteractionStore} from "../../model/game/interactions";
+import {GameCommentInteraction, GamePostInteractionStore} from "../../model/game/interactions";
 import {ScrollTracker} from "../../model/game/scrollTracker";
 import {DynamicFeedbackController} from "./dynamicFeedback";
 
@@ -24,17 +24,11 @@ class FeedEnd extends Component {
     render() {
         return (
             <>
-                <div id="feed-end" className="flex flex-col mt-6">
-                    <div className="bg-white shadow">
-                        <div onClick={this.props.onContinue}
-                             className={
-                                 " m-3 px-3 py-2 rounded-md text-white select-none cursor-pointer " +
-                                 " bg-blue-500 active:bg-blue-600 hover:bg-blue-600"
-                             }>
-
-                            Click to Complete Simulation
-                        </div>
-                    </div>
+                <div id="feed-end" className="flex flex-col mt-6 mx-4 relative z-10">
+                    <button onClick={this.props.onContinue}
+                            className="px-6 py-4 rounded-xl text-white text-center font-semibold cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300 bg-blue-500 hover:bg-blue-600 active:bg-blue-700">
+                        Click to proceed
+                    </button>
                 </div>
                 <div id="feed-end-spacer" style={{"height": "60vh"}}></div>
             </>
@@ -105,21 +99,21 @@ class GameFinished extends MountAwareComponent {
             <div className="w-full bg-white shadow items-center">
                 <div className="px-10 pt-8 pb-6 max-w-full text-center">
                     <p className="block text-xl mb-4 font-bold">
-                        You have completed the simulation!
+                        You have now completed this task!
                     </p>
                     <p className="text-left mb-4">
-                        Your results will be saved, and then you may continue to the debriefing of the study.
+                       Your results are being saved. Once they have been saved, you can click the button below to continue to the next part of the task.
                     </p>
 
                     {/* Allow the user to continue if their results have been saved. */}
                     {this.state.saved && <ContinueButton className="block w-full" to={target} condition={true} />}
 
                     {/* If the results are being saved, show a progress wheel. */}
-                    {this.state.saving && <ProgressLabel value="Your results are being saved..." />}
+                    {this.state.saving && <ProgressLabel value="User's results are being saved..." />}
 
                     {/* If there was an error saving their results, show the error, and ask them to try again. */}
                     {this.state.error && <>
-                        <ErrorLabel value={[<b>There was an error saving your results:</b>, this.state.error]} />
+                        <ErrorLabel value={[<b>There was an error saving user's results:</b>, this.state.error]} />
                         <div onClick={() => this.retry()}
                              className="mt-3 px-3 py-2 rounded-md text-white select-none
                                         cursor-pointer bg-blue-500 active:bg-blue-600 hover:bg-blue-600 ">
@@ -153,6 +147,7 @@ export class GameScreen extends ActiveGameScreen {
             overrideCredibility: null,
             followerChange: null,
             credibilityChange: null,
+            popupBlockingCount: 0,
         };
         this.state = this.defaultState;
         this.scrollTracker = new ScrollTracker(
@@ -171,10 +166,41 @@ export class GameScreen extends ActiveGameScreen {
 
         this.changeTimeoutID = null;
         this.reactDelayTimeoutID = null;
+
+        this.scrollLockApplied = false;
+        this.previousBodyOverflow = null;
+        this.previousBodyTouchAction = null;
+    }
+
+    shouldLockScreenScroll() {
+        return !this.state.dismissedPrompt || (this.state.popupBlockingCount || 0) > 0;
+    }
+
+    updateScreenScrollLock() {
+        if (typeof document === "undefined" || !document.body)
+            return;
+
+        const shouldLock = this.shouldLockScreenScroll();
+        if (shouldLock && !this.scrollLockApplied) {
+            this.previousBodyOverflow = document.body.style.overflow;
+            this.previousBodyTouchAction = document.body.style.touchAction;
+            document.body.style.overflow = "hidden";
+            document.body.style.touchAction = "none";
+            this.scrollLockApplied = true;
+        } else if (!shouldLock && this.scrollLockApplied) {
+            document.body.style.overflow = this.previousBodyOverflow || "";
+            document.body.style.touchAction = this.previousBodyTouchAction || "";
+            this.scrollLockApplied = false;
+            this.previousBodyOverflow = null;
+            this.previousBodyTouchAction = null;
+        }
     }
 
     afterGameLoaded(game) {
         super.afterGameLoaded(game);
+
+        // Preload current/upcoming media to reduce visible loading delays.
+        game.preload();
 
         const inters = game.participant.postInteractions;
         this.setStateIfMounted(() => {
@@ -225,6 +251,7 @@ export class GameScreen extends ActiveGameScreen {
     componentDidMount() {
         super.componentDidMount();
         this.scrollTracker.start();
+        this.updateScreenScrollLock();
         if (this.scrollToNextPostAfterNextUpdate) {
             const postIndex = this.scrollToNextPostAfterNextUpdate;
             this.scrollToNextPostAfterNextUpdate = null;
@@ -233,6 +260,7 @@ export class GameScreen extends ActiveGameScreen {
     }
 
     componentDidUpdate() {
+        this.updateScreenScrollLock();
         if (this.scrollToNextPostAfterNextUpdate) {
             const postIndex = this.scrollToNextPostAfterNextUpdate;
             this.scrollToNextPostAfterNextUpdate = null;
@@ -250,6 +278,15 @@ export class GameScreen extends ActiveGameScreen {
             this.changeTimeoutID = null;
         }
         this.cancelReactDelay();
+
+        // Ensure body scrolling is restored when this screen unmounts.
+        if (typeof document !== "undefined" && document.body && this.scrollLockApplied) {
+            document.body.style.overflow = this.previousBodyOverflow || "";
+            document.body.style.touchAction = this.previousBodyTouchAction || "";
+            this.scrollLockApplied = false;
+            this.previousBodyOverflow = null;
+            this.previousBodyTouchAction = null;
+        }
     }
 
     onPromptContinue(study) {
@@ -314,6 +351,87 @@ export class GameScreen extends ActiveGameScreen {
         });
     }
 
+    onPostLinkClick(postIndex, clickData) {
+        this.setState((state) => {
+            const inters = state.interactions;
+            const updated = inters.get(postIndex).withLinkClick(clickData);
+            return {
+                interactions: inters.update(postIndex, updated)
+            };
+        });
+    }
+
+    onCommentLinkClick(postIndex, commentIndex, clickData) {
+        this.setState((state) => {
+            const inters = state.interactions;
+            const postInter = inters.get(postIndex);
+            const commentInter = postInter.findCommentReaction(commentIndex);
+            
+            if (commentInter === null) {
+                // Create a new comment interaction with just the link click
+                const timer = postInter.timer.withClearedInteractions();
+                const newCommentInter = new GameCommentInteraction(commentIndex, [], [], timer).withLinkClick(clickData);
+                return {
+                    interactions: inters.update(postIndex, postInter.withCommentReaction(commentIndex, newCommentInter))
+                };
+            } else {
+                // Add link click to existing comment interaction
+                return {
+                    interactions: inters.update(postIndex, postInter.withCommentReaction(
+                        commentIndex, commentInter.withLinkClick(clickData)
+                    ))
+                };
+            }
+        });
+    }
+
+    onCommentVisibilityToggle(postIndex, action, fromDefault) {
+        this.setState((state) => {
+            const inters = state.interactions;
+            return {
+                interactions: inters.update(postIndex, inters.get(postIndex).withCommentVisibilityToggle(action, fromDefault))
+            };
+        });
+    }
+
+    onPostPopupClose(postIndex, popupData) {
+        this.setState((state) => {
+            const inters = state.interactions;
+            const updated = inters.get(postIndex).withPopupData(popupData);
+            return {
+                interactions: inters.update(postIndex, updated),
+                popupBlockingCount: Math.max(0, (state.popupBlockingCount || 0) - 1)
+            };
+        });
+    }
+
+    onCommentPopupClose(postIndex, commentIndex, popupData) {
+        this.setState((state) => {
+            const inters = state.interactions;
+            const postInters = inters.get(postIndex);
+            let commentInters = postInters.findCommentReaction(commentIndex);
+            
+            if (commentInters) {
+                const updatedCommentInters = commentInters.withPopupData(popupData);
+                const updatedPostInters = postInters.withCommentReaction(commentIndex, updatedCommentInters);
+                return {
+                    interactions: inters.update(postIndex, updatedPostInters),
+                    popupBlockingCount: Math.max(0, (state.popupBlockingCount || 0) - 1)
+                };
+            }
+            
+            return {
+                popupBlockingCount: Math.max(0, (state.popupBlockingCount || 0) - 1)
+            };
+        });
+    }
+
+    onPopupOpened(commentIndex) {
+        this.setState((state) => {
+            return {popupBlockingCount: (state.popupBlockingCount || 0) + 1};
+        });
+    }
+
     onPostMove(lastLoc, newLoc) {
         const postIndex = newLoc.postIndex;
         if ((!lastLoc || !lastLoc.onScreen) && newLoc.onScreen) {
@@ -356,6 +474,7 @@ export class GameScreen extends ActiveGameScreen {
         const beforeCredibility = Math.round(game.participant.credibility);
 
         game.submitInteractions(inters);
+        game.preload();
 
         const afterFollowers = Math.round(game.participant.followers);
         const afterCredibility = Math.round(game.participant.credibility);
@@ -551,6 +670,7 @@ export class GameScreen extends ActiveGameScreen {
 
         const totalPosts = game.study.basicSettings.length;
         const progressPercentage = Math.round(currentPostIndex / totalPosts * 100);
+        const popupBlocking = (this.state.popupBlockingCount || 0) > 0;
 
         let nextPostEnabled = true;
         let nextPostError = "";
@@ -587,6 +707,11 @@ export class GameScreen extends ActiveGameScreen {
             }
         }
 
+        if (popupBlocking) {
+            reactionsAllowed = false;
+        }
+
+
         // Generate the post components.
         const postComponents = [];
         if (!error && !displayGameEnd) {
@@ -606,9 +731,17 @@ export class GameScreen extends ActiveGameScreen {
                         onCommentSubmit={value => this.onCommentSubmit(postIndex, value)}
                         onCommentEdit={() => this.onCommentEdit(postIndex)}
                         onCommentDelete={() => this.onCommentDelete(postIndex)}
+                        onLinkClick={clickData => this.onPostLinkClick(postIndex, clickData)}
+                        onCommentLinkClick={(i, clickData) => this.onCommentLinkClick(postIndex, i, clickData)}
+                        onCommentVisibilityToggle={(action, fromDefault) => this.onCommentVisibilityToggle(postIndex, action, fromDefault)}
+                        onPopupOpen={() => this.onPopupOpened()}
+                        onCommentPopupOpen={() => this.onPopupOpened()}
+                        onPopupClose={(popupData) => this.onPostPopupClose(postIndex, popupData)}
+                        onCommentPopupClose={(commentIndex, popupData) => this.onCommentPopupClose(postIndex, commentIndex, popupData)}
                         enabled={reactionsAllowed}
                         interactions={interaction}
-                        className={(study.uiSettings.displayPostsInFeed ? "mt-6 scroll-mt-4" : "")}/>
+                        displayName={game.participant.displayName || "You"}
+                        className={(study.uiSettings.displayPostsInFeed ? "mt-6 mx-4 scroll-mt-4 first:mt-4" : "")}/>
                 );
             }
         }
@@ -622,7 +755,7 @@ export class GameScreen extends ActiveGameScreen {
                         }
                     }} />}
 
-                <div className={"flex flex-row items-start w-full bg-gray-100 " +
+                <div className={"flex flex-row items-start w-full bg-gradient-to-br from-gray-100 via-gray-50 to-blue-50 " +
                                 (displayPrompt ? " filter blur " : "")}
                      style={{minHeight: "100vh"}}>
 
@@ -648,11 +781,11 @@ export class GameScreen extends ActiveGameScreen {
                             }}
                             nextPostText={
                                 displayGameEnd ?
-                                    "The simulation is complete!" :
+                                    "Complete!" :
                                 (!nextPostEnabled ?
                                     nextPostError :
                                 (!reactionsAllowed ?
-                                    "Please wait to continue" :
+                                    (popupBlocking ? "Please close the popup window to continue" : "Please wait to continue") :
                                 (study.uiSettings.displayPostsInFeed ?
                                     "Scroll to next post" :
                                     "Continue to next post")))
@@ -665,8 +798,7 @@ export class GameScreen extends ActiveGameScreen {
 
                     {/* The posts and their associated comments. */}
                     <div id="post-feed"
-                         className="relative bg-gray-200 w-full md:max-w-xl
-                                    md:border-l-2 md:border-r-2 md:border-gray-700 shadow-2xl"
+                         className="relative bg-gradient-to-br from-gray-100 via-gray-50 to-blue-50 w-full md:max-w-xl"
                          style={{minHeight: "100vh"}}>
 
                         {/* Post, reactions, and comments. */}
@@ -690,6 +822,15 @@ export class GameScreen extends ActiveGameScreen {
                     <div className="flex-1" />
                     <div className="flex-1" />
                 </div>
+
+                {popupBlocking && (
+                    <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center pointer-events-auto">
+                        <div className="bg-white rounded-xl shadow-2xl border border-gray-200 px-8 py-6 mx-4 max-w-md text-center">
+                            <p className="text-xl font-semibold text-gray-900 mb-2">Popup Open</p>
+                            <p className="text-gray-700">Please close the popup window to continue.</p>
+                        </div>
+                    </div>
+                )}
             </>
         );
     }

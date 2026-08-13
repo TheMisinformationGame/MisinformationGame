@@ -3,6 +3,16 @@ import {Component} from "react";
 
 
 export class GamePrompt extends Component {
+    componentDidMount() {
+        // Prevent scrolling when prompt is shown
+        document.body.style.overflow = 'hidden';
+    }
+
+    componentWillUnmount() {
+        // Re-enable scrolling when prompt is dismissed
+        document.body.style.overflow = '';
+    }
+
     render() {
         const study = this.props.study;
         return (

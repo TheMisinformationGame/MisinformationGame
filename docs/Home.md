@@ -5,7 +5,6 @@ showPath: false
 hideHeader: true
 permalink: /
 ---
-
 <style>
 div.container div.content-wrapper {
     padding-top: 1em;
@@ -25,7 +24,7 @@ figure img {
     </div>
 </div>
 
-----
+---
 
 The Misinformation Game is a
 [free and open-source](https://github.com/TheMisinformationGame/MisinformationGame)
@@ -42,17 +41,19 @@ a wide array of social-media related questions. Read more in
 [our research paper](https://doi.org/10.3758/s13428-023-02153-x).
 
 <p class="update">
-    <span class="bold">v2.4.0</span>
+    <span class="bold">v2.5.0</span>
     <span>
-      has been released with a new way to use raw HTML in posts and comments,
-      and updates for integrating the Misinformation Game into Qualtrics.
+      includes improved study template versioning, clearer pop-up link labeling,
+      cleaner results export values for image-based post content, and more
+      detailed tracking for HTML clicks and pop-up interactions.
     </span>
-    <a href="https://github.com/TheMisinformationGame/MisinformationGame/releases/tag/v2.4.0">
-        Read the v2.4.0 release notes.
+    <a href="https://github.com/TheMisinformationGame/MisinformationGame/releases/tag/v2.5.0">
+        Read the v2.5.0 release notes.
     </a>
 </p>
 
 ## Try it Out!
+
 {:#example-game}
 
 If you would like to experience participating in a study created using
@@ -68,9 +69,8 @@ The Misinformation Game, you can access an example game from
 
 <p class="spacer"></p>
 
-
-
 ## What is Recorded?
+
 {:#example-results}
 
 The Misinformation Game records a wealth of information about how each
@@ -91,12 +91,12 @@ is configured.
 
 <p class="spacer"></p>
 
-
 ## Watch
+
 {:#watch}
 
 The following video shows the experience of participants taking part in
-a study made using the Misinformation Game. If you'd like to experience
+a study made using the Misinformation Game (Version 2). If you'd like to experience
 this study yourself, you can access it through
 [the example game page](/link/ExampleGame). In fact, we recommend you
 try it yourself, to get the full experience!
@@ -111,9 +111,8 @@ try it yourself, to get the full experience!
 <p class="spacer"></p>
 <p class="spacer"></p>
 
-
-
 ## Getting Started 🚀
+
 {:#getting-started}
 
 If you are new to the tool, or you would like a refresher on its use, we recommend
@@ -134,8 +133,8 @@ you [cited this paper](#cite)!
     </a>
 </div>
 
-
 ## Documentation
+
 {:#docs}
 
 The Misinformation Game has extensive documentation to help you use the tool.
@@ -160,8 +159,8 @@ Some highlights from the documentation:
     </a>
 </div>
 
-
 ## Cite Our Work
+
 {:#cite}
 
 We would appreciate it greatly!

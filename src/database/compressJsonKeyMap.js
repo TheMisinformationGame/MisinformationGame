@@ -52,11 +52,14 @@ export const compressJsonKeyMap = {
     "displayCredibility": "dc",
     "displayProgress": "dp",
     "displayNumberOfReactions": "dn",
+    "hideCommentsByDefault": "hcd",
     "postEnabledReactions": "per",
     "commentEnabledReactions": "cer",
+    "commentVisibilityToggles": "cvt",
     "genCompletionCode": "gcc",
     "completionCodeDigits": "ccd",
     "genRandomDefaultAvatars": "rda",
+    "openLinksInModal": "olm",
     "preIntro": "pri",
     "preIntroDelaySeconds": "prid",
     "rules": "ru",
@@ -100,5 +103,9 @@ export const compressJsonKeyMap = {
     "slope": "sl",
     "intercept": "in",
     "randomiseOrder": "ror",
-    "order": "or"
+    "order": "or",
+    "popupOpened": "po",
+    "popupOpenTime": "pot",
+    "popupCloseTime": "pct",
+    "popupDuration": "pdu"
 };

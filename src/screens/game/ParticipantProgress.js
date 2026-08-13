@@ -42,8 +42,8 @@ export class ParticipantProgress extends Component {
         const nextPostEnabled = this.props.nextPostEnabled;
         const fancyPositioning = this.props.fancyPositioning;
 
-        const followers = (this.props.overrideFollowers || participant.followers);
-        const credibility = (this.props.overrideCredibility || participant.credibility);
+        const followers = (this.props.overrideFollowers || (participant && participant.followers));
+        const credibility = (this.props.overrideCredibility || (participant && participant.credibility));
 
         const displayFollowers = this.props.displayFollowers;
         const displayCredibility = this.props.displayCredibility;
@@ -73,7 +73,7 @@ export class ParticipantProgress extends Component {
                     "p-2 " + (fancyPositioning ? "border-t border-gray-400 md:border-none" : "")}>
 
                     <p className="text-xl font-semibold mb-1.5">
-                        Your Progress {stringPercent}
+                        User Progress {stringPercent}
                     </p>
 
                     <div className="block">
@@ -106,7 +106,7 @@ export class ParticipantProgress extends Component {
 
                     <div onClick={onNextPost}
                           title={nextPostEnabled || this.props.hideTooltip ? "" :
-                              "You must react to the post before you can continue to the next post"}
+                              "User must react to the post before continuing to the next post"}
                           className={
                               " mt-2 px-3 py-2 rounded-md text-white select-none " +
                               (nextPostEnabled ? " cursor-pointer " : "") +

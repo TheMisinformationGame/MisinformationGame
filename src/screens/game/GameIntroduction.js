@@ -2,6 +2,7 @@ import {ContinueBanner} from "../../components/ContinueButton";
 import {ActiveGameScreen} from "./ActiveGameScreen";
 import React from "react";
 import {renderToStaticMarkup} from "react-dom/server";
+import {PopupPermissionCheck} from "../../components/PopupPermissionCheck";
 
 
 /**
@@ -98,5 +99,14 @@ export class GamePostIntroduction extends GameIntroductionScreen {
 
     getContinueDelaySeconds(study) {
         return study.pagesSettings.postIntroDelaySeconds;
+    }
+
+    renderWithStudyAndGame(study, game) {
+        return (
+            <>
+                <PopupPermissionCheck study={study} />
+                {super.renderWithStudyAndGame(study, game)}
+            </>
+        );
     }
 }

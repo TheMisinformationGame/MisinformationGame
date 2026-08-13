@@ -11,22 +11,22 @@ export class ConfirmationDialog extends Component {
                 <div className="my-4">
                     {this.props.children}
                 </div>
-                <div className="flex justify-around">
-                    <div className={"w-52 pt-3 pb-3 bg-yellow-400 hover:bg-yellow-500 " +
-                                    "text-center select-none border-black border border-opacity-50 " +
-                                    "border-solid font-semibold rounded-md cursor-pointer "}
+                <div className="flex gap-3">
+                    <button className="flex-1 py-3 px-4 bg-red-500 hover:bg-red-600 active:bg-red-700
+                                    text-white text-center font-semibold rounded-xl cursor-pointer
+                                    shadow-md hover:shadow-lg transition-all duration-200
+                                    flex items-center justify-center gap-2"
                          onClick={this.props.onConfirm}>
-
                         {this.props.actionName}
-                    </div>
-                    <div className={"w-52 pt-3 pb-3 bg-gray-300 hover:bg-gray-400 " +
-                    "text-center select-none border-black border border-opacity-50 " +
-                    "border-solid font-semibold rounded-md cursor-pointer "}
+                    </button>
+                    <button className="flex-1 py-3 px-4 bg-gray-200 hover:bg-gray-300 active:bg-gray-400
+                                    text-gray-800 text-center font-semibold rounded-xl cursor-pointer
+                                    shadow-md hover:shadow-lg transition-all duration-200
+                                    flex items-center justify-center gap-2"
                          onClick={this.props.onCancel}>
-
-                        <CloseIcon className="mr-1 mb-1" />
+                        <CloseIcon className="" />
                         Cancel
-                    </div>
+                    </button>
                 </div>
             </Dialog>
         );
