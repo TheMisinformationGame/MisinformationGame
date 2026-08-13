@@ -70,7 +70,7 @@ spreadsheet so that you can make your own study, as shown in
 {:#create-upload}
 
 You can download the Study Template file from
-[StudyTemplate-V3.xlsx](https://docs.google.com/spreadsheets/d/1xmeEOmxMCnm_uFi27sGEdFI2GgtDP-nNhTB2P6asTVM/export?format=xlsx&gid=582914869). This file can then
+[StudyTemplate-v2.5.0.xlsx](https://docs.google.com/spreadsheets/d/1xmeEOmxMCnm_uFi27sGEdFI2GgtDP-nNhTB2P6asTVM/export?format=xlsx&gid=582914869). This file can then
 be uploaded to your Google Sheets using the following steps:
 
 **Step 1:** Access Google Sheets at
@@ -83,7 +83,7 @@ spreadsheet.
 -> **_Select a file from your device_**.
 
 **Step 4:** Use the file chooser to select the
-[StudyTemplate-V3.xlsx](https://docs.google.com/spreadsheets/d/1xmeEOmxMCnm_uFi27sGEdFI2GgtDP-nNhTB2P6asTVM/export?format=xlsx&gid=582914869) file that you
+[StudyTemplate-v2.5.0.xlsx](https://docs.google.com/spreadsheets/d/1xmeEOmxMCnm_uFi27sGEdFI2GgtDP-nNhTB2P6asTVM/export?format=xlsx&gid=582914869) file that you
 downloaded to upload.
 
 **Step 5:** Select the **_Import Location_** to be
